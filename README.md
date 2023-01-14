@@ -1,2 +1,4 @@
-# COSC-4P02-Project
-Repository for COSC 4P02 team project.
+# COSC 4P02 Team Project
+# Interactive Timeline Web Application
+
+This web application will allow users to explore the history of [tbd] and discover more information through an interactive timeline.
