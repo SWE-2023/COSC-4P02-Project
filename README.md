@@ -3,6 +3,8 @@
 
 This is a course project for COSC 4P02 Software Engineering II taught by Professor Naser Ezzati-Jivan at Brock University. 
 
+View our Project Proposal and other docs in the [documents](documents) folder.
+
 ## Team Members 👥
 | Name | Student Number|
 |------|---------------|
