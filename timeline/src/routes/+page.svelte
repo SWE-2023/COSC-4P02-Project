@@ -41,7 +41,6 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 </section>
 
 <style>
-
 	.title {
 		font-family: Georgia, 'Times New Roman', Times, serif;
 		padding: 2em 0 0 0;
@@ -69,5 +68,4 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 		margin: 0;
 		text-transform: uppercase;
 	}
-	
 </style>
