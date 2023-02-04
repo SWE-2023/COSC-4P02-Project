@@ -1,0 +1,103 @@
+@import '@fontsource/fira-mono';
+@import url('https://fonts.cdnfonts.com/css/google-sans');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+@import 'https://fonts.googleapis.com/css2?family=Lustria&display=swap';
+
+:root {
+	--font-sans: 'Montserrat', -apple-system, sans-serif;
+	--font-serif: 'Lustria', serif;
+	--font-mono: 'Fira Mono', monospace;
+	--color-bg-1: #ffffff;
+	--color-bg-2: #e0dbd4;
+	--color-theme-1: #ac000e;
+	--color-theme-2: #08244b;
+	--color-theme-1-light: #e62f3e;
+	--color-theme-2-light: #104897;
+	--color-text: rgba(0, 0, 0, 0.7);
+	--column-width: 42rem;
+	--column-margin-top: 4rem;
+
+	font-family: var(--font-sans);
+	color: var(--color-text);
+}
+
+::selection {
+	background-color: var(--color-theme-1);
+	color: var(--color-bg-1);
+}
+
+body {
+	min-height: 100vh;
+	margin: 0;
+	background-attachment: fixed;
+	background-color: var(--color-bg-1);
+	background-image: linear-gradient(-5deg, var(--color-bg-2) 0%, var(--color-bg-1) 100%);
+	background-size: 100vw 100vh;
+}
+
+h1,
+h2,
+p {
+	font-weight: 400;
+}
+
+p {
+	line-height: 1.5;
+}
+
+a {
+	color: var(--color-theme-1);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+a:hover {
+	color: var(--color-theme-1-light);
+	text-decoration: underline;
+}
+
+h1 {
+	font-size: 2rem;
+	text-align: center;
+}
+
+h2 {
+	font-size: 1rem;
+}
+
+.text-column {
+	display: flex;
+	max-width: 48rem;
+	flex: 0.6;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+input,
+button {
+	font-size: inherit;
+	font-family: inherit;
+}
+
+button:focus:not(:focus-visible) {
+	outline: none;
+}
+
+@media (min-width: 720px) {
+	h1 {
+		font-size: 2.4rem;
+	}
+}
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: auto;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	white-space: nowrap;
+}
