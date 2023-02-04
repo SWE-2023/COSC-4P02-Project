@@ -9,7 +9,7 @@
 	<nav>
 		<Hamburger bind:open --color="var(--color-theme-1)" type="arrowalt"/>
 		<Menu bind:open />
-		<img src="/src/lib/images/notl museum.svg" alt="logo" class="logo"/>
+		<img src="assets/notl-museum.svg" alt="logo" class="logo"/>
 	</nav>
 </header>
 
