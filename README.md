@@ -22,7 +22,7 @@ View our Project Proposal and other docs in the [documents](documents) folder.
 The goal of this project is to create an interactive timeline web application that will allow visitors to explore the history of Niagara-on-the-Lake. The application will be built using SvelteKit, a framework for building web applications using Svelte. 
 
 ## Contact
-If you have any questions, please contact the product owner at [mailto:dev@alecames.com](mailto:dev@alecames.com).
+If you have any questions, please contact the product owner at [dev@alecames.com](mailto:dev@alecames.com).
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
