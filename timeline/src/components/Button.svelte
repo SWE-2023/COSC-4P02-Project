@@ -7,18 +7,32 @@
 		dispatch('click');
 	}
 
-	let palceholder = 'Button';
-	let disabled = false;
+	export let text = 'Button';
+	export let disabled = false;
+	export let href = '#';
+	export let alt = false;
+	export let scale = 1;
 	
 </script>
 
-<button class="button">
-	{#if disabled}
-		{palceholder}
-	{:else}
-		<slot />
-	{/if}
-</button>
+<!--
+	BUTTON USAGE:  
+	<Button href="<LINK>" text="<TEXT>" disabled="{<BOOLEAN>}" alt="{<BOOLEAN>}" scale="{<NUMBER>}"/>
+	{} = optional
+	scale = scale of button (default = 1)
+	alt = alternative button style (default = false)
+	disabled = disabled button (default = false)
+-->
+
+{#if alt}
+	<a href="{href}" style="scale:{scale}">
+		<button class="alt-button" on:click="{click}" disabled="{disabled}" >{text}</button>
+	</a>
+{:else}
+	<a href="{href}" style="scale:{scale}">
+		<button class="button" on:click="{click}" disabled="{disabled}">{text}</button>
+	</a>
+{/if}
 
 <style>
 	:root {
@@ -36,17 +50,31 @@
 		--button-disabled-border: var(--button-disabled-background);
 	}
 
-	.button {
-		background: var(--button-background);
-		color: var(--button-color);
+	a {
+		display:flex;
+		margin:0.5em;
+		text-decoration:none !important;
+	}
+
+	.button, .alt-button {
 		border-radius: 0.5rem 0.5rem;
 		padding: 1.2em 2em;
 		cursor: pointer;
-		border: 2px solid var(--button-border);
-
 		transition: 
 			background-color 0.2s ease-in-out,
 			color 0.2s ease-in-out;
+	}
+
+	.button {
+		background: var(--button-background);
+		color: var(--button-color);
+		border: 2px solid var(--button-border);
+	}
+
+	.alt-button {
+		background: var(--button-color);
+		color: var(--button-hover-color);
+		border: 2px solid var(--button-border);
 	}
 
 	.button:hover {
@@ -55,32 +83,32 @@
 		transition: background-color 0.15s ease-out;
 	}
 
-	.button:disabled {
+	.alt-button:hover {
+		background: var(--button-active-background);
+		color: var(--button-hover-color);
+		transition: background-color 0.15s ease-out;
+	}
+
+	.button:disabled, .alt-button:disabled{
 		background: var(--button-disabled-background);
 		color: var(--button-disabled-color);
 		border: 2px solid var(--button-disabled-border);
 		cursor:default;
 	}
 
-	.button:disabled:hover {
+	.button:disabled:hover, .alt-button:disabled:hover  {
 		background: var(--button-disabled-background);
 		color: var(--button-disabled-color);
 	}
 
-	.button:focus {
+	.button:focus, .alt-button:focus {
 		outline: none;
 	}
 
-	.button:active {
+	.button:active, .alt-button:active {
 		transition:none;
 		background-color: var(--button-active-background);
 		transform: scale(0.98);
 	}
-
-	.button:disabled:active {
-		transform: scale(1);
-	}
-
-
 
 </style>
