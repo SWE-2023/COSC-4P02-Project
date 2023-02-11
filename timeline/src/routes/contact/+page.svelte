@@ -1,17 +1,18 @@
 <script>
 	import { fade } from 'svelte/transition';
-    /** @type {import('./$types').PageData} */
-    export let data;
+	import PageTransition from '../../components/PageTransition.svelte';
 </script>
 
+<PageTransition>
 <section in:fade>
 	<h1>Contact the Museum</h1>
 	<p>Visit the <a href="https://www.notlmuseum.ca">Niagara-on-the-Lake Museum</a>.</p>
 </section>
+</PageTransition>
 
 <style>
 	h1 {
-		font-family: Georgia, 'Times New Roman', Times, serif;
+		font-family: var(--font-serif);
 		padding: 2em 0 0 0;
 		font-size: 3.5rem;
 		font-weight: 700;
