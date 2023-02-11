@@ -1,11 +1,9 @@
 <script>
 	import Button from '../components/Button.svelte';
-	import { fade } from 'svelte/transition';
-	import { Card, Toggle } from "flowbite-svelte";
-
+	import { fade, scale } from 'svelte/transition';
+  	import PageTransition from '../components/PageTransition.svelte';
 	let headerText = [
-  		"Explore the rich history of our museum.",
-  		"Uncover the stories behind our exhibits.",
+  		"Explore the rich history of our town.",
   		"Discover our heritage.",
   		"Travel through time with us.",
 	];
@@ -16,29 +14,28 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 
 </script>
 
+
 <svelte:head>
-	<title>Home | Niagara-on-the-Lake Museum Timeline </title>
-	<meta name="description" content="Niagara-on-the-Lake Museum Timeline" />
+	<title>Home | Niagara-on-the-Lake Timeline </title>
+	<meta name="description" content="Niagara-on-the-Lake History Timeline" />
 </svelte:head>
 
-<section in:fade>
+<PageTransition>
+<section>
 <section class="welcome" >
-	<h1 class="title">Welcome to the<br><span style="color:var(--color-theme-1)">Niagara-on-the-Lake Museum</span> Timeline</h1>
+	<h1 class="title">Welcome to the<br><span style="color:var(--color-theme-1)">Niagara-on-the-Lake</span> Timeline</h1>
 	
 	<!-- TODO add transitions between headers -->
 	<h1 class="subtitle" in:fade>{headerText[currentOption]}</h1>
 	
-	<p class="subtext">A digital interactive timeline of the history of the Niagara-on-the-Lake Museum</p>
-	<Button>View Timeline</Button>
+	<p class="subtext">A digital interactive timeline of the history of the Niagara-on-the-Lake</p>
+
+	<Button href="/timeline" text="Explore the Timeline"/>
 
 </section>
-
-<section class="timelines">
-	<h1 class="title">Timelines</h1>
-	<p class="subtext">Timelines can go here</p>
 </section>
 
-</section>
+</PageTransition>
 
 <style>
 	.title {
@@ -51,7 +48,7 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 	}
 
 	.subtitle {
-		font-family: Georgia, 'Times New Roman', Times, serif;
+		font-family: var(--font-serif);
 		padding: 1em 0 0 0;
 		text-align:start;
 		font-size: 2.5rem;
@@ -60,7 +57,6 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 	}
 
 	.subtext {
-		
 		padding: 1em 0 1em 0;
 		text-align:start;
 		font-size: 1.5rem;
