@@ -3,6 +3,11 @@
 	import PageTransition from '../../components/PageTransition.svelte';
 </script>
 
+<svelte:head>
+	<title>About | Niagara-on-the-Lake Timeline</title>
+	<meta name="description" content="About page" />
+</svelte:head>
+
 <PageTransition>
 <section in:fade>
 	<h1>About</h1>

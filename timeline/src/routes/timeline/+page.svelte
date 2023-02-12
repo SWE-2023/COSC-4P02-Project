@@ -3,6 +3,11 @@
  	import PageTransition from '../../components/PageTransition.svelte';
 </script>
 
+<svelte:head>
+	<title>Timeline | Niagara-on-the-Lake Timeline</title>
+	<meta name="description" content="Timeline page" />
+</svelte:head>
+
 <PageTransition>
 	<!-- THIS IS WHERE TIMELINE HTML WILL GO -->
 	<!-- Create components in the components folder for reusability -->
@@ -12,6 +17,7 @@
 		<h1>Timeline Page</h1>
 		<p>Placeholder Page for the Timeline</p>
 	</div>
+
 </PageTransition>
 
 <style>

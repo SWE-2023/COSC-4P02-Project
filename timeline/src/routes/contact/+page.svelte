@@ -3,6 +3,12 @@
 	import PageTransition from '../../components/PageTransition.svelte';
 </script>
 
+<svelte:head>
+	<title>Contact | Niagara-on-the-Lake Timeline</title>
+	<meta name="description" content="Contact page" />
+</svelte:head>
+
+
 <PageTransition>
 <section in:fade>
 	<h1>Contact the Museum</h1>
