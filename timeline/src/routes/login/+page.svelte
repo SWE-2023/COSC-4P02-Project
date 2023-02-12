@@ -12,11 +12,17 @@
 	// TODO: add login functionality
   };
 
-  const handleForgotPassword = () => {
+  const gotoForgot = () => {
     console.log("i forgor 💀");
 	// TODO: add forgot password functionality
   };
+
 </script>
+
+<svelte:head>
+	  <title>Log In</title>	
+	  <meta name="description" content="Log in to your account" />
+</svelte:head>
 
 <PageTransition>
   <div class="login-container">
@@ -32,8 +38,8 @@
 	
 
 	<div class="form-buttons"> 
-		<Button on:click={handleForgotPassword} text="Forgot Password?"/>
-    <Button alt on:click={handleLogin} text="Log In"/>
+		<Button on:click={gotoForgot} text="Forgot Password?" href="/login/forgot"/>
+    <Button alt on:click={handleLogin} text="Log In" href="/"/>
 	</div>
 </div>
   </div>
@@ -76,16 +82,16 @@
 	width: 100%;
   }
 
-  label {
+  .form label {
 	padding:0 0 0 1em;
     margin-top: 1rem;
 	font-size: 1.2rem;
   }
 
-  input {
-	text-align:center;
+  .form input {
+	text-align:left;
 	font-size:1.2rem;
-    width: 24rem;
+    max-width: 30rem;
     margin: 0.5em 0.5em 2em;
     padding: 0.8em;
     border-radius: 0.5em;
