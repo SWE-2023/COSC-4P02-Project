@@ -4,7 +4,6 @@
 </script>
 
 <li class = lineItem>
-    <span class = "title">{item.title}</span>
     <span class = "dot"></span>
     <span class = "date">{item.id}</span>
 </li>
