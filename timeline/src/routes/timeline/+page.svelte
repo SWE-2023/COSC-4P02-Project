@@ -72,12 +72,14 @@
 				<span class = "line"></span>
 			</div>  		
 		</section>
-		<section class="picture" >
-			<h1>pic goes here</h1>
-		</section>
-		<section class="text">
-			<h1>text</h1>
-			<p>text goes here</p>
+		<section class="item-components">
+			<div class="picture" >
+				<h1>pic goes here</h1>
+			</div>
+			<div class="text">
+				<h1>text</h1>
+				<p>text goes here</p>
+			</div>
 		</section>
 	</section>
 </PageTransition>
