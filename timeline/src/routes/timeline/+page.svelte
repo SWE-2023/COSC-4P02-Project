@@ -1,6 +1,60 @@
 <script>
 	import { scale } from 'svelte/transition';
  	import PageTransition from '../../components/PageTransition.svelte';
+	import TimeLineItem from "../../components/TimeLineItem.svelte";
+
+	let timeData = [
+		{
+			id: '1880',
+			title:'War of 1882'
+			//page: 
+		},
+		{
+			id: '1990',
+			title:'War of 1990'
+			//page:
+		},
+		{
+			id: '1872',
+			title:'War of 1872'
+			//page:
+		},
+		{
+			id: '1940',
+			title:'War of 1940'
+			//page:
+		},{
+			id: '1946',
+			title:'War of 1946'
+			//page:
+		},
+		{
+			id: '1870',
+			title:'War of 1870'
+			//page:
+		},
+		{
+			id: '1874',
+			title:'War of 1874'
+			//page:
+		},
+		{
+			id: '1850',
+			title:'War of 1850'
+			//page:
+		},
+		{
+			id: '1854',
+			title:'War of 1854'
+			//page:
+		},
+		{
+			id: '1855',
+			title:'War of 1855'
+			//page:
+		}
+	]
+	
 </script>
 
 <svelte:head>
@@ -9,15 +63,23 @@
 </svelte:head>
 
 <PageTransition>
-	<!-- THIS IS WHERE TIMELINE HTML WILL GO -->
-	<!-- Create components in the components folder for reusability -->
-	<!-- Check Svelte documentation and look at examples like Button -->
-
-	<div class="container" >
-		<h1>Timeline Page</h1>
-		<p>Placeholder Page for the Timeline</p>
-	</div>
-
+	<section class="layout">
+		<section class="line-components">
+			<div class="timeElements">
+				{#each timeData as td(td.id)}
+					<TimeLineItem item={td} />
+				{/each}
+				<span class = "line"></span>
+			</div>  		
+		</section>
+		<section class="picture" >
+			<h1>pic goes here</h1>
+		</section>
+		<section class="text">
+			<h1>text</h1>
+			<p>text goes here</p>
+		</section>
+	</section>
 </PageTransition>
 
 <style>
@@ -28,6 +90,7 @@
 		font-weight: 700;
 		margin: 0;
 	}
+
 	p {
 		padding: 1em 0 1em 0;
 		font-size: 1.5rem;
@@ -36,4 +99,15 @@
 		text-align: center;
 		text-transform: uppercase;
 	}
+
+	.layout {
+		display: flex;
+		flex-direction: row;
+		height: 100%;
+	}
+	
+	.line-components, .picture, .text {
+		padding: 3rem;	
+	}
+
 </style>
