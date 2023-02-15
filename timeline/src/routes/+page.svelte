@@ -48,6 +48,7 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 		font-size: 3.5rem;
 		font-weight: 700;
 		margin: 0;
+		animation: fadeIn 2.5s;
 	}
 
 	.subtitle {
@@ -57,6 +58,7 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 		font-size: 2.5rem;
 		font-weight: 700;
 		margin: 0;
+		/*animation: fadeIn 2.5s;*/
 	}
 
 	.subtext {
@@ -67,5 +69,13 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 		font-weight: 800;
 		margin: 0;
 		text-transform: uppercase;
+		animation: fadeIn 2.5s;
 	}
+
+	@keyframes fadeIn {
+		0% {opacity: 0;}
+		100% {opacity: 1;}
+	}
+
+
 </style>
