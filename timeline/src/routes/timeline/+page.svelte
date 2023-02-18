@@ -69,7 +69,6 @@
 				{#each timeData as td(td.id)}
 					<TimeLineItem item={td} />
 				{/each}
-				<span class = "line"></span>
 			</div>  		
 		</section>
 		<section class="item-components">
@@ -110,6 +109,20 @@
 	
 	.line-components, .picture, .text {
 		padding: 3rem;	
+	}
+
+	.timeElements::before {
+		content: " ";
+		position :absolute;
+		height: 300px;
+		width: 5px;
+		background-color: brown;
+		display: flex;
+	}
+
+	.item-components {
+		display: flex;
+		flex-direction: row;
 	}
 
 </style>
