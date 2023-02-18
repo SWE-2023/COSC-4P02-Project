@@ -3,13 +3,30 @@
     export let item 
 </script>
 
-<li class = lineItem>
+<div class = lineItem>
     <span class = "dot"></span>
     <span class = "date">{item.id}</span>
-</li>
+</div>
 
 <style>
-  
-  
+    .lineItem {
+        display: flex;
+        justify-content: left;
+        position: relative;
+        right: 5px;
+    }
+    
+    .dot {
+        width: 15px;
+        height: 15px;
+        background-color: brown;
+        border-radius: 20%;
+        border-radius: 138px; 
+    }
+
+    .date {
+        padding-left: 10px;
+        
+    }
    
 </style>
