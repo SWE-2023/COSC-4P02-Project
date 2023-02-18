@@ -120,6 +120,11 @@
 		display: flex;
 	}
 
+	.line-components {
+		position: relative;
+		right: 150px;
+	}
+
 	.item-components {
 		display: flex;
 		flex-direction: row;
