@@ -56,20 +56,20 @@
 		},	
 	]
 
-	let lineHeight = 300;
+	let lineHeight = window.innerHeight*0.75; // set line height to 75% of screen height
 	function getSpacing(key){
 		let top = timeData[0].id;
-		let buttom = timeData[timeData.length-1].id; 
+		let button = timeData[timeData.length-1].id; 
 		
 		if(key == top){ 
 			return 0;
-		}else if(key == buttom){
+		}else if(key == button){
 			return lineHeight;
 		}else{
-			return parseInt(key)/parseInt(buttom); //needs improvement 
+			return parseInt(key)/parseInt(button); //needs improvement 
 		}
 	}
-
+	
 	
 </script>
 
@@ -83,10 +83,10 @@
 		<section class="line-components">
 			<div class="timeElements">
 				<span style="height: {lineHeight}px" class="line"></span>
-				{#each timeData as td(td.id)}	
-					<TimeLineItem item={td} spacing={getSpacing(td.id)}/>   
+				{#each timeData as td(td.id)}	<TimeLineItem item={td} spacing={getSpacing(td.id)}/>   
+					<!-- <TimeLineItem item={td} spacing={10}/>  -->
 				{/each}
-			</div>  		
+			</div>  		 
 		</section>
 		<section class="item-components">
 			<div class="picture" >
@@ -140,7 +140,7 @@
 		right: 150px;
 		padding: 3rem;
 	}
-
+	
 	.item-components {
 		display: flex;
 		flex-direction: row;
