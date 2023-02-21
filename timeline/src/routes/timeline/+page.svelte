@@ -20,6 +20,11 @@
 			//page:
 		},
 		{
+			id: '1860',
+			title:'War of 1860'
+			//page:
+		},
+		{
 			id: '1870',
 			title:'War of 1870'
 			//page:
@@ -56,20 +61,37 @@
 		},	
 	]
 
+
 	let lineHeight = window.innerHeight*0.75; // set line height to 75% of screen height
 	function getSpacing(key){
 		let top = timeData[0].id;
-		let button = timeData[timeData.length-1].id; 
+		let buttom = timeData[timeData.length-1].id; 
 		
 		if(key == top){ 
 			return 0;
-		}else if(key == button){
+		}else if(key == buttom){
 			return lineHeight;
 		}else{
-			return parseInt(key)/parseInt(button); //needs improvement 
+			return findHeight(key); 
 		}
+	}	
+
+	function findHeight(key){
+		let total = 0;
+		let point = 0;
+		for(let i=0; i<timeData.length; i++){
+			if(timeData[i].id == key){
+				point = i;
+			}
+		}
+		
+		while(point > 0){
+			total += (parseInt(timeData[point].id) - parseInt(timeData[point-1].id));
+			point--;
+		}
+
+		return total;
 	}
-	
 	
 </script>
 
@@ -83,7 +105,8 @@
 		<section class="line-components">
 			<div class="timeElements">
 				<span style="height: {lineHeight}px" class="line"></span>
-				{#each timeData as td(td.id)}	<TimeLineItem item={td} spacing={getSpacing(td.id)}/>   
+				{#each timeData as td(td.id)}	
+					<TimeLineItem item={td} spacing={getSpacing(td.id)}/>   
 					<!-- <TimeLineItem item={td} spacing={10}/>  -->
 				{/each}
 			</div>  		 
