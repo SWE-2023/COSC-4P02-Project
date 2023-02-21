@@ -56,25 +56,20 @@
 		},	
 	]
 
-	let itemPadding = [];
-	let lineHeight = 0;
-	for (let i = 0; i<itemPadding.length; i++){
-		if(i == 0){
-			itemPadding.push({'id': timeData[i].id, 'padding':0});
-			lineHeight += 0;
-		}else{
-			itemPadding.push({'id': timeData[i].id, 'padding': parseInt(timeData[i-1].id) - parseInt(timeData[i].id)});
-			lineHeight += parseInt(timeData[i-1].id) - parseInt(timeData[i].id); 
-		}
-	}
-	
+	let lineHeight = 300;
 	function getSpacing(key){
-		for (let i = 0; i<itemPadding.length; i++){
-			if(itemPadding[i].id == key){
-				return itemPadding[i].padding;
-			}
+		let top = timeData[0].id;
+		let buttom = timeData[timeData.length-1].id; 
+		
+		if(key == top){ 
+			return 0;
+		}else if(key == buttom){
+			return lineHeight;
+		}else{
+			return parseInt(key)/parseInt(buttom); //needs improvement 
 		}
 	}
+
 	
 </script>
 
@@ -89,7 +84,7 @@
 			<div class="timeElements">
 				<span style="height: {lineHeight}px" class="line"></span>
 				{#each timeData as td(td.id)}	
-					<TimeLineItem item={td} spacing={getSpacing(td)}/>   
+					<TimeLineItem item={td} spacing={getSpacing(td.id)}/>   
 				{/each}
 			</div>  		
 		</section>
@@ -129,10 +124,10 @@
 		height: 100%;
 	}
 	
-	.line-components, .picture, .text {
-		padding: 3rem;	
+	.picture, .text {
+		margin: 5rem;	
 	}
-
+	
 	.line {
 		content: " ";
 		position :absolute;
@@ -143,6 +138,7 @@
 	.line-components {
 		position: relative;
 		right: 150px;
+		padding: 3rem;
 	}
 
 	.item-components {
