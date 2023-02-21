@@ -5,40 +5,6 @@
 
 	let timeData = [
 		{
-			id: '1880',
-			title:'War of 1882'
-			//page: 
-		},
-		{
-			id: '1990',
-			title:'War of 1990'
-			//page:
-		},
-		{
-			id: '1872',
-			title:'War of 1872'
-			//page:
-		},
-		{
-			id: '1940',
-			title:'War of 1940'
-			//page:
-		},{
-			id: '1946',
-			title:'War of 1946'
-			//page:
-		},
-		{
-			id: '1870',
-			title:'War of 1870'
-			//page:
-		},
-		{
-			id: '1874',
-			title:'War of 1874'
-			//page:
-		},
-		{
 			id: '1850',
 			title:'War of 1850'
 			//page:
@@ -52,9 +18,67 @@
 			id: '1855',
 			title:'War of 1855'
 			//page:
-		}
+		},
+		{
+			id: '1870',
+			title:'War of 1870'
+			//page:
+		},
+		{
+			id: '1872',
+			title:'War of 1872'
+			//page:
+		},
+		{
+			id: '1874',
+			title:'War of 1874'
+			//page:
+		},
+		{
+			id: '1882',
+			title:'War of 1882'
+			//page: 
+		},
+		{
+			id: '1940',
+			title:'War of 1940'
+			//page:
+		},
+		{
+			id: '1946',
+			title:'War of 1946'
+			//page:
+		},
+		{
+			id: '1990',
+			title:'War of 1990'
+			//page:
+		},	
 	]
+
+
+	let itemPadding = [];
+	let lineHeight = 0;
+	itemPadding.length = timeData.length;
+	for (let i = 0; i<itemPadding.length; i++){
+		if(i == 0){
+			itemPadding.push({'id': timeData[i].id, 'padding':0});
+			lineHeight += 0;
+		}else{
+			itemPadding.push({'id': timeData[i].id, 'padding': parseInt(timeData[i-1].id) - parseInt(timeData[i].id)});
+			lineHeight += parseInt(timeData[i-1].id) - parseInt(timeData[i].id); 
+		}
+	}
 	
+	function getSpacing(key){
+		for (let i = 0; i<itemPadding.length; i++){
+			if(itemPadding[i].id == key){
+				return itemPadding[i].padding;
+			}
+		}
+	}
+	
+
 </script>
 
 <svelte:head>
@@ -66,8 +90,9 @@
 	<section class="layout">
 		<section class="line-components">
 			<div class="timeElements">
-				{#each timeData as td(td.id)}
-					<TimeLineItem item={td} />
+				<span style="height: {lineHeight}px" class="line"></span>
+				{#each timeData as td(td.id)}	
+					<TimeLineItem item={td} spacing={getSpacing(td)}/>   
 				{/each}
 			</div>  		
 		</section>
@@ -111,13 +136,11 @@
 		padding: 3rem;	
 	}
 
-	.timeElements::before {
+	.line {
 		content: " ";
 		position :absolute;
-		height: 300px;
 		width: 5px;
 		background-color: brown;
-		display: flex;
 	}
 
 	.line-components {
