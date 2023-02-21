@@ -56,10 +56,8 @@
 		},	
 	]
 
-
 	let itemPadding = [];
 	let lineHeight = 0;
-	itemPadding.length = timeData.length;
 	for (let i = 0; i<itemPadding.length; i++){
 		if(i == 0){
 			itemPadding.push({'id': timeData[i].id, 'padding':0});
@@ -78,7 +76,6 @@
 		}
 	}
 	
-
 </script>
 
 <svelte:head>
