@@ -1,9 +1,10 @@
 <!--for handing data components individually-->
 <script>
-    export let item 
+    export let item; 
+    export let spacing;
 </script>
 
-<div class = lineItem>
+<div style="padding-top: {spacing}px" class = lineItem>
     <span class = "dot"></span>
     <span class = "date">{item.id}</span>
 </div>
