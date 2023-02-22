@@ -1,40 +1,30 @@
 <!--for handing data components individually-->
 <script>
-    export let item 
+    export let item; 
+    export let spacing;
 </script>
 
-<li class = lineItem>
-    <span class = "title">{item.title}</span>
-    <span class = "dot"></span>
-    <span class = "date">{item.id}</span>
-</li>
+<div style="padding-top: {spacing}rem" class = lineItem>
+    <div class = "dot"></div>
+    <div class = "date">{item.id}</div>
+</div>
 
 <style>
-    .title {
-        transform: rotate(-70deg);
-        padding-left: 7em;
+    .lineItem {
+        display: flex;
+        position: absolute;
+        left:42px;
     }
-
-    .dot{
-        height: 12px;
-        width: 12px;
-        border-radius: 50%;
-        border: 2px solid #dfdfdf;
-        background-color: #f8f8f8;
+    
+    .dot {
+        width: 17px;
+        height: 17px;
+        background-color: brown;
+        border-radius: 20%;
+        border-radius: 100px; 
     }
-
     .date {
-        padding-top: 10px;
-
+        padding-left: 10px;  
     }
-
-   .lineItem {
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: -35px;
-   }
    
 </style>
