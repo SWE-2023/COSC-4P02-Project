@@ -16,3 +16,13 @@ View our Project Proposal and other docs in the [documents](documents) folder.
 | [Abhijeet Prajapati](https://github.com/TheDasher1)| 5987722 |
 | [Justin Stickel](https://github.com/Stickelation) - *Scrum Master*| 6718404 |
 | [Haaris Yahya](https://github.com/haarisyahya)| 7054984 |
+
+
+## Project Description 📝
+The goal of this project is to create an interactive timeline web application that will allow visitors to explore the history of Niagara-on-the-Lake. The application will be built using SvelteKit, a framework for building web applications using Svelte. 
+
+## Contact
+If you have any questions, please contact the product owner at [dev@alecames.com](mailto:dev@alecames.com).
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

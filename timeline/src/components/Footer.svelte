@@ -12,8 +12,8 @@
 		padding: 0 16px;
 	}
 
+	/* 
 	footer a {
 		font-weight: bold;
-	}
-
+	} */
 </style>
