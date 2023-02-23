@@ -9,7 +9,7 @@
 	{
       id: "1720",
       title: "War of 1850",
-      picture: "War of 1850 picture",
+      picture: "assets/placeholder.jpg",
       text: "Description about war of 1850",
     },
     {
@@ -110,11 +110,14 @@
 
     return spacing;
   }
-
-  let title = timeData[0].title;
-  // let picture = timeData[0].picture;
-  let picture = "assets/placeholder.jpg";
-  let text = timeData[0].text;
+  let title;
+  let picture;
+  let text;
+  for (let i = 0; i < timeData.length; i++) {
+     title = timeData[i].title;
+     picture = timeData[i].picture;
+     text = timeData[i].text;
+  }
 </script>
 
 <svelte:head>
@@ -162,7 +165,7 @@
         <p>{text}</p>
       </div>
       <div class = "lower">
-        <button class = "second"> 
+        <button class = "second"  on:click={console.log}> 
           <Fa icon={faChevronDown}  size = "2x"/>
       </button>
     </div>
