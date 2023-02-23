@@ -1,15 +1,15 @@
 <script>
-	export let onClick;
+	export let eventOne;
+    export let eventTwo;
 	export let isActive = false;
-	
+   
 	function handleClick() {
 		isActive = !isActive; 
-		onClick(isActive);
 	}
 	
 </script>
 
-<button on:click={handleClick} class:active={isActive}></button>
+<button on:click={handleClick} on:click={eventOne} on:click={eventTwo} class:active={isActive}></button>
 
 <style>
     button {
