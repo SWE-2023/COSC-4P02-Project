@@ -2,6 +2,8 @@
   import { scale } from "svelte/transition";
   import PageTransition from "../../components/PageTransition.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
+  import Fa from 'svelte-fa/src/fa.svelte';
+  import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
   let timeData = [
 	{
@@ -145,6 +147,13 @@
       </div>
     </section>
     <section class="item-components">
+
+      <div class = "upper">
+        <button class = "first">
+         <Fa icon={faChevronUp} size = "2x"/>
+      </button>
+    </div>
+
       <div class="picture">
         <img alt="" src={picture} />
       </div>
@@ -152,6 +161,12 @@
         <h1>{title}</h1>
         <p>{text}</p>
       </div>
+      <div class = "lower">
+        <button class = "second"> 
+          <Fa icon={faChevronDown}  size = "2x"/>
+      </button>
+    </div>
+
     </section>
   </section>
 </PageTransition>
@@ -183,6 +198,34 @@
     text-align: center;
     text-transform: uppercase;
   }
+  .upper {
+    display: flex; /* or grid */
+    justify-content: center;
+    align-items: center;
+    
+    
+    
+  }
+  .first{
+    cursor: pointer;
+    background-color: transparent;
+    border:none;
+    padding: 0;
+    
+  }
+  .second{
+    cursor: pointer;
+    background-color: transparent;
+    border:none;
+    padding: 0;
+  }
+  .lower{
+    display: flex; /* or grid */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  
+  }
 
   .layout {
     display: flex;
@@ -198,7 +241,7 @@
     position: fixed;
     width: 4px;
     background-color: var(--color-theme-1);
-	left: 41px;
+    left: 41px;
   }
 
   .line-components {
@@ -207,13 +250,13 @@
   }
 
   .item-components {
-    display: flex;
+    display: block;
     flex-direction: row;
   }
 
   .timescale {
-	z-index:-9;
-	opacity:1;
+    z-index:-9;
+    opacity:1;
     list-style: none;
     margin: 0;
     display: flex;
@@ -222,8 +265,7 @@
     position: absolute;
     left: 5rem;
     padding: 0;
-	transition: 
-		padding 0.5s ease;
+    transition: padding 0.5s ease;
   }
 
   li {
