@@ -6,94 +6,134 @@
   let timeData = [
 	{
       id: "1720",
+      creation_date:"",
       title: "War of 1720",
-      picture: "War of 1720 picture",
-      text: "Description about war of 1720",
-      date: "random date in the year 1720"
+      image: "War of 1720 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1720",
+      start_date: "random date in the year 1720",
+      end_date: "random end date in the year 1720"
     },
     {
       id: "1850",
+      creation_date:"",
       title: "War of 1850",
-      picture: "War of 1850 picture",
-      text: "Description about war of 1850",
-	    date: "random date in the year 1850"
+      image: "War of 1850 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1850",
+	    start_date: "random date in the year 1850",
+      end_date: "random end date in the year 1850"
     },
     {
       id: "1854",
+      creation_date:"",
       title: "War of 1854",
-      picture: "War of 1854 picture",
-      text: "Description about war of 1854",
-	    date: "random date in the year 1855"
+      image: "War of 1854 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1854",
+	    start_date: "random date in the year 1854",
+      end_date: "random end date in the year 1854"
     },
     {
       id: "1855",
+      creation_date:"",
       title: "War of 1855",
-      picture: "War of 1855 picture",
-      text: "Description about war of 1855",
-	    date: "random date in the year 1855"
+      image: "War of 1855 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1855",
+	    start_date: "random date in the year 1855",
+      end_date: "random end date in the year 1855"
     },
     {
       id: "1860",
+      creation_date:"",
       title: "War of 1860",
-      picture: "War of 1860 picture",
-      text: "Description about war of 1860",
-	    date: "random date in the year 1860"
+      image: "War of 1860 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1860",
+	    start_date: "random date in the year 1860",
+      end_date: "random end date in the year 1860"
     },
     {
       id: "1870",
+      creation_date:"",
       title: "War of 1870",
-      picture: "War of 1870 picture",
-      text: "Description about war of 1870",
-	    date: "random date in the year 1870"
+      image: "War of 1870 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1870",
+	    start_date: "random date in the year 1870",
+      end_date: "random end date in the year 1870"
     },
     {
       id: "1872",
+      creation_date:"",
       title: "War of 1872",
-      picture: "War of 1872 picture",
-      text: "Description about war of 1872",
-	    date: "random date in the year 1872"
+      image: "War of 1872 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1872",
+	    start_date: "random date in the year 1872",
+      end_date: "random end date in the year 1872"
+
     },
     {
       id: "1874",
+      creation_date:"",
       title: "War of 1874",
-      picture: "War of 1874 picture",
-      text: "Description about war of 1874",
-	    date: "random date in the year 1874"
+      image: "War of 1874 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1874",
+	    start_date: "random date in the year 1874",
+      end_date: "random end date in the year 1874"
     },
     {
       id: "1882",
+      creation_date:"",
       title: "War of 1882",
-      picture: "War of 1882 picture",
-      text: "Description about war of 1882",
-	    date: "random date in the year 1882"
+      image: "War of 1882 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1882",
+	    start_date: "random date in the year 1882",
+      end_date: "random end date in the year 1882"
     },
     {
       id: "1940",
+      creation_date:"",
       title: "War of 1940",
-      picture: "War of 1940 picture",
-      text: "Description about war of 1940",
-	    date: "random date in the year 1940"
+      image: "War of 1940 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1940",
+	    start_date: "random date in the year 1940",
+      end_date: "random end date in the year 1940"
     },
     {
       id: "1946",
+      creation_date:"",
       title: "War of 1946",
-      picture: "War of 1946 picture",
-      text: "Description about war of 1946",
-	    date: "random date in the year 1946"
+      image: "War of 1946 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1946",
+	    start_date: "random date in the year 1946",
+      end_date: "random end date in the year 1946"
     },
     {
       id: "1990",
+      creation_date:"",
       title: "War of 1990",
-      picture: "War of 1990 picture",
-      text: "Description about war of 1990",
-	    date: "random date in the year 1990"
+      image: "War of 1990 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1990",
+	    start_date: "random date in the year 1990",
+      end_date: "random end date in the year 1990"
     },
 	{
       id: "2020",
+      creation_date:"",
       title: "War of 2020",
-      picture: "War of 2020 picture",
-      text: "Description about war of 2020",
-      date: "random date in the year 2020"
+      image: "War of 2020 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 2020",
+      start_date: "random date in the year 2020",
+      end_date: "random end date in the year 2020"
     },
   ];
 
@@ -116,15 +156,17 @@
   
   let selectedItem = timeData[0];
   let title = timeData[0].title;
-  let picture = "assets/placeholder.jpg" //placeholder
-  let text = timeData[0].text;
-  let date = timeData[0].date;
+  let image = "assets/placeholder.jpg"; //placeholder
+  let image_credit = timeData[0].image_credit;
+  let body = timeData[0].body;
+  let start_date = timeData[0].start_date;
 
   function setComponenets(){
     title = selectedItem.title;
-    picture = "assets/placeholder.jpg" //placeholder
-    text = selectedItem.text;
-    date = selectedItem.date;
+    image = "assets/placeholder.jpg"; //placeholder
+    image_credit = selectedItem.image_credit;
+    body = selectedItem.body;
+    start_date = selectedItem.start_date;
   }
 
 </script>
@@ -150,13 +192,14 @@
       </div>
     </section>
     <section class="item-components">
-      <div class="picture">
-        <img alt="" src={picture}/>
+      <div class="image">
+        <img alt="" src={image}/>
       </div>
       <div class="text">
         <h1>{title}</h1>
-        <p>{date}</p>
-        <p>{text}</p> 
+        <p>{start_date}</p>
+        <p>{body}</p> 
+        <p>{image_credit}</p>
       </div>
     </section>
   </section>
@@ -192,8 +235,7 @@
     flex-direction: row;
   }
 
-  .picture,
-  .text {
+  .image,.text {
     margin: 2rem;
   }
 
