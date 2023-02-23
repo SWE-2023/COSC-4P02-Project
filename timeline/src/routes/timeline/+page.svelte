@@ -2,6 +2,8 @@
   import { scale } from "svelte/transition";
   import PageTransition from "../../components/PageTransition.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
+  import Fa from 'svelte-fa/src/fa.svelte';
+  import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
   let timeData = [
 	{
@@ -145,6 +147,13 @@
       </div>
     </section>
     <section class="item-components">
+
+      <div class = "upper">
+        <button class = "first">
+         <Fa icon={faCaretUp}/>
+      </button>
+    </div>
+
       <div class="picture">
         <img alt="" src={picture} />
       </div>
@@ -152,6 +161,12 @@
         <h1>{title}</h1>
         <p>{text}</p>
       </div>
+
+      <div class = "lower">
+        <button class = "second"> 
+          <Fa icon={faCaretDown}/>
+      </button>
+    </div>
     </section>
   </section>
 </PageTransition>
@@ -183,6 +198,36 @@
     text-align: center;
     text-transform: uppercase;
   }
+  .upper {
+    display: flex; /* or grid */
+    justify-content: center;
+    align-items: center;
+    
+    
+    
+  }
+  .first{
+    cursor: pointer;
+    background-color: none;
+    border:none;
+    padding: 0;
+    
+  }
+  .second{
+    cursor: pointer;
+    background-color: transparent;
+    border:none;
+    padding: 0;
+  }
+
+  .lower{
+    display: flex; /* or grid */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+  
+  }
 
   .layout {
     display: flex;
@@ -207,7 +252,7 @@
   }
 
   .item-components {
-    display: flex;
+    display: block;
     flex-direction: row;
   }
 

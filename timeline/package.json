@@ -28,8 +28,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fortawesome/free-brands-svg-icons": "^6.3.0",
+		"@fortawesome/free-solid-svg-icons": "^6.3.0",
 		"flowbite-svelte": "^0.29.13",
 		"sapper": "^0.29.3",
+		"svelte-fa": "^3.0.3",
 		"svelte-hamburgers": "^4.0.1"
 	}
 }
