@@ -151,7 +151,7 @@
 						currentTitle={title}
 						currentPicture={picture}
 						currentText={text} />
-					<Cursor />
+						
 					<!-- 'decade' markers -->
 				{/each}
 				<ul class="timescale" style="height:{timelineHeight}vh;">
