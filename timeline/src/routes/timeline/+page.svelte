@@ -123,11 +123,14 @@
 
     return spacing;
   }
-
-  let title = timeData[0].title;
-  // let picture = timeData[0].picture;
-  let picture = "assets/placeholder.jpg";
-  let text = timeData[0].text;
+  let title;
+  let picture;
+  let text;
+  for (let i = 0; i < timeData.length; i++) {
+     title = timeData[i].title;
+     picture = timeData[i].picture;
+     text = timeData[i].text;
+  }
 </script>
 
 <svelte:head>
@@ -254,7 +257,7 @@
     position: fixed;
     width: 4px;
     background-color: var(--color-theme-1);
-	left: 41px;
+    left: 41px;
   }
 
   .line-components {
@@ -264,12 +267,13 @@
 
   .item-components {
     display: block;
+    display: block;
     flex-direction: row;
   }
 
   .timescale {
-	z-index:-9;
-	opacity:1;
+    z-index:-9;
+    opacity:1;
     list-style: none;
     margin: 0;
     display: flex;
@@ -278,8 +282,7 @@
     position: absolute;
     left: 5rem;
     padding: 0;
-	transition: 
-		padding 0.5s ease;
+    transition: padding 0.5s ease;
   }
 
   li {
