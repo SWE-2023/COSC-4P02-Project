@@ -2,8 +2,14 @@
   import { scale } from "svelte/transition";
   import PageTransition from "../../components/PageTransition.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
-  
+
   let timeData = [
+	{
+      id: "1720",
+      title: "War of 1850",
+      picture: "War of 1850 picture",
+      text: "Description about war of 1850",
+    },
     {
       id: "1850",
       title: "War of 1850",
@@ -66,6 +72,12 @@
     },
     {
       id: "1990",
+      title: "War of 1990",
+      picture: "War of 1990 picture",
+      text: "Description about war of 199 0",
+    },
+	{
+      id: "2020",
       title: "War of 1990",
       picture: "War of 1990 picture",
       text: "Description about war of 199 0",
