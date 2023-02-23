@@ -198,19 +198,20 @@
 		box-shadow: 1rem 0rem 32px 0 #00000044;
 	}
 
-	p {
-		padding: 1em 0 1em 0;
-		font-size: 1.5rem;
-		font-weight: 800;
-		margin: 0;
-		text-align: center;
-		text-transform: uppercase;
-	}
+  p {
+    padding: 1em 0 1em 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  
 
-	.layout {
-		display: flex;
-		flex-direction: row;
-	}
+  .layout {
+    display: flex;
+    flex-direction: row;
+  }
 
 	.picture,
 	.text {
