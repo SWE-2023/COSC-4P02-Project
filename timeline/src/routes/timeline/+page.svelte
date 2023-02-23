@@ -91,7 +91,7 @@
 
   let title = timeData[0].title;
 //   let picture = timeData[0].picture;
-  let picture = "assets/placeholder.jpg"
+  let picture = "assets/placeholder.jpg" //placeholder
   let text = timeData[0].text;
 
 </script>
@@ -114,7 +114,6 @@
             currentTitle={title}
             currentPicture={picture}
             currentText={text}/>
-          <!-- <TimeLineItem item={td} spacing={10}/>  -->
         {/each}
       </div>
     </section>
