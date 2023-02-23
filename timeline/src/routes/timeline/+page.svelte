@@ -195,34 +195,7 @@
     text-align: center;
     text-transform: uppercase;
   }
-  .upper {
-    display: flex; /* or grid */
-    justify-content: center;
-    align-items: center;
-    
-    
-    
-  }
-  .first{
-    cursor: pointer;
-    background-color: transparent;
-    border:none;
-    padding: 0;
-    
-  }
-  .second{
-    cursor: pointer;
-    background-color: transparent;
-    border:none;
-    padding: 0;
-  }
-  .lower{
-    display: flex; /* or grid */
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
   
-  }
 
   .layout {
     display: flex;
