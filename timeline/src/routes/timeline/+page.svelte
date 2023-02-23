@@ -6,81 +6,94 @@
   let timeData = [
 	{
       id: "1720",
-      title: "War of 1850",
-      picture: "War of 1850 picture",
-      text: "Description about war of 1850",
+      title: "War of 1720",
+      picture: "War of 1720 picture",
+      text: "Description about war of 1720",
+      date: "random date in the year 1720"
     },
     {
       id: "1850",
       title: "War of 1850",
       picture: "War of 1850 picture",
       text: "Description about war of 1850",
+	    date: "random date in the year 1850"
     },
     {
       id: "1854",
       title: "War of 1854",
       picture: "War of 1854 picture",
       text: "Description about war of 1854",
+	    date: "random date in the year 1855"
     },
     {
       id: "1855",
       title: "War of 1855",
       picture: "War of 1855 picture",
       text: "Description about war of 1855",
+	    date: "random date in the year 1855"
     },
     {
       id: "1860",
       title: "War of 1860",
       picture: "War of 1860 picture",
       text: "Description about war of 1860",
+	    date: "random date in the year 1860"
     },
     {
       id: "1870",
       title: "War of 1870",
       picture: "War of 1870 picture",
       text: "Description about war of 1870",
+	    date: "random date in the year 1870"
     },
     {
       id: "1872",
       title: "War of 1872",
       picture: "War of 1872 picture",
       text: "Description about war of 1872",
+	    date: "random date in the year 1872"
     },
     {
       id: "1874",
       title: "War of 1874",
       picture: "War of 1874 picture",
       text: "Description about war of 1874",
+	    date: "random date in the year 1874"
     },
     {
       id: "1882",
       title: "War of 1882",
       picture: "War of 1882 picture",
       text: "Description about war of 1882",
+	    date: "random date in the year 1882"
     },
     {
       id: "1940",
       title: "War of 1940",
       picture: "War of 1940 picture",
       text: "Description about war of 1940",
+	    date: "random date in the year 1940"
     },
     {
       id: "1946",
       title: "War of 1946",
       picture: "War of 1946 picture",
       text: "Description about war of 1946",
+	    date: "random date in the year 1946"
     },
     {
       id: "1990",
       title: "War of 1990",
       picture: "War of 1990 picture",
-      text: "Description about war of 199 0",
+      text: "Description about war of 1990",
+	    date: "random date in the year 1940"
     },
 	{
       id: "2020",
-      title: "War of 1990",
-      picture: "War of 1990 picture",
-      text: "Description about war of 199 0",
+      title: "War of 2020",
+      picture: "War of 2020 picture",
+      text: "Description about war of 2020",
+      date: "random date in the year 2020"
     },
   ];
 
@@ -133,8 +146,6 @@
             currentPicture={picture}
             currentText={text}
           />
-          <!-- <TimeLineItem item={td} spacing={10}/>  -->
-
           <!-- 'decade' markers -->
         {/each}
         <ul class="timescale" style="height:{timelineHeight}vh;">
