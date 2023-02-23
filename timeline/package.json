@@ -14,7 +14,7 @@
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
 		"@sveltejs/adapter-auto": "^1.0.0",
-		"@sveltejs/kit": "^1.0.0",
+		"@sveltejs/kit": "^1.5.5",
 		"@types/cookie": "^0.5.1",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
@@ -29,6 +29,7 @@
 	"type": "module",
 	"dependencies": {
 		"flowbite-svelte": "^0.29.13",
+		"sapper": "^0.29.3",
 		"svelte-hamburgers": "^4.0.1"
 	}
 }

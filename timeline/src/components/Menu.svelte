@@ -17,7 +17,10 @@
 			</li>
 			<li aria-current={$page.url.pathname.startsWith('/contact') ? 'page' : undefined} transition:fly={{  x: -24, delay: 150 }}>
 				<a href="/contact"on:click={() => open = false}>Contact</a>
-			</li>			
+			</li>
+			<li aria-current={$page.url.pathname.startsWith('/login') ? 'page' : undefined} transition:fly={{  x: -24, delay: 150 }}>
+				<a href="/login"on:click={() => open = false}>Log In</a>
+			</li>		
 		</ul>
     </div>
 {/if}
@@ -32,7 +35,6 @@
         letter-spacing: 0.1em;
 		width:16rem;
 		height:auto;
-		text-transform: uppercase;        
 		background-color: var(--color-bg-1);
 		backdrop-filter: blur(1em);
 		box-shadow: 0 0 1em rgba(16, 13, 46, 0.2);
