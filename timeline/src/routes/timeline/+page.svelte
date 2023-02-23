@@ -113,11 +113,19 @@
 
     return spacing;
   }
-
+  
+  let selectedItem = timeData[0];
   let title = timeData[0].title;
-//   let picture = timeData[0].picture;
   let picture = "assets/placeholder.jpg" //placeholder
   let text = timeData[0].text;
+  let date = timeData[0].date;
+
+  function setComponenets(){
+    title = selectedItem.title;
+    picture = "assets/placeholder.jpg" //placeholder
+    text = selectedItem.text;
+    date = selectedItem.date;
+  }
 
 </script>
 
@@ -136,9 +144,8 @@
           <TimeLineItem
             item={td}
             spacing={getSpacing(td.id)}
-            currentTitle={title}
-            currentPicture={picture}
-            currentText={text}/>
+            bind:currentItem={selectedItem}
+            on:change={setComponenets}/>
         {/each}
       </div>
     </section>
@@ -148,7 +155,8 @@
       </div>
       <div class="text">
         <h1>{title}</h1>
-        <p>{text}</p>
+        <p>{date}</p>
+        <p>{text}</p> 
       </div>
     </section>
   </section>
