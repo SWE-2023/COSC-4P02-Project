@@ -1,172 +1,239 @@
 <script>
-	import { scale } from 'svelte/transition';
- 	import PageTransition from '../../components/PageTransition.svelte';
-	import TimeLineItem from "../../components/TimeLineItem.svelte";
+  import { scale } from "svelte/transition";
+  import PageTransition from "../../components/PageTransition.svelte";
+  import TimeLineItem from "../../components/TimeLineItem.svelte";
 
-	let timeData = [
-		{
-			id: '1850',
-			title:'War of 1850'
-			//page:
-		},
-		{
-			id: '1854',
-			title:'War of 1854'
-			//page:
-		},
-		{
-			id: '1855',
-			title:'War of 1855'
-			//page:
-		},
-		{
-			id: '1860',
-			title:'War of 1860'
-			//page:
-		},
-		{
-			id: '1870',
-			title:'War of 1870'
-			//page:
-		},
-		{
-			id: '1872',
-			title:'War of 1872'
-			//page:
-		},
-		{
-			id: '1874',
-			title:'War of 1874'
-			//page:
-		},
-		{
-			id: '1882',
-			title:'War of 1882'
-			//page: 
-		},
-		{
-			id: '1940',
-			title:'War of 1940'
-			//page:
-		},
-		{
-			id: '1946',
-			title:'War of 1946'
-			//page:
-		},
-		{
-			id: '1990',
-			title:'War of 1990'
-			//page:
-		},	
-	]
+  let timeData = [
+	{
+      id: "1720",
+      title: "War of 1850",
+      picture: "War of 1850 picture",
+      text: "Description about war of 1850",
+    },
+    {
+      id: "1850",
+      title: "War of 1850",
+      picture: "War of 1850 picture",
+      text: "Description about war of 1850",
+    },
+    {
+      id: "1854",
+      title: "War of 1854",
+      picture: "War of 1854 picture",
+      text: "Description about war of 1854",
+    },
+    {
+      id: "1855",
+      title: "War of 1855",
+      picture: "War of 1855 picture",
+      text: "Description about war of 1855",
+    },
+    {
+      id: "1860",
+      title: "War of 1860",
+      picture: "War of 1860 picture",
+      text: "Description about war of 1860",
+    },
+    {
+      id: "1870",
+      title: "War of 1870",
+      picture: "War of 1870 picture",
+      text: "Description about war of 1870",
+    },
+    {
+      id: "1872",
+      title: "War of 1872",
+      picture: "War of 1872 picture",
+      text: "Description about war of 1872",
+    },
+    {
+      id: "1874",
+      title: "War of 1874",
+      picture: "War of 1874 picture",
+      text: "Description about war of 1874",
+    },
+    {
+      id: "1882",
+      title: "War of 1882",
+      picture: "War of 1882 picture",
+      text: "Description about war of 1882",
+    },
+    {
+      id: "1940",
+      title: "War of 1940",
+      picture: "War of 1940 picture",
+      text: "Description about war of 1940",
+    },
+    {
+      id: "1946",
+      title: "War of 1946",
+      picture: "War of 1946 picture",
+      text: "Description about war of 1946",
+    },
+    {
+      id: "1990",
+      title: "War of 1990",
+      picture: "War of 1990 picture",
+      text: "Description about war of 199 0",
+    },
+	{
+      id: "2020",
+      title: "War of 1990",
+      picture: "War of 1990 picture",
+      text: "Description about war of 199 0",
+    },
+  ];
+
+  const gap = 20; // values lower than 10 will cause issues in a 1080p screen
+  const timelineHeight = 80; // in vh
+
+  const decades = [];
+  const lowest = Math.floor(parseInt(timeData[0].id) / gap) * gap; // round down to nearest 20 year
+  const highest =
+    Math.ceil(parseInt(timeData[timeData.length - 1].id) / gap) * gap; // round up to nearest 20 year
+
+  for (let i = lowest; i <= highest; i += gap) {
+    decades.push(i);
+  }
 
 
-	let lineHeight = window.innerHeight*0.75; // set line height to 75% of screen height
-	function getSpacing(key){
-		let top = timeData[0].id;
-		let buttom = timeData[timeData.length-1].id; 
-		
-		if(key == top){ 
-			return 0;
-		}else if(key == buttom){
-			return lineHeight;
-		}else{
-			return findHeight(key); 
-		}
-	}	
+  // reworked spacing function
+  function getSpacing(key) {
+    const top = lowest;
+    const bottom = highest;
+    const current = parseInt(key);
 
-	function findHeight(key){
-		let total = 0;
-		let point = 0;
-		for(let i=0; i<timeData.length; i++){
-			if(timeData[i].id == key){
-				point = i;
-			}
-		}
-		
-		while(point > 0){
-			total += (parseInt(timeData[point].id) - parseInt(timeData[point-1].id));
-			point--;
-		}
+    const percentage = (current - top) / (bottom - top);
+    const spacing = percentage * (timelineHeight - 2);
 
-		return total;
-	}
-	
+    return spacing;
+  }
+
+  let title = timeData[0].title;
+  // let picture = timeData[0].picture;
+  let picture = "assets/placeholder.jpg";
+  let text = timeData[0].text;
 </script>
 
 <svelte:head>
-	<title>Timeline | Niagara-on-the-Lake Timeline</title>
-	<meta name="description" content="Timeline page" />
+  <title>Timeline | Niagara-on-the-Lake Timeline</title>
+  <meta name="description" content="Timeline page" />
 </svelte:head>
 
 <PageTransition>
-	<section class="layout">
-		<section class="line-components">
-			<div class="timeElements">
-				<span style="height: {lineHeight}px" class="line"></span>
-				{#each timeData as td(td.id)}	
-					<TimeLineItem item={td} spacing={getSpacing(td.id)}/>   
-					<!-- <TimeLineItem item={td} spacing={10}/>  -->
-				{/each}
-			</div>  		 
-		</section>
-		<section class="item-components">
-			<div class="picture" >
-				<h1>pic goes here</h1>
-			</div>
-			<div class="text">
-				<h1>text</h1>
-				<p>text goes here</p>
-			</div>
-		</section>
-	</section>
+  <section class="layout">
+    <section class="line-components">
+      <div class="timeElements">
+        <span style="height:{timelineHeight}vh" class="line" />
+        {#each timeData as td (td.id)}
+          <TimeLineItem
+            item={td}
+            spacing={getSpacing(td.id)}
+            currentTitle={title}
+            currentPicture={picture}
+            currentText={text}
+          />
+          <!-- <TimeLineItem item={td} spacing={10}/>  -->
+
+          <!-- 'decade' markers -->
+        {/each}
+        <ul class="timescale" style="height:{timelineHeight}vh;">
+          {#each decades as decade}
+            <li>{decade}</li>
+          {/each}
+        </ul>
+      </div>
+    </section>
+    <section class="item-components">
+      <div class="picture">
+        <img alt="" src={picture} />
+      </div>
+      <div class="text">
+        <h1>{title}</h1>
+        <p>{text}</p>
+      </div>
+    </section>
+  </section>
 </PageTransition>
 
 <style>
-	h1 {
-		font-family: var(--font-serif);
-		padding: 2em 0 0 0;
-		font-size: 3.5rem;
-		font-weight: 700;
-		margin: 0;
-	}
 
-	p {
-		padding: 1em 0 1em 0;
-		font-size: 1.5rem;
-		font-weight: 800;
-		margin: 0;
-		text-align: center;
-		text-transform: uppercase;
-	}
+	
+  h1 {
+    font-family: var(--font-serif);
+    padding: 2em 0 0 0;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
 
-	.layout {
-		display: flex;
-		flex-direction: row;
-		height: 100%;
-	}
-	
-	.picture, .text {
-		margin: 5rem;	
-	}
-	
-	.line {
-		content: " ";
-		position :absolute;
-		width: 5px;
-		background-color: brown;
-	}
+  img {
+    width: 100%;
+    object-fit: cover;
+    margin: 1rem 0rem;
+    border-radius: 1rem;
+	box-shadow: 1rem 0rem 32px 0 #00000044;
+  }
 
-	.line-components {
-		position: relative;
-		right: 150px;
-		padding: 3rem;
-	}
-	
-	.item-components {
-		display: flex;
-		flex-direction: row;
-	}
+  p {
+    padding: 1em 0 1em 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .picture,
+  .text {
+    margin: 2rem;
+  }
+
+  .line {
+    position: fixed;
+    width: 4px;
+    background-color: var(--color-theme-1);
+	left: 41px;
+  }
+
+  .line-components {
+    position: fixed;
+    left: -9px;
+  }
+
+  .item-components {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .timescale {
+	z-index:-9;
+	opacity:1;
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    left: 5rem;
+    padding: 0;
+	transition: 
+		padding 0.5s ease;
+  }
+
+  li {
+	opacity: 0.8;
+	transition: color 0.5s ease;
+	cursor: default;
+  }
+  
+  li:hover {
+	opacity:0.9;
+  }
 
 </style>

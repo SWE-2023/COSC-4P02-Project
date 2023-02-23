@@ -1,17 +1,17 @@
 <script>
 	import Button from '../components/Button.svelte';
-	import { fade, scale } from 'svelte/transition';
-  	import PageTransition from '../components/PageTransition.svelte';
+	import { fade } from 'svelte/transition';
+	import PageTransition from '../components/PageTransition.svelte';
+	
 	let headerText = [
   		"Explore the rich history of our town.",
   		"Discover our heritage.",
   		"Travel through time with us.",
 	];
 
-let currentOption = 0;
-
-setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10000);
-
+	
+	let currentOption = 0;
+	setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10000);
 </script>
 
 
@@ -21,7 +21,6 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 </svelte:head>
 
 <PageTransition>
-<section>
 <section class="welcome" >
 	<h1 class="title">Welcome to the<br><span style="color:var(--color-theme-1)">Niagara-on-the-Lake</span> Timeline</h1>
 	
@@ -32,7 +31,6 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 
 	<Button href="/timeline" text="Explore the Timeline"/>
 
-</section>
 </section>
 
 </PageTransition>
@@ -64,4 +62,5 @@ setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10
 		margin: 0;
 		text-transform: uppercase;
 	}
+
 </style>
