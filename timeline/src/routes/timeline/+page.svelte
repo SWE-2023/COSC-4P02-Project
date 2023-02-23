@@ -1,9 +1,10 @@
 <script>
   import { scale } from "svelte/transition";
   import PageTransition from "../../components/PageTransition.svelte";
+  import UpArrow from "../../components/upArrow.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
-  import Fa from 'svelte-fa/src/fa.svelte';
-  import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+  import DownArrow from "../../components/downArrow.svelte";
+  
 
   let timeData = [
 	{
@@ -151,11 +152,7 @@
     </section>
     <section class="item-components">
 
-      <div class = "upper">
-        <button class = "first">
-         <Fa icon={faChevronUp} size = "2x"/>
-      </button>
-    </div>
+      <UpArrow> </UpArrow>
 
       <div class="picture">
         <img alt="" src={picture} />
@@ -164,11 +161,8 @@
         <h1>{title}</h1>
         <p>{text}</p>
       </div>
-      <div class = "lower">
-        <button class = "second"  on:click={console.log}> 
-          <Fa icon={faChevronDown}  size = "2x"/>
-      </button>
-    </div>
+
+      <DownArrow></DownArrow>
 
     </section>
   </section>
