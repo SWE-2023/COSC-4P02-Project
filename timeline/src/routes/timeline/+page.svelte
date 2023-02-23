@@ -6,58 +6,70 @@
 	let timeData = [
 		{
 			id: '1850',
-			title:'War of 1850'
-			//page:
+			title:'War of 1850',
+			picture: 'War of 1850 picture',
+			text: 'Description about war of 1850'
+
 		},
 		{
 			id: '1854',
-			title:'War of 1854'
-			//page:
+			title:'War of 1854',
+			picture: 'War of 1854 picture',
+			text: 'Description about war of 1854'
 		},
 		{
 			id: '1855',
-			title:'War of 1855'
-			//page:
+			title:'War of 1855',
+			picture: 'War of 1855 picture',
+			text: 'Description about war of 1855'
 		},
 		{
 			id: '1860',
-			title:'War of 1860'
-			//page:
+			title:'War of 1860',
+			picture: 'War of 1860 picture',
+			text: 'Description about war of 1860'
 		},
 		{
 			id: '1870',
-			title:'War of 1870'
-			//page:
+			title:'War of 1870',
+			picture: 'War of 1870 picture',
+			text: 'Description about war of 1870'
 		},
 		{
 			id: '1872',
-			title:'War of 1872'
-			//page:
+			title:'War of 1872',
+			picture: 'War of 1872 picture',
+			text: 'Description about war of 1872'
 		},
 		{
 			id: '1874',
-			title:'War of 1874'
-			//page:
+			title:'War of 1874',
+			picture: 'War of 1874 picture',
+			text: 'Description about war of 1874'
 		},
 		{
 			id: '1882',
-			title:'War of 1882'
-			//page: 
+			title:'War of 1882',
+			picture: 'War of 1882 picture',
+			text: 'Description about war of 1882' 
 		},
 		{
 			id: '1940',
-			title:'War of 1940'
-			//page:
+			title:'War of 1940',
+			picture: 'War of 1940 picture',
+			text: 'Description about war of 1940'
 		},
 		{
 			id: '1946',
-			title:'War of 1946'
-			//page:
+			title:'War of 1946',
+			picture: 'War of 1946 picture',
+			text: 'Description about war of 1946'
 		},
 		{
 			id: '1990',
-			title:'War of 1990'
-			//page:
+			title:'War of 1990',
+			picture: 'War of 1990 picture',
+			text: 'Description about war of 199 0'
 		},	
 	]
 
@@ -93,6 +105,10 @@
 		return total;
 	}
 	
+	let title = timeData[0].title;
+	let picture = timeData[0].picture;
+	let text = timeData[0].text;
+
 </script>
 
 <svelte:head>
@@ -106,18 +122,18 @@
 			<div class="timeElements">
 				<span style="height: {lineHeight}px" class="line"></span>
 				{#each timeData as td(td.id)}	
-					<TimeLineItem item={td} spacing={getSpacing(td.id)}/>   
+					<TimeLineItem item={td} spacing={getSpacing(td.id)} currentTitle={title} currentPicture={picture} currentText={text}/>   
 					<!-- <TimeLineItem item={td} spacing={10}/>  -->
 				{/each}
 			</div>  		 
 		</section>
 		<section class="item-components">
 			<div class="picture" >
-				<h1>pic goes here</h1>
+				<h1>{picture}</h1>
 			</div>
 			<div class="text">
-				<h1>text</h1>
-				<p>text goes here</p>
+				<h1>{title}</h1>
+				<p>{text}</p>
 			</div>
 		</section>
 	</section>
