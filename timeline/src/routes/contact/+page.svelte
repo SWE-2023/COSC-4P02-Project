@@ -1,6 +1,6 @@
 <script>
-	import { fade } from 'svelte/transition';
-	import PageTransition from '../../components/PageTransition.svelte';
+	import { fade } from "svelte/transition";
+	import PageTransition from "../../components/PageTransition.svelte";
 </script>
 
 <svelte:head>
@@ -8,12 +8,15 @@
 	<meta name="description" content="Contact page" />
 </svelte:head>
 
-
 <PageTransition>
-<section in:fade>
-	<h1>Contact the Museum</h1>
-	<p>Visit the <a href="https://www.notlmuseum.ca">Niagara-on-the-Lake Museum</a>.</p>
-</section>
+	<section in:fade>
+		<h1>Contact the Museum</h1>
+		<p>
+			Visit the <a href="https://www.notlmuseum.ca"
+				>Niagara-on-the-Lake Museum</a
+			>.
+		</p>
+	</section>
 </PageTransition>
 
 <style>
