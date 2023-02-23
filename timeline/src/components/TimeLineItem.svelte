@@ -8,6 +8,7 @@
     export let currentText;
 
     function setDetails(){
+		console.log("test");
         currentTitle = item.title;
         currentPicture = item.picture;
         currentText = item.text; 
@@ -15,10 +16,12 @@
 
 </script>
 
-<div style="padding-top: {spacing}rem" class = lineItem>
-    <Dot on:click[{setDetails()}]/>
-    <div class = "date">{item.id}</div>
-</div>
+<div class="lineItem">
+	<div style="top:{spacing}px">
+	  <Dot onClick={setDetails} isActive={false}/>
+	  <div class="date">{item.id}</div>
+	</div>
+  </div>
 
 <style>
     .lineItem {
@@ -26,9 +29,15 @@
         position: absolute;
         left:42px;
     }
+
+	.lineItem div {
+		padding:none;
+		position: relative;
+	}
     
     .date {
-        padding-left: 10px;  
+		top:-19px;
+		left: 28px;
     }
    
 </style>
