@@ -1,8 +1,22 @@
 <script>
+<<<<<<< HEAD
 	export let onClick;
 </script>
 
 <button style="" on:click={onClick}></button>
+=======
+	export let eventOne;
+    export let eventTwo;
+	export let isActive = false;
+   
+	function handleClick() {
+		isActive = !isActive; 
+	}
+	
+</script>
+
+<button on:click={handleClick} on:click={eventOne} on:click={eventTwo} class:active={isActive}></button>
+>>>>>>> 5344a0109e3676303ca862f27b9d93683fbf21cf
 
 <style>
     button {

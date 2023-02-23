@@ -1,23 +1,26 @@
 <script>
+  	import {createEventDispatcher} from 'svelte';
     import Dot from './Dot.svelte';
     export let item; 
     export let spacing;
-    export let currentTitle;
-    export let currentPicture;
-    export let currentText;
+    export let currentItem;
 
+    const dispatch = createEventDispatcher();
+    const change = () => dispatch('change');
     function setDetails(){
-		console.log("test");
-        currentTitle = item.title;
-        currentPicture = item.picture;
-        currentText = item.text; 
+      currentItem = item; 
     }
-
+    
 </script>
 
 <div class="lineItem">
+<<<<<<< HEAD
 	<div style="top:{spacing}vh">
 	  <Dot onClick={setDetails}/>
+=======
+	<div style="top:{spacing}px">
+	  <Dot eventOne={setDetails} eventTwo={change} isActive={false}/>
+>>>>>>> 5344a0109e3676303ca862f27b9d93683fbf21cf
 	  <div class="date">{item.id}</div>
 	</div>
   </div>
