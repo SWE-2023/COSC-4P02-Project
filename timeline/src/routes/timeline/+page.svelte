@@ -84,28 +84,35 @@
     },
   ];
 
-  let timelineHeight;
-  if (typeof window !== "undefined") {
-    timelineHeight = window.innerHeight * 0.8;
+  const gap = 20; // values lower than 10 will cause issues in a 1080p screen
+  const timelineHeight = 80; // in vh
+
+  const decades = [];
+  const lowest = Math.floor(parseInt(timeData[0].id) / gap) * gap; // round down to nearest 20 year
+  const highest =
+    Math.ceil(parseInt(timeData[timeData.length - 1].id) / gap) * gap; // round up to nearest 20 year
+
+  for (let i = lowest; i <= highest; i += gap) {
+    decades.push(i);
   }
+
 
   // reworked spacing function
   function getSpacing(key) {
-    const top = parseInt(timeData[0].id);
-    const bottom = parseInt(timeData[timeData.length - 1].id);
+    const top = lowest;
+    const bottom = highest;
     const current = parseInt(key);
 
     const percentage = (current - top) / (bottom - top);
-    const spacing = percentage * timelineHeight;
+    const spacing = percentage * (timelineHeight - 2);
 
     return spacing;
   }
 
   let title = timeData[0].title;
-//   let picture = timeData[0].picture;
-  let picture = "assets/placeholder.jpg"
+  // let picture = timeData[0].picture;
+  let picture = "assets/placeholder.jpg";
   let text = timeData[0].text;
-
 </script>
 
 <svelte:head>
@@ -117,22 +124,29 @@
   <section class="layout">
     <section class="line-components">
       <div class="timeElements">
-        <span style="height:{timelineHeight}px" class="line"/>
-	
+        <span style="height:{timelineHeight}vh" class="line" />
         {#each timeData as td (td.id)}
           <TimeLineItem
             item={td}
             spacing={getSpacing(td.id)}
             currentTitle={title}
             currentPicture={picture}
-            currentText={text}/>
+            currentText={text}
+          />
           <!-- <TimeLineItem item={td} spacing={10}/>  -->
+
+          <!-- 'decade' markers -->
         {/each}
+        <ul class="timescale" style="height:{timelineHeight}vh;">
+          {#each decades as decade}
+            <li>{decade}</li>
+          {/each}
+        </ul>
       </div>
     </section>
     <section class="item-components">
       <div class="picture">
-        <img alt="" src={picture}/>
+        <img alt="" src={picture} />
       </div>
       <div class="text">
         <h1>{title}</h1>
@@ -143,6 +157,8 @@
 </PageTransition>
 
 <style>
+
+	
   h1 {
     font-family: var(--font-serif);
     padding: 2em 0 0 0;
@@ -152,11 +168,12 @@
   }
 
   img {
-	width: 100%;
-	object-fit: cover;
-	margin: 1rem 0rem;
-	border-radius: 1rem;
-}
+    width: 100%;
+    object-fit: cover;
+    margin: 1rem 0rem;
+    border-radius: 1rem;
+	box-shadow: 1rem 0rem 32px 0 #00000044;
+  }
 
   p {
     padding: 1em 0 1em 0;
@@ -181,8 +198,7 @@
     position: fixed;
     width: 4px;
     background-color: var(--color-theme-1);
-    left: 40px;
-	padding: 1rem 0;
+	left: 41px;
   }
 
   .line-components {
@@ -194,4 +210,30 @@
     display: flex;
     flex-direction: row;
   }
+
+  .timescale {
+	z-index:-9;
+	opacity:1;
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    left: 5rem;
+    padding: 0;
+	transition: 
+		padding 0.5s ease;
+  }
+
+  li {
+	opacity: 0.8;
+	transition: color 0.5s ease;
+	cursor: default;
+  }
+  
+  li:hover {
+	opacity:0.9;
+  }
+
 </style>
