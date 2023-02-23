@@ -219,7 +219,7 @@
 	object-fit: cover;
 	margin: 1rem 0rem;
 	border-radius: 1rem;
-}
+  }
 
   p {
     padding: 1em 0 1em 0;
