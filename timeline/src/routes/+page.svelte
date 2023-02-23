@@ -2,7 +2,6 @@
 	import Button from '../components/Button.svelte';
 	import { fade } from 'svelte/transition';
 	import PageTransition from '../components/PageTransition.svelte';
-	const placeholder = new URL('../lib/images/placeholder.jpg',import.meta.url).href
 	
 	let headerText = [
   		"Explore the rich history of our town.",
@@ -22,7 +21,6 @@
 </svelte:head>
 
 <PageTransition>
-<section>
 <section class="welcome" >
 	<h1 class="title">Welcome to the<br><span style="color:var(--color-theme-1)">Niagara-on-the-Lake</span> Timeline</h1>
 	
@@ -33,7 +31,6 @@
 
 	<Button href="/timeline" text="Explore the Timeline"/>
 
-</section>
 </section>
 
 </PageTransition>
