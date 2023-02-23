@@ -1,10 +1,10 @@
 <script>
-	import { scale } from "svelte/transition";
-	import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-	import PageTransition from "../../components/PageTransition.svelte";
-	import TimeLineItem from "../../components/TimeLineItem.svelte";
-	import Fa from "svelte-fa/src/fa.svelte";
-	import Cursor from "../../components/Cursor.svelte";
+  import { scale } from "svelte/transition";
+  import PageTransition from "../../components/PageTransition.svelte";
+  import UpArrow from "../../components/upArrow.svelte";
+  import TimeLineItem from "../../components/TimeLineItem.svelte";
+  import DownArrow from "../../components/downArrow.svelte";
+  
 
 	let timeData = [
 		{
@@ -140,49 +140,45 @@
 </svelte:head>
 
 <PageTransition>
-	<section class="layout">
-		<section class="line-components">
-			<div class="timeElements">
-				<span style="height:{timelineHeight}vh" class="line" />
-				{#each timeData as td (td.id)}
-					<TimeLineItem
-						item={td}
-						spacing={getSpacing(td.id)}
-						currentTitle={title}
-						currentPicture={picture}
-						currentText={text} />
-						
-					<!-- 'decade' markers -->
-				{/each}
-				<ul class="timescale" style="height:{timelineHeight}vh;">
-					{#each decades as decade}
-						<li>{decade}</li>
-					{/each}
-				</ul>
-			</div>
-		</section>
-		<section class="item-components">
-			<div class="upper">
-				<button class="first">
-					<Fa icon={faCaretUp} />
-				</button>
-			</div>
+  <section class="layout">
+    <section class="line-components">
+      <div class="timeElements">
+        <span style="height:{timelineHeight}vh" class="line" />
+        {#each timeData as td (td.id)}
+          <TimeLineItem
+            item={td}
+            spacing={getSpacing(td.id)}
+            currentTitle={title}
+            currentPicture={picture}
+            currentText={text}
+          />
+          <!-- <TimeLineItem item={td} spacing={10}/>  -->
 
-			<div class="picture">
-				<img alt="" src={picture} />
-			</div>
-			<div class="text">
-				<h1>{title}</h1>
-				<p>{text}</p>
-			</div>
+          <!-- 'decade' markers -->
+        {/each}
+        <ul class="timescale" style="height:{timelineHeight}vh;">
+          {#each decades as decade}
+            <li>{decade}</li>
+          {/each}
+        </ul>
+      </div>
+    </section>
+    <section class="item-components">
 
-			<div class="lower">
-				<button class="second">
-					<Fa icon={faCaretDown} />
-				</button>
-			</div>
-		</section>
-	</section>
+      <UpArrow> </UpArrow>
+
+      <div class="picture">
+        <img alt="" src={picture} />
+      </div>
+      <div class="text">
+        <h1>{title}</h1>
+        <p>{text}</p>
+      </div>
+
+      <DownArrow></DownArrow>
+
+    </section>
+  </section>
 </PageTransition>
 
 <style>
@@ -209,33 +205,6 @@
 		margin: 0;
 		text-align: center;
 		text-transform: uppercase;
-	}
-	
-	.upper {
-		display: flex; /* or grid */
-		justify-content: center;
-		align-items: center;
-	}
-
-	.first {
-		cursor: pointer;
-		background-color: none;
-		border: none;
-		padding: 0;
-	}
-
-	.second {
-		cursor: pointer;
-		background-color: transparent;
-		border: none;
-		padding: 0;
-	}
-
-	.lower {
-		display: flex; /* or grid */
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
 	}
 
 	.layout {
