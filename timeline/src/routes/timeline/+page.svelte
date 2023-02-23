@@ -86,7 +86,7 @@
       title: "War of 1990",
       picture: "War of 1990 picture",
       text: "Description about war of 1990",
-	    date: "random date in the year 1940"
+	    date: "random date in the year 1990"
     },
 	{
       id: "2020",
