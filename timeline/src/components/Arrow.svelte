@@ -48,13 +48,13 @@
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
-		padding: 0;
+		padding: 0 1rem 1rem 1rem;
 	}
 
 	.down-button {
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
-		padding: 0;
+		padding: 1rem 1rem 0 1rem;
 	}
 </style>
