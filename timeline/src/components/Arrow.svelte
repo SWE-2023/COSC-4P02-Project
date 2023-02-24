@@ -33,7 +33,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		top: 2rem;
-    z-index:9999;
+		z-index: 9999;
 	}
 
 	.down {
@@ -41,7 +41,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		bottom: 2rem;
-    z-index:9999;
+		z-index: 9999;
 	}
 
 	.up-button {
