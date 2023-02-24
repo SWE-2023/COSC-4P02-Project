@@ -178,6 +178,7 @@
     for(let i=0; i<timeData.length; i++){
       if(selectedItem == timeData[i]){
         currentIndex = i;
+        console.log("returned" + i)
       }
     }
   }
@@ -185,12 +186,14 @@
   function pageUp(){
     if(!atFirst){
       selectedItem = timeData[currentIndex- 1];
+      console.log(currentIndex);
     }
   }
 
   function pageDown(){
     if(!atLast){
       selectedItem = timeData[currentIndex + 1];
+      console.log(currentIndex);
     }
   }
 
