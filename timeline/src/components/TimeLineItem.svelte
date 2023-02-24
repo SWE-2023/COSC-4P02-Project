@@ -22,6 +22,7 @@
 
 <style>
 	.lineItem {
+		user-select:none;
 		display: flex;
 		position: absolute;
 		left: 43px;
@@ -33,9 +34,10 @@
 	}
 
 	.date {
+		user-select:none;
 		top:-2px;
 		font-size: 13px;
-		left: 0rem;
+		left: 0.2rem;
 		opacity: 0.5;
 		filter: blur(3px);
 		

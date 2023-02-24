@@ -57,6 +57,7 @@
 		width: auto;
 		height: 3.5rem;
 		border-radius: 0.5rem 0.5rem 0 0;
+		user-select: none;
 	}
 
 	.left {

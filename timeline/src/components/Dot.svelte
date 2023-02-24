@@ -15,6 +15,7 @@
 
 <style>
 	button {
+		
 		width: 16px;
 		height: 16px;
 		background-color: var(--color-theme-1);
