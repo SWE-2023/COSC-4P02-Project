@@ -170,7 +170,7 @@
     start_date = selectedItem.start_date;
   }
 
-  let atFirst = false;
+  let atFirst = true;
   let atLast = false;
   let currentIndex = 0;
 
@@ -185,7 +185,7 @@
 
   function pageUp(){
     if(!atFirst){
-      selectedItem = timeData[currentIndex- 1];
+      selectedItem = timeData[currentIndex - 1];
       console.log(currentIndex);
     }
   }
@@ -221,7 +221,7 @@
 </svelte:head>
 
 <PageTransition>
-  <Arrow on:moveUp={updateAtFirst} on:moveUp={setComponenets} on:moveUp={updateIndex} alt={false} upFunction={pageUp} downFunction={pageDown}></Arrow>
+  <Arrow alt={false} upFunction={pageUp} downFunction={pageDown} on:moveUp={updateAtFirst} on:moveUp={setComponenets} on:moveUp={updateIndex} ></Arrow>
   <section class="layout">
     <section class="line-components">
       <div class="timeElements">
@@ -251,7 +251,7 @@
       </div>
     </section>
   </section>
-  <Arrow on:moveDown={updateAtLast} on:moveDown={setComponenets} on:moveDown={updateIndex} alt={true} upFunction={pageUp} downFunction={pageDown}></Arrow>
+  <Arrow alt={true} upFunction={pageUp} downFunction={pageDown} on:moveDown={updateAtLast} on:moveDown={setComponenets} on:moveDown={updateIndex}></Arrow>
 </PageTransition>
 
 <style>

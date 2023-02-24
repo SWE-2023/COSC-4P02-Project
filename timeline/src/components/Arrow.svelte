@@ -13,46 +13,46 @@
   const goDown= () => dispatch('moveDown');
 </script>
     
-  {#if alt}
-    <div class = "down">
-      <button class = "down-button"  on:click={goDown} on:click={downFunction}> 
-        <Fa icon={faChevronDown}  size = "2x"/>
-      </button>
-    </div>
-  {:else}
-    <div class = "up">
-      <button class = "up-button" on:click={goUp} on:click={upFunction}>
-      <Fa icon={faChevronUp} size = "2x"/>
-      </button>
-    </div>
-  {/if}
+
+{#if alt}
+  <div class = "down">
+    <button class = "down-button"  on:click={goDown} on:click={downFunction}> 
+      <Fa icon={faChevronDown}  size = "2x"/>
+    </button>
+  </div>
+{:else}
+  <div class = "up">
+    <button class = "up-button" on:click={goUp} on:click={upFunction}>
+    <Fa icon={faChevronUp} size = "2x"/>
+    </button>
+  </div>
+{/if}
   
-    
-    <style>
-    .up {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+ 
+<style>
+  .up {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .down{
-      display: flex; 
-      justify-content: center;
-      align-items: center;
-    }
+  .down{
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+  }
 
-    .up-button{
-      cursor: pointer;
-      background-color: transparent;
-      border:none;
-      padding: 0;
-      
-    }
+  .up-button{
+    cursor: pointer;
+    background-color: transparent;
+    border:none;
+    padding: 0;      
+  }
         
-    .down-button{
-      cursor: pointer;
-      background-color: transparent;
-      border:none;
-      padding: 0;
-    }
-    </style>
+  .down-button{
+    cursor: pointer;
+    background-color: transparent;
+    border:none;
+    padding: 0;
+  }
+</style>
