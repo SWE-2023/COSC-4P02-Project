@@ -221,7 +221,13 @@
 </svelte:head>
 
 <PageTransition>
-  <Arrow alt={false} upFunction={pageUp} downFunction={pageDown} on:moveUp={updateAtFirst} on:moveUp={setComponenets} on:moveUp={updateIndex} ></Arrow>
+  <Arrow 
+    alt={false} upFunction={pageUp} 
+    downFunction={pageDown} 
+    on:moveUp={updateAtFirst} 
+    on:moveUp={setComponenets} 
+    on:moveUp={updateIndex}
+  />
   <section class="layout">
     <section class="line-components">
       <div class="timeElements">
@@ -235,7 +241,8 @@
             on:change={setComponenets}
             on:change={updateAtFirst} 
             on:change={updateAtLast}
-            on:change={updateIndex}/>
+            on:change={updateIndex}
+          />
         {/each}
       </div>
     </section>
@@ -251,7 +258,14 @@
       </div>
     </section>
   </section>
-  <Arrow alt={true} upFunction={pageUp} downFunction={pageDown} on:moveDown={updateAtLast} on:moveDown={setComponenets} on:moveDown={updateIndex}></Arrow>
+  <Arrow 
+    alt={true} 
+    upFunction={pageUp} 
+    downFunction={pageDown} 
+    on:moveDown={updateAtLast} 
+    on:moveDown={setComponenets} 
+    on:moveDown={updateIndex}
+  />
 </PageTransition>
 
 <style>

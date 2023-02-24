@@ -16,7 +16,7 @@
 
 {#if alt}
   <div class = "down">
-    <button class = "down-button"  on:click={goDown} on:click={downFunction}> 
+    <button class = "down-button"  on:click={goDown} on:click={downFunction}>
       <Fa icon={faChevronDown}  size = "2x"/>
     </button>
   </div>
