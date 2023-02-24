@@ -9,15 +9,18 @@
 </script>
 
 <section class="item-components">
-
-    <div class="image">
-        <img alt="" src={image}/>
+    <div class="child-component">
+        <div class="image">
+            <img alt="" src={image}/>
+        </div>
     </div>
-    <div class="text">
-        <h1>{title}</h1>
-        <p>{start_date}</p>
-        <p>{body}</p>
-        <p>{image_credit}</p>
+    <div class="child-component">
+        <div class="text">
+            <h1>{title}</h1>
+            <p>{start_date}</p>
+            <p id="description">{body}</p>
+            <p>{image_credit}</p>
+        </div>
     </div>
 
 </section>
@@ -34,7 +37,8 @@
 	}
 
 	img {
-		width: 100%;
+		width: 120%;
+        height: 120%;
 		object-fit: cover;
 		margin: 1rem 0rem;
 		border-radius: 1rem;
@@ -44,11 +48,12 @@
     p {
         font-family: var(--font-sans);
         padding: 1em 0 1em 0;
-        font-size: 1.5rem;
+        font-size: 0.75rem;
         font-weight: 800;
         margin: 0;
         text-align: center;
         text-transform: uppercase;
+
     }
 
     .item-components {
@@ -56,10 +61,17 @@
 		flex-direction: row;
 	}
 
-    .image,.text {
-        margin: 2rem;
+    .child-component{
+        flex:2;
     }
 
+
+    #description{
+        width: 50%;
+        text-align: justify;
+        padding-left: 25%;
+    }
+    
 
 
 </style>

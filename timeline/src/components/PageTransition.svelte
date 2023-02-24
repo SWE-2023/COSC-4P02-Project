@@ -3,8 +3,14 @@
 	import { fly } from "svelte/transition";
 </script>
 
-<div
+<div class = "parent-layout"
 	in:fly={{ y: -50, duration: 300, delay: 301 }}
 	out:fly={{ y: -50, duration: 300 }}>
 	<slot />
 </div>
+
+<style>
+	.parent-layout{
+		padding-left: 20%;
+	}
+</style>

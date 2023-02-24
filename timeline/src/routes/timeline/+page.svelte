@@ -315,9 +315,9 @@
     flex-direction: row;
   }
 
-  .image,.text {
+  /* .image,.text {
     margin: 2rem;
-  }
+  } */
 
 	.line {
 		position: fixed;
@@ -332,10 +332,10 @@
 		left: -9px;
 	}
 
-	.item-components {
+	/* .item-components {
 		display: flex;
 		flex-direction: row;
-	}
+	} */
 
 	.timescale {
 		z-index: -9;
