@@ -2,6 +2,7 @@
   import { scale } from "svelte/transition";
   import PageTransition from "../../components/PageTransition.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
+  import Arrow from '../../components/Arrow.svelte'
   
   let timeData = [
 	{
@@ -169,6 +170,46 @@
     start_date = selectedItem.start_date;
   }
 
+  let atFirst = false;
+  let atLast = false;
+  let currentIndex = 0;
+
+  function updateIndex(){
+    for(let i=0; i<timeData.length; i++){
+      if(selectedItem == timeData[i]){
+        currentIndex = i;
+      }
+    }
+  }
+
+  function pageUp(){
+    if(!atFirst){
+      selectedItem = timeData[currentIndex- 1];
+    }
+  }
+
+  function pageDown(){
+    if(!atLast){
+      selectedItem = timeData[currentIndex + 1];
+    }
+  }
+
+  function updateAtFirst(){
+    if(selectedItem == timeData[0]){
+      atFirst = true;
+    }else{
+      atFirst = false;
+    }
+  }
+
+  function updateAtLast(){
+    if(selectedItem == timeData[timeData.length-1]){
+      atLast = true;
+    }else{
+      atLast = false;
+    }
+  }
+
 </script>
 
 <svelte:head>
@@ -177,6 +218,7 @@
 </svelte:head>
 
 <PageTransition>
+  <Arrow on:moveUp={updateAtFirst} on:moveUp={setComponenets} on:moveUp={updateIndex} alt={false} upFunction={pageUp} downFunction={pageDown}></Arrow>
   <section class="layout">
     <section class="line-components">
       <div class="timeElements">
@@ -187,7 +229,10 @@
             item={td}
             spacing={getSpacing(td.id)}
             bind:currentItem={selectedItem}
-            on:change={setComponenets}/>
+            on:change={setComponenets}
+            on:change={updateAtFirst} 
+            on:change={updateAtLast}
+            on:change={updateIndex}/>
         {/each}
       </div>
     </section>
@@ -203,6 +248,7 @@
       </div>
     </section>
   </section>
+  <Arrow on:moveDown={updateAtLast} on:moveDown={setComponenets} on:moveDown={updateIndex} alt={true} upFunction={pageUp} downFunction={pageDown}></Arrow>
 </PageTransition>
 
 <style>
