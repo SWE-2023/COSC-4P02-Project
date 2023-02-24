@@ -1,7 +1,6 @@
 <script>
   import { scale } from "svelte/transition";
   import PageTransition from "../../components/PageTransition.svelte";
-  import UpArrow from "../../components/upArrow.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
   import Arrow from '../../components/Arrow.svelte'
   
