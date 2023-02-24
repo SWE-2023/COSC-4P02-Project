@@ -232,7 +232,6 @@
     <section class="line-components">
       <div class="timeElements">
         <span style="height:{timelineHeight}px" class="line"/>
-	
         {#each timeData as td (td.id)}
           <TimeLineItem
             item={td}
