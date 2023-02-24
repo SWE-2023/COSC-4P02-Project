@@ -34,12 +34,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    bottom: 5rem;
   }
 
   .down{
     display: flex; 
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 10rem;
   }
 
   .up-button{
