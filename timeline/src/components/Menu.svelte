@@ -61,7 +61,7 @@
 	li a{
 		padding: 1.5em 3em;
 		margin:0;
-		color: #0d0d0d;
+		color: var(--color-text);
 		text-decoration: none;
 	}
 
