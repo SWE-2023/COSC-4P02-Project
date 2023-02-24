@@ -320,7 +320,6 @@
 		width: 4px;
 		background-color: var(--color-theme-1);
 		left: 40px;
-    padding: 1rem 0;
 	}
 
 	.line-components {
