@@ -290,6 +290,7 @@
 	}
 
 	img {
+    user-select:none;
 		width: 100%;
 		object-fit: cover;
 		margin: 1rem 0rem;
@@ -333,6 +334,7 @@
 	}
 
 	.timescale {
+    user-select:none;
 		z-index: -9;
 		opacity: 1;
 		list-style: none;
