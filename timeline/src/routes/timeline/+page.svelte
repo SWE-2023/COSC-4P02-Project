@@ -3,6 +3,8 @@
   import PageTransition from "../../components/PageTransition.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
   import Arrow from '../../components/Arrow.svelte'
+  // import ItemComponent from "../ItemComponent.svelte";
+  import ItemComponents from "./item-components.svelte";
   
   let timeData = [
 	{
@@ -257,18 +259,20 @@
         </ul>
       </div>
     </section>
-    <section class="item-components">
+    <ItemComponents/>
+    <!-- <section class="item-components">
       <div class="image">
         <img alt="" src={image}/>
       </div>
       <div class="text">
+        
         <h1>{title}</h1>
         <p>{start_date}</p>
         <p>{body}</p> 
         <p>{image_credit}</p>
       </div>
 
-    </section>
+    </section> -->
   </section>
   <Arrow 
     alt={true} 
@@ -281,30 +285,30 @@
 </PageTransition>
 
 <style>
-	h1 {
+	/* h1 {
 		font-family: var(--font-serif);
 		padding: 2em 0 0 0;
 		font-size: 3.5rem;
 		font-weight: 700;
 		margin: 0;
-	}
+	} */
 
-	img {
+	/* img {
 		width: 100%;
 		object-fit: cover;
 		margin: 1rem 0rem;
 		border-radius: 1rem;
 		box-shadow: 1rem 0rem 32px 0 #00000044;
-	}
+	} */
 
-  p {
+  /* p {
     padding: 1em 0 1em 0;
     font-size: 1.5rem;
     font-weight: 800;
     margin: 0;
     text-align: center;
     text-transform: uppercase;
-  }
+  } */
   
   .layout {
     display: flex;
