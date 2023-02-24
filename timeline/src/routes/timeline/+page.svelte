@@ -1,104 +1,142 @@
 <script>
   import { scale } from "svelte/transition";
   import PageTransition from "../../components/PageTransition.svelte";
-  import UpArrow from "../../components/upArrow.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
-  import DownArrow from "../../components/downArrow.svelte";
+  import Arrow from '../../components/Arrow.svelte'
   
+  let timeData = [
+	{
+      id: "1720",
+      creation_date:"",
+      title: "War of 1720",
+      image: "War of 1720 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1720",
+      start_date: "random date in the year 1720",
+      end_date: "random end date in the year 1720"
+    },
+    {
+      id: "1850",
+      creation_date:"",
+      title: "War of 1850",
+      image: "War of 1850 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1850",
+	    start_date: "random date in the year 1850",
+      end_date: "random end date in the year 1850"
+    },
+    {
+      id: "1854",
+      creation_date:"",
+      title: "War of 1854",
+      image: "War of 1854 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1854",
+	    start_date: "random date in the year 1854",
+      end_date: "random end date in the year 1854"
+    },
+    {
+      id: "1855",
+      creation_date:"",
+      title: "War of 1855",
+      image: "War of 1855 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1855",
+	    start_date: "random date in the year 1855",
+      end_date: "random end date in the year 1855"
+    },
+    {
+      id: "1860",
+      creation_date:"",
+      title: "War of 1860",
+      image: "War of 1860 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1860",
+	    start_date: "random date in the year 1860",
+      end_date: "random end date in the year 1860"
+    },
+    {
+      id: "1870",
+      creation_date:"",
+      title: "War of 1870",
+      image: "War of 1870 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1870",
+	    start_date: "random date in the year 1870",
+      end_date: "random end date in the year 1870"
+    },
+    {
+      id: "1872",
+      creation_date:"",
+      title: "War of 1872",
+      image: "War of 1872 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1872",
+	    start_date: "random date in the year 1872",
+      end_date: "random end date in the year 1872"
 
-	let timeData = [
-		{
-			id: "1720",
-			title: "War of 1720",
-			picture: "War of 1720 picture",
-			text: "Description about war of 1720",
-			date: "random date in the year 1720",
-		},
-		{
-			id: "1850",
-			title: "War of 1850",
-			picture: "War of 1850 picture",
-			text: "Description about war of 1850",
-			date: "random date in the year 1850",
-		},
-		{
-			id: "1854",
-			title: "War of 1854",
-			picture: "War of 1854 picture",
-			text: "Description about war of 1854",
-			date: "random date in the year 1855",
-		},
-		{
-			id: "1855",
-			title: "War of 1855",
-			picture: "War of 1855 picture",
-			text: "Description about war of 1855",
-			date: "random date in the year 1855",
-		},
-		{
-			id: "1860",
-			title: "War of 1860",
-			picture: "War of 1860 picture",
-			text: "Description about war of 1860",
-			date: "random date in the year 1860",
-		},
-		{
-			id: "1870",
-			title: "War of 1870",
-			picture: "War of 1870 picture",
-			text: "Description about war of 1870",
-			date: "random date in the year 1870",
-		},
-		{
-			id: "1872",
-			title: "War of 1872",
-			picture: "War of 1872 picture",
-			text: "Description about war of 1872",
-			date: "random date in the year 1872",
-		},
-		{
-			id: "1874",
-			title: "War of 1874",
-			picture: "War of 1874 picture",
-			text: "Description about war of 1874",
-			date: "random date in the year 1874",
-		},
-		{
-			id: "1882",
-			title: "War of 1882",
-			picture: "War of 1882 picture",
-			text: "Description about war of 1882",
-			date: "random date in the year 1882",
-		},
-		{
-			id: "1940",
-			title: "War of 1940",
-			picture: "War of 1940 picture",
-			text: "Description about war of 1940",
-			date: "random date in the year 1940",
-		},
-		{
-			id: "1946",
-			title: "War of 1946",
-			picture: "War of 1946 picture",
-			text: "Description about war of 1946",
-			date: "random date in the year 1946",
-		},
-		{
-			id: "1990",
-			title: "War of 1990",
-			picture: "War of 1990 picture",
-			text: "Description about war of 1990",
-			date: "random date in the year 1940",
-		},
-		{
-			id: "2020",
-			title: "War of 2020",
-			picture: "War of 2020 picture",
-			text: "Description about war of 2020",
-			date: "random date in the year 2020",
-		},
-	];
+    },
+    {
+      id: "1874",
+      creation_date:"",
+      title: "War of 1874",
+      image: "War of 1874 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1874",
+	    start_date: "random date in the year 1874",
+      end_date: "random end date in the year 1874"
+    },
+    {
+      id: "1882",
+      creation_date:"",
+      title: "War of 1882",
+      image: "War of 1882 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1882",
+	    start_date: "random date in the year 1882",
+      end_date: "random end date in the year 1882"
+    },
+    {
+      id: "1940",
+      creation_date:"",
+      title: "War of 1940",
+      image: "War of 1940 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1940",
+	    start_date: "random date in the year 1940",
+      end_date: "random end date in the year 1940"
+    },
+    {
+      id: "1946",
+      creation_date:"",
+      title: "War of 1946",
+      image: "War of 1946 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1946",
+	    start_date: "random date in the year 1946",
+      end_date: "random end date in the year 1946"
+    },
+    {
+      id: "1990",
+      creation_date:"",
+      title: "War of 1990",
+      image: "War of 1990 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 1990",
+	    start_date: "random date in the year 1990",
+      end_date: "random end date in the year 1990"
+    },
+	{
+      id: "2020",
+      creation_date:"",
+      title: "War of 2020",
+      image: "War of 2020 picture",
+      image_credit: "afafafafa",
+      body: "Description about war of 2020",
+      start_date: "random date in the year 2020",
+      end_date: "random end date in the year 2020"
+    },
+  ];
 
 	const gap = 20; // values lower than 10 will cause issues in a 1080p screen
 	const timelineHeight = 80; // in vh
@@ -121,17 +159,67 @@
 		const percentage = (current - top) / (bottom - top);
 		const spacing = percentage * (timelineHeight - 2);
 
-		return spacing;
-	}
+    return spacing;
+  }
+  
+  let selectedItem = timeData[0];
+  let title = timeData[0].title;
+  let image = "assets/placeholder.jpg"; //placeholder
+  let image_credit = timeData[0].image_credit;
+  let body = timeData[0].body;
+  let start_date = timeData[0].start_date;
 
-	let title;
-	let picture;
-	let text;
-	for (let i = 0; i < timeData.length; i++) {
-		title = timeData[i].title;
-		picture = timeData[i].picture;
-		text = timeData[i].text;
-	}
+  function setComponenets(){
+    title = selectedItem.title;
+    image = "assets/placeholder.jpg"; //placeholder
+    image_credit = selectedItem.image_credit;
+    body = selectedItem.body;
+    start_date = selectedItem.start_date;
+  }
+
+  let atFirst = true;
+  let atLast = false;
+  let currentIndex = 0;
+
+  function updateIndex(){
+    for(let i=0; i<timeData.length; i++){
+      if(selectedItem == timeData[i]){
+        currentIndex = i;
+        console.log("returned" + i)
+      }
+    }
+  }
+
+  function pageUp(){
+    if(!atFirst){
+      selectedItem = timeData[currentIndex - 1];
+      console.log(currentIndex);
+    }
+  }
+
+  function pageDown(){
+    if(!atLast){
+      selectedItem = timeData[currentIndex + 1];
+      console.log(currentIndex);
+    }
+  }
+
+  function updateAtFirst(){
+    if(selectedItem == timeData[0]){
+      atFirst = true;
+    }else{
+      atFirst = false;
+    }
+  }
+
+  function updateAtLast(){
+    if(selectedItem == timeData[timeData.length-1]){
+      atLast = true;
+    }else{
+      atLast = false;
+    }
+  }
+
 </script>
 
 <svelte:head>
@@ -140,6 +228,13 @@
 </svelte:head>
 
 <PageTransition>
+  <Arrow 
+    alt={false} upFunction={pageUp} 
+    downFunction={pageDown} 
+    on:moveUp={updateAtFirst} 
+    on:moveUp={setComponenets} 
+    on:moveUp={updateIndex}
+  />
   <section class="layout">
     <section class="line-components">
       <div class="timeElements">
@@ -148,13 +243,12 @@
           <TimeLineItem
             item={td}
             spacing={getSpacing(td.id)}
-            currentTitle={title}
-            currentPicture={picture}
-            currentText={text}
+            bind:currentItem={selectedItem}
+            on:change={setComponenets}
+            on:change={updateAtFirst} 
+            on:change={updateAtLast}
+            on:change={updateIndex}
           />
-          <!-- <TimeLineItem item={td} spacing={10}/>  -->
-
-          <!-- 'decade' markers -->
         {/each}
         <ul class="timescale" style="height:{timelineHeight}vh;">
           {#each decades as decade}
@@ -164,21 +258,26 @@
       </div>
     </section>
     <section class="item-components">
-
-      <UpArrow> </UpArrow>
-
-      <div class="picture">
-        <img alt="" src={picture} />
+      <div class="image">
+        <img alt="" src={image}/>
       </div>
       <div class="text">
         <h1>{title}</h1>
-        <p>{text}</p>
+        <p>{start_date}</p>
+        <p>{body}</p> 
+        <p>{image_credit}</p>
       </div>
-
-      <DownArrow></DownArrow>
 
     </section>
   </section>
+  <Arrow 
+    alt={true} 
+    upFunction={pageUp} 
+    downFunction={pageDown} 
+    on:moveDown={updateAtLast} 
+    on:moveDown={setComponenets} 
+    on:moveDown={updateIndex}
+  />
 </PageTransition>
 
 <style>
@@ -198,30 +297,30 @@
 		box-shadow: 1rem 0rem 32px 0 #00000044;
 	}
 
-	p {
-		padding: 1em 0 1em 0;
-		font-size: 1.5rem;
-		font-weight: 800;
-		margin: 0;
-		text-align: center;
-		text-transform: uppercase;
-	}
+  p {
+    padding: 1em 0 1em 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  
+  .layout {
+    display: flex;
+    flex-direction: row;
+  }
 
-	.layout {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.picture,
-	.text {
-		margin: 2rem;
-	}
+  .image,.text {
+    margin: 2rem;
+  }
 
 	.line {
 		position: fixed;
 		width: 4px;
 		background-color: var(--color-theme-1);
-		left: 41px;
+		left: 40px;
+    padding: 1rem 0;
 	}
 
 	.line-components {
@@ -230,8 +329,7 @@
 	}
 
 	.item-components {
-		display: block;
-		display: block;
+		display: flex;
 		flex-direction: row;
 	}
 
