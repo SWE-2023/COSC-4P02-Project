@@ -14,8 +14,9 @@
 
 <div class="lineItem">
 	<div style="top:{spacing}vh">
-		<Dot eventOne={setDetails} eventTwo={change} isActive={false} />
-		<div class="date">{item.id}</div>
+		<Dot eventOne={setDetails} eventTwo={change} isActive={false}>
+			<div class="date">{item.id}</div>
+		</Dot>
 	</div>
 </div>
 
@@ -32,28 +33,31 @@
 	}
 
 	.date {
-		top: -17px;
-		font-size: 10px;
-		left: 40px;
+		top:-2px;
+		font-size: 13px;
+		left: 0rem;
 		opacity: 0.5;
-		filter: blur(2px);
-		transform-origin: center left;
-		z-index: 2;
-		padding: 0 2rem 0 0;
+		filter: blur(3px);
+		
+		transform-origin: center;
+		z-index: -2;
+		padding: 0 2.5rem 0 2rem;
 		transition: all 0.15s ease-in-out;
 	}
 
 	.lineItem:hover .date {
 		cursor: pointer;
-		color: var(--color-bg-1);
-		transform: scale(1.75);
+		color: var(--color-bg-2);
+		transform: scale(1.2);
 		opacity: 1;
 		filter: blur(0px);
+		z-index: 111;
 	}
 
 	.lineItem:hover :global(button) {
 		cursor: pointer;
 		width: 5rem;
+		height:1rem;
 		transform: scale(1.2);
 	}
 
