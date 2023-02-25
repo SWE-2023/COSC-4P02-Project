@@ -170,7 +170,6 @@
 
 	function updateIndex() {
 		currentIndex = timeData.indexOf(selectedItem);
-		console.log(currentIndex);
 	}
 
 	function pageUp() {
