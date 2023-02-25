@@ -1,22 +1,34 @@
 <script>
+	import { onMount, onDestroy } from "svelte";
 	import { Hamburger } from "svelte-hamburgers";
+	import { fade } from "svelte/transition";
 	import AccessibilityMenu from "./AccessibilityMenu.svelte";
 	import Menu from "./Menu.svelte";
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
-	
-
+	let scrollY = 0;
+	let logoOpacity = 1;
 	let isTheme = true;
+
 	function handleThemeSelect(event) {
-    	isTheme = event.detail === 'darkText';
-		console.log('test');
-  }
+		isTheme = event.detail === "darkText";
+		console.log("test");
+	}
+
+	function handleScroll() {
+		scrollY = window.scrollY;
+		logoOpacity = scrollY > 42 ? 0 : 1;
+	}
+
 </script>
+
+<svelte:window on:scroll={handleScroll} />
 
 <link
 	rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,500,0,200" />
+
 
 <header>
 	<nav>
@@ -27,7 +39,14 @@
 				type="arrowalt" />
 			<Menu bind:open={isMenuOpen} />
 			<a href="/"
-				><img src={isTheme ? 'assets/notl-museum.svg' : 'assets/notl-museum-dark.svg'} alt="logo" class="logo" id="notl_logo" /></a>
+				><img
+					src={isTheme
+						? "assets/notl-museum.svg"
+						: "assets/notl-museum-dark.svg"}
+					alt="logo"
+					class="logo"
+					id="notl_logo"
+					style="opacity:{logoOpacity}"/></a>
 		</div>
 
 		<div class="right">
@@ -40,7 +59,9 @@
 						isAccessibilityOpen = !isAccessibilityOpen;
 					}
 				}}>settings</span>
-			<AccessibilityMenu bind:open={isAccessibilityOpen} on:themeSelect={handleThemeSelect}/>
+			<AccessibilityMenu
+				bind:open={isAccessibilityOpen}
+				on:themeSelect={handleThemeSelect} />
 		</div>
 	</nav>
 </header>
@@ -65,6 +86,7 @@
 		height: 3.5rem;
 		border-radius: 0.5rem 0.5rem 0 0;
 		user-select: none;
+		transition: opacity 0.33s ease-in-out;
 	}
 
 	.left {
@@ -80,7 +102,7 @@
 	}
 
 	.accessibility {
-		padding:1rem 1rem 1rem 1rem;
+		padding: 1rem 1rem 1rem 1rem;
 		user-select: none;
 		color: var(--color-theme-1);
 		transform: rotate(0);
