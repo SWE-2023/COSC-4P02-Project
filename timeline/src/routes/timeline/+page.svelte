@@ -169,25 +169,25 @@
 	let currentIndex = 0;
 
 	function updateIndex() {
-		for (let i = 0; i < timeData.length; i++) {
-			if (selectedItem == timeData[i]) {
-				currentIndex = i;
-				console.log("returned" + i);
-			}
-		}
+		currentIndex = timeData.indexOf(selectedItem);
 	}
 
 	function pageUp() {
 		if (!atFirst) {
 			selectedItem = timeData[currentIndex - 1];
-			console.log(currentIndex);
+			setComponenets();
+			updateIndex();
+			updateAtLast();
+			updateAtFirst();
 		}
 	}
-
 	function pageDown() {
 		if (!atLast) {
 			selectedItem = timeData[currentIndex + 1];
-			console.log(currentIndex);
+			setComponenets();
+			updateIndex();
+			updateAtFirst();
+			updateAtLast();
 		}
 	}
 
@@ -232,12 +232,9 @@
 </svelte:head>
 
 <Arrow
-	alt={false}
-	upFunction={pageUp}
-	downFunction={pageDown}
-	on:moveUp={updateAtFirst}
-	on:moveUp={setComponenets}
-	on:moveUp={updateIndex} />
+		alt={false}
+		on:moveUp={pageUp}
+	/>
 <section class={timelineContainerClass}>
 	<span style="height:{timelineHeight}vh" class="line" />
 	<section class="line-components">
@@ -248,9 +245,9 @@
 					spacing={getSpacing(td.id)}
 					bind:currentItem={selectedItem}
 					on:change={setComponenets}
+					on:change={updateIndex} 
 					on:change={updateAtFirst}
-					on:change={updateAtLast}
-					on:change={updateIndex} />
+					on:change={updateAtLast}/>
 			{/each}
 			<ul class="timescale" style="height:{timelineHeight}vh;">
 				{#each decades as decade}
@@ -265,15 +262,13 @@
 			image={currentImage}
 			image_credit={currentImage_credit}
 			body={currentBody}
-			start_date={currentStart_date} />
+			start_date={currentStart_date} 
+			/>
 	</section>
 	<Arrow
 		alt={true}
-		upFunction={pageUp}
-		downFunction={pageDown}
-		on:moveDown={updateAtLast}
-		on:moveDown={setComponenets}
-		on:moveDown={updateIndex} />
+		on:moveDown={pageDown}
+	/>
 </section>
 
 <style>
