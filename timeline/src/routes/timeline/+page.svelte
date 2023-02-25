@@ -1,7 +1,7 @@
 <script>
 	import { afterUpdate } from "svelte";
 	import { onMount } from "svelte";
-	import TimeLineItem from "../../components/TimeLineItem.svelte";
+	import TimelineBar from "../../components/TimelineBar.svelte";
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
 
@@ -16,9 +16,9 @@
 			start_date: "March 15, 1720",
 		},
 		{
-			id: "1850",
+			id: "1750",
 			creation_date: "",
-			title: "The Great War of 1850",
+			title: "The Great War of 1750",
 			image: "War of 1850 picture",
 			image_credit: "https://placeholder.com/",
 			body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec convallis, nisl ut maximus faucibus, nisi mi luctus mauris, ac auctor elit elit eu tortor. Sed aliquam sapien sed eros finibus feugiat. Sed elementum magna quis tortor tristique, at congue libero hendrerit. Duis rutrum ipsum eu enim ullamcorper, nec mattis orci efficitur. Nullam quis urna vel eros pretium suscipit. Sed viverra, nisi vel rutrum finibus, orci urna ullamcorper elit, non bibendum dolor elit euismod lacus. Praesent eget felis dui. Suspendisse ut nisl in nisi ornare vulputate. Praesent vel ipsum euismod, molestie quam a, auctor turpis.",
@@ -231,23 +231,20 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<Arrow
-		alt={false}
-		on:moveUp={pageUp}
-	/>
+<Arrow alt={false} on:moveUp={pageUp} />
 <section class={timelineContainerClass}>
 	<span style="height:{timelineHeight}vh" class="line" />
 	<section class="line-components">
 		<div class="timeElements">
 			{#each timeData as td (td.id)}
-				<TimeLineItem
+				<TimelineBar
 					item={td}
 					spacing={getSpacing(td.id)}
 					bind:currentItem={selectedItem}
 					on:change={setComponenets}
-					on:change={updateIndex} 
+					on:change={updateIndex}
 					on:change={updateAtFirst}
-					on:change={updateAtLast}/>
+					on:change={updateAtLast} />
 			{/each}
 			<ul class="timescale" style="height:{timelineHeight}vh;">
 				{#each decades as decade}
@@ -262,13 +259,9 @@
 			image={currentImage}
 			image_credit={currentImage_credit}
 			body={currentBody}
-			start_date={currentStart_date} 
-			/>
+			start_date={currentStart_date} />
 	</section>
-	<Arrow
-		alt={true}
-		on:moveDown={pageDown}
-	/>
+	<Arrow alt={true} on:moveDown={pageDown} />
 </section>
 
 <style>
