@@ -169,25 +169,27 @@
 	let currentIndex = 0;
 
 	function updateIndex() {
-		for (let i = 0; i < timeData.length; i++) {
-			if (selectedItem == timeData[i]) {
-				currentIndex = i;
-				console.log("returned" + i);
-			}
-		}
+		currentIndex = timeData.indexOf(selectedItem);
+		console.log(currentIndex);
 	}
 
 	function pageUp() {
 		if (!atFirst) {
 			selectedItem = timeData[currentIndex - 1];
-			console.log(currentIndex);
+			setComponenets();
+			updateIndex();
+			updateAtLast();
+			updateAtFirst();
 		}
 	}
 
 	function pageDown() {
 		if (!atLast) {
 			selectedItem = timeData[currentIndex + 1];
-			console.log(currentIndex);
+			setComponenets();
+			updateIndex();
+			updateAtFirst();
+			updateAtLast();
 		}
 	}
 
@@ -216,11 +218,8 @@
 <PageTransition>
 	<Arrow
 		alt={false}
-		upFunction={pageUp}
-		downFunction={pageDown}
-		on:moveUp={updateAtFirst}
-		on:moveUp={setComponenets}
-		on:moveUp={updateIndex} />
+		on:moveUp={pageUp}
+	/>
 		<span style="height:{timelineHeight}vh" class="line" />
 		<section class="line-components">
 			<div class="timeElements">
@@ -230,9 +229,10 @@
 				spacing={getSpacing(td.id)}
 				bind:currentItem={selectedItem}
 				on:change={setComponenets}
+				on:change={updateIndex}
 				on:change={updateAtFirst}
 				on:change={updateAtLast}
-				on:change={updateIndex} />
+				/>
 				{/each}
 				<ul class="timescale" style="height:{timelineHeight}vh;">
 					{#each decades as decade}
@@ -247,15 +247,13 @@
 				image={currentImage}
 				image_credit={currentImage_credit}
 				body={currentBody}
-				start_date={currentStart_date} />
+				start_date={currentStart_date} 
+			/>
 		</section>
-		<Arrow
+	<Arrow
 		alt={true}
-		upFunction={pageUp}
-		downFunction={pageDown}
-		on:moveDown={updateAtLast}
-		on:moveDown={setComponenets}
-		on:moveDown={updateIndex} />
+		on:moveDown={pageDown}
+	/>
 </PageTransition>
 
 <style>
