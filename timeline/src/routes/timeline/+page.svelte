@@ -231,15 +231,14 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<!-- <PageTransition> -->
-	<Arrow
+<Arrow
 	alt={false}
 	upFunction={pageUp}
 	downFunction={pageDown}
 	on:moveUp={updateAtFirst}
 	on:moveUp={setComponenets}
 	on:moveUp={updateIndex} />
-	<section class={timelineContainerClass}>
+<section class={timelineContainerClass}>
 	<span style="height:{timelineHeight}vh" class="line" />
 	<section class="line-components">
 		<div class="timeElements">
@@ -277,7 +276,6 @@
 		on:moveDown={updateIndex} />
 </section>
 
-<!-- </PageTransition> -->
 <style>
 	.layout {
 		min-height: 72vh;
