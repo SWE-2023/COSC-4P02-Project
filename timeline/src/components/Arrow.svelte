@@ -16,13 +16,13 @@
 {#if alt}
 	<div class="down">
 		<button class="down-button" on:click={goDown} on:click={downFunction}>
-			<Fa icon={faChevronDown} size="2x" />
+			<Fa icon={faChevronDown} size="2x" color=var(--color-text) />
 		</button>
 	</div>
 {:else}
 	<div class="up">
 		<button class="up-button" on:click={goUp} on:click={upFunction}>
-			<Fa icon={faChevronUp} size="2x" />
+			<Fa icon={faChevronUp} size="2x" color=var(--color-text) />
 		</button>
 	</div>
 {/if}
@@ -33,7 +33,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		top: 2rem;
-    z-index:9999;
+		z-index: 9999;
 	}
 
 	.down {
@@ -41,7 +41,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		bottom: 2rem;
-    z-index:9999;
+		z-index: 9999;
 	}
 
 	.up-button {
