@@ -1,73 +1,109 @@
 <script>
-    export let title;
-    export let image;
-    export let image_credit;
-    export let body;
-    export let start_date;
+	export let title;
+	export let image;
+	export let image_credit;
+	export let body;
+	export let start_date;
 </script>
 
 <section class="item-components">
-    <div class="child-component">
-        <div class="image">
-            <img alt="" src={image}/>
-        </div>
-    </div>
-    <div class="child-component">
-        <div class="text">
-            <h1>{title}</h1>
-            <p>{start_date}</p>
-            <p id="description">{body}</p>
-            <p>{image_credit}</p>
-        </div>
-    </div>
-
+	<div class="child-component">
+		<div class="image">
+			<img alt={image_credit} src={image} />
+		</div>
+	</div>
+	<div class="child-component">
+		<div class="text">
+			<h1 class="title">{title}</h1>
+			<p class="date">{start_date}</p>
+			<p class="description">{body}</p>
+			<p class="image_cred">{image_credit}</p>
+		</div>
+	</div>
 </section>
 
 <style>
-    h1 {
+	h1 {
 		font-family: var(--font-serif);
-		font-size: 3.5rem;
+		font-size: 2.5rem;
 		font-weight: 700;
 		margin: 0;
 	}
-   
-    .image,.text {
-        margin: 2rem;
-    }
 
-	img {
-		width: 120%;
-        height: 120%;
+	p {
+		font-family: var(--font-sans);
+		padding: 1em 0 1em 0;
+		font-size: 1rem;
+		margin: 0;
+		text-align: center;
+	}
+
+	.title {
+		text-align: center;
+	}
+
+	.date {
+		text-align: center;
+		font-size: 1.2rem;
+		font-weight: 400;
+	}
+
+	.image_cred {
+		text-align: left;
+		font-size: 1rem;
+		font-weight: 400;
+	}
+
+	.image {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.image img {
+		width: 100%;
+		height: 100%;
 		object-fit: cover;
-		margin: 1rem 0rem;
 		border-radius: 1rem;
 		box-shadow: 1rem 0rem 32px 0 #00000044;
 	}
 
-    p {
-        font-family: var(--font-sans);
-        padding: 1em 0 1em 0;
-        font-size: 0.75rem;
-        font-weight: 800;
-        margin: 0;
-        text-align: center;
-        text-transform: uppercase;
-    }
-
-    .item-components {
+	.item-components {
 		display: flex;
 		flex-direction: row;
+		justify-content: space-between;
+		transition: all 0.5s ease-in-out;
 	}
 
-    .child-component{
-        flex:2;
-        padding: 0 0 5em 5em;
-    }
-    
-    #description{
-        width: 50%;
-        text-align: justify;
-        padding-left: 25%;
-    }
-    
+	.child-component {
+		flex: 2;
+		padding: 0 1rem;
+	}
+
+	/* get 2nd child of item-components */
+	.item-components > :nth-child(2) {
+		flex: 1;
+	}
+
+	.description {
+		max-width: 100%;
+		text-align: justify;
+	}
+
+	@media (max-width: 1500px) {
+		.item-components {
+			flex-direction: column;
+		}
+		.child-component {
+			flex: 1;
+			padding: 0 0 5em 0;
+		}
+		.description {
+			width: 100%;
+			text-align: justify;
+			padding-left: 0;
+		}
+	}
 </style>

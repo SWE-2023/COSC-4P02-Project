@@ -71,7 +71,7 @@
 
 	li a {
 		padding: 1.5em 3em;
-		margin:0;
+		margin: 0;
 		color: var(--color-text);
 		text-decoration: none;
 	}
