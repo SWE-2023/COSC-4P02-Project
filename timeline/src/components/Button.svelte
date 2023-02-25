@@ -50,7 +50,7 @@
 	}
 	.button,
 	.alt-button {
-		user-select:none;
+		user-select: none;
 		border-radius: 0.5rem 0.5rem;
 		padding: 1.2em 2em;
 		cursor: pointer;

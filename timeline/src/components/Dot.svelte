@@ -1,6 +1,6 @@
 <script>
 	export let eventOne;
-    export let eventTwo;
+   export let eventTwo;
 	export let isActive = false;
    
 	function handleClick() {
@@ -15,7 +15,6 @@
 
 <style>
 	button {
-		
 		width: 16px;
 		height: 16px;
 		background-color: var(--color-theme-1);

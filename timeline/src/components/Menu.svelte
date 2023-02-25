@@ -41,7 +41,7 @@
 		z-index: 1;
 		position: fixed;
 		top: 5rem;
-		left: -1px;
+		left: -2px;
 		font-size: 1.15em;
 		letter-spacing: 0.1em;
 		width: 16rem;

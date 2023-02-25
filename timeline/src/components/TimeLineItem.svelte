@@ -34,6 +34,7 @@
 	}
 
 	.date {
+		color:var(--color-text);
 		user-select:none;
 		top:-2px;
 		font-size: 13px;
@@ -49,7 +50,7 @@
 
 	.lineItem:hover .date {
 		cursor: pointer;
-		color: var(--color-bg-2);
+		color: #e0dbd4;
 		transform: scale(1.2);
 		opacity: 1;
 		filter: blur(0px);
