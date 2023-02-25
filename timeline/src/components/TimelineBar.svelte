@@ -9,17 +9,16 @@
 	let timeData = timeDataTemp;
 
 	const timelineHeight = 80; // in vh
-	const gap = 20; // values lower than 10 will cause issues
-	const decades = [];
-	const lowest = Math.floor(parseInt(timeData[0].id) / gap) * gap; // round down to nearest 20 year
-	const highest =
-		Math.ceil(parseInt(timeData[timeData.length - 1].id) / gap) * gap; // round up to nearest 20 year
+	let scale = 20; // values lower than 10 will cause issues
+	let decades = [];
+	let lowest = Math.floor(parseInt(timeData[0].id) / scale) * scale; // round down to nearest 20 year
+	let highest =
+		Math.ceil(parseInt(timeData[timeData.length - 1].id) / scale) * scale; // round up to nearest 20 year
 
-	for (let i = lowest; i <= highest; i += gap) {
+	for (let i = lowest; i <= highest; i += scale) {
 		decades.push(i);
 	}
 
-	// reworked spacing function
 	function getSpacing(key) {
 		const top = lowest;
 		const bottom = highest;
@@ -36,7 +35,24 @@
 	function setDetails() {
 		currentItem = item;
 	}
+
+	function updateGap() {
+		const screenHeight = window.innerHeight;
+		const scale = Math.max(
+			20,
+			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
+		);
+		lowest = Math.floor(parseInt(timeData[0].id) / scale) * scale;
+		highest =
+			Math.ceil(parseInt(timeData[timeData.length - 1].id) / scale) * scale;
+		decades = [];
+		for (let i = lowest; i <= highest; i += scale) {
+			decades.push(i);
+		}
+	}
 </script>
+
+<svelte:window on:resize={updateGap} />
 
 <span style="height:{timelineHeight}vh" class="line" />
 <div class="line-components">
