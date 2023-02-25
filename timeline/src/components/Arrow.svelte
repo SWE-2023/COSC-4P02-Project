@@ -3,11 +3,7 @@
 	import Fa from "svelte-fa/src/fa.svelte";
 	import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 	import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
 	export let alt = false;
-	export let upFunction;
-	export let downFunction;
-
 	const dispatch = createEventDispatcher();
 	const goUp = () => dispatch("moveUp");
 	const goDown = () => dispatch("moveDown");
@@ -15,7 +11,7 @@
 
 {#if alt}
 	<div class="down">
-		<button class="button" on:click={goDown} on:click={downFunction}>
+		<button class="button"  on:click={goDown}>
 			<div class="circle">
 				<span class=icon><Fa icon={faChevronDown} size="2x" color="var(--color-text)" /></span>
 				</div>
@@ -23,7 +19,7 @@
 	</div>
 {:else}
 	<div class="up">
-		<button class="button" on:click={goUp} on:click={upFunction}>
+		<button class="button"  on:click={goUp}>
 			<div class="circle">
 			<span class=icon><Fa icon={faChevronUp} size="2x" color="var(--color-text)" /></span>
 			</div>
