@@ -28,32 +28,23 @@
 		font-size: 2.5rem;
 		font-weight: 700;
 		margin: 0;
-		
-		
-
 	}
 
 	p {
 		font-family: var(--font-sans);
 		padding: 1em 0 1em 0;
 		font-size: 1rem;
-		margin: 0;
-		text-align: center;
-		
-
+		margin: 0.5rem;
 	}
 
 	.title {
 		text-align: center;
-		
-	
 	}
 
 	.date {
 		text-align: center;
 		font-size: 1.2rem;
 		font-weight: 400;
-		
 	}
 
 	.image_cred {
@@ -63,12 +54,12 @@
 	}
 
 	.image {
+		cursor:pointer;
 		width: 100%;
 		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		
 	}
 
 	.image img {
@@ -84,36 +75,15 @@
 		flex-direction: row;
 		justify-content: space-between;
 		transition: all 0.5s ease-in-out;
-		animation: fadeInAnimation ease 3s;
-            animation-iteration-count: 1;
-            animation-fill-mode: forwards;
-        }
-        @keyframes fadeInAnimation {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-		
-
-		
 	}
 
 	.child-component {
 		flex: 2;
 		padding: 0 1rem;
-		
-		
-
 	}
 
-	/* get 2nd child of item-components */
 	.item-components > :nth-child(2) {
 		flex: 1;
-		
-		
-
 	}
 
 	.description {
@@ -127,7 +97,7 @@
 		}
 		.child-component {
 			flex: 1;
-			padding: 0 0 5em 0;
+			padding: 0 0 2em 0;
 		}
 		.description {
 			width: 100%;
