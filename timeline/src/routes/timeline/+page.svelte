@@ -3,6 +3,7 @@
   import PageTransition from "../../components/PageTransition.svelte";
   import TimeLineItem from "../../components/TimeLineItem.svelte";
   import Arrow from '../../components/Arrow.svelte'
+  import ItemComponents from "../../components/ItemComponents.svelte";
   
   let timeData = [
 	{
@@ -163,18 +164,18 @@
   }
   
   let selectedItem = timeData[0];
-  let title = timeData[0].title;
-  let image = "assets/placeholder.jpg"; //placeholder
-  let image_credit = timeData[0].image_credit;
-  let body = timeData[0].body;
-  let start_date = timeData[0].start_date;
+  let currentTitle = timeData[0].title;
+  let currentImage = "assets/placeholder.jpg"; //placeholder
+  let currentImage_credit = timeData[0].image_credit;
+  let currentBody = timeData[0].body;
+  let currentStart_date = timeData[0].start_date;
 
   function setComponenets(){
-    title = selectedItem.title;
-    image = "assets/placeholder.jpg"; //placeholder
-    image_credit = selectedItem.image_credit;
-    body = selectedItem.body;
-    start_date = selectedItem.start_date;
+    currentTitle = selectedItem.title;
+    currentImage = "assets/placeholder.jpg"; //placeholder
+    currentImage_credit = selectedItem.image_credit;
+    currentBody = selectedItem.body;
+    currentStart_date = selectedItem.start_date;
   }
 
   let atFirst = true;
@@ -257,18 +258,13 @@
         </ul>
       </div>
     </section>
-    <section class="item-components">
-      <div class="image">
-        <img alt="" src={image}/>
-      </div>
-      <div class="text">
-        <h1>{title}</h1>
-        <p>{start_date}</p>
-        <p>{body}</p> 
-        <p>{image_credit}</p>
-      </div>
-
-    </section>
+    <ItemComponents
+      title={currentTitle} 
+      image={currentImage} 
+      image_credit={currentImage_credit}
+      body={currentBody}
+      start_date={currentStart_date}
+    />
   </section>
   <Arrow 
     alt={true} 
@@ -281,39 +277,9 @@
 </PageTransition>
 
 <style>
-	h1 {
-		font-family: var(--font-serif);
-		padding: 2em 0 0 0;
-		font-size: 3.5rem;
-		font-weight: 700;
-		margin: 0;
-	}
-
-	img {
-    user-select:none;
-		width: 100%;
-		object-fit: cover;
-		margin: 1rem 0rem;
-		border-radius: 1rem;
-		box-shadow: 1rem 0rem 32px 0 #00000044;
-	}
-
-  p {
-    padding: 1em 0 1em 0;
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: 0;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  
   .layout {
     display: flex;
     flex-direction: row;
-  }
-
-  .image,.text {
-    margin: 2rem;
   }
 
 	.line {
@@ -326,11 +292,6 @@
 	.line-components {
 		position: fixed;
 		left: -9px;
-	}
-
-	.item-components {
-		display: flex;
-		flex-direction: row;
 	}
 
 	.timescale {
