@@ -9,14 +9,14 @@
 
 	let selectedItem = timeData[0];
 	let currentTitle = timeData[0].title;
-	let currentImage = "assets/placeholder.jpg";
+	let currentImage = timeData[0].image;
 	let currentImage_credit = timeData[0].image_credit;
 	let currentBody = timeData[0].body;
 	let currentStart_date = timeData[0].start_date;
 
 	function setComponents() {
 		currentTitle = selectedItem.title;
-		currentImage = "assets/placeholder.jpg";
+		currentImage = selectedItem.image;
 		currentImage_credit = selectedItem.image_credit;
 		currentBody = selectedItem.body;
 		currentStart_date = selectedItem.start_date;
@@ -98,7 +98,8 @@
 		on:change={setComponents}
 		on:change={updateIndex}
 		on:change={updateAtFirst}
-		on:change={updateAtLast} />
+		on:change={updateAtLast} 
+		/>
 
 	<section class="layout">
 		<ItemComponents
