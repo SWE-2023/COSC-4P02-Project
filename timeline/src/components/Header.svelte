@@ -20,7 +20,6 @@
 		scrollY = window.scrollY;
 		logoOpacity = scrollY > 42 ? 0 : 1;
 	}
-
 </script>
 
 <svelte:window on:scroll={handleScroll} />
@@ -28,7 +27,6 @@
 <link
 	rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,500,0,200" />
-
 
 <header>
 	<nav>
@@ -46,7 +44,7 @@
 					alt="logo"
 					class="logo"
 					id="notl_logo"
-					style="opacity:{logoOpacity}"/></a>
+					style="opacity:{logoOpacity}" /></a>
 		</div>
 
 		<div class="right">
