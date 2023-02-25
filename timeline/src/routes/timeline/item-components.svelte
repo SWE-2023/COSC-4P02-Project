@@ -30,7 +30,6 @@
 
     h1 {
 		font-family: var(--font-serif);
-		padding: 2em 0 0 0;
 		font-size: 3.5rem;
 		font-weight: 700;
 		margin: 0;
@@ -63,6 +62,7 @@
 
     .child-component{
         flex:2;
+        padding: 0 0 5em 5em;
     }
 
 
