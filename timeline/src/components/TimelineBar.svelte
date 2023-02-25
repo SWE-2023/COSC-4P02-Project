@@ -1,9 +1,35 @@
 <script>
 	import { createEventDispatcher } from "svelte";
+	import { timeDataTemp } from "../lib/timeDataTemp.js";
 	import Dot from "./Dot.svelte";
+
 	export let item;
-	export let spacing;
 	export let currentItem;
+
+	let timeData = timeDataTemp;
+
+	const timelineHeight = 80; // in vh
+	const gap = 20; // values lower than 10 will cause issues
+	const decades = [];
+	const lowest = Math.floor(parseInt(timeData[0].id) / gap) * gap; // round down to nearest 20 year
+	const highest =
+		Math.ceil(parseInt(timeData[timeData.length - 1].id) / gap) * gap; // round up to nearest 20 year
+
+	for (let i = lowest; i <= highest; i += gap) {
+		decades.push(i);
+	}
+
+	// reworked spacing function
+	function getSpacing(key) {
+		const top = lowest;
+		const bottom = highest;
+		const current = parseInt(key);
+
+		const percentage = (current - top) / (bottom - top);
+		const spacing = percentage * (timelineHeight - 2);
+
+		return spacing;
+	}
 
 	const dispatch = createEventDispatcher();
 	const change = () => dispatch("change");
@@ -12,15 +38,85 @@
 	}
 </script>
 
-<div class="lineItem">
-	<div style="top:{spacing}vh">
-		<Dot eventOne={setDetails} eventTwo={change} isActive={false}>
-			<div class="date">{item.id}</div>
-		</Dot>
-	</div>
+<span style="height:{timelineHeight}vh" class="line" />
+<div class="line-components">
+	{#each timeData as td (td.id)}
+		<div class="lineItem">
+			<div style="top:{getSpacing(td.id)}vh">
+				<Dot
+					eventOne={() => setDetails()}
+					eventTwo={() => change()}
+					isActive={false}>
+					<div class="date">{td.id}</div>
+				</Dot>
+			</div>
+		</div>
+	{/each}
+	<ul class="timescale" style="height:{timelineHeight}vh;">
+		{#each decades as decade}
+			<li>{decade}</li>
+		{/each}
+	</ul>
 </div>
 
 <style>
+	.line {
+		position: fixed;
+		width: 4px;
+		background-color: var(--color-theme-1);
+		left: 40px;
+		transition: left 0.5s ease-in-out;
+	}
+
+	@media (max-width: 1000px) {
+		.line {
+			left: -2px;
+		}
+	}
+
+	.line-components {
+		position: fixed;
+		left: 34px;
+		transition: left 0.5s ease-in-out;
+	}
+
+	@media (max-width: 1000px) {
+		.line-components {
+			left: -9px;
+		}
+	}
+
+	.timescale {
+		user-select: none;
+		z-index: -9;
+		opacity: 1;
+		list-style: none;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		position: absolute;
+		left: 2.5rem;
+		padding: 0;
+		transition: left 0.5s ease-in-out;
+	}
+
+	@media (max-width: 1000px) {
+		.timescale {
+			left: 1.5rem;
+		}
+	}
+
+	li {
+		opacity: 0.8;
+		transition: color 0.5s ease;
+		cursor: default;
+	}
+
+	li:hover {
+		opacity: 0.9;
+	}
+
 	.lineItem {
 		user-select: none;
 		display: flex;
@@ -44,7 +140,8 @@
 		transform-origin: center;
 		z-index: -2;
 		padding: 0 2.5rem 0 2rem;
-		transition: all 0.15s ease-in-out;
+		transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out,
+			color 0.15s ease-in-out, padding 0.5s ease-in-out;
 	}
 
 	@media (max-width: 1000px) {

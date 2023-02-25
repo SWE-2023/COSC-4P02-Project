@@ -4,15 +4,15 @@
 	export let isActive = false;
 
 	function handleClick() {
-		isActive = !isActive;
-	}
+    isActive = !isActive;
+    eventOne();
+    eventTwo();
+  }
 </script>
 
 <button
 	class="dot"
 	on:click={handleClick}
-	on:click={eventOne}
-	on:click={eventTwo}
 	class:active={isActive}>
 	<slot />
 </button>
