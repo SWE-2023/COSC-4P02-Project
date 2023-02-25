@@ -1,6 +1,6 @@
 <script>
-	import { scale } from "svelte/transition";
-	import PageTransition from "../../components/PageTransition.svelte";
+	import { afterUpdate } from "svelte";
+	import { onMount } from "svelte";
 	import TimeLineItem from "../../components/TimeLineItem.svelte";
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
@@ -125,8 +125,6 @@
 		},
 	];
 
-	
-
 	const gap = 20; // values lower than 10 will cause issues in a 1080p screen
 	const timelineHeight = 80; // in vh
 
@@ -209,6 +207,23 @@
 		}
 	}
 
+	let isInitialLoad = true;
+
+	const addFadeInClass = () => {
+		if (isInitialLoad) {
+			isInitialLoad = false;
+			setTimeout(() => {
+				timelineContainerClass += " fade-in";
+			}, 300);
+		}
+	};
+
+	let timelineContainerClass = "timeline-container";
+	$: addFadeInClass();
+
+	afterUpdate(() => {
+		addFadeInClass();
+	});
 </script>
 
 <svelte:head>
@@ -216,59 +231,59 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<PageTransition>
+<!-- <PageTransition> -->
 	<Arrow
-		alt={false}
-		upFunction={pageUp}
-		downFunction={pageDown}
-		on:moveUp={updateAtFirst}
-		on:moveUp={setComponenets}
-		on:moveUp={updateIndex} />
-		<span style="height:{timelineHeight}vh" class="line" />
-		<section class="line-components">
-			<div class="timeElements">
-				{#each timeData as td (td.id)}
+	alt={false}
+	upFunction={pageUp}
+	downFunction={pageDown}
+	on:moveUp={updateAtFirst}
+	on:moveUp={setComponenets}
+	on:moveUp={updateIndex} />
+	<section class={timelineContainerClass}>
+	<span style="height:{timelineHeight}vh" class="line" />
+	<section class="line-components">
+		<div class="timeElements">
+			{#each timeData as td (td.id)}
 				<TimeLineItem
-				item={td}
-				spacing={getSpacing(td.id)}
-				bind:currentItem={selectedItem}
-				on:change={setComponenets}
-				on:change={updateAtFirst}
-				on:change={updateAtLast}
-				on:change={updateIndex} />
-				{/each}
-				<ul class="timescale" style="height:{timelineHeight}vh;">
-					{#each decades as decade}
+					item={td}
+					spacing={getSpacing(td.id)}
+					bind:currentItem={selectedItem}
+					on:change={setComponenets}
+					on:change={updateAtFirst}
+					on:change={updateAtLast}
+					on:change={updateIndex} />
+			{/each}
+			<ul class="timescale" style="height:{timelineHeight}vh;">
+				{#each decades as decade}
 					<li>{decade}</li>
-					{/each}
-				</ul>
-			</div>
-		</section>
-		<section class="layout">
-			<ItemComponents
-				title={currentTitle}
-				image={currentImage}
-				image_credit={currentImage_credit}
-				body={currentBody}
-				start_date={currentStart_date} />
-		</section>
-		<Arrow
+				{/each}
+			</ul>
+		</div>
+	</section>
+	<section class="layout">
+		<ItemComponents
+			title={currentTitle}
+			image={currentImage}
+			image_credit={currentImage_credit}
+			body={currentBody}
+			start_date={currentStart_date} />
+	</section>
+	<Arrow
 		alt={true}
 		upFunction={pageUp}
 		downFunction={pageDown}
 		on:moveDown={updateAtLast}
 		on:moveDown={setComponenets}
 		on:moveDown={updateIndex} />
-</PageTransition>
+</section>
 
+<!-- </PageTransition> -->
 <style>
 	.layout {
-  		min-height: 72vh;
+		min-height: 72vh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-    
-   
 	}
 
 	.line {
@@ -277,9 +292,6 @@
 		background-color: var(--color-theme-1);
 		left: 40px;
 		transition: left 0.5s ease-in-out;
-    
-		
-
 	}
 
 	@media (max-width: 1000px) {
@@ -329,5 +341,25 @@
 
 	li:hover {
 		opacity: 0.9;
+	}
+
+	.timeline-container {
+		opacity: 0;
+	}
+
+	.fade-in {
+		opacity: 0;
+		animation: fadeInAnimation ease-in-out 2s;
+		animation-iteration-count: 1;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes fadeInAnimation {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>
