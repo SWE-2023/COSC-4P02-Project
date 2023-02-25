@@ -11,33 +11,47 @@
 
 		if (nextTheme == "Light Mode") {
 			console.log("light");
-			root.style.setProperty("--color-theme-1", "var(--light-color-theme-1)")
-			root.style.setProperty("--color-theme-1-light", "var(--light-color-theme-1-light)")
-			root.style.setProperty("--color-theme-2", "var(--light-color-theme-2)")
-			root.style.setProperty("--color-theme-2-light", "var(--light-color-theme-2-light)")
+			root.style.setProperty("--color-theme-1", "var(--light-color-theme-1)");
+			root.style.setProperty(
+				"--color-theme-1-light",
+				"var(--light-color-theme-1-light)"
+			);
+			root.style.setProperty("--color-theme-2", "var(--light-color-theme-2)");
+			root.style.setProperty(
+				"--color-theme-2-light",
+				"var(--light-color-theme-2-light)"
+			);
 			root.style.setProperty("--color-bg-1", "var(--light-color-bg-1)");
 			root.style.setProperty("--color-bg-2", "var(--light-color-bg-2)");
-			root.style.setProperty("--background-gradient", "linear-gradient(90deg, var(--light-color-bg-1) 0%, (-light-color-bg-2) 100%)")
+			root.style.setProperty(
+				"--background-gradient",
+				"linear-gradient(90deg, var(--light-color-bg-1) 0%, (-light-color-bg-2) 100%)"
+			);
 			root.style.setProperty("--color-text", "var(--light-color-text)");
-			root.style.setProperty("--menu-border", "0px solid white")
+			root.style.setProperty("--menu-border", "0px solid white");
 			location.reload();
 			dispatcher("themeSelect", "darkText");
 			nextTheme = "Dark Mode";
-			
 		} else {
 			console.log("dark");
-			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)")
-			root.style.setProperty("--color-theme-1-light", "var(--dark-color-theme-1-light)")
-			root.style.setProperty("--color-theme-2", "var(--dark-color-theme-2)")
-			root.style.setProperty("--color-theme-2-light", "var(--dark-color-theme-2-light)")
+			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)");
+			root.style.setProperty(
+				"--color-theme-1-light",
+				"var(--dark-color-theme-1-light)"
+			);
+			root.style.setProperty("--color-theme-2", "var(--dark-color-theme-2)");
+			root.style.setProperty(
+				"--color-theme-2-light",
+				"var(--dark-color-theme-2-light)"
+			);
 			root.style.setProperty("--color-bg-1", "var(--dark-color-bg-1)");
 			root.style.setProperty("--color-bg-2", "var(--dark-color-bg-2)");
-			root.style.setProperty("--background-gradient", "var(--dark-color-bg-1)")
+			root.style.setProperty("--background-gradient", "var(--dark-color-bg-1)");
 			root.style.setProperty("--color-text", "var(--dark-color-text)");
 			root.style.setProperty("--button-color", "#ffffff");
 			root.style.setProperty("--button-hover-color", "#000000");
 			root.style.setProperty("--button-active-background", "#ffffff");
-			root.style.setProperty("--menu-border", "1px solid white")
+			root.style.setProperty("--menu-border", "1px solid white");
 			dispatcher("themeSelect", "lightText");
 			nextTheme = "Light Mode";
 		}
@@ -47,10 +61,16 @@
 		const root = document.documentElement;
 		open = false;
 		console.log("contrast");
-		root.style.setProperty("--color-theme-1", "var(--hc-color-theme-1)")
-		root.style.setProperty("--color-theme-1-light", "var(--hc-color-theme-1-light)")
-		root.style.setProperty("--color-theme-2", "var(--hc-color-theme-2)")
-		root.style.setProperty("--color-theme-2-light", "var(--hc-color-theme-2-light)")
+		root.style.setProperty("--color-theme-1", "var(--hc-color-theme-1)");
+		root.style.setProperty(
+			"--color-theme-1-light",
+			"var(--hc-color-theme-1-light)"
+		);
+		root.style.setProperty("--color-theme-2", "var(--hc-color-theme-2)");
+		root.style.setProperty(
+			"--color-theme-2-light",
+			"var(--hc-color-theme-2-light)"
+		);
 		root.style.setProperty("--color-bg-1", "var(--hc-color-bg-1)");
 		root.style.setProperty("--color-bg-2", "var(--hc-color-bg-2)");
 		root.style.setProperty("--background-gradient", "var(--hc-color-bg-1)");
@@ -65,7 +85,7 @@
 
 {#if open}
 	<div class="menu" transition:fly={{ x: 100 }}>
-		<div class=am-title>Accesibility Options</div>
+		<div class="am-title">Accesibility Options</div>
 		<ul>
 			<li transition:fly={{ x: 24, delay: 50 }}>
 				<span
