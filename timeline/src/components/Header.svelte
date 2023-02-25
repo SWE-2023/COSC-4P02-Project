@@ -5,6 +5,13 @@
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
+	
+
+	let isTheme = true;
+	function handleThemeSelect(event) {
+    	isTheme = event.detail === 'darkText';
+		console.log('test');
+  }
 </script>
 
 <link
@@ -20,7 +27,7 @@
 				type="arrowalt" />
 			<Menu bind:open={isMenuOpen} />
 			<a href="/"
-				><img src="assets/notl-museum.svg" alt="logo" class="logo" /></a>
+				><img src={isTheme ? 'assets/notl-museum.svg' : 'assets/notl-museum-dark.svg'} alt="logo" class="logo" id="notl_logo" /></a>
 		</div>
 
 		<div class="right">
@@ -33,7 +40,7 @@
 						isAccessibilityOpen = !isAccessibilityOpen;
 					}
 				}}>settings</span>
-			<AccessibilityMenu bind:open={isAccessibilityOpen} />
+			<AccessibilityMenu bind:open={isAccessibilityOpen} on:themeSelect={handleThemeSelect}/>
 		</div>
 	</nav>
 </header>
