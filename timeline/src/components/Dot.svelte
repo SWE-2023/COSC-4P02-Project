@@ -8,11 +8,6 @@
 	}
 </script>
 
-<<<<<<< HEAD
-<button on:click={handleClick} on:click={eventOne} on:click={eventTwo} class:active={isActive}></button>
-
-
-=======
 <button
 	class="dot"
 	on:click={handleClick}
@@ -21,7 +16,6 @@
 	class:active={isActive}>
 	<slot />
 </button>
->>>>>>> 5241c337a25c6d90d8a15df5d12c43cb0d1c9e36
 
 <style>
 	.dot {

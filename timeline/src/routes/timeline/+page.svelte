@@ -1,15 +1,4 @@
 <script>
-<<<<<<< HEAD
-  import { scale } from "svelte/transition";
-  import PageTransition from "../../components/PageTransition.svelte";
-  import UpArrow from "../../components/upArrow.svelte";
-  import TimeLineItem from "../../components/TimeLineItem.svelte";
-  import DownArrow from "../../components/downArrow.svelte";
-  
-
-
-  let timeData = [
-=======
 	import { scale } from "svelte/transition";
 	import PageTransition from "../../components/PageTransition.svelte";
 	import TimeLineItem from "../../components/TimeLineItem.svelte";
@@ -17,7 +6,6 @@
 	import ItemComponents from "../../components/ItemComponents.svelte";
 
 	let timeData = [
->>>>>>> 5241c337a25c6d90d8a15df5d12c43cb0d1c9e36
 		{
 			id: "1720",
 			creation_date: "",
@@ -128,19 +116,12 @@
 		},
 		{
 			id: "2020",
-<<<<<<< HEAD
-			title: "War of 2020",
-			picture: "assets/placeholder.jpg",
-			text: "Description about war of 2020",
-			date: "random date in the year 2020",
-=======
 			creation_date: "",
 			title: "The Cyber War of 2020",
 			image: "War of 2020 picture",
 			image_credit: "https://placeholder.com/",
 			body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec convallis, nisl ut maximus faucibus, nisi mi luctus mauris, ac auctor elit elit eu tortor. Sed aliquam sapien sed eros finibus feugiat. Sed elementum magna quis tortor tristique, at congue libero hendrerit. Duis rutrum ipsum eu enim ullamcorper, nec mattis orci efficitur. Nullam quis urna vel eros pretium suscipit. Sed viverra, nisi vel rutrum finibus, orci urna ullamcorper elit, non bibendum dolor elit euismod lacus. Praesent eget felis dui. Suspendisse ut nisl in nisi ornare vulputate. Praesent vel ipsum euismod, molestie quam a, auctor turpis.",
 			start_date: "October 22, 2020",
->>>>>>> 5241c337a25c6d90d8a15df5d12c43cb0d1c9e36
 		},
 	];
 
@@ -236,113 +217,6 @@
 </svelte:head>
 
 <PageTransition>
-<<<<<<< HEAD
-  <section class="layout">
-    <section class="line-components">
-      <div class="timeElements">
-        <span style="height:{timelineHeight}vh" class="line" />
-        {#each timeData as td (td.id)}
-          <TimeLineItem
-            item={td}
-            spacing={getSpacing(td.id)}
-
-            currentTitle={title}
-            currentPicture={picture}
-            currentText={text}
-          />
-          <!-- <TimeLineItem item={td} spacing={10}/>  -->
-
-          <!-- 'decade' markers -->
-
-
-        {/each}
-        <ul class="timescale" style="height:{timelineHeight}vh;">
-          {#each decades as decade}
-            <li>{decade}</li>
-          {/each}
-        </ul>
-      </div>
-    </section>
-    <section class="item-components">
-
-
-      <UpArrow> </UpArrow>
-
-
-      <div class="picture">
-        <img alt="" src={picture} />
-      </div>
-
-
-      <div class="text">
-        <h1>{title}</h1>
-        <p>{text}</p> 
-      </div>
-
-      <DownArrow></DownArrow>
-
-    </section>
-  </section>
-</PageTransition>
-
-<style>
-	
-
-
-	
-  h1 {
-    font-family: var(--font-serif);
-    padding: 2em 0 0 0;
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  img {
-
-    width: 100%;
-    object-fit: cover;
-    margin: 1rem 0rem;
-    border-radius: 1rem;
-	box-shadow: 1rem 0rem 32px 0 #00000044;
-
-	width: 100%;
-	object-fit: cover;
-	margin: 1rem 0rem;
-	border-radius: 1rem;
-
-  }
-
-	
-
-
-  p {
-    padding: 1em 0 1em 0;
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: 0;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  
-
-  .layout {
-    display: flex;
-    flex-direction: row;
-  }
-
-
-  .image,.text {
-    margin: 2rem;
-  }
-
-	.picture,
-	.text {
-		margin: 2rem;
-	}
-
-
-=======
 	<Arrow
 		alt={false}
 		upFunction={pageUp}
@@ -393,15 +267,19 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+    
+   
 	}
 
->>>>>>> 5241c337a25c6d90d8a15df5d12c43cb0d1c9e36
 	.line {
 		position: fixed;
 		width: 4px;
 		background-color: var(--color-theme-1);
 		left: 40px;
 		transition: left 0.5s ease-in-out;
+    
+		
+
 	}
 
 	@media (max-width: 1000px) {

@@ -28,6 +28,9 @@
 		font-size: 2.5rem;
 		font-weight: 700;
 		margin: 0;
+		
+		
+
 	}
 
 	p {
@@ -36,16 +39,21 @@
 		font-size: 1rem;
 		margin: 0;
 		text-align: center;
+		
+
 	}
 
 	.title {
 		text-align: center;
+		
+	
 	}
 
 	.date {
 		text-align: center;
 		font-size: 1.2rem;
 		font-weight: 400;
+		
 	}
 
 	.image_cred {
@@ -60,6 +68,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		
 	}
 
 	.image img {
@@ -75,16 +84,36 @@
 		flex-direction: row;
 		justify-content: space-between;
 		transition: all 0.5s ease-in-out;
+		animation: fadeInAnimation ease 3s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+        @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+		
+
+		
 	}
 
 	.child-component {
 		flex: 2;
 		padding: 0 1rem;
+		
+		
+
 	}
 
 	/* get 2nd child of item-components */
 	.item-components > :nth-child(2) {
 		flex: 1;
+		
+		
+
 	}
 
 	.description {

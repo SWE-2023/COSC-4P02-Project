@@ -1,10 +1,5 @@
 <script>
-<<<<<<< HEAD
-
-
-=======
 	import { createEventDispatcher } from "svelte";
->>>>>>> 5241c337a25c6d90d8a15df5d12c43cb0d1c9e36
 	import Dot from "./Dot.svelte";
 	export let item;
 	export let spacing;
@@ -20,17 +15,9 @@
 <div class="lineItem">
 
 	<div style="top:{spacing}vh">
-<<<<<<< HEAD
-	
-
-		<Dot onClick={setDetails} />
-		<div class="date">{item.id}</div>
-
-=======
 		<Dot eventOne={setDetails} eventTwo={change} isActive={false}>
 			<div class="date">{item.id}</div>
 		</Dot>
->>>>>>> 5241c337a25c6d90d8a15df5d12c43cb0d1c9e36
 	</div>
 </div>
 
