@@ -133,10 +133,14 @@
 <button class="NegButton" on:click={DecFontSize}>-</button>
 
 <PageTransition>
-<section in:fade>
-	<h1 id="text">Contact the Museum</h1>
-	<p id="text">Visit the <a href="https://www.notlmuseum.ca">Niagara-on-the-Lake Museum</a>.</p>
-</section>
+	<section in:fade>
+		<h1 id="text">Contact the Museum</h1>
+		<p id="text">
+			Visit the <a href="https://www.notlmuseum.ca"
+				>Niagara-on-the-Lake Museum</a
+			>.
+		</p>
+	</section>
 </PageTransition>
 
 <style>
@@ -168,3 +172,4 @@
 		left: 98%;
 	}
 </style>
+

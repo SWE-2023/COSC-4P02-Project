@@ -3,7 +3,14 @@
 	import { fade } from "svelte/transition";
 	import PageTransition from "../components/PageTransition.svelte";
 
+	import Button from "../components/Button.svelte";
+	import { fade } from "svelte/transition";
+	import PageTransition from "../components/PageTransition.svelte";
+
 	let headerText = [
+		"Explore the rich history of our town.",
+		"Discover our heritage.",
+		"Travel through time with us.",
 		"Explore the rich history of our town.",
 		"Discover our heritage.",
 		"Travel through time with us.",
@@ -176,6 +183,7 @@
 
 <svelte:head>
 	<title>Home | Niagara-on-the-Lake Timeline</title>
+	<title>Home | Niagara-on-the-Lake Timeline</title>
 	<meta name="description" content="Niagara-on-the-Lake History Timeline" />
 </svelte:head>
 
@@ -183,14 +191,18 @@
 <button class="NegButton" on:click={DecFontSize}>-</button>
 
 <PageTransition>
-<section>
-<section class="welcome" >
-	<h1 class="title" id="text">Welcome to the<br><span style="color:var(--color-theme-1)">Niagara-on-the-Lake</span> Timeline</h1>
-	
-	<!-- TODO add transitions between headers -->
-	<h1 class="subtitle" id="text" in:fade>{headerText[currentOption]}</h1>
-	
-	<p class="subtext" id="text">A digital interactive timeline of the history of the Niagara-on-the-Lake</p>
+	<section class="welcome">
+		<h1 class="title">
+			Welcome to the<br /><span style="color:var(--color-theme-1)"
+				>Niagara-on-the-Lake</span> Timeline
+		</h1>
+
+		<!-- TODO add transitions between headers -->
+		<h1 class="subtitle" in:fade>{headerText[currentOption]}</h1>
+
+		<p class="subtext">
+			A digital interactive timeline of the history of the Niagara-on-the-Lake
+		</p>
 
 		<Button href="/timeline" text="Explore the Timeline" />
 	</section>
@@ -200,9 +212,7 @@
 	.title {
 		font-family: Georgia, "Times New Roman", Times, serif;
 		padding: 2em 0 0 0;
-		text-align:start;
-		/* --titleSize: 3.5;
-		font-size: calc(var(--titleSize) * 1rem); */
+		text-align: start;
 		font-size: 3.5rem;
 		font-weight: 700;
 		margin: 0;
@@ -212,6 +222,7 @@
 		font-family: var(--font-serif);
 		padding: 1em 0 0 0;
 		text-align: start;
+		text-align: start;
 		font-size: 2.5rem;
 		font-weight: 700;
 		margin: 0;
@@ -219,6 +230,7 @@
 
 	.subtext {
 		padding: 1em 0 1em 0;
+		text-align: start;
 		text-align: start;
 		font-size: 1.5rem;
 		font-weight: 800;
