@@ -3,10 +3,6 @@
 	import { fade } from "svelte/transition";
 	import PageTransition from "../components/PageTransition.svelte";
 
-	import Button from "../components/Button.svelte";
-	import { fade } from "svelte/transition";
-	import PageTransition from "../components/PageTransition.svelte";
-
 	let headerText = [
 		"Explore the rich history of our town.",
 		"Discover our heritage.",
