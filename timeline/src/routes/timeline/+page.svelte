@@ -87,7 +87,7 @@
 		on:change={updateAtLast} />
 		{#key selectedItem.id}
 		<section class="layout">
-			<ItemTransition direction={transitionDirection}>
+			<ItemTransition direction={transitionDirection} >
 				<ItemComponents
 					title={currentTitle}
 					image={currentImage}
