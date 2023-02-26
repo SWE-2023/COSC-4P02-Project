@@ -67,4 +67,18 @@
 		margin: 0;
 		text-transform: uppercase;
 	}
+
+	@media (max-width: 768px) {
+		.title {
+			font-size: 2.5rem;
+		}
+
+		.subtitle {
+			font-size: 1.5rem;
+		}
+
+		.subtext {
+			font-size: 1rem;
+		}
+	}
 </style>
