@@ -1,11 +1,14 @@
 <script>
-	import TimelineBar from "../../components/TimelineBar.svelte";
 	import { timeDataTemp } from "../../lib/timeDataTemp.js";
+	import { slide, fade, blur, fly, scale } from "svelte/transition";
+	import ItemTransition from "../../components/ItemTransition.svelte";
+	import TimelineBar from "../../components/TimelineBar.svelte";
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
 
 	let timeData = timeDataTemp;
+	let transitionDirection;
 
 	let selectedItem = timeData[0];
 	let currentTitle = timeData[0].title;
@@ -31,6 +34,7 @@
 	}
 
 	function pageUp() {
+		transitionDirection = "up";
 		if (!atFirst) {
 			selectedItem = timeData[currentIndex - 1];
 			setComponents();
@@ -40,6 +44,7 @@
 		}
 	}
 	function pageDown() {
+		transitionDirection = "down";
 		if (!atLast) {
 			selectedItem = timeData[currentIndex + 1];
 			setComponents();
@@ -72,7 +77,7 @@
 </svelte:head>
 
 <PageTransitionFade>
-	<Arrow alt={false} on:moveUp={pageUp} />
+	<Arrow on:moveUp={pageUp} disabled={atFirst}/>
 
 	<TimelineBar
 		item={selectedItem}
@@ -81,22 +86,26 @@
 		on:change={updateIndex}
 		on:change={updateAtFirst}
 		on:change={updateAtLast} />
+		{#key selectedItem.id}
+		<section class="layout">
+			<ItemTransition direction={transitionDirection}>
+				<ItemComponents
+					title={currentTitle}
+					image={currentImage}
+					image_credit={currentImage_credit}
+					body={currentBody}
+					start_date={currentStart_date} />
+			</ItemTransition>
+		</section>
+		{/key}
 
-	<section class="layout">
-		<ItemComponents
-			title={currentTitle}
-			image={currentImage}
-			image_credit={currentImage_credit}
-			body={currentBody}
-			start_date={currentStart_date} />
-	</section>
-
-	<Arrow alt={true} on:moveDown={pageDown} />
+	<Arrow down on:moveDown={pageDown} disabled={atLast} />
 </PageTransitionFade>
 
 <style>
 	.layout {
 		min-height: 72vh;
+		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
