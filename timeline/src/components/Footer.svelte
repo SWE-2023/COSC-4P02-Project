@@ -37,4 +37,10 @@
 		align-items: flex-end;
 		padding: 0 16px;
 	}
+
+	@media (max-width: 768px) {
+		footer {
+			position:relative;
+		}
+	}
 </style>
