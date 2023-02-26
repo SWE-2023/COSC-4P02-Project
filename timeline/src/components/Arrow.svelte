@@ -3,6 +3,7 @@
 	import Fa from "svelte-fa/src/fa.svelte";
 	import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 	import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+	
 	export let down = false;
 	export let disabled = false;
 
