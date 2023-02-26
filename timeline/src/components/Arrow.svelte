@@ -3,38 +3,30 @@
 	import Fa from "svelte-fa/src/fa.svelte";
 	import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 	import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-	export let alt = false;
+	export let down = false;
+	export let disabled = false;
+
 	const dispatch = createEventDispatcher();
 	const goUp = () => dispatch("moveUp");
 	const goDown = () => dispatch("moveDown");
 </script>
 
-{#if alt}
-	<div class="down">
-		<button class="button" on:click={goDown}>
-			<div class="circle">
-				<span class="icon"
-					><Fa
-						icon={faChevronDown}
-						size="2x"
-						color="var(--color-text)" /></span>
-			</div>
-		</button>
-	</div>
-{:else}
-	<div class="up">
-		<button class="button" on:click={goUp}>
-			<div class="circle">
-				<span class="icon"
-					><Fa icon={faChevronUp} size="2x" color="var(--color-text)" /></span>
-			</div>
-		</button>
-	</div>
-{/if}
+<div class={down ? "arrow-button down" : "arrow-button up"}>
+	<button {disabled} class="button" on:click={down ? goDown : goUp}>
+		<div class="circle">
+			<span class="icon">
+				{#if down}
+					<Fa icon={faChevronDown} size="2x" color="var(--color-text)" />
+				{:else}
+					<Fa icon={faChevronUp} size="2x" color="var(--color-text)" />
+				{/if}
+			</span>
+		</div>
+	</button>
+</div>
 
 <style>
-	.up,
-	.down {
+	.arrow-button {
 		position: fixed;
 		left: 50%;
 		transform: translateX(-50%);
@@ -77,6 +69,12 @@
 	.icon {
 		position: relative;
 		top: 8px;
+	}
+
+	.button:disabled,
+	button:disabled > .circle {
+		cursor: default;
+		opacity: 0.25;
 	}
 
 	.circle:active,
