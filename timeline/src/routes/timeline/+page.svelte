@@ -79,12 +79,13 @@
 	<Arrow on:moveUp={pageUp} disabled={atFirst}/>
 
 	<TimelineBar
-		item={selectedItem}
+		timeData={timeDataTemp}
 		bind:currentItem={selectedItem}
 		on:change={setComponents}
 		on:change={updateIndex}
 		on:change={updateAtFirst}
-		on:change={updateAtLast} />
+		on:change={updateAtLast} 
+	/>
 		{#key selectedItem.id}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection} >
