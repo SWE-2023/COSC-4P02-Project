@@ -16,7 +16,7 @@ export let timeDataTemp = [
 		image: "assets/placeholder.jpg",
 		image_credit: "https://placeholder.com/",
 		body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec convallis, nisl ut maximus faucibus, nisi mi luctus mauris, ac auctor elit elit eu tortor. Sed aliquam sapien sed eros finibus feugiat. Sed elementum magna quis tortor tristique, at congue libero hendrerit. Duis rutrum ipsum eu enim ullamcorper, nec mattis orci efficitur. Nullam quis urna vel eros pretium suscipit. Sed viverra, nisi vel rutrum finibus, orci urna ullamcorper elit, non bibendum dolor elit euismod lacus. Praesent eget felis dui. Suspendisse ut nisl in nisi ornare vulputate. Praesent vel ipsum euismod, molestie quam a, auctor turpis.",
-		start_date: "September 28, 1850",
+		start_date: "September 28, 1750",
 	},
 	{
 		id: "1854",
