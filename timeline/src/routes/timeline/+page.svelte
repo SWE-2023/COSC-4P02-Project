@@ -1,6 +1,5 @@
 <script>
 	import { timeDataTemp } from "../../lib/timeDataTemp.js";
-	import { slide, fade, blur, fly, scale } from "svelte/transition";
 	import ItemTransition from "../../components/ItemTransition.svelte";
 	import TimelineBar from "../../components/TimelineBar.svelte";
 	import Arrow from "../../components/Arrow.svelte";
