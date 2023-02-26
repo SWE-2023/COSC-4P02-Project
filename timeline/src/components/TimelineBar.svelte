@@ -1,13 +1,10 @@
 <script>
 	import { createEventDispatcher } from "svelte";
-	import { timeDataTemp } from "../lib/timeDataTemp.js";
 	import Dot from "./Dot.svelte";
 
-	export let item;
+	export let timeData;
 	export let currentItem;
-
-	let timeData = timeDataTemp;
-
+	
 	const timelineHeight = 80; // in vh
 	let scale = 20; // values lower than 10 will cause issues
 	let decades = [];
@@ -32,10 +29,8 @@
 
 	const dispatch = createEventDispatcher();
 	const change = () => dispatch("change");
-	function setDetails() {
-		currentItem = item;
-	}
-
+	const setDetails = (item) => currentItem = item;
+	
 	function updateGap() {
 		const screenHeight = window.innerHeight;
 		const scale = Math.max(
@@ -60,7 +55,7 @@
 		<div class="lineItem">
 			<div style="top:{getSpacing(td.id)}vh">
 				<Dot
-					eventOne={() => setDetails()}
+					eventOne={() => setDetails(td)}
 					eventTwo={() => change()}
 					isActive={false}>
 					<div class="date">{td.id}</div>
