@@ -4,6 +4,7 @@
 	import { fade } from "svelte/transition";
 	import AccessibilityMenu from "./AccessibilityMenu.svelte";
 	import Menu from "./Menu.svelte";
+	import FontSize from './TextSizeSelector.svelte';
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
@@ -45,6 +46,10 @@
 					class="logo"
 					id="notl_logo"
 					style="opacity:{logoOpacity}" /></a>
+		</div>
+
+		<div class="sizeChange">
+			<FontSize />
 		</div>
 
 		<div class="right">
