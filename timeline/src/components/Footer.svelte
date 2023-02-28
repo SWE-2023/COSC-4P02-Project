@@ -1,7 +1,6 @@
 <script>
 	import { countStore } from "../store.js";
 	import { page } from "$app/stores";
-	import PageTransitionFly from "./PageTransitionFly.svelte";
 
 	let countValue = 0;
 	countStore.subscribe((value) => {
