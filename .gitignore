@@ -3,3 +3,5 @@
 .svelte-kit
 node_modules
 __pycache__
+# Local Netlify folder
+.netlify
