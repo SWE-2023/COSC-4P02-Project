@@ -1,14 +1,18 @@
 <script>
-	import { timeDataTemp } from "../../lib/timeDataTemp.js";
+	import { timeDataTemp } from "../../lib/timeDataTemp";
 	import ItemTransition from "../../components/ItemTransition.svelte";
 	import TimelineBar from "../../components/TimelineBar.svelte";
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
 
+	// setting up supabase
+	export let data;
+	let { timeline } = data;
+	$: ({ timeline } = data);
+
 	let timeData = timeDataTemp;
 	let transitionDirection;
-
 	let selectedItem = timeData[0];
 	let currentTitle = timeData[0].title;
 	let currentImage = timeData[0].image;
@@ -76,7 +80,7 @@
 </svelte:head>
 
 <PageTransitionFade>
-	<Arrow on:moveUp={pageUp} disabled={atFirst}/>
+	<Arrow on:moveUp={pageUp} disabled={atFirst} />
 
 	<TimelineBar
 		timeData={timeDataTemp}
@@ -84,11 +88,10 @@
 		on:change={setComponents}
 		on:change={updateIndex}
 		on:change={updateAtFirst}
-		on:change={updateAtLast} 
-	/>
-		{#key selectedItem.id}
+		on:change={updateAtLast} />
+	{#key selectedItem.id}
 		<section class="layout">
-			<ItemTransition direction={transitionDirection} >
+			<ItemTransition direction={transitionDirection}>
 				<ItemComponents
 					title={currentTitle}
 					image={currentImage}
@@ -97,7 +100,7 @@
 					start_date={currentStart_date} />
 			</ItemTransition>
 		</section>
-		{/key}
+	{/key}
 
 	<Arrow down on:moveDown={pageDown} disabled={atLast} />
 </PageTransitionFade>

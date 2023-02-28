@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Button from "../components/Button.svelte";
-	import { fade, blur, slide } from "svelte/transition";
+	import { slide } from "svelte/transition";
 	import PageTransitionFly from "../components/PageTransitionFly.svelte";
-	import PageTransitionFade from "../components/PageTransitionFade.svelte";
 
 	let headerText = [
 		"Explore the rich history of our town.",
