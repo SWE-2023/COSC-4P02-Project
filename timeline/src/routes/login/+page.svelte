@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import PageTransition from "../../components/PageTransition.svelte";
+	import PageTransition from "../../components/PageTransitionFly.svelte";
 	import Button from "../../components/Button.svelte";
 
 	let email = "";

@@ -5,15 +5,12 @@
 
 	function handleClick() {
 		isActive = !isActive;
+		eventOne();
+		eventTwo();
 	}
 </script>
 
-<button
-	class="dot"
-	on:click={handleClick}
-	on:click={eventOne}
-	on:click={eventTwo}
-	class:active={isActive}>
+<button class="dot" on:click={handleClick} class:active={isActive}>
 	<slot />
 </button>
 

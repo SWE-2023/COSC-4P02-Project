@@ -1,6 +1,6 @@
 <!-- Path: timeline\src\routes\login\login\forgot\+page.svelte -->
 <script>
-	import PageTransition from "../../../components/PageTransition.svelte";
+	import PageTransition from "../../../components/PageTransitionFly.svelte";
 	import Button from "../../../components/Button.svelte";
 
 	let email = "";

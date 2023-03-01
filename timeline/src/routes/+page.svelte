@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import Button from "../components/Button.svelte";
-	import { fade } from "svelte/transition";
-	import PageTransition from "../components/PageTransition.svelte";
+	import { slide } from "svelte/transition";
+	import PageTransitionFly from "../components/PageTransitionFly.svelte";
 
 	let headerText = [
 		"Explore the rich history of our town.",
@@ -12,7 +12,7 @@
 	let currentOption = 0;
 	setInterval(() => {
 		currentOption = (currentOption + 1) % headerText.length;
-	}, 10000);
+	}, 7500);
 </script>
 
 <svelte:head>
@@ -20,15 +20,16 @@
 	<meta name="description" content="Niagara-on-the-Lake History Timeline" />
 </svelte:head>
 
-<PageTransition>
+<PageTransitionFly>
 	<section class="welcome">
 		<h1 class="title">
 			Welcome to the<br /><span style="color:var(--color-theme-1)"
 				>Niagara-on-the-Lake</span> Timeline
 		</h1>
 
-		<!-- TODO add transitions between headers -->
-		<h1 class="subtitle" in:fade>{headerText[currentOption]}</h1>
+		{#key headerText[currentOption]}
+				<h1 class="subtitle" transition:slide>{headerText[currentOption]}</h1>
+		{/key}
 
 		<p class="subtext">
 			A digital interactive timeline of the history of the Niagara-on-the-Lake
@@ -36,7 +37,7 @@
 
 		<Button href="/timeline" text="Explore the Timeline" />
 	</section>
-</PageTransition>
+</PageTransitionFly>
 
 <style>
 	.title {
@@ -64,5 +65,19 @@
 		font-weight: 800;
 		margin: 0;
 		text-transform: uppercase;
+	}
+
+	@media (max-width: 768px) {
+		.title {
+			font-size: 2.5rem;
+		}
+
+		.subtitle {
+			font-size: 1.5rem;
+		}
+
+		.subtext {
+			font-size: 1rem;
+		}
 	}
 </style>
