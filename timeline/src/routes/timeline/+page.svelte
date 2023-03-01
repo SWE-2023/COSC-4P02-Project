@@ -4,6 +4,7 @@
 	import TimeLineItem from "../../components/TimeLineItem.svelte";
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
+    import Fullscreen from "../../components/Fullscreen.svelte";
 
 	let timeData = [
 		{
@@ -236,6 +237,7 @@
 				on:change={updateAtFirst}
 				on:change={updateAtLast}
 				on:change={updateIndex} />
+				
 				{/each}
 				<ul class="timescale" style="height:{timelineHeight}vh;">
 					{#each decades as decade}
@@ -244,14 +246,23 @@
 				</ul>
 			</div>
 		</section>
+	
 		<section class="layout">
+			
 			<ItemComponents
 				title={currentTitle}
 				image={currentImage}
 				image_credit={currentImage_credit}
 				body={currentBody}
-				start_date={currentStart_date} />
+				start_date={currentStart_date}/> 
+			
+
+			
+
+				
 		</section>
+	
+	
 		<Arrow
 		alt={true}
 		upFunction={pageUp}

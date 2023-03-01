@@ -4,12 +4,25 @@
 	export let image_credit;
 	export let body;
 	export let start_date;
+	import Fa from "svelte-fa/src/fa.svelte";
+	import { faExpand } from "@fortawesome/free-solid-svg-icons";
+	import { faCompress } from "@fortawesome/free-solid-svg-icons";
+    import Fullscreen from "svelte-fullscreen";
 </script>
 
 <section class="item-components">
 	<div class="child-component">
 		<div class="image">
-			<img alt={image_credit} src={image} />
+			
+			<Fullscreen let:onRequest let:onExit>
+				
+				<img alt={image_credit} src={image} />
+				  <button on:click={() => onRequest()}><Fa icon={faExpand} color="var(--color-text)" /></button>
+				  
+				  <button on:click={() => onExit()}><Fa icon={faCompress} color="var(--color-text)" /></button>
+				  
+				
+			  </Fullscreen>
 		</div>
 	</div>
 	<div class="child-component">
@@ -65,9 +78,11 @@
 	.image {
 		width: 100%;
 		height: 100%;
-		display: flex;
+		display:flex;
 		justify-content: center;
 		align-items: center;
+		
+		
 		
 	}
 
@@ -103,7 +118,7 @@
 	.child-component {
 		flex: 2;
 		padding: 0 1rem;
-		
+
 		
 
 	}
