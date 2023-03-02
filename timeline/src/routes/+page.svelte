@@ -40,7 +40,8 @@
 	</section>
 </PageTransitionFly>
 
-<style>
+<style lang="scss">
+
 	.title {
 		font-family: Georgia, "Times New Roman", Times, serif;
 		padding: 2em 0 0 0;
@@ -54,7 +55,7 @@
 		font-family: var(--font-serif);
 		padding: 1em 0 0 0;
 		text-align: start;
-		font-size: 2.5rem;
+		font-size:2.5rem;
 		font-weight: 700;
 		margin: 0;
 	}
