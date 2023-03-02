@@ -4,27 +4,26 @@
 	export let image_credit;
 	export let body;
 	export let start_date;
-	import Fa from "svelte-fa/src/fa.svelte";
-	import { faExpand } from "@fortawesome/free-solid-svg-icons";
-	import { faCompress } from "@fortawesome/free-solid-svg-icons";
-    import Fullscreen from "svelte-fullscreen";
+	import Fullscreen from "svelte-fullscreen";
+
+	
+	
 </script>
 
 <section class="item-components">
 	<div class="child-component">
-		<div class="image">
-			
-			<Fullscreen let:onRequest let:onExit>
+		
+		<p class = "tip"><strong>Tip:</strong> Click the picture to enter fullscreen and click again to exit.</p> 
+		<Fullscreen let:onToggle>
+				<div class="image">
+				<img alt={image_credit} src={image}  on:click={() => onToggle()}/>
 				
-				<img alt={image_credit} src={image} />
-				  <button on:click={() => onRequest()}><Fa icon={faExpand} color="var(--color-text)" /></button>
-				  
-				  <button on:click={() => onExit()}><Fa icon={faCompress} color="var(--color-text)" /></button>
-				  
-				
-			  </Fullscreen>
-		</div>
+								
+			</div>
+	</Fullscreen>
 	</div>
+
+
 	<div class="child-component">
 		<div class="text">
 			<h1 class="title">{title}</h1>
@@ -41,13 +40,22 @@
 		font-size: 2.5rem;
 		font-weight: 700;
 		margin: 0;
+		
 	}
+
 
 	p {
 		font-family: var(--font-sans);
 		padding: 1em 0 1em 0;
 		font-size: 1rem;
 		margin: 0.5rem;
+	}
+
+
+	.tip{
+		opacity:0.5;
+		text-align: center;
+		margin: 0px;
 	}
 
 	.title {
@@ -71,8 +79,11 @@
 		width: 100%;
 		height: 100%;
 		display:flex;
+		
 		justify-content: center;
 		align-items: center;
+		
+		
 	}
 
 	.image img {
@@ -88,11 +99,14 @@
 		flex-direction: row;
 		justify-content: space-between;
 		transition: all 0.5s ease-in-out;
+		
 	}
 
 	.child-component {
 		flex: 2;
 		padding: 0 1rem;
+		
+		
 	}
 
 	.item-components > :nth-child(2) {
