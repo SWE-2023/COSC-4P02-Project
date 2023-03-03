@@ -96,8 +96,7 @@
 					title={currentTitle}
 					image={currentImage}
 					image_credit={currentImage_credit}
-					body={currentBody}
-					start_date={currentStart_date} />
+					start_date={currentStart_date}><p>{currentBody}</p></ItemComponents>
 			</ItemTransition>
 		</section>
 	{/key}

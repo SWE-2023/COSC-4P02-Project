@@ -2,7 +2,6 @@
 	export let title;
 	export let image;
 	export let image_credit;
-	export let body;
 	export let start_date;
 </script>
 
@@ -16,7 +15,9 @@
 		<div class="text">
 			<h1 class="title">{title}</h1>
 			<p class="date">{start_date}</p>
-			<p class="description">{body}</p>
+			<slot>
+				<p>No description provided.</p>
+			</slot>
 			<p class="image_cred">{image_credit}</p>
 		</div>
 	</div>
