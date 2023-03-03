@@ -3,16 +3,28 @@
 	import Fa from "svelte-fa/src/fa.svelte";
 	import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 	import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-	
+
 	export let down = false;
 	export let disabled = false;
+	export let visible = false;
+
+	$: classes =
+		"arrow-button " + (down ? "down" : "up") + (visible ? " " : " hidden");
 
 	const dispatch = createEventDispatcher();
 	const goUp = () => dispatch("moveUp");
 	const goDown = () => dispatch("moveDown");
+
+	function handleKeyDown(event) {
+		if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+			goUp();
+		} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+			goDown();
+		}
+	}
 </script>
 
-<div class={down ? "arrow-button down" : "arrow-button up"}>
+<div class={classes}>
 	<button {disabled} class="button" on:click={down ? goDown : goUp}>
 		<div class="circle">
 			<span class="icon">
@@ -26,20 +38,35 @@
 	</button>
 </div>
 
+<svelte:window on:keydown={handleKeyDown} />
+
 <style>
+	:root {
+		--anim: 0.4s cubic-bezier(0.13, 0.94, 0.16, 1.15);
+	}
+
 	.arrow-button {
 		position: fixed;
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: 9999;
+		transition: top var(--anim), bottom var(--anim);
 	}
 
 	.up {
-		top: 0;
+		top: 2rem;
 	}
 
 	.down {
-		bottom: 0;
+		bottom: 2rem;
+	}
+
+	.up.hidden {
+		top: -6rem;
+	}
+
+	.down.hidden {
+		bottom: -6rem;
 	}
 
 	.circle {
@@ -50,15 +77,15 @@
 		background-color: var(--color-bg-1);
 		border: 3px solid var(--light-color-bg-1);
 		box-shadow: 2px 2px 5px 1px #00000022;
-		transition: all 0.15s ease-in-out;
 		mix-blend-mode: screen;
+		transition: all 0.15s ease-in-out;
 	}
 
 	.button {
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
-		padding: 1.5rem 4rem;
+		padding: 1.5rem 6rem;
 	}
 
 	.circle:hover,

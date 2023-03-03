@@ -7,13 +7,13 @@
 	let password = "";
 
 	const handleLogin = () => {
-		console.log(`email: ${email}`);
-		console.log(`pass: ${password}`);
+		// console.log(`email: ${email}`);
+		// console.log(`pass: ${password}`);
 		// TODO: add login functionality
 	};
 
 	const gotoForgot = () => {
-		console.log("i forgor 💀");
+		// console.log("i forgor 💀");
 		// TODO: add forgot password functionality
 	};
 </script>
