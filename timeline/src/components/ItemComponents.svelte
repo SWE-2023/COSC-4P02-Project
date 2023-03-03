@@ -3,6 +3,8 @@
 	export let media;
 	export let image_credit;
 	export let start_date;
+	let placeholder =
+		"https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
 </script>
 
 <section class="item-components">
@@ -58,7 +60,30 @@
 		margin: 0.5rem;
 	}
 
+	.item-components {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		transition: all 0.2s ease-in-out;
+		margin-bottom: 3rem;
+	}
+
+	.item-components > div {
+		margin: 0 1rem;
+	}
+
+	.text-component {
+		flex: 1 1 33%;
+		padding: 2rem 2rem;
+		border-radius: 2rem;
+		background: #3f0f000f;
+		text-align: justify;
+	}
+
 	.title {
+		padding-top: 1rem;
 		text-align: center;
 	}
 
@@ -71,17 +96,52 @@
 
 	.desc {
 		text-align: justify;
-		padding: 1rem 3rem;
+		padding-top: 1rem;
 	}
 
-	.image {
-		cursor: pointer;
+	.image-cont {
 		display: flex;
+		padding-top: 1.7rem;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
+		max-width:100%;
 	}
 	
+	.image {
+		/* flex:1; */
+		z-index: 1;
+		cursor: pointer;
+		min-height:60vh;
+		max-height: 50vh;
+		max-width:100%;
+		
+		/* width:fit-content; */
+
+		object-position: center center;
+		object-fit: cover;
+		border-radius: 1.5vw;
+		box-shadow: 1rem 0rem 28px 0 #00000030;
+		transition: all 0.3s ease-in-out;
+	}
+
+	@media (max-width: 1000px) {
+		.item-components {
+			margin: 0 -1rem 0 -1rem;
+		}
+		.text-component {
+			padding: 2rem 1rem;
+			background: #3f0f000f;
+			text-align: justify;
+		}
+		.title {
+			font-size: 1.5rem;
+		}
+		.image {
+			min-height:0vh;
+			max-height: 40vh;
+		}
+	}
+
 	.video {
 		z-index: 1;
 		max-width: 50vw;
@@ -91,62 +151,32 @@
 		object-fit: cover;
 		border-radius: 1.5vw;
 		box-shadow: 1rem 0rem 28px 0 #00000030;
-		transition:all 0.3s ease-in-out;
 	}
 
 	img:hover {
-		transform:scale(1.01);
+		transform: scale(1.01);
 		box-shadow: 0.5rem 0rem 32px 0 #00000030;
-
 	}
+
 	.image_cred {
-		color: var(--color-text);
-		text-align: center;
 		font-size: 0.8rem;
-		position: relative;
-		padding: 0.5rem;
+		display: flex;
+		justify-content: center;
+	}
+
+	.image_cred a {
+		color: var(--color-text);
+		padding: 0.5rem 4rem;
 		opacity: 0.5;
 		font-weight: 400;
 		transition: all 0.15s ease-in-out;
 	}
 
-	.image_cred:hover {
+	.image_cred a:hover {
 		opacity: 1;
 		color: var(--color-theme-2);
 		text-decoration: none;
 	}
 
-	.item-components {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: center;
-		align-items: center;
-		transition: all 0.2s ease-in-out;
-	}
-
-	.item-components > div{
-		margin:0 4rem;
-	}
-
-	.image-component {
-		flex: 1;
-	}
-
-	.text-component {
-		flex: 2 1 50%;
-		padding: 1rem 1rem;
-		border-radius: 2rem;
-		background: #3f0f000f;
-		text-align: justify;
-		position:relative;
-	}
-
-	@media (max-width: 1500px) {
-		.image-component,
-		.text-component {
-			flex: 1;
-			padding: 1rem 1rem;
-		}
-	}
+	
 </style>
