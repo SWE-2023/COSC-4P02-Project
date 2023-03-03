@@ -5,12 +5,23 @@
    
     let speaking = false;
     export let body;
+    export let title;
+    export let start_date;
+    export let image_credit;
 	
 
     function text2Speech(){
         if (!speaking) {
-            const utterance = new SpeechSynthesisUtterance(body);
-            speechSynthesis.speak(utterance);
+            const utterance1 = new SpeechSynthesisUtterance(title);
+            const utterance2 = new SpeechSynthesisUtterance(start_date);
+            const utterance3 = new SpeechSynthesisUtterance(body);
+            const utterance4 = new SpeechSynthesisUtterance(image_credit);
+
+            speechSynthesis.speak(utterance1);
+            speechSynthesis.speak(utterance2);
+            speechSynthesis.speak(utterance3);
+            speechSynthesis.speak(utterance4);
+
             speaking = true;
            
         

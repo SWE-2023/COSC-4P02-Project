@@ -6,7 +6,7 @@
 	export let body;
 	export let start_date;
 	import Fullscreen from "svelte-fullscreen";
-	import Text2Speech from "./text2Speech.svelte";
+	import Text2Speech from "./Text2Speech.svelte";
 	
 	let timeData = timeDataTemp;
 	let currentBody = timeData[0].body;
@@ -34,7 +34,7 @@
 			<h1 class="title">{title}</h1>
 			<p class="date">{start_date}</p>
 			<p class="description">{body}</p>
-			<Text2Speech {body}/>
+			<Text2Speech {title} {body} {start_date} {image_credit}/>
 			<p class="image_cred">{image_credit}</p>
 		</div>
 	
