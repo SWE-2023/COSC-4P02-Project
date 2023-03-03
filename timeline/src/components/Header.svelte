@@ -12,7 +12,6 @@
 
 	function handleThemeSelect(event) {
 		isTheme = event.detail === "darkText";
-		console.log("test");
 	}
 
 	function handleScroll() {

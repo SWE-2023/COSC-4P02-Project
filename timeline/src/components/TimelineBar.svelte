@@ -14,8 +14,6 @@
 		timeData[i].id = year(timeData[i].start_date);
 	}
 
-	console.log(timeData)
-
 	const timelineHeight = 80; // in vh
 	let scale = 20; // values lower than 10 will cause issues
 	let decades = [];

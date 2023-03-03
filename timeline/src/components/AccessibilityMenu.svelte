@@ -18,7 +18,6 @@
 		const root = document.documentElement;
 
 		if (nextTheme == "Light Mode") {
-			console.log("light");
 			root.style.setProperty("--color-theme-1", "var(--light-color-theme-1)");
 			root.style.setProperty(
 				"--color-theme-1-light",
@@ -41,7 +40,6 @@
 			dispatcher("themeSelect", "darkText");
 			nextTheme = "Dark Mode";
 		} else {
-			console.log("dark");
 			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)");
 			root.style.setProperty(
 				"--color-theme-1-light",
@@ -68,7 +66,6 @@
 	function toggleContrast() {
 		const root = document.documentElement;
 		open = false;
-		console.log("contrast");
 		root.style.setProperty("--color-theme-1", "var(--hc-color-theme-1)");
 		root.style.setProperty(
 			"--color-theme-1-light",
