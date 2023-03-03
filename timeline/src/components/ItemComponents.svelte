@@ -18,7 +18,7 @@
 			<h1 class="title">{title}</h1>
 			<p class="date">{start_date}</p>
 			<slot >
-				<p class="description">No description provided.</p>
+				<p >No description provided.</p>
 			</slot>
 		</div>
 	</div>
@@ -37,6 +37,7 @@
 		padding: 1em 0 1em 0;
 		font-size: 1rem;
 		margin: 0.5rem;
+		
 	}
 
 	.title {
@@ -99,11 +100,7 @@
 
 	.text-component{
 		flex: 1;
-		padding: 1rem 5rem;
-		
-	}
-
-	.description {
+		padding: 1rem 3rem;
 		text-align: justify;
 	}
 
@@ -113,12 +110,7 @@
 		}
 		.image-component, .text-component {
 			flex: 1;
-			padding: 0 0 2em 0;
-		}
-		.description {
-			width: 100%;
-			text-align: justify;
-			padding-left: 0;
+			padding: 1rem 3rem;
 		}
 	}
 </style>
