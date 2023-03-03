@@ -108,15 +108,12 @@
 	}
 	
 	.image {
-		/* flex:1; */
 		z-index: 1;
 		cursor: pointer;
 		min-height:60vh;
 		max-height: 50vh;
 		max-width:100%;
 		
-		/* width:fit-content; */
-
 		object-position: center center;
 		object-fit: cover;
 		border-radius: 1.5vw;
