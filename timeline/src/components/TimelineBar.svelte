@@ -150,8 +150,7 @@
 		top: -2px;
 		font-size: 13px;
 		left: 0.2rem;
-		opacity: 0.5;
-		filter: blur(3px);
+		opacity: 0.1;
 
 		transform-origin: center;
 		z-index: -2;
@@ -171,7 +170,6 @@
 		color: #e0dbd4; /* doesnt change since background is red */
 		transform: scale(1.2);
 		opacity: 1;
-		filter: blur(0px);
 		z-index: 111;
 	}
 </style>
