@@ -1,9 +1,17 @@
-# COSC 4P02 Team Project
-# Interactive Timeline Web Application
+<div align="center"><img width="96px" src="https://user-images.githubusercontent.com/18179415/222605007-66a06286-3f5a-4903-a837-d4c1e8c5147f.png"/></div>
+
+<div align="center"><h1>COSC 4P02 Team Project</h1></div>
+
+<div align=center><img src="https://img.shields.io/github/contributors/SWE-2023/COSC-4P02-Project?style=flat-square"/></div>
+
+<div align=center><h1>Interactive Timeline Web Application</h1></div>
 
 This is a course project for COSC 4P02 Software Engineering II taught by Professor Naser Ezzati-Jivan at Brock University. 
 
-View our Project Proposal and other docs in the [documents](documents) folder.
+View our project proposal and other documents in the [documents](documents) folder.
+
+## Project Description 📝
+The goal of this project is to create an interactive timeline web application that will allow visitors to explore the history of Niagara-on-the-Lake. The application will be built using SvelteKit, a framework for building web applications using Svelte. 
 
 ## Team Members 👥
 | Name | Student Number|
@@ -17,12 +25,8 @@ View our Project Proposal and other docs in the [documents](documents) folder.
 | [Justin Stickel](https://github.com/Stickelation) - *Scrum Master*| 6718404 |
 | [Haaris Yahya](https://github.com/haarisyahya)| 7054984 |
 
-
-## Project Description 📝
-The goal of this project is to create an interactive timeline web application that will allow visitors to explore the history of Niagara-on-the-Lake. The application will be built using SvelteKit, a framework for building web applications using Svelte. 
-
 ## Contact
-If you have any questions, please contact the product owner at [dev@alecames.com](mailto:dev@alecames.com).
+If you have any questions, please reach out to the [product owner](mailto:dev@alecames.com).
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
