@@ -4,42 +4,49 @@
 
 	export let timeData;
 	export let currentItem;
-	
+
+	function year(date) {
+		const year = date.substring(0, 4);
+		return year;
+	}
+
+	for (let i = 0; i < timeData.length; i++) {
+		timeData[i].id = year(timeData[i].start_date);
+	}
+
+	console.log(timeData)
+
 	const timelineHeight = 80; // in vh
 	let scale = 20; // values lower than 10 will cause issues
 	let decades = [];
-	let lowest = Math.floor(parseInt(timeData[0].id) / scale) * scale; // round down to nearest 20 year
-	let highest =
-		Math.ceil(parseInt(timeData[timeData.length - 1].id) / scale) * scale; // round up to nearest 20 year
+	let lowest = Math.floor(timeData[0].id / scale) * scale; // round down to nearest 20 year
+	let highest = Math.ceil(timeData[timeData.length - 1].id / scale) * scale; // round up to nearest 20 year
 
 	for (let i = lowest; i <= highest; i += scale) {
 		decades.push(i);
 	}
 
-	function getSpacing(key) {
+	function getSpacing(id) {
 		const top = lowest;
 		const bottom = highest;
-		const current = parseInt(key);
-
+		const current = id;
 		const percentage = (current - top) / (bottom - top);
 		const spacing = percentage * (timelineHeight - 2);
-
 		return spacing;
 	}
 
 	const dispatch = createEventDispatcher();
 	const change = () => dispatch("change");
-	const setDetails = (item) => currentItem = item;
-	
+	const setDetails = (item) => (currentItem = item);
+
 	function updateGap() {
 		const screenHeight = window.innerHeight;
 		const scale = Math.max(
 			20,
 			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
 		);
-		lowest = Math.floor(parseInt(timeData[0].id) / scale) * scale;
-		highest =
-			Math.ceil(parseInt(timeData[timeData.length - 1].id) / scale) * scale;
+		lowest = Math.floor(timeData[0].id / scale) * scale;
+		highest = Math.ceil(timeData[timeData.length - 1].id / scale) * scale;
 		decades = [];
 		for (let i = lowest; i <= highest; i += scale) {
 			decades.push(i);
@@ -51,7 +58,7 @@
 
 <span style="height:{timelineHeight}vh" class="line" />
 <div class="line-components">
-	{#each timeData as td (td.id)}
+	{#each timeData as td, i (i)}
 		<div class="lineItem">
 			<div style="top:{getSpacing(td.id)}vh">
 				<Dot
