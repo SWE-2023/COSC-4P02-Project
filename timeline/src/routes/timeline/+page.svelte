@@ -82,6 +82,16 @@
 	function updateAtLast() {
 		atLast = (selectedItem == timeline[timeline.length - 1]);
 	}
+
+	let upVisible = false;
+	let downVisible = false;
+	
+	function showArrows(event) {
+		let y = event.clientY;
+		let height = window.innerHeight;
+		upVisible = (y < height * 0.25);
+		downVisible = (y > height * 0.75);
+	}
 </script>
 
 <svelte:head>
@@ -89,8 +99,10 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
+<svelte:window on:mousemove={showArrows} />
+
 <PageTransitionFade>
-	<Arrow on:moveUp={pageUp} disabled={atFirst} />
+	<Arrow on:moveUp={pageUp} disabled={atFirst} visible={upVisible}/>
 
 	<TimelineBar
 		timeData={timeline}
@@ -104,14 +116,14 @@
 			<ItemTransition transitionDirection={transitionDirection}>
 				<ItemComponents
 					title={currentItem.title}
-					image={currentItem.image}
+					media={currentItem.image}
 					image_credit={currentItem.image_credit}
-					start_date={formatDate(currentItem.start_date)}><p>{currentItem.body}</p></ItemComponents>
+					start_date={formatDate(currentItem.start_date)}><p>{currentItem.body ? currentItem.body : "No description provided."}</p></ItemComponents>
 			</ItemTransition>
 		</section>
 	{/key}
 
-	<Arrow down on:moveDown={pageDown} disabled={atLast} />
+	<Arrow down on:moveDown={pageDown} disabled={atLast} visible={downVisible}/>
 </PageTransitionFade>
 
 <style>

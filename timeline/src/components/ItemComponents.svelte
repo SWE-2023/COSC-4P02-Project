@@ -1,30 +1,49 @@
 <script>
 	export let title;
-	export let image;
+	export let media;
 	export let image_credit;
 	export let start_date;
 </script>
 
 <section class="item-components">
-	<div class="image-component">
-		<div class="image">
-			<img
-				alt={image_credit}
-				src={image
-					? image
-					: "https://joadre.com/wp-content/uploads/2019/02/no-image.jpg"} />
-			<a href={image_credit} target="_blank" rel="noreferrer" class="image_cred"
-				>Source</a>
+	<div class="media-component">
+		<div class="image-cont">
+			{#if media}
+				{#if media.includes("youtube.com")}
+					<iframe
+						class="video"
+						title="youtube video"
+						src={media.replace("watch?v=", "embed/")}
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen />
+				{:else}
+					<img class="image" src={media} alt={title} />
+				{/if}
+			{:else}
+				<img class="image" src={placeholder} alt={title} />
+			{/if}
 		</div>
+		{#if image_credit != "null"}
+			<div class="image_cred">
+				<a href={image_credit}  target="_blank" rel="noreferrer"
+					>Source</a>
+			</div>
+		{/if}
 	</div>
 	<div class="text-component">
 		<h1 class="title">{title}</h1>
 		<p class="date"><i>{start_date}</i></p>
-		<p class="desc"><slot>No</slot></p>
+		<p class="desc">
+			<slot>No Content Provided</slot>
+		</p>
 	</div>
 </section>
 
 <style>
+	:root {
+		--vid-ratio: 0.5625;
+	}
 	h1 {
 		font-family: var(--font-serif);
 		font-size: 2.5rem;
@@ -63,17 +82,18 @@
 		align-items: center;
 	}
 	
-	img {
+	.video {
 		z-index: 1;
-		max-height: 70vh;
-		max-width: 80vw;
+		max-width: 50vw;
+		width: 60vw;
+		height: calc(60vw * var(--vid-ratio));
 		object-position: center center;
-		object-fit: fill;
-		border-radius: 1.5rem;
+		object-fit: cover;
+		border-radius: 1.5vw;
 		box-shadow: 1rem 0rem 28px 0 #00000030;
 		transition:all 0.3s ease-in-out;
 	}
-	
+
 	img:hover {
 		transform:scale(1.01);
 		box-shadow: 0.5rem 0rem 32px 0 #00000030;
