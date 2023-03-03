@@ -3,22 +3,23 @@
 	export let image;
 	export let image_credit;
 	export let start_date;
+
 </script>
 
 <section class="item-components">
-	<div class="child-component">
+	<div class="image-component">
 		<div class="image">
-			<img alt={image_credit} src={image} />
+			<img alt={image_credit} src={image? image : "https://joadre.com/wp-content/uploads/2019/02/no-image.jpg"} />
+			<a href={image_credit} target="_blank" rel="noreferrer" class="image_cred">Source</a>
 		</div>
 	</div>
-	<div class="child-component">
+	<div class="text-component">
 		<div class="text">
 			<h1 class="title">{title}</h1>
 			<p class="date">{start_date}</p>
-			<slot>
-				<p>No description provided.</p>
+			<slot >
+				<p class="description">No description provided.</p>
 			</slot>
-			<p class="image_cred">{image_credit}</p>
 		</div>
 	</div>
 </section>
@@ -48,47 +49,61 @@
 		font-weight: 400;
 	}
 
-	.image_cred {
-		text-align: left;
-		font-size: 1rem;
-		font-weight: 400;
-	}
-
+	
 	.image {
 		cursor: pointer;
-		width: 100%;
-		height: 100%;
 		display: flex;
+		flex-direction:column;
 		justify-content: center;
 		align-items: center;
 	}
-
-	.image img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
+	
+	img {
+		max-height:70vh;
+		max-width:80vw;
+		object-position:center center;
+		object-fit: fill;
 		border-radius: 1rem;
-		box-shadow: 1rem 0rem 32px 0 #00000044;
+		box-shadow: 1rem 0rem 32px 0 #00000022;
+	}
+
+	.image_cred {
+		color: var(--color-text);
+		text-align: center;
+		font-size: .8rem;
+		position:relative;
+		padding: 0.5rem;
+		opacity:.5;
+		font-weight: 400;
+		transition: all 0.15s ease-in-out;
+	}
+
+	.image_cred:hover {
+		opacity: 1;
+		color:var(--color-theme-2);
+		text-decoration:none;
 	}
 
 	.item-components {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
-		transition: all 0.5s ease-in-out;
+		flex-wrap:wrap;
+		justify-content: center;
+		align-items: center;
+		transition: all 0.2s ease-in-out;
 	}
 
-	.child-component {
-		flex: 2;
-		padding: 0 1rem;
-	}
-
-	.item-components > :nth-child(2) {
+	.image-component {
 		flex: 1;
 	}
 
+	.text-component{
+		flex: 1;
+		padding: 1rem 5rem;
+		
+	}
+
 	.description {
-		max-width: 100%;
 		text-align: justify;
 	}
 
@@ -96,7 +111,7 @@
 		.item-components {
 			flex-direction: column;
 		}
-		.child-component {
+		.image-component, .text-component {
 			flex: 1;
 			padding: 0 0 2em 0;
 		}
