@@ -39,7 +39,7 @@
 	</section>
 </PageTransitionFly>
 
-<style lang="scss">
+<style>
 
 	.title {
 		font-family: Georgia, "Times New Roman", Times, serif;

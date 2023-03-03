@@ -54,6 +54,7 @@
 	}
 
 	function pageUp() {
+		transitionDirection = "up";
 		if (!atFirst) {
 			selectedItem = timeline[--currentIndex];
 			setComponents();
@@ -64,6 +65,7 @@
 	}
 
 	function pageDown() {
+		transitionDirection = "down";
 		if (!atLast) {
 			selectedItem = timeline[++currentIndex];
 			setComponents();
@@ -99,7 +101,7 @@
 		on:change={updateAtLast} />
 	{#key selectedItem}
 		<section class="layout">
-			<ItemTransition direction={transitionDirection}>
+			<ItemTransition transitionDirection={transitionDirection}>
 				<ItemComponents
 					title={currentItem.title}
 					image={currentItem.image}
