@@ -2,8 +2,7 @@
 	import { fly, blur, fade } from "svelte/transition";
 	import { reduceMotionStore } from "../store.js";
 	
-	export let transitionDirection;
-	$: direction = transitionDirection;
+	export let direction;
 
 	let transition = fly;
 	let offset = 250;
