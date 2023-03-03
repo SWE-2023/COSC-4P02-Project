@@ -93,7 +93,7 @@
 
 {#if open}
 	<div class="menu" transition:fly={{ x: 100 }}>
-		<div class="am-title">Accesibility Options</div>
+		<div class="am-title">Accessibility Options</div>
 		<ul >
 			<li transition:fly={{ x: 24, delay: 50 }}>
 				<span

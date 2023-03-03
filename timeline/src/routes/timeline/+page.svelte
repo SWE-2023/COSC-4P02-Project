@@ -5,12 +5,15 @@
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
+	
 
 	// setting up supabase
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
 
+
+	
 	let timeData = timeDataTemp;
 	let transitionDirection;
 	let selectedItem = timeData[0];
@@ -72,6 +75,9 @@
 			atLast = false;
 		}
 	}
+
+	
+	
 </script>
 
 <svelte:head>
@@ -92,15 +98,23 @@
 	{#key selectedItem.id}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
+				
 				<ItemComponents
 					title={currentTitle}
 					image={currentImage}
 					image_credit={currentImage_credit}
 					body={currentBody}
 					start_date={currentStart_date} />
+					
+					
 			</ItemTransition>
+			
+			
+		
 		</section>
+		
 	{/key}
+	
 
 	<Arrow down on:moveDown={pageDown} disabled={atLast} />
 </PageTransitionFade>

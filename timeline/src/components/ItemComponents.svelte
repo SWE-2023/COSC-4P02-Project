@@ -1,12 +1,18 @@
 <script>
+	import { timeDataTemp } from "../lib/timeDataTemp";
 	export let title;
 	export let image;
 	export let image_credit;
 	export let body;
 	export let start_date;
 	import Fullscreen from "svelte-fullscreen";
-
+	import Text2Speech from "./text2Speech.svelte";
 	
+	let timeData = timeDataTemp;
+	let currentBody = timeData[0].body;
+	let selectedItem = timeData[0];
+	currentBody = selectedItem.body;
+
 	
 </script>
 
@@ -17,22 +23,24 @@
 		<Fullscreen let:onToggle>
 				<div class="image">
 				<img alt={image_credit} src={image}  on:click={() => onToggle()}/>
-				
-								
 			</div>
-	</Fullscreen>
+		</Fullscreen>
 	</div>
-
+	
 
 	<div class="child-component">
+		
 		<div class="text">
 			<h1 class="title">{title}</h1>
 			<p class="date">{start_date}</p>
 			<p class="description">{body}</p>
+			<Text2Speech {body}/>
 			<p class="image_cred">{image_credit}</p>
 		</div>
+	
 	</div>
 </section>
+
 
 <style>
 	h1 {
