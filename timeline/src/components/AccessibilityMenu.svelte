@@ -2,6 +2,7 @@
 	import { fly } from "svelte/transition";
 	import { reduceMotionStore } from "../store";
 	import { createEventDispatcher } from "svelte";
+	import { onMount } from "svelte";
 
 	export let open;
 	export let reduceMotion = false;
@@ -11,78 +12,81 @@
 		reduceMotionStore.set(reduceMotion);
 	}
 
+	const themes = {
+		"Dark Mode": {
+			"--color-theme-1": "var(--dark-color-theme-1)",
+			"--color-theme-1-light": "var(--dark-color-theme-1-light)",
+			"--color-theme-2": "var(--dark-color-theme-2)",
+			"--color-theme-2-light": "var(--dark-color-theme-2-light)",
+			"--color-bg-1": "var(--dark-color-bg-1)",
+			"--color-bg-2": "var(--dark-color-bg-2)",
+			"--color-text-card": "var(--dark-color-text-card)",
+			"--bg-opacity": "var(--dark-bg-opacity)",
+			"--bg-grayscale": "var(--dark-bg-grayscale)",
+			"--background-gradient": "var(--dark-color-bg-1)",
+			"--color-text": "var(--dark-color-text)",
+			"--menu-border": "1px solid white",
+			"--button-color": "#ffffff",
+			"--button-hover-color": "#000000",
+			"--button-active-background": "#ffffff",
+		},
+		"Light Mode": {
+			"--color-theme-1": "var(--light-color-theme-1)",
+			"--color-theme-1-light": "var(--light-color-theme-1-light)",
+			"--color-theme-2": "var(--light-color-theme-2)",
+			"--color-theme-2-light": "var(--light-color-theme-2-light)",
+			"--color-bg-1": "var(--light-color-bg-1)",
+			"--color-bg-2": "var(--light-color-bg-2)",
+			"--color-text-card": "var(--light-color-text-card)",
+			"--bg-opacity": "var(--light-bg-opacity)",
+			"--bg-grayscale": "var(--light-bg-grayscale)",
+			"--background-gradient":
+				"linear-gradient(90deg, var(--light-color-bg-1) 0%, (-light-color-bg-2) 100%)",
+			"--color-text": "var(--light-color-text)",
+			"--menu-border": "0px solid white",
+		},
+	};
+
 	let nextTheme = "Dark Mode";
 	const dispatcher = createEventDispatcher();
 
 	function toggleLightorDark() {
 		const root = document.documentElement;
+		const theme = themes[nextTheme];
 
-		if (nextTheme == "Light Mode") {
-			console.log("light");
-			root.style.setProperty("--color-theme-1", "var(--light-color-theme-1)");
-			root.style.setProperty(
-				"--color-theme-1-light",
-				"var(--light-color-theme-1-light)"
-			);
-			root.style.setProperty("--color-theme-2", "var(--light-color-theme-2)");
-			root.style.setProperty(
-				"--color-theme-2-light",
-				"var(--light-color-theme-2-light)"
-			);
-			root.style.setProperty("--color-bg-1", "var(--light-color-bg-1)");
-			root.style.setProperty("--color-bg-2", "var(--light-color-bg-2)");
-			root.style.setProperty(
-				"--background-gradient",
-				"linear-gradient(90deg, var(--light-color-bg-1) 0%, (-light-color-bg-2) 100%)"
-			);
-			root.style.setProperty("--color-text", "var(--light-color-text)");
-			root.style.setProperty("--menu-border", "0px solid white");
+		Object.entries(theme).forEach(([key, value]) => {
+			root.style.setProperty(key, value);
+		});
+
+		if (nextTheme === "Light Mode") {
 			location.reload();
 			dispatcher("themeSelect", "darkText");
-			nextTheme = "Dark Mode";
 		} else {
-			console.log("dark");
-			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)");
-			root.style.setProperty(
-				"--color-theme-1-light",
-				"var(--dark-color-theme-1-light)"
-			);
-			root.style.setProperty("--color-theme-2", "var(--dark-color-theme-2)");
-			root.style.setProperty(
-				"--color-theme-2-light",
-				"var(--dark-color-theme-2-light)"
-			);
-			root.style.setProperty("--color-bg-1", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-bg-2", "var(--dark-color-bg-2)");
-			root.style.setProperty("--background-gradient", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-text", "var(--dark-color-text)");
-			root.style.setProperty("--button-color", "#ffffff");
-			root.style.setProperty("--button-hover-color", "#000000");
-			root.style.setProperty("--button-active-background", "#ffffff");
-			root.style.setProperty("--menu-border", "1px solid white");
 			dispatcher("themeSelect", "lightText");
-			nextTheme = "Light Mode";
 		}
+
+		nextTheme = nextTheme === "Light Mode" ? "Dark Mode" : "Light Mode";
 		open = false;
 	}
 	function toggleContrast() {
 		const root = document.documentElement;
 		open = false;
-		console.log("contrast");
-		root.style.setProperty("--color-theme-1", "var(--hc-color-theme-1)");
-		root.style.setProperty(
+		const hcProps = [
+			"--color-theme-1",
 			"--color-theme-1-light",
-			"var(--hc-color-theme-1-light)"
-		);
-		root.style.setProperty("--color-theme-2", "var(--hc-color-theme-2)");
-		root.style.setProperty(
+			"--color-theme-2",
 			"--color-theme-2-light",
-			"var(--hc-color-theme-2-light)"
+			"--color-bg-1",
+			"--color-bg-2",
+			"--color-text-card",
+			"--bg-opacity",
+			"--bg-grayscale",
+			"--background-gradient",
+			"--color-text",
+		];
+		hcProps.forEach((prop) =>
+			root.style.setProperty(prop, `var(--hc-${prop.slice(2)})`)
 		);
-		root.style.setProperty("--color-bg-1", "var(--hc-color-bg-1)");
-		root.style.setProperty("--color-bg-2", "var(--hc-color-bg-2)");
-		root.style.setProperty("--background-gradient", "var(--hc-color-bg-1)");
-		root.style.setProperty("--color-text", "var(--hc-color-text)");
 		root.style.setProperty("--button-color", "#ffffff");
 		root.style.setProperty("--button-hover-color", "#000000");
 		root.style.setProperty("--button-active-background", "#ffffff");
@@ -94,7 +98,7 @@
 {#if open}
 	<div class="menu" transition:fly={{ x: 100 }}>
 		<div class="am-title">Accesibility Options</div>
-		<ul >
+		<ul>
 			<li transition:fly={{ x: 24, delay: 50 }}>
 				<span
 					id="light_dark_theme"
@@ -106,8 +110,10 @@
 					>High Constrast</span>
 			</li>
 			<li transition:fly={{ x: 24, delay: 100 }}>
-				<span class={reduceMotion ? "active" : ""} on:click={toggleReduceMotion} on:keydown={toggleReduceMotion}
-					>Reduce Motion</span>
+				<span
+					class={reduceMotion ? "active" : ""}
+					on:click={toggleReduceMotion}
+					on:keydown={toggleReduceMotion}>Reduce Motion</span>
 			</li>
 		</ul>
 	</div>
@@ -137,22 +143,22 @@
 		box-shadow: 0 0 1em rgba(16, 13, 46, 0.2);
 		border-radius: 1em 0 0 1em;
 	}
-	
+
 	ul {
 		list-style: none;
 		padding: 0;
 	}
-	
+
 	li {
 		color: var(--color-text);
 		cursor: pointer;
 		padding: 1.5em 0;
 		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
 	}
-	
+
 	.active {
 		color: var(--color-theme-1);
-		font-weight:700;
+		font-weight: 700;
 	}
 
 	li > * {

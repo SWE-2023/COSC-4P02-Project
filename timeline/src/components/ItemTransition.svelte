@@ -1,6 +1,7 @@
 <script>
 	import { fly, blur, fade } from "svelte/transition";
 	import { reduceMotionStore } from "../store.js";
+	
 	export let direction;
 
 	let transition = fly;
@@ -16,7 +17,6 @@
 
 	$: null;
 </script>
-
 
 <div
 	in:transition={{ duration: 333, delay: 334, x: 0, y: direction == "up" ? -offset : offset}}
