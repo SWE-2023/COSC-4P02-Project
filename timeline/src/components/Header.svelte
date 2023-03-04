@@ -22,9 +22,6 @@
 
 <svelte:window on:scroll={handleScroll} />
 
-<link
-	rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,500,0,200" />
 
 <header>
 	<nav>
