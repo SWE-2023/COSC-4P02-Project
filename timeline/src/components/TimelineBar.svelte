@@ -15,14 +15,23 @@
 	}
 
 	const timelineHeight = 80; // in vh
-	let scale = 20; // values lower than 10 will cause issues
-	let decades = [];
-	let lowest = Math.floor(timeData[0].id / scale) * scale; // round down to nearest 20 year
-	let highest = Math.ceil(timeData[timeData.length - 1].id / scale) * scale; // round up to nearest 20 year
+	let globalScale = 20; // values lower than 10 will cause issues
 
-	for (let i = lowest; i <= highest; i += scale) {
-		decades.push(i);
+	let decades = [];
+	let lowest = undefined;
+	let highest = undefined;
+
+	function setDecades(scale = globalScale) {
+		decades = [];
+		lowest = Math.floor(timeData[0].id / scale) * scale;
+		highest = Math.ceil(timeData[timeData.length - 1].id / scale) * scale;
+
+		for (let i = lowest; i <= highest; i += scale) {
+			decades.push(i);
+		}
 	}
+
+	setDecades();
 
 	function getSpacing(id) {
 		const top = lowest;
@@ -43,12 +52,19 @@
 			20,
 			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
 		);
-		lowest = Math.floor(timeData[0].id / scale) * scale;
-		highest = Math.ceil(timeData[timeData.length - 1].id / scale) * scale;
-		decades = [];
-		for (let i = lowest; i <= highest; i += scale) {
-			decades.push(i);
+
+		setDecades(scale);
+	}
+
+	function zoom(zoomIn = true) {
+		if (zoomIn) {
+			globalScale += 20;
 		}
+		else {
+			globalScale = Math.max(10, globalScale - 20);
+		}
+
+		setDecades();
 	}
 </script>
 
@@ -74,6 +90,9 @@
 		{/each}
 	</ul>
 </div>
+
+<button on:click={() => zoom()}>+</button>
+<button on:click={() => zoom(false)}>-</button>
 
 <style>
 	.line {
