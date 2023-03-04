@@ -6,18 +6,25 @@
 	--font-sans: "Montserrat", -apple-system, sans-serif;
 	--font-serif: "Lustria", serif;
 	--font-mono: "Fira Mono", monospace;
+
 	--color-bg-1: var(--light-color-bg-1);
 	--color-bg-2: var(--light-color-bg-2);
+	--color-text-card: var(--light-color-text-card);
+	--bg-opacity: var(--light-bg-opacity);
 	--color-theme-1: var(--light-color-theme-1);
 	--color-theme-2: var(--light-color-theme-2);
 	--color-theme-1-light: var(--light-color-theme-1-light);
 	--color-theme-2-light: var(--light-color-theme-2-light);
+
 	--color-text: var(--light-color-text);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 
 	--light-color-bg-1: #ffffff;
 	--light-color-bg-2: #e0dbd4;
+	--light-color-text-card: #e9e6e1;
+	--light-bg-opacity: 0.25;
+	--light-bg-grayscale: grayscale(0);
 	--light-color-theme-1: #9e0814;
 	--light-color-theme-2: #08244b;
 	--light-color-theme-1-light: #e94d5a;
@@ -25,7 +32,10 @@
 	--light-color-text: rgba(0, 0, 0, 0.7);
 
 	--dark-color-bg-1: #121212;
-	--dark-color-bg-2: #202020;
+	--dark-color-bg-2: #252525;
+	--dark-color-text-card: #1b1a19;
+	--dark-bg-opacity: 0.1;
+	--dark-bg-grayscale: grayscale(1);
 	--dark-color-theme-1: #f72435;
 	--dark-color-theme-2: #08244b;
 	--dark-color-theme-1-light: #fd2235;
@@ -34,6 +44,9 @@
 
 	--hc-color-bg-1: #000000;
 	--hc-color-bg-2: #080808;
+	--hc-color-text-card: #000000;
+	--hc-bg-opacity: 0;
+	--hc-bg-grayscale: grayscale(1);
 	--hc-color-theme-1: #ff2c3e;
 	--hc-color-theme-2: #08244b;
 	--hc-color-theme-1-light: #fd2235;

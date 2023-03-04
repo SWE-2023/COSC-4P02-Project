@@ -22,7 +22,6 @@
 
 <svelte:window on:scroll={handleScroll} />
 
-
 <header>
 	<nav>
 		<div class="left">

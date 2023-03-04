@@ -78,7 +78,8 @@
 		flex: 1 1 33%;
 		padding: 2rem 2rem;
 		border-radius: 2rem;
-		background: #3f0f000f;
+		background: var(--color-text-card);
+		box-shadow: 1rem 0rem 28px 0 #00000010;
 		text-align: justify;
 	}
 
@@ -127,7 +128,6 @@
 		}
 		.text-component {
 			padding: 2rem 1rem;
-			background: #3f0f000f;
 			text-align: justify;
 		}
 		.title {

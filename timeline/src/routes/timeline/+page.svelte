@@ -10,12 +10,12 @@
 	let { timeline } = data;
 	$: ({ timeline } = data);
 
-	// make date readable
+	// makes date readable
 	function formatDate(date) {
 		if (date.slice(5) == "01-01") {
-			return ("circa " + date.slice(0, 4));
+			return "circa " + date.slice(0, 4);
 		}
-		date = new Date(date+"T00:00:00");
+		date = new Date(date + "T00:00:00");
 		if (date == "Invalid Date") {
 			return date;
 		}
@@ -76,21 +76,21 @@
 	}
 
 	function updateAtFirst() {
-		atFirst = (selectedItem == timeline[0]);
+		atFirst = selectedItem == timeline[0];
 	}
 
 	function updateAtLast() {
-		atLast = (selectedItem == timeline[timeline.length - 1]);
+		atLast = selectedItem == timeline[timeline.length - 1];
 	}
 
 	let upVisible = false;
 	let downVisible = false;
-	
+
 	function showArrows(event) {
 		let y = event.clientY;
 		let height = window.innerHeight;
-		upVisible = (y < height * 0.25);
-		downVisible = (y > height * 0.75);
+		upVisible = y < height * 0.25;
+		downVisible = y > height * 0.75;
 	}
 </script>
 
@@ -102,7 +102,7 @@
 <svelte:window on:mousemove={showArrows} />
 
 <PageTransitionFade>
-	<Arrow on:moveUp={pageUp} disabled={atFirst} visible={upVisible}/>
+	<Arrow on:moveUp={pageUp} disabled={atFirst} visible={upVisible} />
 
 	<TimelineBar
 		timeData={timeline}
@@ -118,12 +118,15 @@
 					title={currentItem.title}
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}
-					start_date={formatDate(currentItem.start_date)}><p>{currentItem.body ? currentItem.body : "No description provided."}</p></ItemComponents>
+					start_date={formatDate(currentItem.start_date)}
+					><p>
+						{currentItem.body ? currentItem.body : "No description provided."}
+					</p></ItemComponents>
 			</ItemTransition>
 		</section>
 	{/key}
 
-	<Arrow down on:moveDown={pageDown} disabled={atLast} visible={downVisible}/>
+	<Arrow down on:moveDown={pageDown} disabled={atLast} visible={downVisible} />
 </PageTransitionFade>
 
 <style>
