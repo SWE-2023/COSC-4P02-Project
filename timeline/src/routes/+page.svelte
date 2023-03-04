@@ -24,15 +24,15 @@
 
 <PageTransition>
 	<section class="welcome">
-		<h1 class="title" id="text">
+		<h1 class="title">
 			Welcome to the<br /><span style="color:var(--color-theme-1)"
 				>Niagara-on-the-Lake</span> Timeline
 		</h1>
 
 		<!-- TODO add transitions between headers -->
-		<h1 class="subtitle" id="text" in:fade>{headerText[currentOption]}</h1>
+		<h1 class="subtitle" in:fade>{headerText[currentOption]}</h1>
 
-		<p class="subtext" id="text">
+		<p class="subtext">
 			A digital interactive timeline of the history of the Niagara-on-the-Lake
 		</p>
 

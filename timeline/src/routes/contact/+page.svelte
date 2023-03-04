@@ -10,8 +10,8 @@
 
 <PageTransition>
 	<section in:fade>
-		<h1 id="text">Contact the Museum</h1>
-		<p id="text">
+		<h1>Contact the Museum</h1>
+		<p>
 			Visit the <a href="https://www.notlmuseum.ca"
 				>Niagara-on-the-Lake Museum</a
 			>.

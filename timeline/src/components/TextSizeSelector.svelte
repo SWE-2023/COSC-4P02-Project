@@ -1,9 +1,10 @@
 <script>
+	// @ts-nocheck
     function IncFontSize() {
-		var elmntsToChg = document.querySelectorAll('[id=text]');
+		var elmntsToChg = document.querySelectorAll('h1, p, label');
 
+		// Can probably split this up into methods but I don't know if this is the final method of changing fontsize so i'll leave it like so for now
 		for (let i = 0; i < elmntsToChg.length; i ++) {
-			// @ts-ignore
 			let temp = window.getComputedStyle(elmntsToChg[i]).fontSize;
 			// 1 rem is equal to 16px and ^ returns size in px
 			let tem = parseInt(temp); // turn into float
@@ -12,7 +13,6 @@
 			let finaltem = tem.toString() + 'rem'; // change back to 'rem' style
 			// console.log(tem);
 
-			// @ts-ignore
 			elmntsToChg[i].style.fontSize = finaltem; // changes size
 
 		}
@@ -20,10 +20,9 @@
 	}
 
 	function DecFontSize() {
-		var elmntsToChg = document.querySelectorAll('[id=text]');
+		var elmntsToChg = document.querySelectorAll('h1, p, label');
 		
 		for (let i = 0; i < elmntsToChg.length; i ++) {	
-			// @ts-ignore
 			let temp = window.getComputedStyle(elmntsToChg[i]).fontSize;
 			// 1 rem is equal to 16px and ^ returns size in px
 			let tem = parseInt(temp); // turn into float (js acting weird if i just use the same variable, so using another)
@@ -32,7 +31,6 @@
 			let finaltem = tem.toString() + 'rem'; // change back to 'rem' style
 			// console.log(tem);
 
-			// @ts-ignore
 			elmntsToChg[i].style.fontSize = finaltem; // changes size
 
 		}
@@ -48,12 +46,12 @@
     .PosButton {
 		position: absolute;
 		top: 15%;
-		left: 50%;
+		left: 90%;
 	}
 
 	.NegButton {
 		position: absolute;
 		top: 15%;
-		left: 55%;
+		left: 92%;
 	}
 </style>

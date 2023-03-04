@@ -26,13 +26,13 @@
 <PageTransition>
   <div class="login-container">
 
-    <h1 id="text">Log In</h1>
-	  <p id="text">Enter your email and password</p>
+    <h1>Log In</h1>
+	  <p>Enter your email and password</p>
 
 		<div class="form">
-			<label for="email" id="text">Email</label>
+			<label for="email">Email</label>
 			<input type="text" id="email" bind:value={email} />
-			<label for="password" id="text">Password</label>
+			<label for="password">Password</label>
 			<input type="password" id="password" bind:value={password} />
 
 			<div class="form-buttons">

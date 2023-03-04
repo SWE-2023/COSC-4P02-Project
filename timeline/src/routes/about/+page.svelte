@@ -10,8 +10,8 @@
 
 <PageTransition>
 <section in:fade>
-	<h1 id="text">About</h1>
-	<p id="text">Sample Text</p>
+	<h1>About</h1>
+	<p>Sample Text</p>
 </section>
 </PageTransition>
 
