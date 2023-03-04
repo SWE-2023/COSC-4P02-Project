@@ -14,7 +14,7 @@
 		timeData[i].id = year(timeData[i].start_date);
 	}
 
-	const timelineHeight = 80; // in vh
+	let timelineHeight = 80; // in vh
 	let globalScale = 20; // values lower than 10 will cause issues
 
 	let decades = [];
@@ -58,6 +58,7 @@
 
 	function zoom(zoomIn = true) {
 		if (zoomIn) {
+			timelineHeight += 20;
 			globalScale += 20;
 		}
 		else {
@@ -68,23 +69,25 @@
 	}
 </script>
 
-<svelte:window on:resize={updateGap} />
+<svelte:window on:resize={updateGap}/>
 
-<span style="height:{timelineHeight}vh" class="line" />
+<span style="height: {timelineHeight}vh;" class="line"/>
 <div class="line-components">
 	{#each timeData as td, i (i)}
-		<div class="lineItem">
-			<div style="top:{getSpacing(td.id)}vh">
-				<Dot
-					eventOne={() => setDetails(td)}
-					eventTwo={() => change()}
-					isActive={false}>
-					<div class="date">{td.id}</div>
-				</Dot>
+		{#key timelineHeight}
+			<div class="lineItem">
+				<div style="top: {getSpacing(td.id)}vh;">
+					<Dot
+						eventOne={() => setDetails(td)}
+						eventTwo={() => change()}
+						isActive={false}>
+						<div class="date">{td.id}</div>
+					</Dot>
+				</div>
 			</div>
-		</div>
+		{/key}
 	{/each}
-	<ul class="timescale" style="height:{timelineHeight}vh;">
+	<ul class="timescale" style="height: {timelineHeight}vh;">
 		{#each decades as decade}
 			<li>{decade}</li>
 		{/each}
