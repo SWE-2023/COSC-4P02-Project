@@ -1,7 +1,6 @@
-@import "@fontsource/fira-mono";
-@import url("https://fonts.cdnfonts.com/css/google-sans");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap");
-@import "https://fonts.googleapis.com/css2?family=Lustria&display=swap";
+@import url("https://fonts.googleapis.com/css2?family=Lustria&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,500,0,200");
 
 :root {
 	--font-sans: "Montserrat", -apple-system, sans-serif;
