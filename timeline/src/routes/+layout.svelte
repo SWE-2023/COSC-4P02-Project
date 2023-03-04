@@ -11,35 +11,39 @@
 	<main>
 		<slot />
 	</main>
-	<img
-		class={$page.url.pathname == "/timeline"
-			? "background on-timeline"
-			: "background"}
-		alt="Niagara-on-the-Lake Main Street"
-		src="assets/landing-page-bg-4.png" />
+	<div class="grey">
+		<img
+			class={$page.url.pathname == "/timeline"
+				? "background grey ontimeline"
+				: "background grey"}
+			alt="Niagara-on-the-Lake Main Street"
+			src="assets/landing-page-bg-4.png" />
+	</div>
 	<Footer />
 </div>
 
 <style>
-	:root {
-		--anim: 0.4s cubic-bezier(0.31, 0.21, 0.72, 0.61);
+	.background {
+		opacity: var(--bg-opacity);
+		filter: blur(0px);
+		transition: filter 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61),
+			opacity 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
 
-	.background {
+	.background.ontimeline {
+		filter: blur(7px);
+		opacity: 0.1;
+	}
+
+	.grey {
 		position: fixed;
 		transform-origin: bottom right;
-		transform: scale(0.66);
-		z-index: -99;
-		opacity: var(--bg-opacity);
+		transform: scale(.9);
 		bottom: 0;
 		right: 0;
-		filter: blur(0px) var(--bg-grayscale);
-		transition: filter var(--anim), opacity var(--anim);
-	}
-
-	.background.on-timeline {
-		filter: blur(7px) var(--bg-grayscale);
-		opacity: 0.1;
+		z-index: -99;
+		filter: var(--bg-grayscale);
+		transition:all 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
 
 	.app {

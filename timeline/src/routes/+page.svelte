@@ -34,8 +34,9 @@
 		<p class="subtext">
 			An interactive timeline of the history of the Niagara-on-the-Lake
 		</p>
-
-		<Button href="/timeline" text="Explore the Timeline" />
+		<div style="display:inline-block">
+			<Button href="/timeline" text="Explore the Timeline" />
+		</div>
 	</section>
 </PageTransitionFly>
 
