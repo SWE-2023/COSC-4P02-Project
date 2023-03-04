@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import Button from "../components/Button.svelte";
-	import { fade } from "svelte/transition";
-	import PageTransition from "../components/PageTransition.svelte";
+	import { slide } from "svelte/transition";
+	import PageTransitionFly from "../components/PageTransitionFly.svelte";
 
 	let headerText = [
 		"Explore the rich history of our town.",
@@ -12,9 +12,10 @@
 		"Travel through time with us.",
 	];
 
-	let currentOption = 0, titleSize = 3.5, subtitleSize = 2.5, subtextSize = 1.5;;
-
-	setInterval(() => {currentOption = (currentOption + 1) % headerText.length;}, 10000);
+	let currentOption = 0;
+	setInterval(() => {
+		currentOption = (currentOption + 1) % headerText.length;
+	}, 7500);
 </script>
 
 <svelte:head>
@@ -22,15 +23,16 @@
 	<meta name="description" content="Niagara-on-the-Lake History Timeline" />
 </svelte:head>
 
-<PageTransition>
+<PageTransitionFly>
 	<section class="welcome">
 		<h1 class="title">
 			Welcome to the<br /><span style="color:var(--color-theme-1)"
 				>Niagara-on-the-Lake</span> Timeline
 		</h1>
 
-		<!-- TODO add transitions between headers -->
-		<h1 class="subtitle" in:fade>{headerText[currentOption]}</h1>
+		{#key headerText[currentOption]}
+				<h1 class="subtitle" transition:slide>{headerText[currentOption]}</h1>
+		{/key}
 
 		<p class="subtext">
 			A digital interactive timeline of the history of the Niagara-on-the-Lake
@@ -38,9 +40,10 @@
 
 		<Button href="/timeline" text="Explore the Timeline" />
 	</section>
-</PageTransition>
+</PageTransitionFly>
 
 <style>
+
 	.title {
 		font-family: Georgia, "Times New Roman", Times, serif;
 		padding: 2em 0 0 0;
@@ -54,7 +57,7 @@
 		font-family: var(--font-serif);
 		padding: 1em 0 0 0;
 		text-align: start;
-		font-size: 2.5rem;
+		font-size:2.5rem;
 		font-weight: 700;
 		margin: 0;
 	}
@@ -66,5 +69,19 @@
 		font-weight: 800;
 		margin: 0;
 		text-transform: uppercase;
+	}
+
+	@media (max-width: 768px) {
+		.title {
+			font-size: 2.5rem;
+		}
+
+		.subtitle {
+			font-size: 1.5rem;
+		}
+
+		.subtext {
+			font-size: 1rem;
+		}
 	}
 </style>

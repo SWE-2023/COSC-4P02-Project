@@ -1,6 +1,6 @@
 <script>
-	import { fade } from 'svelte/transition';
-	import PageTransition from '../../components/PageTransition.svelte';
+	import { fade } from "svelte/transition";
+	import PageTransition from "../../components/PageTransitionFly.svelte";
 </script>
 
 <svelte:head>

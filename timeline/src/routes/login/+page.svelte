@@ -1,21 +1,21 @@
 <script>
 	import { onMount } from "svelte";
-	import PageTransition from "../../components/PageTransition.svelte";
+	import PageTransition from "../../components/PageTransitionFly.svelte";
 	import Button from "../../components/Button.svelte";
 	
 	let email = "";
 	let password = "";
 	
 	const handleLogin = () => {
-		console.log(`email: ${email}`);
-		console.log(`pass: ${password}`);
+		// console.log(`email: ${email}`);
+		// console.log(`pass: ${password}`);
 		// TODO: add login functionality
 	};
 	
 	const gotoForgot = () => {
-    console.log("i forgor 💀");
-	// TODO: add forgot password functionality
-  };
+		// console.log("i forgor 💀");
+		// TODO: add forgot password functionality
+	};
 </script>
 
 <svelte:head>

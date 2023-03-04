@@ -1,8 +1,16 @@
 <script>
 	import { fly } from "svelte/transition";
+	import { reduceMotionStore } from "../store";
 	import { createEventDispatcher } from "svelte";
 
 	export let open;
+	export let reduceMotion = false;
+
+	function toggleReduceMotion() {
+		reduceMotion = !reduceMotion;
+		reduceMotionStore.set(reduceMotion);
+	}
+
 	let nextTheme = "Dark Mode";
 	const dispatcher = createEventDispatcher();
 
@@ -10,7 +18,6 @@
 		const root = document.documentElement;
 
 		if (nextTheme == "Light Mode") {
-			console.log("light");
 			root.style.setProperty("--color-theme-1", "var(--light-color-theme-1)");
 			root.style.setProperty(
 				"--color-theme-1-light",
@@ -33,7 +40,6 @@
 			dispatcher("themeSelect", "darkText");
 			nextTheme = "Dark Mode";
 		} else {
-			console.log("dark");
 			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)");
 			root.style.setProperty(
 				"--color-theme-1-light",
@@ -60,7 +66,6 @@
 	function toggleContrast() {
 		const root = document.documentElement;
 		open = false;
-		console.log("contrast");
 		root.style.setProperty("--color-theme-1", "var(--hc-color-theme-1)");
 		root.style.setProperty(
 			"--color-theme-1-light",
@@ -86,7 +91,7 @@
 {#if open}
 	<div class="menu" transition:fly={{ x: 100 }}>
 		<div class="am-title">Accesibility Options</div>
-		<ul>
+		<ul >
 			<li transition:fly={{ x: 24, delay: 50 }}>
 				<span
 					id="light_dark_theme"
@@ -96,6 +101,10 @@
 			<li transition:fly={{ x: 24, delay: 100 }}>
 				<span on:click={toggleContrast} on:keydown={toggleContrast}
 					>High Constrast</span>
+			</li>
+			<li transition:fly={{ x: 24, delay: 100 }}>
+				<span class={reduceMotion ? "active" : ""} on:click={toggleReduceMotion} on:keydown={toggleReduceMotion}
+					>Reduce Motion</span>
 			</li>
 		</ul>
 	</div>
@@ -125,17 +134,22 @@
 		box-shadow: 0 0 1em rgba(16, 13, 46, 0.2);
 		border-radius: 1em 0 0 1em;
 	}
-
+	
 	ul {
 		list-style: none;
 		padding: 0;
 	}
-
+	
 	li {
 		color: var(--color-text);
 		cursor: pointer;
 		padding: 1.5em 0;
 		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
+	}
+	
+	.active {
+		color: var(--color-theme-1);
+		font-weight:700;
 	}
 
 	li > * {

@@ -1,7 +1,6 @@
 <script>
-	import { onMount, onDestroy } from "svelte";
 	import { Hamburger } from "svelte-hamburgers";
-	import { fade } from "svelte/transition";
+	import { count } from "../store";
 	import AccessibilityMenu from "./AccessibilityMenu.svelte";
 	import Menu from "./Menu.svelte";
 	import FontSize from './TextSizeSelector.svelte';
@@ -14,7 +13,6 @@
 
 	function handleThemeSelect(event) {
 		isTheme = event.detail === "darkText";
-		console.log("test");
 	}
 
 	function handleScroll() {
@@ -39,6 +37,14 @@
 			<Menu bind:open={isMenuOpen} />
 			<a href="/"
 				><img
+					on:click={() => {
+						count.update((n) => n + 1);
+					}}
+					on:keypress={(e) => {
+						if (e.key === "Enter") {
+							count.update((n) => n + 1);
+						}
+					}}
 					src={isTheme
 						? "assets/notl-museum.svg"
 						: "assets/notl-museum-dark.svg"}
@@ -89,7 +95,11 @@
 		height: 3.5rem;
 		border-radius: 0.5rem 0.5rem 0 0;
 		user-select: none;
-		transition: opacity 0.33s ease-in-out;
+		transition: opacity 0.33s ease-in-out, transform 0.05s ease-in-out;
+	}
+
+	.logo:active {
+		transform: scale(0.95);
 	}
 
 	.left {
@@ -109,12 +119,17 @@
 		user-select: none;
 		color: var(--color-theme-1);
 		transform: rotate(0);
-		transition: transform 0.33s ease-out;
+		transition: transform 0.33s ease-in-out;
 	}
 
 	.accessibility:hover {
 		transform: rotate(180deg);
 		cursor: pointer;
+	}
+
+	.accessibility:active {
+		transition: transform 0.05s ease-in-out;
+		transform: scale(0.95) rotate(180deg);
 	}
 
 	header {
