@@ -1,0 +1,24 @@
+{
+	"name": "NOTL Museum | Interactive Timeline",
+	"short_name": "NOTL Timeline",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#000000",
+	"shortcuts": [
+		{
+		  "name": "View Timeline",
+		  "short_name": "Timeline",
+		  "description": "View the timeline",
+		  "url": "/timeline"
+		}
+	],
+	"icons": [
+	  {
+		"src": "favicon.png",
+		"sizes": "512x512",
+		"type": "image/png"
+	  }
+	]
+	
+  }
