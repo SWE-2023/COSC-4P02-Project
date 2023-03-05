@@ -5,11 +5,9 @@
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
-
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
-
 	// makes date readable
 	function formatDate(date) {
 		if (date.slice(5) == "01-01") {
@@ -21,10 +19,8 @@
 		}
 		return format(date, "MMMM d, yyyy");
 	}
-
 	let transitionDirection;
 	let selectedItem = timeline[0];
-
 	let currentItem = {
 		title: selectedItem.title,
 		image: selectedItem.image,
@@ -33,7 +29,6 @@
 		start_date: selectedItem.start_date,
 		end_date: selectedItem.end_date,
 	};
-
 	function setComponents() {
 		currentItem = {
 			title: selectedItem.title,
@@ -44,15 +39,12 @@
 			end_date: selectedItem.end_date,
 		};
 	}
-
 	let atFirst = true;
 	let atLast = false;
 	let currentIndex = 0;
-
 	function updateIndex() {
 		currentIndex = timeline.indexOf(selectedItem);
 	}
-
 	function pageUp() {
 		transitionDirection = "up";
 		if (!atFirst) {
@@ -63,7 +55,6 @@
 			updateAtFirst();
 		}
 	}
-
 	function pageDown() {
 		transitionDirection = "down";
 		if (!atLast) {
@@ -74,18 +65,14 @@
 			updateAtLast();
 		}
 	}
-
 	function updateAtFirst() {
 		atFirst = selectedItem == timeline[0];
 	}
-
 	function updateAtLast() {
 		atLast = selectedItem == timeline[timeline.length - 1];
 	}
-
 	let upVisible = false;
 	let downVisible = false;
-
 	function showArrows(event) {
 		let y = event.clientY;
 		let height = window.innerHeight;

@@ -29,12 +29,10 @@
 		transition: filter 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61),
 			opacity 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
-
 	.background.ontimeline {
 		filter: blur(7px);
 		opacity: 0.1;
 	}
-
 	.grey {
 		position: fixed;
 		transform-origin: bottom right;
@@ -45,14 +43,12 @@
 		filter: var(--bg-grayscale);
 		transition:all 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
-
 	.app {
 		display: flex;
 		flex-direction: column;
 		max-width: 99vw;
 		min-height: 100vh;
 	}
-
 	main {
 		flex: 1;
 		display: flex;
@@ -63,7 +59,6 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
-
 	@media (max-width: 800px) {
 		.background {
 			opacity: 0.05;
