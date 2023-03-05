@@ -37,11 +37,11 @@
 
 <div class="radio-group">
 	<button on:click={handleDecrease}
-		><span class="material-symbols-outlined"> remove </span></button>
+		><span class="material-symbols-rounded"> remove </span></button>
 	<button on:click={handleReset}
-		><span class="material-symbols-outlined"> refresh </span></button>
+		><span class="material-symbols-rounded"> refresh </span></button>
 	<button on:click={handleIncrease}
-		><span class="material-symbols-outlined"> add </span></button>
+		><span class="material-symbols-rounded"> add </span></button>
 </div>
 
 <style>

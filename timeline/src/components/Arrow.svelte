@@ -1,8 +1,5 @@
 <script>
 	import { createEventDispatcher } from "svelte";
-	import Fa from "svelte-fa/src/fa.svelte";
-	import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
-	import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 	export let down = false;
 	export let disabled = false;
@@ -29,9 +26,9 @@
 		<div class="circle">
 			<span class="icon">
 				{#if down}
-					<Fa icon={faChevronDown} size="2x" color="var(--color-text)" />
+					<span class="down-arrow material-symbols-rounded"> keyboard_arrow_down </span>
 				{:else}
-					<Fa icon={faChevronUp} size="2x" color="var(--color-text)" />
+					<span class="up-arrow material-symbols-rounded"> keyboard_arrow_up </span>
 				{/if}
 			</span>
 		</div>
@@ -62,16 +59,16 @@
 	}
 
 	.up.hidden {
-		top: -6rem;
+		top: -7rem;
 	}
 
 	.down.hidden {
-		bottom: -6rem;
+		bottom: -7rem;
 	}
 
 	.circle {
-		width: 48px;
-		height: 48px;
+		width: calc(3 * var(--font-size-base));
+		height:  calc(3 * var(--font-size-base));
 		border-radius: 100%;
 		opacity: 0.75;
 		background-color: var(--color-bg-1);
@@ -94,9 +91,14 @@
 		opacity: 0.8;
 	}
 
-	.icon {
-		position: relative;
-		top: 8px;
+	.down-arrow,  .up-arrow {
+		opacity:0.7;
+		font-size: calc(3 * var(--font-size-base));
+	}
+
+	.down-arrow {
+		position:relative;
+		top:3px;
 	}
 
 	.button:disabled,

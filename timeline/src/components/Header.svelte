@@ -56,7 +56,7 @@
 
 		<div class="right">
 			<span
-				class="material-symbols-outlined accessibility"
+				class="material-symbols-rounded accessibility"
 				style="scale: 1.2;"
 				on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
 				on:keydown={(e) => {
