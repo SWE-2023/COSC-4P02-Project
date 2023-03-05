@@ -89,8 +89,8 @@
 	function showArrows(event) {
 		let y = event.clientY;
 		let height = window.innerHeight;
-		upVisible = y < height * 0.25;
-		downVisible = y > height * 0.75;
+		upVisible = y < height * 0.20;
+		downVisible = y > height * 0.80;
 	}
 </script>
 
