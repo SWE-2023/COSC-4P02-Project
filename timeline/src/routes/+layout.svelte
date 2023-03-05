@@ -16,7 +16,7 @@
 				? "background grey ontimeline"
 				: "background grey"}
 			alt="Niagara-on-the-Lake Main Street"
-			src="assets/landing-page-bg-4.png" />
+			src="assets/landing-page-bg-4.webp" />
 	</div>
 	<Footer />
 </div>
