@@ -103,6 +103,7 @@
 	}
 
 	.timescale {
+		font-size:var(--font-size-xsmall);
 		user-select: none;
 		z-index: -9;
 		opacity: 1;
@@ -148,7 +149,7 @@
 		color: var(--color-text);
 		user-select: none;
 		top: -2px;
-		font-size: 13px;
+		font-size: var(--font-size-xsmall);
 		left: 0.2rem;
 		opacity: 0.1;
 
