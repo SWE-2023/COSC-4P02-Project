@@ -11,7 +11,7 @@
 		<slot />
 	</main>
 	<div class="grey">
-		<img
+		<img loading="lazy"
 			class={$page.url.pathname == "/timeline"
 				? "background grey ontimeline"
 				: "background grey"}
@@ -42,7 +42,6 @@
 		right: 0;
 		z-index: -99;
 		filter: var(--bg-grayscale);
-		transition:all 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
 
 	.app {
