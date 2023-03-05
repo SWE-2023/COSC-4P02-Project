@@ -51,21 +51,38 @@
 					style="opacity:{logoOpacity}" /></a>
 		</div>
 
-		<div class="right">
-			<SearchBar currentPage={page}/>
-			<span
-				class="material-symbols-outlined accessibility"
-				style="scale: 1.2;"
-				on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
-				on:keydown={(e) => {
-					if (e.key === "Enter") {
-						isAccessibilityOpen = !isAccessibilityOpen;
-					}
-				}}>settings</span>
-			<AccessibilityMenu
-				bind:open={isAccessibilityOpen}
-				on:themeSelect={handleThemeSelect} />
-		</div>
+		{#if $page.url.pathname == "/timeline"}
+			<div class="right">
+				<SearchBar searchBarOpacity={logoOpacity} />
+				<span
+					class="material-symbols-outlined accessibility"
+					style="scale: 1.2;"
+					on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
+					on:keydown={(e) => {
+						if (e.key === "Enter") {
+							isAccessibilityOpen = !isAccessibilityOpen;
+						}
+					}}>settings</span> 
+				<AccessibilityMenu
+					bind:open={isAccessibilityOpen}
+					on:themeSelect={handleThemeSelect} />	
+			</div>
+		{:else}
+			<div class="right">
+				<span
+					class="material-symbols-outlined accessibility"
+					style="scale: 1.2;"
+					on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
+					on:keydown={(e) => {
+						if (e.key === "Enter") {
+							isAccessibilityOpen = !isAccessibilityOpen;
+						}
+					}}>settings</span>
+				<AccessibilityMenu
+					bind:open={isAccessibilityOpen}
+					on:themeSelect={handleThemeSelect} />
+			</div>
+		{/if}
 	</nav>
 </header>
 
@@ -105,7 +122,9 @@
 	.right {
 		display: flex;
 		justify-content: flex-end;
+		align-items: center;
 		margin-right: 2em;
+		width: 200px;
 	}
 
 	.accessibility {
