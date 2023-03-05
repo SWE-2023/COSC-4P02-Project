@@ -45,7 +45,6 @@
 		left: -2px;
 		font-size:var(--font-size-small);
 		letter-spacing: 0.1em;
-		/* width: 16rem/; */
 		height: auto;
 		background-color: var(--color-bg-1);
 		backdrop-filter: blur(1em);

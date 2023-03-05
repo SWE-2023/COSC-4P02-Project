@@ -7,9 +7,6 @@
 		"Explore the rich history of our town.",
 		"Discover our heritage.",
 		"Travel through time with us.",
-		"Explore the rich history of our town.",
-		"Discover our heritage.",
-		"Travel through time with us.",
 	];
 
 	let currentOption = 0;
