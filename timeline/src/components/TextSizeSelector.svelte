@@ -12,7 +12,7 @@
 	}
 
 	function handleIncrease() {
-		if (size <= 1.8) {
+		if (size <= 2.5) {
 			size += 0.1;
 			set();
 			currentSizeStore.set(size);
@@ -20,7 +20,7 @@
 	}
 
 	function handleDecrease() {
-		if (size >= 0.8) {
+		if (size >= 0.70) {
 			size -= 0.1;
 			set();
 			currentSizeStore.set(size);
@@ -34,13 +34,15 @@
 	}
 </script>
 
-
-<div class="radio-group">
-	<button on:click={handleDecrease}
+<div class="btn-group">
+	<button class=btn disabled>
+		<span class="material-symbols-rounded"> format_size </span>
+	</button>
+	<button class=btn on:click={handleDecrease}
 		><span class="material-symbols-rounded"> remove </span></button>
-	<button on:click={handleReset}
+	<button class=btn on:click={handleReset}
 		><span class="material-symbols-rounded"> refresh </span></button>
-	<button on:click={handleIncrease}
+	<button class=btn on:click={handleIncrease}
 		><span class="material-symbols-rounded"> add </span></button>
 </div>
 
@@ -57,36 +59,45 @@
 		--font-size-xxxxlarge: calc(var(--font-size-base) * 4); /* 4.8rem */
 	}
 
-	.radio-group {
+	.btn-group {
 		display: flex;
 		flex-direction: row;
-		justify-content: center;
+		justify-content: space-between;
 		align-content: center;
+		padding:0 var(--font-size-xxlarge);
 		gap: 5px;
 	}
 
-	.radio-group button {
+	.btn-group .btn {
 		user-select: none;
 		color: var(--color-theme-1);
 		line-height: 0;
-		height: 2rem;
-		width: 2rem;
+		height: calc((var(--font-size-base) * 1) + 1.5rem);
+		width: calc(var(--font-size-base) * 1 + 1.5rem);
 		margin: 0;
 		padding: 0;
 		justify-self: center;
-		background: #0000001e;
-		border-radius: 1rem;
+		background: #0000001a;
+		border-radius: 100rem;
 		border: 1px solid var(--border);
-		font-size: 2rem; /* not variable */
 		font-weight: 900;
 		transition: all 0.12s ease-in-out;
 	}
 
-	.radio-group button:hover {
+	.btn > span {
+		font-size: var(--font-size-medium);
+	}
+
+	.btn-group .btn:disabled, .btn-group .btn:disabled:hover, .btn-group .btn:disabled:active {
+		color: var(--color-text);
+		background:none;
+	}
+
+	.btn-group .btn:hover {
 		background: #00000044;
 	}
 
-	.radio-group button:active {
+	.btn-group .btn:active {
 		background: #00000066;
 		transition: none;
 	}
