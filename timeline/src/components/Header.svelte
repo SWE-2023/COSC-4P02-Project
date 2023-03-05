@@ -3,6 +3,8 @@
 	import { count } from "../store";
 	import AccessibilityMenu from "./AccessibilityMenu.svelte";
 	import Menu from "./Menu.svelte";
+	import SearchBar from "./SearchBar.svelte";
+	import {page} from '$app/stores';
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
@@ -50,6 +52,7 @@
 		</div>
 
 		<div class="right">
+			<SearchBar currentPage={page}/>
 			<span
 				class="material-symbols-outlined accessibility"
 				style="scale: 1.2;"
