@@ -3,6 +3,7 @@
 	export let media;
 	export let image_credit;
 	export let start_date;
+	export let body;
 	let placeholder =
 		"https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
 </script>
@@ -36,9 +37,9 @@
 	<div class="text-component">
 		<h1 class="title">{title}</h1>
 		<p class="date"><i>{start_date}</i></p>
-		<p class="desc">
-			<slot>No Content Provided</slot>
-		</p>
+		{#if body}
+			<p class="desc">{body}</p>
+		{/if}
 	</div>
 </section>
 

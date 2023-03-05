@@ -119,9 +119,8 @@
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}
 					start_date={formatDate(currentItem.start_date)}
-					><p>
-						{currentItem.body ? currentItem.body : "No description provided."}
-					</p></ItemComponents>
+					body={currentItem.body}
+					/>
 			</ItemTransition>
 		</section>
 	{/key}
