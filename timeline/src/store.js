@@ -12,7 +12,7 @@ reduceMotionStore.subscribe(
 
 // current click count
 export const count =
-	typeof localStorage !== "undefined" && parseInt(localStorage.count);
+	typeof localStorage !== "undefined" && parseInt(localStorage.count || 0);
 export const countStore = writable(count);
 countStore.subscribe(
 	(value) => typeof localStorage !== "undefined" && (localStorage.count = value)
@@ -20,7 +20,7 @@ countStore.subscribe(
 
 // current font size
 export const currentSize =
-	typeof localStorage !== "undefined" && parseFloat(localStorage.currentSize);
+	typeof localStorage !== "undefined" && parseFloat(localStorage.currentSize || 1.2);
 export const currentSizeStore = writable(currentSize);
 currentSizeStore.subscribe(
 	(value) =>
