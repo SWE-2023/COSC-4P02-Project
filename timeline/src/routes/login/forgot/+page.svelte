@@ -18,42 +18,25 @@
 </svelte:head>
 
 <PageTransition>
-	<section>
+	<section class="page">
 		<h1>Forgot Password</h1>
 		<p>Enter your email to reset your password</p>
-	</section>
 
-	<div class="forgot-container">
-		<div class="form">
-			<label for="email">Email</label>
-			<input type="text" id="email" bind:value={email} />
+		<div class="forgot-container">
+			<div class="form">
+				<label for="email">Email</label>
+				<input type="text" id="email" bind:value={email} />
+			</div>
+			<Button
+				alt
+				on:click={handleForgotPassword}
+				text="Reset Password"
+				href="/login" />
 		</div>
-		<Button
-			alt
-			on:click={handleForgotPassword}
-			text="Reset Password"
-			href="/login" />
-	</div>
+	</section>
 </PageTransition>
 
 <style>
-	h1 {
-		font-family: var(--font-serif);
-		padding: 2em 0 0 0;
-		font-size: 3.5rem;
-		font-weight: 700;
-		margin: 0;
-	}
-
-	p {
-		padding: 1em 0 1em 0;
-		font-size: 1.5rem;
-		font-weight: 800;
-		margin: 0;
-		text-align: center;
-		text-transform: uppercase;
-	}
-
 	.forgot-container {
 		display: flex;
 		flex-direction: column;
@@ -69,12 +52,10 @@
 	.form label {
 		padding: 0 0 0 1rem;
 		margin-top: 1rem;
-		font-size: 1.2rem;
 	}
 
 	.form input {
 		text-align: left;
-		font-size: 1.2rem;
 		max-width: 30rem;
 		margin: 0.5em 0.5em 2em;
 		padding: 0.8em;

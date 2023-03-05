@@ -2,7 +2,7 @@
 	import { countStore } from "../store.js";
 	import { page } from "$app/stores";
 
-	let countValue = 0;
+	let countValue;
 	countStore.subscribe((value) => {
 		countValue = value;
 	});
@@ -29,7 +29,7 @@
 		position: fixed;
 		bottom: 0;
 		right: 0;
-		font-size: 0.8em;
+		font-size: var(--font-size-xsmall);
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
@@ -37,9 +37,9 @@
 		padding: 0 16px;
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 1000px) {
 		footer {
-			position:relative;
+			position: relative;
 		}
 	}
 </style>

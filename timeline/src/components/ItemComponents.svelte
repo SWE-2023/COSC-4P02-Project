@@ -49,15 +49,15 @@
 	}
 	h1 {
 		font-family: var(--font-serif);
-		font-size: 2.5rem;
+		font-size: var(--font-size-xxlarge);
 		font-weight: 700;
 		margin: 0;
 	}
 
 	p {
 		font-family: var(--font-sans);
+		font-size: var(--font-size-base);
 		padding: 1em 0 1em 0;
-		font-size: 1.2rem;
 		margin: 0.5rem;
 	}
 
@@ -92,7 +92,7 @@
 	.date {
 		text-align: center;
 		padding: 0;
-		font-size: 1.2rem;
+		font-size:var(--font-size-base);
 		font-weight: 400;
 	}
 
@@ -132,7 +132,13 @@
 			text-align: justify;
 		}
 		.title {
-			font-size: 1.5rem;
+			font-size: var(--font-size-large);
+		}
+		.date {
+			font-size: var(--font-size-small);
+		}
+		.desc {
+			font-size: var(--font-size-base);
 		}
 		.image {
 			min-height:0vh;
@@ -157,7 +163,7 @@
 	}
 
 	.image_cred {
-		font-size: 0.8rem;
+		font-size: var(--font-size-xsmall);
 		display: flex;
 		justify-content: center;
 	}

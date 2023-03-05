@@ -38,13 +38,13 @@
 
 <style>
 	.menu {
+		display:flex;
 		z-index: 1;
 		position: fixed;
 		top: 5rem;
 		left: -2px;
-		font-size: 1.15em;
+		font-size:var(--font-size-small);
 		letter-spacing: 0.1em;
-		width: 16rem;
 		height: auto;
 		background-color: var(--color-bg-1);
 		backdrop-filter: blur(1em);

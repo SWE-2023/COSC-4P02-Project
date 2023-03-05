@@ -17,6 +17,7 @@
 	--color-theme-2-light: var(--light-color-theme-2-light);
 
 	--color-text: var(--light-color-text);
+
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 
@@ -53,20 +54,19 @@
 	--hc-color-theme-2-light: #4693ff;
 	--hc-color-text: rgba(255, 255, 255, 1);
 
+	--border: 0px solid white;
 	--background-gradient: linear-gradient(
 		90deg,
 		var(--color-bg-1) 0%,
 		var(--color-bg-2) 100%
 	);
 
-	--menu-border:0px solid white;
-
 	font-family: var(--font-sans);
 	color: var(--color-text);
 }
 
 .menu {
-	border: var(--menu-border);
+	border: var(--border);
 }
 
 ::selection {
@@ -104,13 +104,21 @@ a:hover {
 	text-decoration: underline;
 }
 
-h1 {
-	font-size: 2rem;
+section.page h1 {
+	font-size: var(--font-size-xxxlarge);
+	font-family: var(--font-serif);
+	padding: 2em 0 0 0;
+	font-weight: 700;
 	text-align: center;
+	margin: 0;
 }
 
-h2 {
-	font-size: 1rem;
+section.page p {
+	padding: 1em 0 1em 0;
+	font-size: var(--font-size-base);
+	font-weight: 800;
+	text-align: center;
+	text-transform: uppercase;
 }
 
 .text-column {
@@ -122,30 +130,20 @@ h2 {
 	margin: 0 auto;
 }
 
-input,
-button {
-	font-size: inherit;
+input {
+	font-size: var(--font-size-base);
 	font-family: inherit;
+}
+
+button {
+	font-size: var(--font-size-small);
+	font-family: inherit;
+}
+
+label {
+	font-size: var(--font-size-small);
 }
 
 button:focus:not(:focus-visible) {
 	outline: none;
-}
-
-@media (min-width: 720px) {
-	h1 {
-		font-size: 2.4rem;
-	}
-}
-
-.visually-hidden {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: auto;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	width: 1px;
-	white-space: nowrap;
 }

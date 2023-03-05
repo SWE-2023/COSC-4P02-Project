@@ -28,8 +28,8 @@
 
 	.dot:hover {
 		cursor: pointer;
-		width: 5rem;
-		height: 1rem;
+		width: calc(2 * var(--font-size-small) + 4rem);
+		height: var(--font-size-small);
 		transform: scale(1.2);
 	}
 </style>
