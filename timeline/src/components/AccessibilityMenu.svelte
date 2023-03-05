@@ -2,13 +2,17 @@
 	import { fly } from "svelte/transition";
 	import { reduceMotionStore } from "../store";
 	import { createEventDispatcher } from "svelte";
+	import TextSizeSelector from "./TextSizeSelector.svelte";
 
 	export let open;
-	export let reduceMotion = false;
+
+	let reduceMotion;
+	reduceMotionStore.subscribe((value) => {
+		reduceMotion = value;
+	});
 
 	function toggleReduceMotion() {
-		reduceMotion = !reduceMotion;
-		reduceMotionStore.set(reduceMotion);
+		reduceMotionStore.set(!reduceMotion);
 	}
 
 	let nextTheme = "Dark Mode";
@@ -57,7 +61,7 @@
 			root.style.setProperty("--button-color", "#ffffff");
 			root.style.setProperty("--button-hover-color", "#000000");
 			root.style.setProperty("--button-active-background", "#ffffff");
-			root.style.setProperty("--menu-border", "1px solid white");
+			root.style.setProperty("--border", "2px solid white");
 			dispatcher("themeSelect", "lightText");
 			nextTheme = "Light Mode";
 		}
@@ -83,7 +87,7 @@
 		root.style.setProperty("--button-color", "#ffffff");
 		root.style.setProperty("--button-hover-color", "#000000");
 		root.style.setProperty("--button-active-background", "#ffffff");
-		root.style.setProperty("--menu-border", "1px solid white");
+		root.style.setProperty("--border", "2px solid white");
 		dispatcher("themeSelect", "light");
 	}
 </script>
@@ -91,20 +95,23 @@
 {#if open}
 	<div class="menu" transition:fly={{ x: 100 }}>
 		<div class="am-title">Accesibility Options</div>
-		<ul >
+		<TextSizeSelector />
+		<ul>
 			<li transition:fly={{ x: 24, delay: 50 }}>
 				<span
 					id="light_dark_theme"
 					on:click={toggleLightorDark}
-					on:keypress={toggleLightorDark}>{nextTheme}</span>
+					on:keydown>{nextTheme}</span>
 			</li>
 			<li transition:fly={{ x: 24, delay: 100 }}>
 				<span on:click={toggleContrast} on:keydown={toggleContrast}
 					>High Constrast</span>
 			</li>
 			<li transition:fly={{ x: 24, delay: 100 }}>
-				<span class={reduceMotion ? "active" : ""} on:click={toggleReduceMotion} on:keydown={toggleReduceMotion}
-					>Reduce Motion</span>
+				<span
+					class={reduceMotion ? "active" : ""}
+					on:click={toggleReduceMotion}
+					on:keydown>Reduce Motion</span>
 			</li>
 		</ul>
 	</div>
@@ -112,7 +119,7 @@
 
 <style>
 	.am-title {
-		font-size: 1em;
+		font-size: var(--font-size-small);
 		font-weight: 600;
 		padding: 2em 1em 1em 3em;
 		margin: 0;
@@ -120,36 +127,37 @@
 		text-decoration: none;
 	}
 	.menu {
+		display: flex;
+		flex-direction: column;
 		z-index: 1;
 		position: fixed;
 		top: 5rem;
 		left: unset;
 		right: -2px;
-		font-size: 1.15em;
+		font-size: var(--font-size-small);
 		letter-spacing: 0.1em;
-		width: 20rem;
 		height: auto;
 		background-color: var(--color-bg-1);
 		backdrop-filter: blur(1em);
 		box-shadow: 0 0 1em rgba(16, 13, 46, 0.2);
 		border-radius: 1em 0 0 1em;
 	}
-	
+
 	ul {
 		list-style: none;
 		padding: 0;
 	}
-	
+
 	li {
 		color: var(--color-text);
 		cursor: pointer;
 		padding: 1.5em 0;
 		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
 	}
-	
+
 	.active {
 		color: var(--color-theme-1);
-		font-weight:700;
+		font-weight: 700;
 	}
 
 	li > * {

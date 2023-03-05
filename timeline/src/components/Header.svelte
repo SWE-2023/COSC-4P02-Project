@@ -1,9 +1,10 @@
 <script>
 	import { Hamburger } from "svelte-hamburgers";
-	import { count } from "../store";
+	import { countStore } from "../store";
+	import { onMount } from "svelte";
+	import { set } from './TextSizeSelector.svelte';
 	import AccessibilityMenu from "./AccessibilityMenu.svelte";
 	import Menu from "./Menu.svelte";
-	import FontSize from './TextSizeSelector.svelte';
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
@@ -19,6 +20,15 @@
 		scrollY = window.scrollY;
 		logoOpacity = scrollY > 42 ? 0 : 1;
 	}
+
+	function count() {
+		countStore.update((n) => Number(n) + 1);
+	}
+
+	onMount(() => {
+		set();
+	});
+
 </script>
 
 <svelte:window on:scroll={handleScroll} />
@@ -37,14 +47,8 @@
 			<Menu bind:open={isMenuOpen} />
 			<a href="/"
 				><img
-					on:click={() => {
-						count.update((n) => n + 1);
-					}}
-					on:keypress={(e) => {
-						if (e.key === "Enter") {
-							count.update((n) => n + 1);
-						}
-					}}
+					on:click={count}
+					on:keypress={count}
 					src={isTheme
 						? "assets/notl-museum.svg"
 						: "assets/notl-museum-dark.svg"}
@@ -52,10 +56,6 @@
 					class="logo"
 					id="notl_logo"
 					style="opacity:{logoOpacity}" /></a>
-		</div>
-
-		<div class="sizeChange">
-			<FontSize />
 		</div>
 
 		<div class="right">
@@ -115,7 +115,7 @@
 	}
 
 	.accessibility {
-		padding: 1rem 1rem 1rem 1rem;
+		padding: 1rem;
 		user-select: none;
 		color: var(--color-theme-1);
 		transform: rotate(0);
