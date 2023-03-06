@@ -1,5 +1,5 @@
 <script>
-	import { timeDataTemp } from "../lib/timeDataTemp";
+	import Text2Speech from "./Text2Speech.svelte";
 	export let title;
 	export let media;
 	export let image_credit;
@@ -39,7 +39,9 @@
 		<h1 class="title">{title}</h1>
 		<p class="date"><i>{start_date}</i></p>
 		{#if body}
+		
 			<p class="desc">{body}</p>
+			<Text2Speech {title} {start_date} {body}></Text2Speech>
 		{/if}
 	</div>
 </section>

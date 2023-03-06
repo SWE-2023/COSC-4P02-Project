@@ -4,21 +4,12 @@
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
-<<<<<<< HEAD
-	
-=======
 	import { format } from "date-fns";
->>>>>>> d93c3761230fba9575e3a40b17d299b51b9e73a4
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
 
-<<<<<<< HEAD
-
-	
-	let timeData = timeDataTemp;
-=======
 	// makes date readable
 	function formatDate(date) {
 		if (date.slice(5) == "01-01") {
@@ -31,7 +22,6 @@
 		return format(date, "MMMM d, yyyy");
 	}
 
->>>>>>> d93c3761230fba9575e3a40b17d299b51b9e73a4
 	let transitionDirection;
 	let selectedItem = timeline[0];
 
