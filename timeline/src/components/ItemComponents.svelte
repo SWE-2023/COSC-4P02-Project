@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import Text2Speech from "./Text2Speech.svelte";
+	import Text2Speech from "./TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	export let title;
 	export let media;
