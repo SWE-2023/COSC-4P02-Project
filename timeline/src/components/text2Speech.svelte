@@ -1,102 +1,118 @@
 <script>
-    import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
-    import { faStop } from "@fortawesome/free-solid-svg-icons";
-    import Fa from "svelte-fa/src/fa.svelte";
-    import { onDestroy } from 'svelte';
-    
- 
-   
-    let speaking = false;
-    let currentUtterance;
-    export let body;
-    export let title;
-    export let start_date;
- 
-    //export let image_credit;
+	import { onDestroy, onMount } from "svelte";
+
+	export let body;
+	export let title;
+	export let start_date;
 	
+    let speaking = false;
+	let currentUtterance;
+	let voice;
 
-    function text2Speech(){
-        if (!speaking) {
-            const utterance1 = new SpeechSynthesisUtterance(title);
-            const utterance2 = new SpeechSynthesisUtterance(start_date);
-            const utterance3 = new SpeechSynthesisUtterance(body);
-            //const utterance4 = new SpeechSynthesisUtterance(image_credit);
+	function text2Speech() {
+		if (!speaking) {
+			const utterances = [
+				new SpeechSynthesisUtterance(title),
+				new SpeechSynthesisUtterance(start_date),
+				new SpeechSynthesisUtterance(body),
+			];
 
-         
-            
-            utterance1.onend = () => {
-                if (currentUtterance === utterance1) {
-                    currentUtterance = null;
-                    speaking = false;
-                }
-            };
-            utterance2.onend = () => {
-                if (currentUtterance === utterance2) {
-                    currentUtterance = null;
-                    speaking = false;
-                }
-            };
-            utterance3.onend = () => {
-                if (currentUtterance === utterance3) {
-                    currentUtterance = null;
-                    speaking = false;
-                }
-            };
-            currentUtterance = utterance3;
-            speechSynthesis.speak(utterance1);
-            speechSynthesis.speak(utterance2);
-            speechSynthesis.speak(utterance3);
-            //speechSynthesis.speak(utterance4);
-            
-            speaking = true;
-        }
-    }
-   
-    
-    function stop() {
-        if (speaking) {
-            speechSynthesis.cancel();
-            currentUtterance = null;
-            speaking = false;
-           
-            
-        }
-    }
+			utterances.forEach((utterance) => {
+				utterance.voice = voice;
+				utterance.lang = "en-US";
+				utterance.rate = 0.75;
+				utterance.pitch = 1;
+			});
 
-    // clean up speech synthesis resources when component is removed from DOM
-    function cleanupSpeech() {
-        if (speaking) {
-            speechSynthesis.cancel();
-        }
-    }
-    // add event listener to remove event listeners when component is destroyed
-    if (typeof window !== "undefined") {
-        window.addEventListener("unload", cleanupSpeech);
-    }
-   
-    onDestroy( () => {
-        cleanupSpeech();
-    });
-    
+			for (let i = 0; i < utterances.length; i++) {
+				const utterance = utterances[i];
+				utterance.onend = () => {
+					if (currentUtterance === utterance) {
+						currentUtterance = null;
+						speaking = false;
+					}
+				};
+				speechSynthesis.speak(utterance);
+			}
+			currentUtterance = utterances[2];
+			speaking = true;
+		}
+	}
 
-    
-    
+	function stop() {
+		if (speaking) {
+			speechSynthesis.cancel();
+			currentUtterance = null;
+			speaking = false;
+		}
+	}
+
+	// clean up speech synthesis resources when component is removed from DOM
+	function cleanupSpeech() {
+		if (speaking) {
+			speechSynthesis.cancel();
+		}
+	}
+
+	// add event listener to remove event listeners when component is destroyed
+	if (typeof window !== "undefined") {
+		window.addEventListener("unload", cleanupSpeech);
+	}
+
+	onMount(() => {
+		window.speechSynthesis.onvoiceschanged = () => {
+			voice = window.speechSynthesis.getVoices().filter(function (voice) {
+				return voice.name == "Microsoft Zira - English (United States)";
+			})[0];
+		};
+	});
+
+	onDestroy(() => {
+		cleanupSpeech();
+	});
 </script>
 
-<button class = "text2Speech" on:click={text2Speech}> <Fa icon={faVolumeHigh} size="2x" /> </button>
-&nbsp; &nbsp;
-<button class = "text2Speech" on:click={stop}> <Fa icon={faStop} size="2x" /> </button>
-
+<div class="tts-container">
+	{#if speaking}
+		<button title="Stop Reading" class="text2Speech" on:click={stop}>
+			<span class="material-symbols-rounded">stop</span>
+		</button>
+	{:else}
+		<button title="Read Aloud" class="text2Speech" on:click={text2Speech}>
+			<span class="material-symbols-rounded">volume_up</span>
+		</button>
+	{/if}
+</div>
 
 <style>
-    .text2Speech{
-        opacity:0.5;
-        cursor:pointer;
-        display:inline-flex;
-        border:none;
-        background:transparent;
-    
-    }
+	.tts-container {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		margin: calc(-1 * var(--font-size-xxlarge)) 0 0 0;
+	}
 
+	.text2Speech {
+		color: var(--color-text);
+		opacity: 0.8;
+		cursor: pointer;
+		display: inline-flex;
+		border: none;
+		background: transparent;
+		transition: all 0.2s ease-in-out;
+	}
+
+	.text2Speech span {
+		font-size: var(--font-size-large);
+		transition: transform 0.2s ease-in-out;
+	}
+
+	.text2Speech:hover span {
+		transform: scale(1.1);
+	}
+
+	.text2Speech:hover {
+		opacity: 1;
+		color: var(--color-theme-1);
+	}
 </style>
-

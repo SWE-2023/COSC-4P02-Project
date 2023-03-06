@@ -38,6 +38,7 @@
 
 <style>
 	.menu {
+		user-select:none;
 		display:flex;
 		z-index: 1;
 		position: fixed;
