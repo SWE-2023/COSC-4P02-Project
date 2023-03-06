@@ -1,5 +1,9 @@
 <script>
+
+
 	import Text2Speech from "./Text2Speech.svelte";
+	import Fullscreen from "svelte-fullscreen";
+
 	export let title;
 	export let media;
 	export let image_credit;
@@ -11,23 +15,30 @@
 
 <section class="item-components">
 	<div class="media-component">
+		<Fullscreen let:onToggle>
 		<div class="image-cont">
+			<p class = "tip"> <strong>Tip:</strong> Click the picture to enter fullscreen and click again to exit.</p>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			{#if media}
 				{#if media.includes("youtube.com")}
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<iframe
 						class="video"
 						title="youtube video"
 						src={media.replace("watch?v=", "embed/")}
 						frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen />
+						allowfullscreen
+						 />
 				{:else}
-					<img class="image" src={media} alt={title} />
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<img class="image" src={media} alt={title} on:click={() => onToggle()} />
 				{/if}
 			{:else}
-				<img class="image" src={placeholder} alt={title} />
+				<img class="image" src={placeholder} alt={title} on:click={() => onToggle()} />
 			{/if}
 		</div>
+	</Fullscreen>
 		{#if image_credit != "null"}
 			<div class="image_cred">
 				<a href={image_credit}  target="_blank" rel="noreferrer"
@@ -186,6 +197,9 @@
 		opacity: 1;
 		color: var(--color-theme-2);
 		text-decoration: none;
+	}
+	.tip{
+		opacity:0.5;
 	}
 
 	
