@@ -77,6 +77,7 @@
 
 <style>
 	.line {
+		border-radius:25px;
 		position: fixed;
 		width: 4px;
 		background-color: var(--color-theme-1);
@@ -92,7 +93,7 @@
 
 	.line-components {
 		position: fixed;
-		left: 34px;
+		left: 36px;
 		transition: left 0.5s ease-in-out;
 	}
 
@@ -103,7 +104,7 @@
 	}
 
 	.timescale {
-		font-size:var(--font-size-xsmall);
+		font-size:var(--font-size-small);
 		user-select: none;
 		z-index: -9;
 		opacity: 1;
@@ -149,7 +150,7 @@
 		color: var(--color-text);
 		user-select: none;
 		top: calc(var(--font-size-small) * -0.05);
-		font-size: var(--font-size-xsmall);
+		font-size: var(--font-size-small);
 		left: 0.2rem;
 		opacity: 0.1;
 
