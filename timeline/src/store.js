@@ -1,11 +1,28 @@
-import { writable } from 'svelte/store';
+import { writable } from "svelte/store";
 
-export const reduceMotionStore = writable(false);
-export let count = writable(0);
+// current motion preference
+export const reduceMotion =
+    typeof localStorage !== "undefined" && (localStorage.reduceMotion === "true");
+export const reduceMotionStore = writable(reduceMotion);
+reduceMotionStore.subscribe(
+    (value) =>
+        typeof localStorage !== "undefined" &&
+        (localStorage.reduceMotion = value)
+);
 
-// make count store locally
-export const countStore = {
-	subscribe: count.subscribe,
-	set: count.set,
-	update: count.update,
-};
+// current click count
+export const count =
+	typeof localStorage !== "undefined" && parseInt(localStorage.count || 0);
+export const countStore = writable(count);
+countStore.subscribe(
+	(value) => typeof localStorage !== "undefined" && (localStorage.count = value)
+);
+
+// current font size
+export const currentSize =
+	typeof localStorage !== "undefined" && parseFloat(localStorage.currentSize || 1.2);
+export const currentSizeStore = writable(currentSize);
+currentSizeStore.subscribe(
+	(value) =>
+		typeof localStorage !== "undefined" && (localStorage.currentSize = value)
+);
