@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Button from "../components/Button.svelte";
-	import { fade, blur, slide } from "svelte/transition";
+	import { slide } from "svelte/transition";
 	import PageTransitionFly from "../components/PageTransitionFly.svelte";
-	import PageTransitionFade from "../components/PageTransitionFade.svelte";
 
 	let headerText = [
 		"Explore the rich history of our town.",
@@ -29,24 +28,24 @@
 		</h1>
 
 		{#key headerText[currentOption]}
-				<h1 class="subtitle" transition:slide>{headerText[currentOption]}</h1>
+			<h1 class="subtitle" transition:slide>{headerText[currentOption]}</h1>
 		{/key}
 
 		<p class="subtext">
-			A digital interactive timeline of the history of the Niagara-on-the-Lake
+			An interactive timeline of the history of the Niagara-on-the-Lake
 		</p>
-
-		<Button href="/timeline" text="Explore the Timeline" />
+		<div style="display:inline-block">
+			<Button href="/timeline" text="Explore the Timeline" />
+		</div>
 	</section>
 </PageTransitionFly>
 
-<style lang="scss">
-
+<style>
 	.title {
 		font-family: Georgia, "Times New Roman", Times, serif;
 		padding: 2em 0 0 0;
 		text-align: start;
-		font-size: 3.5rem;
+		font-size: var(--font-size-xxxlarge);
 		font-weight: 700;
 		margin: 0;
 	}
@@ -55,7 +54,7 @@
 		font-family: var(--font-serif);
 		padding: 1em 0 0 0;
 		text-align: start;
-		font-size:2.5rem;
+		font-size: var(--font-size-xxlarge);
 		font-weight: 700;
 		margin: 0;
 	}
@@ -63,23 +62,23 @@
 	.subtext {
 		padding: 1em 0 1em 0;
 		text-align: start;
-		font-size: 1.5rem;
+		font-size: var(--font-size-medium);
 		font-weight: 800;
 		margin: 0;
 		text-transform: uppercase;
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 1000px) {
 		.title {
-			font-size: 2.5rem;
+			font-size: var(--font-size-xxlarge);
 		}
 
 		.subtitle {
-			font-size: 1.5rem;
+			font-size: var(--font-size-medium);
 		}
 
 		.subtext {
-			font-size: 1rem;
+			font-size: var(--font-size-small);
 		}
 	}
 </style>

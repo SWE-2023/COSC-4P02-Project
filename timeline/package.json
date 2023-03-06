@@ -21,7 +21,6 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
-		"sass": "^1.58.3",
 		"scss": "^0.2.4",
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
@@ -33,6 +32,8 @@
 	"dependencies": {
 		"@fortawesome/free-brands-svg-icons": "^6.3.0",
 		"@fortawesome/free-solid-svg-icons": "^6.3.0",
+		"@supabase/supabase-js": "^2.10.0",
+		"date-fns": "^2.29.3",
 		"flowbite-svelte": "^0.29.13",
 		"sapper": "^0.29.3",
 		"svelte-fa": "^3.0.3",
