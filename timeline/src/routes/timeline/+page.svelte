@@ -5,10 +5,12 @@
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
+	
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
+
 
 	// makes date readable
 	function formatDate(date) {
