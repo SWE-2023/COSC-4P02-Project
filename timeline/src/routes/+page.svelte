@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import Button from "../components/Button.svelte";
 	import { slide } from "svelte/transition";
 	import PageTransitionFly from "../components/PageTransitionFly.svelte";

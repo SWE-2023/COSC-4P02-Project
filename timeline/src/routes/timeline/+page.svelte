@@ -5,10 +5,12 @@
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
+	
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
+
 
 	// makes date readable
 	function formatDate(date) {
@@ -92,6 +94,9 @@
 		upVisible = y < height * 0.20;
 		downVisible = y > height * 0.80;
 	}
+
+	
+	
 </script>
 
 <svelte:head>
@@ -114,6 +119,7 @@
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
+				
 				<ItemComponents
 					title={currentItem.title}
 					media={currentItem.image}
@@ -122,8 +128,13 @@
 					body={currentItem.body}
 					/>
 			</ItemTransition>
+			
+			
+		
 		</section>
+		
 	{/key}
+	
 
 	<Arrow down on:moveDown={pageDown} disabled={atLast} visible={downVisible} />
 </PageTransitionFade>

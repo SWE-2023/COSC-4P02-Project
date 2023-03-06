@@ -151,6 +151,7 @@
 		text-decoration: none;
 	}
 	.menu {
+		user-select:none;
 		display: flex;
 		flex-direction: column;
 		z-index: 1;
