@@ -70,7 +70,7 @@
 		width: calc(3 * var(--font-size-base));
 		height:  calc(3 * var(--font-size-base));
 		border-radius: 100%;
-		opacity: 0.75;
+		opacity: 0.7;
 		background-color: var(--color-bg-1);
 		border: 3px solid var(--light-color-bg-1);
 		box-shadow: 2px 2px 5px 1px #00000022;
@@ -88,11 +88,11 @@
 	.circle:hover,
 	.button:hover > .circle {
 		border: 3px solid var(--color-theme-2-light);
-		opacity: 0.8;
+		opacity: 1;
 	}
 
 	.down-arrow,  .up-arrow {
-		opacity:0.7;
+		color: var(--color-text);
 		font-size: calc(3 * var(--font-size-base));
 	}
 
