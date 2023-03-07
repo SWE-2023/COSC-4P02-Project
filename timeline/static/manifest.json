@@ -8,6 +8,8 @@
 	"shortcuts": [
 		{
 		  "name": "View Timeline",
+		  "icon": "favicon (96x96).png",
+		  "sizes": "96x96",
 		  "short_name": "Timeline",
 		  "description": "View the timeline",
 		  "url": "/timeline"
@@ -17,7 +19,8 @@
 	  {
 		"src": "favicon.png",
 		"sizes": "512x512",
-		"type": "image/png"
+		"type": "image/png",
+		"purpose": "maskable any"
 	  }
 	]
 	

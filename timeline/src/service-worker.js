@@ -1,74 +1,62 @@
-/// <reference lib="webworker" />
-
-const { build, files, timestamp } = self.$serviceWorker;
-const worker = self;
-const FILES = `cache${timestamp}`;
-
-const to_cache = build.concat(files);
-const staticAssets = new Set(to_cache);
-
-worker.addEventListener('install', (event) => {
-	event.waitUntil(
-		caches
-			.open(FILES)
-			.then((cache) => cache.addAll(to_cache))
-			.then(() => {
-				worker.skipWaiting();
-			})
-	);
+/// <reference types="@sveltejs/kit" />
+import { build, files, version } from '$service-worker';
+ 
+// Create a unique cache name for this deployment
+const CACHE = `cache-${version}`;
+ 
+const ASSETS = [
+  ...build, // the app itself
+  ...files  // everything in `static`
+];
+ 
+self.addEventListener('install', (event) => {
+  // Create a new cache and add all files to it
+  async function addFilesToCache() {
+    const cache = await caches.open(CACHE);
+    await cache.addAll(ASSETS);
+  }
+ 
+  event.waitUntil(addFilesToCache());
 });
-
-worker.addEventListener('activate', (event) => {
-	event.waitUntil(
-		caches.keys().then(async (keys) => {
-			// delete old caches
-			for (const key of keys) {
-				if (key !== FILES) await caches.delete(key);
-			}
-
-			worker.clients.claim();
-		})
-	);
+ 
+self.addEventListener('activate', (event) => {
+  // Remove previous cached data from disk
+  async function deleteOldCaches() {
+    for (const key of await caches.keys()) {
+      if (key !== CACHE) await caches.delete(key);
+    }
+  }
+ 
+  event.waitUntil(deleteOldCaches());
 });
-
-/**
- * Fetch the asset from the network and store it in the cache.
- * Fall back to the cache if the user is offline.
- */
-async function fetchAndCache(request) {
-	const cache = await caches.open(`offline${timestamp}`);
-
-	try {
-		const response = await fetch(request);
-		cache.put(request, response.clone());
-		return response;
-	} catch (err) {
-		const response = await cache.match(request);
-		if (response) return response;
-
-		throw err;
-	}
-}
-
-worker.addEventListener('fetch', (event) => {
-	if (event.request.method !== 'GET' || event.request.headers.has('range')) return;
-
-	const url = new URL(event.request.url);
-
-	// don't try to handle e.g. data: URIs
-	const isHttp = url.protocol.startsWith('http');
-	const isDevServerRequest =
-		url.hostname === self.location.hostname && url.port !== self.location.port;
-	const isStaticAsset = url.host === self.location.host && staticAssets.has(url.pathname);
-	const skipBecauseUncached = event.request.cache === 'only-if-cached' && !isStaticAsset;
-
-	if (isHttp && !isDevServerRequest && !skipBecauseUncached) {
-		event.respondWith(
-			(async () => {
-				const cachedAsset = isStaticAsset && (await caches.match(event.request));
-
-				return cachedAsset || fetchAndCache(event.request);
-			})()
-		);
-	}
+ 
+self.addEventListener('fetch', (event) => {
+  // ignore POST requests etc
+  if (event.request.method !== 'GET') return;
+ 
+  async function respond() {
+    const url = new URL(event.request.url);
+    const cache = await caches.open(CACHE);
+ 
+    // `build`/`files` can always be served from the cache
+    if (ASSETS.includes(url.pathname)) {
+      return cache.match(event.request);
+    }
+ 
+    // for everything else, try the network first, but
+    // fall back to the cache if we're offline
+    try {
+      const response = await fetch(event.request);
+ 
+      if (response.status === 200) {
+        cache.put(event.request, response.clone());
+      }
+ 
+      return response;
+    } catch {
+      return cache.match(event.request);
+    }
+  }
+ 
+  event.respondWith(respond());
 });

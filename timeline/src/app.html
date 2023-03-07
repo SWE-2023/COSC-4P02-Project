@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+<script>
+	if ('serviceWorker' in navigator) {
+	  window.addEventListener('load', () => {
+		navigator.serviceWorker.register('./service-worker.js')
+		  .then((reg) => console.log('Service worker registered.', reg))
+		  .catch((err) => console.log('Service worker registration failed.', err));
+	  });
+	}
+  </script>
 		<meta charset="utf-8" />
+		<meta name="theme-color" content="#ffffff" />
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/favicon.png" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="manifest" crossorigin="use-credentials" href="%sveltekit.assets%/manifest.json" />
