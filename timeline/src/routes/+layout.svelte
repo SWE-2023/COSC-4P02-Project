@@ -1,6 +1,6 @@
 <script>
-	import Header from "../components/Header.svelte";
-	import Footer from "../components/Footer.svelte";
+	import Header from "$lib/components/Header.svelte";
+	import Footer from "$lib/components/Footer.svelte";
 	import { page } from "$app/stores";
 	import "./styles.css";
 </script>
@@ -62,7 +62,7 @@
 		box-sizing: border-box;
 	}
 
-	@media (max-width: 800px) {
+	@media (max-width: 1000px) {
 		.background {
 			opacity: 0.05;
 		}
