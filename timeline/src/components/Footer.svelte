@@ -39,7 +39,8 @@
 
 	@media (max-width: 1000px) {
 		footer {
-			position: relative;
+			z-index:-99;
+			opacity:0.1;
 		}
 	}
 </style>

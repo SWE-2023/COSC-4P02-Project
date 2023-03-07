@@ -5,12 +5,10 @@
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
-	
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
-
 
 	// makes date readable
 	function formatDate(date) {
@@ -89,14 +87,16 @@
 	let downVisible = false;
 
 	function showArrows(event) {
+		if (window.innerWidth < 1000) {
+			upVisible = true;
+			downVisible = true;
+			return;
+		}
 		let y = event.clientY;
 		let height = window.innerHeight;
-		upVisible = y < height * 0.20;
-		downVisible = y > height * 0.80;
+		upVisible = y < height * 0.2;
+		downVisible = y > height * 0.8;
 	}
-
-	
-	
 </script>
 
 <svelte:head>
@@ -124,20 +124,17 @@
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}
 					start_date={formatDate(currentItem.start_date)}
-					body={currentItem.body}
-					/>
+					body={currentItem.body} />
 			</ItemTransition>
 		</section>
-		
 	{/key}
-	
 
 	<Arrow down on:moveDown={pageDown} disabled={atLast} visible={downVisible} />
 </PageTransitionFade>
 
 <style>
 	.layout {
-		min-height: 72vh;
+		min-height: 100vh;
 		width: 100%;
 		display: flex;
 		justify-content: center;
@@ -148,6 +145,7 @@
 	@media (max-width: 1000px) {
 		.layout {
 			margin-left: var(--font-size-medium);
+			margin-bottom:10rem;
 		}
 	}
 </style>

@@ -131,7 +131,7 @@
 	.date {
 		color: var(--color-text);
 		user-select: none;
-		top: calc(var(--font-size-small) * -0.05);
+		top: calc(var(--font-size-small) * -0.2);
 		font-size: var(--font-size-small);
 		left: 0.2rem;
 		opacity: 0.1;
@@ -139,8 +139,7 @@
 		transform-origin: center;
 		z-index: -2;
 		padding: 0 2.5rem 0 2rem;
-		transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out,
-			color 0.15s ease-in-out, padding 0.5s ease-in-out;
+		transition: all 0.15s ease-in-out;
 	}
 
 	@media (max-width: 1000px) {
@@ -158,11 +157,12 @@
 		}
 	}
 
-	.lineItem:hover .date {
+	.lineItem:hover .date, .lineItem:focus-within .date, .lineItem:focus .date, .lineItem:active .date {
 		cursor: pointer;
 		color: #e0dbd4; /* doesnt change since background is red */
 		transform: scale(1.2);
 		opacity: 1;
+		top: calc(var(--font-size-small) * 0);
 		z-index: 111;
 	}
 </style>

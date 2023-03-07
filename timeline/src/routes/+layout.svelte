@@ -62,7 +62,7 @@
 		box-sizing: border-box;
 	}
 
-	@media (max-width: 800px) {
+	@media (max-width: 1000px) {
 		.background {
 			opacity: 0.05;
 		}
