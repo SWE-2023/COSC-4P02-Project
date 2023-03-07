@@ -85,22 +85,10 @@
 		transition: left 0.5s ease-in-out;
 	}
 
-	@media (max-width: 1000px) {
-		.line {
-			left: -2px;
-		}
-	}
-
 	.line-components {
 		position: fixed;
 		left: 36px;
 		transition: left 0.5s ease-in-out;
-	}
-
-	@media (max-width: 1000px) {
-		.line-components {
-			left: -9px;
-		}
 	}
 
 	.timescale {
@@ -117,12 +105,6 @@
 		left: 2.5rem;
 		padding: 0;
 		transition: left 0.5s ease-in-out;
-	}
-
-	@media (max-width: 1000px) {
-		.timescale {
-			left: 1.5rem;
-		}
 	}
 
 	li {
@@ -162,8 +144,17 @@
 	}
 
 	@media (max-width: 1000px) {
+		.line {
+			left: -2px;
+		}
+		.timescale {
+			left: 1.5rem;
+		}
 		.date {
 			padding: 0 2.5rem 0 1rem;
+		}
+		.line-components {
+			left: -5px;
 		}
 	}
 

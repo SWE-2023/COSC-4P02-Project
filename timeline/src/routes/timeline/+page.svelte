@@ -119,7 +119,6 @@
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
-				
 				<ItemComponents
 					title={currentItem.title}
 					media={currentItem.image}
@@ -128,9 +127,6 @@
 					body={currentItem.body}
 					/>
 			</ItemTransition>
-			
-			
-		
 		</section>
 		
 	{/key}
@@ -146,5 +142,12 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		transition: margin-left 0.5s ease;
+	}
+
+	@media (max-width: 1000px) {
+		.layout {
+			margin-left: var(--font-size-medium);
+		}
 	}
 </style>
