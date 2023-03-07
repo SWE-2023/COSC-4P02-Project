@@ -1,18 +1,17 @@
 {
-	"name": "NOTL Museum | Interactive Timeline",
+	"name": "Niagara-on-the-Lake Interactive Timeline",
 	"short_name": "NOTL Timeline",
 	"start_url": "/",
-	"display": "standalone",
+	"display": "fullscreen",
 	"background_color": "#ffffff",
 	"theme_color": "#000000",
 	"shortcuts": [
 		{
 		  "name": "View Timeline",
-		  "icon": "favicon (96x96).png",
-		  "sizes": "96x96",
 		  "short_name": "Timeline",
 		  "description": "View the timeline",
-		  "url": "/timeline"
+		  "url": "/timeline?utm_source=homescreen",
+		  "icons" : [ { "src": "favicon (96x96).png", "sizes": "96x96" } ]
 		}
 	],
 	"icons": [
