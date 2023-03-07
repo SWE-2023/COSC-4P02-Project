@@ -1,6 +1,6 @@
 <script>
 	import { fly, blur, fade } from "svelte/transition";
-	import { reduceMotionStore } from "../store.js";
+	import { reduceMotionStore } from "$lib/stores/store.js";
 	
 	export let direction;
 

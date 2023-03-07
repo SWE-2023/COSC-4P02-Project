@@ -1,5 +1,5 @@
 <script>
-	import { countStore } from "../store.js";
+	import { countStore } from "$lib/stores/store.js";
 	import { page } from "$app/stores";
 
 	let countValue;

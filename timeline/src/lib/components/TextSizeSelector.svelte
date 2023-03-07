@@ -1,5 +1,5 @@
 <script context="module">
-	import { currentSizeStore } from "../store";
+	import { currentSizeStore } from "$lib/stores/store";
 
 	let size;
 	currentSizeStore.subscribe((value) => {

@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from "svelte";
-	import Dot from "./Dot.svelte";
+	import Dot from "$lib/components/Dot.svelte";
 
 	export let timeData;
 	export let currentItem;

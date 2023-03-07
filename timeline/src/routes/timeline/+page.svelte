@@ -1,9 +1,9 @@
 <script>
-	import ItemTransition from "../../components/ItemTransition.svelte";
-	import TimelineBar from "../../components/TimelineBar.svelte";
-	import Arrow from "../../components/Arrow.svelte";
-	import ItemComponents from "../../components/ItemComponents.svelte";
-	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
+	import ItemTransition from "$lib/components/ItemTransition.svelte";
+	import TimelineBar from "$lib/components/TimelineBar.svelte";
+	import Arrow from "$lib/components/Arrow.svelte";
+	import ItemComponents from "$lib/components/ItemComponents.svelte";
+	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
 
 	export let data;
@@ -30,8 +30,7 @@
 		image: selectedItem.image,
 		image_credit: selectedItem.image_credit,
 		body: selectedItem.body,
-		start_date: selectedItem.start_date,
-		end_date: selectedItem.end_date,
+		start_date: selectedItem.start_date
 	};
 
 	function setComponents() {
@@ -40,8 +39,7 @@
 			image: selectedItem.image,
 			image_credit: selectedItem.image_credit,
 			body: selectedItem.body,
-			start_date: selectedItem.start_date,
-			end_date: selectedItem.end_date,
+			start_date: selectedItem.start_date
 		};
 	}
 

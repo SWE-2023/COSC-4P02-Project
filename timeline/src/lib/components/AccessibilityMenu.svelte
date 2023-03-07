@@ -1,8 +1,8 @@
 <script>
 	import { fly } from "svelte/transition";
-	import { reduceMotionStore } from "../store";
+	import { reduceMotionStore } from "$lib/stores/store";
 	import { createEventDispatcher } from "svelte";
-	import TextSizeSelector from "./TextSizeSelector.svelte";
+	import TextSizeSelector from "$lib/components/TextSizeSelector.svelte";
 
 	export let open;
 

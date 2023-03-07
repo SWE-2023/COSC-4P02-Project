@@ -1,10 +1,10 @@
 <script>
 	import { Hamburger } from "svelte-hamburgers";
-	import { countStore } from "../store";
+	import { countStore } from "$lib/stores/store";
 	import { onMount } from "svelte";
-	import { set } from './TextSizeSelector.svelte';
-	import AccessibilityMenu from "./AccessibilityMenu.svelte";
-	import Menu from "./Menu.svelte";
+	import { set } from "$lib/components/TextSizeSelector.svelte";
+	import AccessibilityMenu from "$lib/components/AccessibilityMenu.svelte";
+	import Menu from "$lib/components/Menu.svelte";
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
@@ -28,7 +28,6 @@
 	onMount(() => {
 		set();
 	});
-
 </script>
 
 <svelte:window on:scroll={handleScroll} />
