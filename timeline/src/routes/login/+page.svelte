@@ -2,20 +2,54 @@
 	import { onMount } from "svelte";
 	import PageTransition from "../../components/PageTransitionFly.svelte";
 	import Button from "../../components/Button.svelte";
+    import supabase from "$lib/supabaseClient";
 
-	let email = "";
-	let password = "";
+	let email="";
+	// let password = "";
 
-	const handleLogin = () => {
-		// console.log(`email: ${email}`);
-		// console.log(`pass: ${password}`);
-		// TODO: add login functionality
-	};
+	// handle logins
+	const magicLinkLogin = async () => {
 
-	const gotoForgot = () => {
-		// console.log("i forgor 💀");
-		// TODO: add forgot password functionality
-	};
+		try{
+			const { error } = await supabase.auth.signInWithOtp({ email });
+		if (error) throw error
+		alert('A login link has been sent to your email')
+		}catch(error){
+			if(error instanceof Error){
+				alert(error.message)
+			}
+		}
+	}
+	
+	// sign out - CONSIDER PUTTING THIS IN SEPARATE COMPONENT FOR ACCOUNT MANAGEMENT
+	const signOut = async () => {
+		try{
+			let {error} = await supabase.auth.signOut();
+			if (error) throw error
+
+		}catch (error) {
+			if (error instanceof Error){
+				alert(error.message)
+			}
+		}
+	}
+
+
+
+	// async function signOut(){
+	// 	const {error} = await supabase.auth.signOut()
+	// }
+
+	// const handleLogin = () => {
+	// 	// console.log(`email: ${email}`);
+	// 	// TODO: add login functionality
+	// 	window.location.href='http://localhost:5173/home'; // CHANGE TO ACTUAL URL ONCE DEPLOYED
+	// };
+
+	// const gotoForgot = () => {
+	// 	// console.log("i forgor 💀");
+	// 	// TODO: add forgot password functionality
+	// };
 </script>
 
 <svelte:head>
@@ -26,20 +60,18 @@
 <PageTransition>
 	<div class="login-container">
 		<h1>Log In</h1>
-		<p>Enter your email and password</p>
+		<p>Enter your email to receive a log in link</p>
 
 		<div class="form">
 			<label for="email">Email</label>
 			<input type="text" id="email" bind:value={email} />
-			<label for="password">Password</label>
-			<input type="password" id="password" bind:value={password} />
+			<!-- <label for="password">Password</label>
+			<input type="password" id="password" bind:value={password} /> -->
 
 			<div class="form-buttons">
-				<Button
-					on:click={gotoForgot}
-					text="Forgot Password?"
-					href="/login/forgot" />
-				<Button alt on:click={handleLogin} text="Log In" href="/" />
+				<Button alt on:click={magicLinkLogin} text="Send Log In Link" />
+				<Button text="Home" href = "/"/>
+				
 			</div>
 		</div>
 	</div>
