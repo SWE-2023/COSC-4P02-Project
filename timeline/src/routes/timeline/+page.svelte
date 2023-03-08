@@ -4,10 +4,18 @@
 	import Arrow from "../../components/Arrow.svelte";
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
+	import SearchBar from "../../components/SearchBar.svelte"
 	import { format } from "date-fns";
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
+	let searchData = []; // Dictionary of titles for search bar to filter thru
+	let dropDownSelection = ""; //for search drop down menu 
+
+	for (let i = 0; i < timeline.length; i ++) {
+		searchData[i] = timeline[i].title.toString();
+	}
+
 	// makes date readable
 	function formatDate(date) {
 		if (date.slice(5) == "01-01") {
@@ -19,6 +27,7 @@
 		}
 		return format(date, "MMMM d, yyyy");
 	}
+
 	let transitionDirection;
 	let selectedItem = timeline[0];
 	let currentItem = {
@@ -76,9 +85,19 @@
 	function showArrows(event) {
 		let y = event.clientY;
 		let height = window.innerHeight;
-		upVisible = y < height * 0.25;
-		downVisible = y > height * 0.75;
+		upVisible = y < height * 0.20;
+		downVisible = y > height * 0.80;
 	}
+
+	function setDropDownItem(){
+		for (let i = 0; i < timeline.length; i ++) {
+			if(timeline[i].title == dropDownSelection){
+				selectedItem = timeline[i];
+			}
+		}
+	}
+
+	let bar0pacity = 1;
 </script>
 
 <svelte:head>
@@ -89,8 +108,16 @@
 <svelte:window on:mousemove={showArrows} />
 
 <PageTransitionFade>
+	<SearchBar  
+		bind:currentDropDownSelection={dropDownSelection} 
+		titles={searchData} 
+		searchBarOpacity={bar0pacity} 
+		on:selectionMade={setDropDownItem} 
+		on:selectionMade={setComponents}
+		on:selectionMade={updateIndex}						
+		on:selectionMade={updateAtFirst}
+		on:selectionMade={updateAtLast}/>
 	<Arrow on:moveUp={pageUp} disabled={atFirst} visible={upVisible} />
-
 	<TimelineBar
 		timeData={timeline}
 		bind:currentItem={selectedItem}
