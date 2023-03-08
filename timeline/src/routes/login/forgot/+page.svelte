@@ -6,7 +6,7 @@
 	let email = "";
 
 	const handleForgotPassword = () => {
-		console.log("i forgor 💀");
+		// console.log("i forgor 💀");
 	};
 </script>
 

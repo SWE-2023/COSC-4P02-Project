@@ -1,5 +1,6 @@
 
-export let timeDataTemp = [
+
+export let eventData = [
 	{
 		id: "1720",
 		creation_date: "",
