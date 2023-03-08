@@ -36,7 +36,6 @@
 		image_credit: selectedItem.image_credit,
 		body: selectedItem.body,
 		start_date: selectedItem.start_date,
-		end_date: selectedItem.end_date,
 	};
 	function setComponents() {
 		currentItem = {
@@ -45,7 +44,6 @@
 			image_credit: selectedItem.image_credit,
 			body: selectedItem.body,
 			start_date: selectedItem.start_date,
-			end_date: selectedItem.end_date,
 		};
 	}
 	let atFirst = true;
