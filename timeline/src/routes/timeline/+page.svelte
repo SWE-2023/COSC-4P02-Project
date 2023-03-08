@@ -2,13 +2,19 @@
 	import ItemTransition from "$lib/components/ItemTransition.svelte";
 	import TimelineBar from "$lib/components/TimelineBar.svelte";
 	import Arrow from "$lib/components/Arrow.svelte";
+	import SearchBar from "$lib/components/SearchBar.svelte";
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
-
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
+	let searchData = []; // Dictionary of titles for search bar to filter thru
+	let dropDownSelection = ""; //for search drop down menu 
+
+	for (let i = 0; i < timeline.length; i ++) {
+		searchData[i] = timeline[i].title.toString();
+	}
 
 	// makes date readable
 	function formatDate(date) {
@@ -24,7 +30,6 @@
 
 	let transitionDirection;
 	let selectedItem = timeline[0];
-
 	let currentItem = {
 		title: selectedItem.title,
 		image: selectedItem.image,
@@ -32,7 +37,6 @@
 		body: selectedItem.body,
 		start_date: selectedItem.start_date
 	};
-
 	function setComponents() {
 		currentItem = {
 			title: selectedItem.title,
@@ -42,15 +46,12 @@
 			start_date: selectedItem.start_date
 		};
 	}
-
 	let atFirst = true;
 	let atLast = false;
 	let currentIndex = 0;
-
 	function updateIndex() {
 		currentIndex = timeline.indexOf(selectedItem);
 	}
-
 	function pageUp() {
 		transitionDirection = "up";
 		if (!atFirst) {
@@ -61,7 +62,6 @@
 			updateAtFirst();
 		}
 	}
-
 	function pageDown() {
 		transitionDirection = "down";
 		if (!atLast) {
@@ -72,18 +72,14 @@
 			updateAtLast();
 		}
 	}
-
 	function updateAtFirst() {
 		atFirst = selectedItem == timeline[0];
 	}
-
 	function updateAtLast() {
 		atLast = selectedItem == timeline[timeline.length - 1];
 	}
-
 	let upVisible = false;
 	let downVisible = false;
-
 	function showArrows(event) {
 		if (window.innerWidth < 1000) {
 			upVisible = true;
@@ -92,9 +88,19 @@
 		}
 		let y = event.clientY;
 		let height = window.innerHeight;
-		upVisible = y < height * 0.2;
-		downVisible = y > height * 0.8;
+		upVisible = y < height * 0.20;
+		downVisible = y > height * 0.80;
 	}
+
+	function setDropDownItem(){
+		for (let i = 0; i < timeline.length; i ++) {
+			if(timeline[i].title == dropDownSelection){
+				selectedItem = timeline[i];
+			}
+		}
+	}
+
+	let bar0pacity = 1;
 </script>
 
 <svelte:head>
@@ -105,8 +111,16 @@
 <svelte:window on:mousemove={showArrows} />
 
 <PageTransitionFade>
+	<SearchBar  
+		bind:currentDropDownSelection={dropDownSelection} 
+		titles={searchData} 
+		searchBarOpacity={bar0pacity} 
+		on:selectionMade={setDropDownItem} 
+		on:selectionMade={setComponents}
+		on:selectionMade={updateIndex}						
+		on:selectionMade={updateAtFirst}
+		on:selectionMade={updateAtLast}/>
 	<Arrow on:moveUp={pageUp} disabled={atFirst} visible={upVisible} />
-
 	<TimelineBar
 		timeData={timeline}
 		bind:currentItem={selectedItem}
