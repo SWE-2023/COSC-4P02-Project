@@ -20,7 +20,6 @@
             showResults = false;
         }
     }
-
 </script>
 
 <div class="container" style="opacity:{searchBarOpacity}">
@@ -31,6 +30,7 @@
 </div>
 <DropDownMenu 
     bind:currentlyTitle={currentDropDownSelection} 
+    bind:currentOpacity={searchBarOpacity}
     show={showResults} 
     list={filtered} 
     on:itemSelected={notify}/>		
