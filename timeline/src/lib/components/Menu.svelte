@@ -47,6 +47,7 @@
 		font-size:var(--font-size-small);
 		letter-spacing: 0.1em;
 		height: auto;
+		width: calc(12 * var(--font-size-base));
 		background-color: var(--color-bg-1);
 		backdrop-filter: blur(1em);
 		box-shadow: 0 0 1em rgba(16, 13, 46, 0.2);
