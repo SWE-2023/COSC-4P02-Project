@@ -50,39 +50,20 @@
 					id="notl_logo"
 					style="opacity:{logoOpacity}" /></a>
 		</div>
-
-		{#if $page.url.pathname == "/timeline"}
-			<div class="right">
-				<SearchBar searchBarOpacity={logoOpacity} />
-				<span
-					class="material-symbols-outlined accessibility"
-					style="scale: 1.2;"
-					on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
-					on:keydown={(e) => {
-						if (e.key === "Enter") {
-							isAccessibilityOpen = !isAccessibilityOpen;
-						}
-					}}>settings</span> 
+		<div class="right">
+			<span
+				class="material-symbols-outlined accessibility"
+				style="scale: 1.2;"
+				on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
+				on:keydown={(e) => {
+					if (e.key === "Enter") {
+						isAccessibilityOpen = !isAccessibilityOpen;
+					}
+				}}>settings</span>
 				<AccessibilityMenu
-					bind:open={isAccessibilityOpen}
-					on:themeSelect={handleThemeSelect} />	
-			</div>
-		{:else}
-			<div class="right">
-				<span
-					class="material-symbols-outlined accessibility"
-					style="scale: 1.2;"
-					on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
-					on:keydown={(e) => {
-						if (e.key === "Enter") {
-							isAccessibilityOpen = !isAccessibilityOpen;
-						}
-					}}>settings</span>
-				<AccessibilityMenu
-					bind:open={isAccessibilityOpen}
-					on:themeSelect={handleThemeSelect} />
-			</div>
-		{/if}
+				bind:open={isAccessibilityOpen}
+				on:themeSelect={handleThemeSelect} />
+		</div>
 	</nav>
 </header>
 
