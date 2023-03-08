@@ -8,7 +8,6 @@
         selectedTitle = itemTitle;
         dispatch("itemSelected");
     }
-
 </script>
 
  <button class="drop-down" on:click={returnItem}><span class="text">{itemTitle}</span></button>
