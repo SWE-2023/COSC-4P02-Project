@@ -5,10 +5,21 @@
 	import ItemComponents from "../../components/ItemComponents.svelte";
 	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
+  	import { onMount } from "svelte";
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
+
+	let searchData = {}; // Dictionary of titles for search bar to filter thru
+
+	function gatherSearchData() {
+		for (let i = 0; i < timeline.length; i ++) {
+			searchData[i] = timeline[i].title;
+
+		}
+
+	}
 
 	// makes date readable
 	function formatDate(date) {
@@ -92,6 +103,12 @@
 		upVisible = y < height * 0.20;
 		downVisible = y > height * 0.80;
 	}
+
+	onMount(() => {
+		gatherSearchData();
+		
+	});
+
 </script>
 
 <svelte:head>
