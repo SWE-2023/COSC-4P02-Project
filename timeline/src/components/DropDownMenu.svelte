@@ -2,20 +2,23 @@
     import { createEventDispatcher } from "svelte";
     import DropDownItem from "./DropDownItem.svelte";
     export let currentlyTitle;
+    export let currentOpacity;
     export let list;
     export let show;
     const dispatch = createEventDispatcher();
     const changeItem = () => dispatch("itemSelected");
-
 </script>
 
 {#if show}
     {#if list.length > 0 }
         {#each list as title}
-            <DropDownItem bind:selectedTitle={currentlyTitle} itemTitle={title} on:itemSelected={changeItem}/>
+            <DropDownItem 
+                bind:selectedTitle={currentlyTitle} 
+                itemTitle={title} 
+                on:itemSelected={changeItem}/>
         {/each}
     {:else}
-        <div class="noResult">No Result!</div>		
+        <div class="noResult" style="opacity:{currentOpacity}">No Result!</div>		
     {/if}	
 {/if}
  
