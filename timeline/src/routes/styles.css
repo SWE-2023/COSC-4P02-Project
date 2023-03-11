@@ -130,6 +130,11 @@ section.page p {
 	margin: 0 auto;
 }
 
+.v-align {
+	display: flex;
+	align-items: center;
+}
+
 input {
 	font-size: var(--font-size-base);
 	font-family: inherit;
