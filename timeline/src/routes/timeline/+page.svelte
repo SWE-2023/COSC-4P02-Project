@@ -94,6 +94,7 @@
 	}
 
 	onMount(() => {
+		// @ts-ignore
 		gatherSearchData();
 		
 	});
