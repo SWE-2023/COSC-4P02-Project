@@ -31,12 +31,12 @@
 	}
 
 	h1 {
-		font-size: 5rem;
+		font-size: var(--font-size-xxxlarge);
 		font-weight: 700;
 		margin: 0;
 	}
 	p {
-		font-size: 1.5rem;
+		font-size: var(--font-size-medium);
 		font-weight: 800;
 		margin: 0;
 		text-align: center;

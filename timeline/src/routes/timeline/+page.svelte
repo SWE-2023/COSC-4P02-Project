@@ -1,9 +1,9 @@
 <script>
-	import ItemTransition from "../../components/ItemTransition.svelte";
-	import TimelineBar from "../../components/TimelineBar.svelte";
-	import Arrow from "../../components/Arrow.svelte";
-	import ItemComponents from "../../components/ItemComponents.svelte";
-	import PageTransitionFade from "../../components/PageTransitionFade.svelte";
+	import ItemTransition from "$lib/components/ItemTransition.svelte";
+	import TimelineBar from "$lib/components/TimelineBar.svelte";
+	import Arrow from "$lib/components/Arrow.svelte";
+	import ItemComponents from "$lib/components/ItemComponents.svelte";
+	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import { format } from "date-fns";
 
 	export let data;
@@ -30,8 +30,7 @@
 		image: selectedItem.image,
 		image_credit: selectedItem.image_credit,
 		body: selectedItem.body,
-		start_date: selectedItem.start_date,
-		end_date: selectedItem.end_date,
+		start_date: selectedItem.start_date
 	};
 
 	function setComponents() {
@@ -40,8 +39,7 @@
 			image: selectedItem.image,
 			image_credit: selectedItem.image_credit,
 			body: selectedItem.body,
-			start_date: selectedItem.start_date,
-			end_date: selectedItem.end_date,
+			start_date: selectedItem.start_date
 		};
 	}
 
@@ -87,10 +85,15 @@
 	let downVisible = false;
 
 	function showArrows(event) {
+		if (window.innerWidth < 1000) {
+			upVisible = true;
+			downVisible = true;
+			return;
+		}
 		let y = event.clientY;
 		let height = window.innerHeight;
-		upVisible = y < height * 0.25;
-		downVisible = y > height * 0.75;
+		upVisible = y < height * 0.2;
+		downVisible = y > height * 0.8;
 	}
 </script>
 
@@ -119,9 +122,7 @@
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}
 					start_date={formatDate(currentItem.start_date)}
-					><p>
-						{currentItem.body ? currentItem.body : "No description provided."}
-					</p></ItemComponents>
+					body={currentItem.body} />
 			</ItemTransition>
 		</section>
 	{/key}
@@ -131,10 +132,18 @@
 
 <style>
 	.layout {
-		min-height: 72vh;
+		min-height: 100vh;
 		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		transition: margin-left 0.5s ease;
+	}
+
+	@media (max-width: 1000px) {
+		.layout {
+			margin-left: var(--font-size-medium);
+			margin-bottom:10rem;
+		}
 	}
 </style>
