@@ -36,7 +36,6 @@
 		"date-fns": "^2.29.3",
 		"esbuild": "^0.17.11",
 		"flowbite-svelte": "^0.29.13",
-		"sapper": "^0.29.3",
 		"svelte-fa": "^3.0.3",
 		"svelte-fullscreen": "^2.0.0",
 		"svelte-hamburgers": "^4.0.1"
