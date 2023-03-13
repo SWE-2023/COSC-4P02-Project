@@ -58,7 +58,6 @@
 
 	function zoom(zoomIn = true) {
 		if (zoomIn) {
-			timelineHeight += 20;
 			globalScale += 20;
 		}
 		else {
@@ -74,7 +73,7 @@
 <span style="height: {timelineHeight}vh;" class="line"/>
 <div class="line-components">
 	{#each timeData as td, i (i)}
-		{#key timelineHeight}
+		{#key globalScale}
 			<div class="lineItem">
 				<div style="top: {getSpacing(td.id)}vh;">
 					<Dot
