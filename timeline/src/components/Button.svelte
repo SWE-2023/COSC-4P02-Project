@@ -26,6 +26,7 @@
 	</a>
 {:else}
 	<a {href} style="scale:{scale}">
+		<!-- remove type=submit if needed -->
 		<button class="button" on:click={click} {disabled}>{text}</button>
 	</a>
 {/if}

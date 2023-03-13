@@ -3,22 +3,84 @@
 	import PageTransition from "../../components/PageTransitionFly.svelte";
 	import Button from "../../components/Button.svelte";
     import supabase from "$lib/supabaseClient";
+    import { error } from "@sveltejs/kit";
 
-	let email="";
-	// let password = "";
+	let loading=false;
+	let email;
+
+	
+	// fetch list of admin emails on page load
+	// export async function load(){
+	// 	const {data} = await supabase.from('Users').select('Email');
+	// 	return {
+	// 		adminEmails: data ?? [],
+	// 	};
+	// }
+
+	// const verifyUserEmail = async (userInput) => {
+
+	// 	const {data} = await supabase.from('Users').select('Email');
+
+	// 	if(data == undefined || data.length == 0){
+	// 		alert("No admin emails registered")
+	// 	}else{
+	// 		let admin_emails = data[0][0];
+	// 		if(admin_emails.includes(userInput)){
+	// 			return true;
+	// 		}else{
+	// 			return false;
+	// 		}
+	// 	}
+	// }
 
 	// handle logins
-	const magicLinkLogin = async () => {
+	const handleLogin = async () => {
 
-		try{
-			const { error } = await supabase.auth.signInWithOtp({ email });
-		if (error) throw error
-		alert('A login link has been sent to your email')
-		}catch(error){
-			if(error instanceof Error){
-				alert(error.message)
+		try {
+			loading=true;
+			console.log(email);
+			
+			// confirm if any admin emails exist
+		
+			const {data} = await supabase.from('users').select('email');
+			if(data == undefined || data.length == 0){
+				console.log(data);
+				alert("No admin emails registered")
+			}else{
+
+				// if email is in auth database, send magic link. Otherwise give error message
+				let admin_emails = data[0][0];
+				if(admin_emails.includes(email)){
+					const {error} = await supabase.auth.signInWithOtp({email});
+					if(error) throw error;
+					alert("A login link has been sent to your email");
+				}else{
+					alert("Please enter a certified admin email")
+					throw error;
+				}
+
 			}
+			
+			// const {error} = await supabase.auth.signInWithOtp({email});
+		} catch (error) {
+			// console.error(err);
+			// alert(error.message);
+			if(error instanceof Error){
+				alert(error.message);
+			}
+		}finally{
+			loading = false;
 		}
+		
+		// try{
+		// 	const { error } = await supabase.auth.signInWithOtp({ email });
+		// if (error) throw error
+		// alert('A login link has been sent to your email')
+		// }catch(error){
+		// 	if(error instanceof Error){
+		// 		alert(error.message)
+		// 	}
+		// }
 	}
 	
 	// sign out - CONSIDER PUTTING THIS IN SEPARATE COMPONENT FOR ACCOUNT MANAGEMENT
@@ -64,13 +126,13 @@
 
 		<div class="form">
 			<label for="email">Email</label>
-			<input type="text" id="email" bind:value={email} />
+			<input type="email" id="email" bind:value={email} placeholder="username@email.com"/>
 			<!-- <label for="password">Password</label>
 			<input type="password" id="password" bind:value={password} /> -->
 
 			<div class="form-buttons">
-				<Button alt on:click={magicLinkLogin} text="Send Log In Link" />
-				<Button text="Home" href = "/"/>
+				<Button on:click={handleLogin} text="Send Log In Link" />
+				<Button alt text="Home" href = "/"/>
 				
 			</div>
 		</div>
