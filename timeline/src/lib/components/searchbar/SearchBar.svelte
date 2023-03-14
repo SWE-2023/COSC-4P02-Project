@@ -1,4 +1,5 @@
 <script>
+	import { currentSizeStore } from "./../../stores/store.js";
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
 
@@ -8,6 +9,7 @@
 	let filtered = [];
 	let search = "";
 	let clicked = false;
+	let screenWidth;
 
 	const dispatch = createEventDispatcher();
 	const notify = () => dispatch("selection");
@@ -22,14 +24,18 @@
 			})
 			.slice(0, 10); // max 10
 	};
+
+	// mkae it so if i click anywhere but the searchbar it closes
 </script>
+
+<svelte:window bind:innerWidth={screenWidth} />
 
 <div class="search-container">
 	<div class="bar">
 		<input
 			type="text"
 			placeholder="Search"
-			class={clicked && (filtered.length == 0) && !search
+			class={clicked && filtered.length == 0 && !search
 				? "search-box"
 				: "search-box has-results"}
 			bind:value={search}
@@ -38,7 +44,16 @@
 				findTitles();
 				clicked = false;
 			}} />
-		<span class="material-symbols-rounded i-search"> search </span>
+		{#if search}
+			<span
+				class="material-symbols-rounded i"
+				on:keydown
+				on:click={() => (search = "")}>
+				close
+			</span>
+		{:else}
+			<span class="material-symbols-rounded i"> search </span>
+		{/if}
 	</div>
 	{#if search && !clicked && filtered.length}
 		<div class="results">
@@ -50,30 +65,32 @@
 					on:selection={() => (clicked = true)} />
 			{/each}
 		</div>
+	{:else}
+		<div class="results" style="pointer-events: none;">
+			<DropDownItem
+				bind:selectedTitle={selection}
+				itemTitle="No results." 
+				/>
+		</div>
 	{/if}
 </div>
 
 <style>
 	:root {
-		--width:calc(20 * var(--font-size-base));
+		--width: calc(20 * var(--font-size-base));
 		--height: calc(2 * var(--font-size-base));
 	}
 
 	.search-container {
 		position: fixed;
-		top:calc(1.85rem + (var(--font-size-xsmall) * -1));
+		top: calc(1.85rem + (var(--font-size-xsmall) * -1));
 		right: calc(5rem + var(--font-size-base));
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		width: var(--width);
-		z-index: 100;
-	}
-
-	@media (max-width: 1000px) {
-		.search-container {
-			right: calc(2rem + var(--font-size-base));
-		}
+		box-sizing: border-box;
+		width: clamp(1rem, 33vw, 30rem);
+		z-index: 99999;
 	}
 
 	.bar {
@@ -83,29 +100,25 @@
 	}
 
 	.search-box {
+		color: var(--color-text);
 		height: var(--height);
 		width: 100%;
-		border: 2px solid var(--color-theme-1);
+		border: 2px solid  var(--color-bg-2);
 		padding: 0.1rem 0 0.1rem 1.5rem;
-		border-radius: var(--font-size-medium);
+		border-radius: var(--font-size-small);
 		font-size: var(--font-size-base);
-		background: var(--color-bg-2);
-		transition: all 0.15s ease-in-out;
-	}
-
-	.search-box:hover {
 		background: var(--color-bg-1);
+		transition: all 0.15s ease-in-out;
 	}
 
 	.search-box:focus {
 		outline: none;
-		background: var(--color-bg-1);
 		border: 2px solid var(--color-theme-1);
 		border-bottom: none;
 	}
 
 	.has-results:focus {
-		border-radius: var(--font-size-medium) var(--font-size-medium) 0 0;
+		border-radius: var(--font-size-small) var(--font-size-small) 0 0;
 	}
 
 	.search-container:focus-within > .results {
@@ -115,21 +128,22 @@
 
 	.results {
 		opacity: 0;
-		height:0px;
+		height: -599px;
 		width: calc(100% - 4px);
 		overflow: hidden;
+		background: var(--color-bg-1);
 		border-left: 2px solid var(--color-theme-1);
 		border-right: 2px solid var(--color-theme-1);
 		border-bottom: 2px solid var(--color-theme-1);
-		border-radius: 0 0 var(--font-size-medium) var(--font-size-medium);
+		border-radius: 0 0 var(--font-size-small) var(--font-size-small);
 		transition: all 0.15s ease-in-out;
 	}
 
-	.i-search {
+	.i {
 		user-select: none;
 		position: absolute;
 		right: calc(0.75 * var(--font-size-base));
 		font-size: var(--font-size-medium);
-		color: var(--color-theme-1);
+		color: var(--color-text);
 	}
 </style>
