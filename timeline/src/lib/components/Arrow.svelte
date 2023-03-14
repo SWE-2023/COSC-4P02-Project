@@ -51,11 +51,11 @@
 	}
 
 	.up {
-		top: 2rem;
+		top: 3rem;
 	}
 
 	.down {
-		bottom: 2rem;
+		bottom: 3rem;
 	}
 
 	.up.hidden {
@@ -70,7 +70,7 @@
 		width: calc(3 * var(--font-size-base));
 		height:  calc(3 * var(--font-size-base));
 		border-radius: 100%;
-		opacity: 0.7;
+		opacity: 0.5;
 		background-color: var(--color-bg-1);
 		border: 3px solid var(--light-color-bg-1);
 		box-shadow: 2px 2px 5px 1px #00000022;
