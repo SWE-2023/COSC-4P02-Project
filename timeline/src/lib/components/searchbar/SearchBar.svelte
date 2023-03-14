@@ -25,10 +25,13 @@
 			.slice(0, 10); // max 10
 	};
 
-	// mkae it so if i click anywhere but the searchbar it closes
+	function handleClickOutside(event) {
+		if (event.target.closest(".search-container")) return;
+		clicked = true;
+	}
 </script>
 
-<svelte:window bind:innerWidth={screenWidth} />
+<svelte:window bind:innerWidth={screenWidth} on:click={handleClickOutside} />
 
 <div class="search-container">
 	<div class="bar">
@@ -66,8 +69,8 @@
 			{/each}
 		</div>
 	{:else}
-		<div class="results" style="pointer-events: none;">
-			<DropDownItem
+		<div class="results" style="pointer-events:none;">
+			<DropDownItem color=grey
 				bind:selectedTitle={selection}
 				itemTitle="No results." 
 				/>
@@ -106,7 +109,7 @@
 		border: 2px solid  var(--color-bg-2);
 		padding: 0.1rem 0 0.1rem 1.5rem;
 		border-radius: var(--font-size-small);
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-small);
 		background: var(--color-bg-1);
 		transition: all 0.15s ease-in-out;
 	}
@@ -128,7 +131,7 @@
 
 	.results {
 		opacity: 0;
-		height: -599px;
+		height: -100px;
 		width: calc(100% - 4px);
 		overflow: hidden;
 		background: var(--color-bg-1);
@@ -143,7 +146,7 @@
 		user-select: none;
 		position: absolute;
 		right: calc(0.75 * var(--font-size-base));
-		font-size: var(--font-size-medium);
+		font-size: var(--font-size-base);
 		color: var(--color-text);
 	}
 </style>
