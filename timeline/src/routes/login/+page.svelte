@@ -40,7 +40,11 @@
 			loading=true;
 			console.log(email);
 			
-			// confirm if any admin emails exist
+			const {error} = await supabase.auth.signInWithOtp({email});
+			if (error) throw error;
+			alert('A login link has been sent to your email')
+			/*
+			confirm if any admin emails exist
 		
 			const {data} = await supabase.from('users').select('email');
 			if(data == undefined || data.length == 0){
@@ -61,7 +65,8 @@
 
 			}
 			
-			// const {error} = await supabase.auth.signInWithOtp({email});
+			const {error} = await supabase.auth.signInWithOtp({email});
+			*/
 		} catch (error) {
 			// console.error(err);
 			// alert(error.message);
