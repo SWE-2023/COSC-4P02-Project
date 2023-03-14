@@ -8,31 +8,6 @@
 	let loading=false;
 	let email;
 
-	
-	// fetch list of admin emails on page load
-	// export async function load(){
-	// 	const {data} = await supabase.from('Users').select('Email');
-	// 	return {
-	// 		adminEmails: data ?? [],
-	// 	};
-	// }
-
-	// const verifyUserEmail = async (userInput) => {
-
-	// 	const {data} = await supabase.from('Users').select('Email');
-
-	// 	if(data == undefined || data.length == 0){
-	// 		alert("No admin emails registered")
-	// 	}else{
-	// 		let admin_emails = data[0][0];
-	// 		if(admin_emails.includes(userInput)){
-	// 			return true;
-	// 		}else{
-	// 			return false;
-	// 		}
-	// 	}
-	// }
-
 	// handle logins
 	const handleLogin = async () => {
 
@@ -43,30 +18,7 @@
 			const {error} = await supabase.auth.signInWithOtp({email});
 			if (error) throw error;
 			alert('A login link has been sent to your email')
-			/*
-			confirm if any admin emails exist
-		
-			const {data} = await supabase.from('users').select('email');
-			if(data == undefined || data.length == 0){
-				console.log(data);
-				alert("No admin emails registered")
-			}else{
-
-				// if email is in auth database, send magic link. Otherwise give error message
-				let admin_emails = data[0][0];
-				if(admin_emails.includes(email)){
-					const {error} = await supabase.auth.signInWithOtp({email});
-					if(error) throw error;
-					alert("A login link has been sent to your email");
-				}else{
-					alert("Please enter a certified admin email")
-					throw error;
-				}
-
-			}
 			
-			const {error} = await supabase.auth.signInWithOtp({email});
-			*/
 		} catch (error) {
 			// console.error(err);
 			// alert(error.message);
@@ -77,15 +29,6 @@
 			loading = false;
 		}
 		
-		// try{
-		// 	const { error } = await supabase.auth.signInWithOtp({ email });
-		// if (error) throw error
-		// alert('A login link has been sent to your email')
-		// }catch(error){
-		// 	if(error instanceof Error){
-		// 		alert(error.message)
-		// 	}
-		// }
 	}
 	
 	// sign out - CONSIDER PUTTING THIS IN SEPARATE COMPONENT FOR ACCOUNT MANAGEMENT
