@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from "svelte";
 	export let selectedTitle;
 	export let itemTitle;
+    export let color = "var(--color-text)";
 	const dispatch = createEventDispatcher();
 
 	function handleClick() {
@@ -13,7 +14,7 @@
 
 
 <button class="item" on:click={handleClick} transition:slide
-	><p class="text">{itemTitle}</p>
+	><p style="color:{color}" class="text">{itemTitle}</p>
 </button>
 
 <style>
@@ -21,14 +22,14 @@
 		display: flex;
         width:100%;
 		align-items: center;
-        background:white;
+        background:var(--color-bg-1);
         border:none;
-        border-top:1px solid #e0e0e0;
+        border-top:1px solid var(--color-bg-2);
         transition:border 0.05s ease-in-out;
 	}
 
     .item:hover {
-        background:#e0e0e0;
+        background:var(--color-text-card);
     }
 
 
