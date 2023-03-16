@@ -28,12 +28,10 @@
 		transition: filter 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61),
 			opacity 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
-
 	.background.ontimeline {
 		filter: blur(7px);
 		opacity: 0.1;
 	}
-
 	.grey {
 		position: fixed;
 		transform-origin: bottom right;
@@ -43,14 +41,12 @@
 		z-index: -99;
 		filter: var(--bg-grayscale);
 	}
-
 	.app {
 		display: flex;
 		flex-direction: column;
 		max-width: 99vw;
 		min-height: 100vh;
 	}
-
 	main {
 		flex: 1;
 		display: flex;

@@ -52,8 +52,9 @@
 		box-shadow: 0 0 1em rgba(16, 13, 46, 0.2);
 		border-radius: 0 1em 1em 0em;
 	}
-
+	
 	ul {
+		width: calc(12 * var(--font-size-base));
 		list-style: none;
 		padding: 0;
 	}
