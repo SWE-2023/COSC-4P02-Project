@@ -17,11 +17,12 @@
 	}
 	checkSession();
 
-	console.log(sessionUser);
+	console.log("user logged in: " +sessionUser);
 
 	const logout = () => {
 		console.log("logged out");
 		supabase.auth.signOut();
+		location.reload();
 	}
 	
 </script>
@@ -46,7 +47,7 @@
 				transition:fly={{ x: -24, delay: 150 }}>
 				<a href="/contact" on:click={() => (open = false)}>Contact</a>
 			</li>
-			{#if !sessionUser}
+			{#if sessionUser==false}
 				<li
 					aria-current={$page.url.pathname.startsWith("/login")
 						? "page"
@@ -60,7 +61,7 @@
 						? "page"
 						: undefined}
 					transition:fly={{ x: -24, delay: 150 }}>
-					<a href="/login" on:click={(event) =>{event.preventDefault(); open=false; logout()}}>Sign Out</a>
+					<a href="/login" on:click={(event) =>{event.preventDefault(); logout(); open=false; }}>Log Out</a>
 				</li>
 			{/if}
 		</ul>
