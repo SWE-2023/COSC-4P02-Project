@@ -1,8 +1,29 @@
 <script>
 	import { fly } from "svelte/transition";
 	import { page } from "$app/stores";
+	// import { user } from "../routes/login/authStore"
+    import supabase from "$lib/supabaseClient";
+	import {getSessionUser} from '../routes/login/authStore.js'
+    import { prevent_default } from "svelte/internal";
 
 	export let open;
+
+	// console.log(supabase.auth.getUser());
+
+	let sessionUser = false;
+
+	async function checkSession(){
+		sessionUser = await getSessionUser();
+	}
+	checkSession();
+
+	console.log(sessionUser);
+
+	const logout = () => {
+		console.log("logged out");
+		supabase.auth.signOut();
+	}
+	
 </script>
 
 {#if open}
@@ -25,13 +46,23 @@
 				transition:fly={{ x: -24, delay: 150 }}>
 				<a href="/contact" on:click={() => (open = false)}>Contact</a>
 			</li>
-			<li
-				aria-current={$page.url.pathname.startsWith("/login")
-					? "page"
-					: undefined}
-				transition:fly={{ x: -24, delay: 150 }}>
-				<a href="/login" on:click={() => (open = false)}>Log In</a>
-			</li>
+			{#if !sessionUser}
+				<li
+					aria-current={$page.url.pathname.startsWith("/login")
+						? "page"
+						: undefined}
+					transition:fly={{ x: -24, delay: 150 }}>
+					<a href="/login" on:click={() => (open = false)}>Log In</a>
+				</li>
+			{:else}
+				<li
+					aria-current={$page.url.pathname.startsWith("/login")
+						? "page"
+						: undefined}
+					transition:fly={{ x: -24, delay: 150 }}>
+					<a href="/login" on:click={(event) =>{event.preventDefault(); open=false; logout()}}>Sign Out</a>
+				</li>
+			{/if}
 		</ul>
 	</div>
 {/if}

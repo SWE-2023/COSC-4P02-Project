@@ -46,20 +46,7 @@
 
 
 
-	// async function signOut(){
-	// 	const {error} = await supabase.auth.signOut()
-	// }
-
-	// const handleLogin = () => {
-	// 	// console.log(`email: ${email}`);
-	// 	// TODO: add login functionality
-	// 	window.location.href='http://localhost:5173/home'; // CHANGE TO ACTUAL URL ONCE DEPLOYED
-	// };
-
-	// const gotoForgot = () => {
-	// 	// console.log("i forgor 💀");
-	// 	// TODO: add forgot password functionality
-	// };
+	
 </script>
 
 <svelte:head>
