@@ -4,7 +4,9 @@
 	// import { user } from "../routes/login/authStore"
     import supabase from "$lib/supabaseClient";
 	import {getSessionUser} from '../routes/login/authStore.js'
-    import { prevent_default } from "svelte/internal";
+	import{readable} from 'svelte/store'
+	// import { onMount } from "svelte/internal";
+    import { prevent_default, onMount } from "svelte/internal";
 
 	export let open;
 
@@ -14,16 +16,27 @@
 
 	async function checkSession(){
 		sessionUser = await getSessionUser();
+		console.log(sessionUser);
 	}
 	checkSession();
 
-	console.log("user logged in: " +sessionUser);
+	// console.log("user logged in: " +sessionUser);
+
+
+	// const sessionUser = readable(false, set => {
+	// 	getSessionUser().then(user => {
+	// 		set(user);
+	// 	});
+	// });
 
 	const logout = () => {
 		console.log("logged out");
 		supabase.auth.signOut();
-		location.reload();
+		// location.reload();
 	}
+
+	// console.log("user logged in: "+sessionUser);
+
 	
 </script>
 
@@ -47,13 +60,13 @@
 				transition:fly={{ x: -24, delay: 150 }}>
 				<a href="/contact" on:click={() => (open = false)}>Contact</a>
 			</li>
-			{#if sessionUser==false}
+			{#if sessionUser==true}
 				<li
 					aria-current={$page.url.pathname.startsWith("/login")
 						? "page"
 						: undefined}
 					transition:fly={{ x: -24, delay: 150 }}>
-					<a href="/login" on:click={() => (open = false)}>Log In</a>
+					<a href="/login" on:click={(event) =>{event.preventDefault(); logout(); open=false; }}>Log Out</a>
 				</li>
 			{:else}
 				<li
@@ -61,7 +74,7 @@
 						? "page"
 						: undefined}
 					transition:fly={{ x: -24, delay: 150 }}>
-					<a href="/login" on:click={(event) =>{event.preventDefault(); logout(); open=false; }}>Log Out</a>
+					<a href="/login" on:click={() => (open = false)}>Log In</a>
 				</li>
 			{/if}
 		</ul>
