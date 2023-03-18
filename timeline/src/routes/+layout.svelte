@@ -1,17 +1,26 @@
 <script>
 	import Header from "$lib/components/Header.svelte";
 	import Footer from "$lib/components/Footer.svelte";
+	import { SvelteToast } from "@zerodevx/svelte-toast";
 	import { page } from "$app/stores";
+	import { onMount } from "svelte";
+	import { getSessionUser } from "$lib/authStore";
 	import "./styles.css";
+
+	onMount(async () => {
+		await getSessionUser();
+	});
 </script>
 
 <div class="app">
 	<Header />
+	<SvelteToast />
 	<main>
 		<slot />
 	</main>
 	<div class="grey">
-		<img loading="lazy"
+		<img
+			loading="lazy"
 			class={$page.url.pathname == "/timeline"
 				? "background grey ontimeline"
 				: "background grey"}
@@ -22,6 +31,13 @@
 </div>
 
 <style>
+	:root {
+		--toastBackground: var(--color-bg-1);
+		--toastColor: var(--color-text);
+		--toastBorderRadius: 0.8rem;
+		--toastPadding: 0.5rem;
+		--toastBarHeight: 0;
+	}
 	.background {
 		opacity: var(--bg-opacity);
 		filter: blur(0px);
@@ -35,7 +51,7 @@
 	.grey {
 		position: fixed;
 		transform-origin: bottom right;
-		transform: scale(.9);
+		transform: scale(0.9);
 		bottom: 0;
 		right: 0;
 		z-index: -99;

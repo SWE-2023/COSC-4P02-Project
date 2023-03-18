@@ -1,52 +1,16 @@
 <script>
-	import { onMount } from "svelte";
 	import PageTransition from "$lib/components/PageTransitionFly.svelte";
 	import Button from "$lib/components/Button.svelte";
-    import supabase from "$lib/supabaseClient";
-    import { error } from "@sveltejs/kit";
+	import { login } from "$lib/authStore";
 
-	let loading=false;
-	let email;
+	let loading = false;
 
-	// handle logins
+	let email = "";
 	const handleLogin = async () => {
-
-		try {
-			loading=true;
-			console.log(email);
-			
-			const {error} = await supabase.auth.signInWithOtp({email});
-			if (error) throw error;
-			alert('A login link has been sent to your email')
-			
-		} catch (error) {
-			// console.error(err);
-			// alert(error.message);
-			if(error instanceof Error){
-				alert(error.message);
-			}
-		}finally{
-			loading = false;
-		}
-		
-	}
-	
-	// sign out - CONSIDER PUTTING THIS IN SEPARATE COMPONENT FOR ACCOUNT MANAGEMENT
-	const signOut = async () => {
-		try{
-			let {error} = await supabase.auth.signOut();
-			if (error) throw error
-
-		}catch (error) {
-			if (error instanceof Error){
-				alert(error.message)
-			}
-		}
-	}
-
-
-
-	
+		loading = true;
+		await login(email);
+		loading = false;
+	};
 </script>
 
 <svelte:head>
@@ -55,18 +19,23 @@
 </svelte:head>
 
 <PageTransition>
-	<div class="login-container">
-		<h1>Log In</h1>
+	<div class="login-container" >
+		<h1 >Log In</h1>
 		<p>Enter your email to receive a log in link</p>
 
 		<div class="form">
 			<label for="email">Email</label>
-			<input type="email" id="email" bind:value={email} placeholder="username@email.com"/>
+			<input 
+				type="email"
+				id="email"
+				bind:value={email}
+				placeholder="username@email.com" />
 
 			<div class="form-buttons">
-				<Button text="Home" href = "/"/>
-				<Button alt on:click={handleLogin} text="Send Log In Link" />
-				
+				<div><Button text="Back" href="/" /></div>
+				<div >
+					<Button alt on:click={handleLogin} text="Send Log In Link" loading={loading}/>
+				</div>
 			</div>
 		</div>
 	</div>

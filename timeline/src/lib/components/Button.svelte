@@ -1,5 +1,6 @@
 <script>
 	import { createEventDispatcher } from "svelte";
+	import { loadingAction } from "svelte-legos";
 	
 	const dispatch = createEventDispatcher();
 	function click() {
@@ -10,6 +11,7 @@
 	export let href = "#";
 	export let alt = false;
 	export let scale = 1;
+	export let loading = false;	
 </script>
 
 <!--
@@ -22,13 +24,12 @@
 -->
 
 {#if alt}
-	<a {href} style="scale:{scale}">
-		<button class="alt-button" on:click={click} {disabled}>{text}</button>
+	<a {href} style="scale:{scale}" >
+		<button use:loadingAction={loading} class="alt-button" on:click={click} {disabled}>{text}</button>
 	</a>
 {:else}
 	<a {href} style="scale:{scale}">
-		<!-- remove type=submit if needed -->
-		<button class="button" on:click={click} {disabled}>{text}</button>
+		<button use:loadingAction={loading} class="button" on:click={click} {disabled}>{text}</button>
 	</a>
 {/if}
 
