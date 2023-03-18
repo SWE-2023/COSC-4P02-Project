@@ -1,20 +1,15 @@
 <script>
-	import { onMount } from "svelte";
 	import PageTransition from "$lib/components/PageTransitionFly.svelte";
 	import Button from "$lib/components/Button.svelte";
+	import { login } from "$lib/authStore";
+
+	let loading = false;
 
 	let email = "";
-	let password = "";
-
-	const handleLogin = () => {
-		// console.log(`email: ${email}`);
-		// console.log(`pass: ${password}`);
-		// TODO: add login functionality
-	};
-
-	const gotoForgot = () => {
-		// console.log("i forgor 💀");
-		// TODO: add forgot password functionality
+	const handleLogin = async () => {
+		loading = true;
+		await login(email);
+		loading = false;
 	};
 </script>
 
@@ -24,27 +19,26 @@
 </svelte:head>
 
 <PageTransition>
-	<section class="page">
-		<div class="login-container">
-			<h1>Log In</h1>
-			<p>Enter your email and password</p>
+	<div class="login-container" >
+		<h1 >Log In</h1>
+		<p>Enter your email to receive a log in link</p>
 
-			<div class="form">
-				<label for="email">Email</label>
-				<input type="text" id="email" bind:value={email} />
-				<label for="password">Password</label>
-				<input type="password" id="password" bind:value={password} />
+		<div class="form">
+			<label for="email">Email</label>
+			<input 
+				type="email"
+				id="email"
+				bind:value={email}
+				placeholder="username@email.com" />
 
-				<div class="form-buttons">
-					<Button
-						on:click={gotoForgot}
-						text="Forgot Password?"
-						href="/login/forgot" />
-					<Button alt on:click={handleLogin} text="Log In" href="/" />
+			<div class="form-buttons">
+				<div><Button text="Back" href="/" /></div>
+				<div >
+					<Button alt on:click={handleLogin} text="Send Log In Link" loading={loading}/>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 </PageTransition>
 
 <style>

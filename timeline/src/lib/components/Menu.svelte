@@ -1,8 +1,13 @@
 <script>
 	import { fly } from "svelte/transition";
 	import { page } from "$app/stores";
+	import { user, logout } from "$lib/authStore";
 
 	export let open;
+	let sessionUser;
+	user.subscribe((value) => {
+		sessionUser = value;
+	});
 </script>
 
 {#if open}
@@ -25,26 +30,44 @@
 				transition:fly={{ x: -24, delay: 150 }}>
 				<a href="/contact" on:click={() => (open = false)}>Contact</a>
 			</li>
-			<li
-				aria-current={$page.url.pathname.startsWith("/login")
-					? "page"
-					: undefined}
-				transition:fly={{ x: -24, delay: 150 }}>
-				<a href="/login" on:click={() => (open = false)}>Log In</a>
-			</li>
+			{#if sessionUser && sessionUser.email}
+				<li
+					aria-current={$page.url.pathname.startsWith("/login")
+						? "page"
+						: undefined}
+					transition:fly={{ x: -24, delay: 150 }}>
+					<p>{sessionUser.email}</p>
+					<a
+						href="/login"
+						on:click={(event) => {
+							event.preventDefault();
+							logout();
+							open = false;
+						}}>Log Out</a>
+				</li>
+			{:else}
+				<li
+					aria-current={$page.url.pathname.startsWith("/login")
+						? "page"
+						: undefined}
+					transition:fly={{ x: -24, delay: 150 }}>
+					<a class="login" href="/login" on:click={() => (open = false)}
+						>Log In</a>
+				</li>
+			{/if}
 		</ul>
 	</div>
 {/if}
 
 <style>
 	.menu {
-		user-select:none;
-		display:flex;
+		user-select: none;
+		display: flex;
 		z-index: 1;
 		position: fixed;
 		top: 5rem;
 		left: -2px;
-		font-size:var(--font-size-small);
+		font-size: var(--font-size-small);
 		letter-spacing: 0.1em;
 		height: auto;
 		background-color: var(--color-bg-1);
@@ -52,9 +75,8 @@
 		box-shadow: 0 0 1em rgba(16, 13, 46, 0.2);
 		border-radius: 0 1em 1em 0em;
 	}
-	
 	ul {
-		width: calc(12 * var(--font-size-base));
+		width: calc(16 * var(--font-size-base));
 		list-style: none;
 		padding: 0;
 	}
@@ -62,7 +84,7 @@
 	li {
 		color: #0d0d0d;
 		cursor: pointer;
-		padding: 1.5em 0;
+		padding: 0;
 		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
 	}
 
@@ -72,10 +94,26 @@
 	}
 
 	li a {
-		padding: 1.5em 3em;
 		margin: 0;
+		display: block;
+		padding: 1.5rem 3rem;
 		color: var(--color-text);
 		text-decoration: none;
+	}
+
+	li:last-child a:last-child {
+		padding: 0 3rem 1.5rem 3rem;
+	}
+
+	.login {
+		padding: 1.5rem 3rem !important;
+	}
+
+	li p {
+		margin: 0;
+		padding: 1.5rem 3rem 0.5rem 3rem;
+		font-size: var(--font-size-xsmall);
+		color: var(--color-theme-1);
 	}
 
 	li:hover {
