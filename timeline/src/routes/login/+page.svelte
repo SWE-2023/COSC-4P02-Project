@@ -62,12 +62,10 @@
 		<div class="form">
 			<label for="email">Email</label>
 			<input type="email" id="email" bind:value={email} placeholder="username@email.com"/>
-			<!-- <label for="password">Password</label>
-			<input type="password" id="password" bind:value={password} /> -->
 
 			<div class="form-buttons">
-				<Button on:click={handleLogin} text="Send Log In Link" />
-				<Button alt text="Home" href = "/"/>
+				<Button text="Home" href = "/"/>
+				<Button alt on:click={handleLogin} text="Send Log In Link" />
 				
 			</div>
 		</div>

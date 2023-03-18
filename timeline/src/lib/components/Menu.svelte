@@ -1,11 +1,9 @@
 <script>
 	import { fly } from "svelte/transition";
 	import { page } from "$app/stores";
-	// import { user } from "../routes/login/authStore"
     import supabase from "$lib/supabaseClient";
-	import {getSessionUser} from '../routes/login/authStore.js'
+	import {getSessionUser} from '$lib/authStore.js'
 	import{readable} from 'svelte/store'
-	// import { onMount } from "svelte/internal";
     import { prevent_default, onMount } from "svelte/internal";
 
 	export let open;
