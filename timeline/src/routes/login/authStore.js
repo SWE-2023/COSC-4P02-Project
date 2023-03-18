@@ -11,19 +11,4 @@ export async function getSessionUser(){
             return true;
         }
         return false;
-
-    // const { data: session, error} = await supabase.auth.getUser();
-
-    // if (error) {
-    //     console.error(error);
-    //     return false;
-    // }
-
-    // if (session) {
-    //     return true;
-    // }else{
-    //     return false;
-    // }
-
-    
 }
