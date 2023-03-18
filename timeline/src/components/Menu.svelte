@@ -16,7 +16,7 @@
 
 	async function checkSession(){
 		sessionUser = await getSessionUser();
-		console.log(sessionUser);
+		console.log("user logged in: "+sessionUser);
 	}
 	checkSession();
 
