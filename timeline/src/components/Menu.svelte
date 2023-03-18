@@ -10,8 +10,6 @@
 
 	export let open;
 
-	// console.log(supabase.auth.getUser());
-
 	let sessionUser = false;
 
 	async function checkSession(){
@@ -20,23 +18,11 @@
 	}
 	checkSession();
 
-	// console.log("user logged in: " +sessionUser);
-
-
-	// const sessionUser = readable(false, set => {
-	// 	getSessionUser().then(user => {
-	// 		set(user);
-	// 	});
-	// });
-
 	const logout = () => {
 		console.log("logged out");
 		supabase.auth.signOut();
 		// location.reload();
 	}
-
-	// console.log("user logged in: "+sessionUser);
-
 	
 </script>
 
