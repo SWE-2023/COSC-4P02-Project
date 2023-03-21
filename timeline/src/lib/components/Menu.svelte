@@ -1,12 +1,12 @@
 <script>
 	import { fly } from "svelte/transition";
 	import { page } from "$app/stores";
-	import { user, logout } from "$lib/authStore";
+	import { userStore, logout } from "$lib/authStore";
 
 	export let open;
-	let sessionUser;
-	user.subscribe((value) => {
-		sessionUser = value;
+	let user;
+	userStore.subscribe((value) => {
+		user = value;
 	});
 </script>
 
@@ -30,13 +30,13 @@
 				transition:fly={{ x: -24, delay: 150 }}>
 				<a href="/contact" on:click={() => (open = false)}>Contact</a>
 			</li>
-			{#if sessionUser && sessionUser.email}
+			{#if user && user.email}
 				<li
 					aria-current={$page.url.pathname.startsWith("/login")
 						? "page"
 						: undefined}
 					transition:fly={{ x: -24, delay: 150 }}>
-					<p>{sessionUser.email}</p>
+					<p>{user.email}</p>
 					<a
 						href="/login"
 						on:click={(event) => {
