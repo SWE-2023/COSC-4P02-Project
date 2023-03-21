@@ -8,12 +8,24 @@
 
 This is a course project for COSC 4P02 Software Engineering II taught by Professor Naser Ezzati-Jivan at Brock University. 
 
-View our project proposal and other documents in the [documents](documents) folder.
+View our project documents in the [documents](documents) folder.
 
 ## Project Description 📝
-The goal of this project is to create an interactive timeline web application that will allow visitors to explore the history of Niagara-on-the-Lake. The application will be built using SvelteKit, a framework for building web applications using Svelte. 
+The goal of this project is to create an interactive timeline web application that will allow visitors to explore the history of Niagara-on-the-Lake. 
+
+## Technology Stack
+
+<img src="https://skillicons.dev/icons?i=supabase,svelte,nodejs"/>
+
+Our project uses the following technologies:
+
+- [SvelteKit](https://kit.svelte.dev): Web application framework built on top of Svelte
+- [Svelte](https://svelte.dev): Reactive front-end framework
+- [Supabase](https://supabase.com): Backend service with Postgres database and authentication
+- [Node.js](https://nodejs.org/en/): Server-side runtime environment 
 
 ## Team Members 👥
+
 | Name | Student Number|
 |------|---------------|
 | [Alec Ames](https://github.com/alecames) - *Team Leader* | 6843577 |
@@ -26,7 +38,9 @@ The goal of this project is to create an interactive timeline web application th
 | [Haaris Yahya](https://github.com/haarisyahya)| 7054984 |
 
 ## Contact
+
 If you have any questions, please reach out to the [product owner](mailto:dev@alecames.com).
 
 ## License
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
