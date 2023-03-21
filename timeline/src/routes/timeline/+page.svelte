@@ -5,8 +5,10 @@
 	import SearchBar from "$lib/components/searchbar/SearchBar.svelte";
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
+	import EventEdditor from '$lib/components/EventEdit.svelte';
 	import { format } from "date-fns";
   	import { onMount } from "svelte";
+  import EventEdit from "$lib/components/EventEdit.svelte";
 
 	export let data;
 	let { timeline } = data;
@@ -119,6 +121,7 @@
 		timeData={timeline}
 		bind:currentItem={selectedItem}
 		on:change={update} />
+	<EventEdit/>
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
