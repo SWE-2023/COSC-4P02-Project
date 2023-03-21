@@ -8,7 +8,7 @@
 		user = value && value.email ? value : null;
 	});
 
-	// user = true; // for testing
+	user = true; // for testing
 
 	let openMenu = false;
 
