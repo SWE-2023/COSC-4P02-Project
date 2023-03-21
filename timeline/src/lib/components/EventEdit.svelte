@@ -1,84 +1,101 @@
 <script>
-    import Button from "./Button.svelte";
-    export let logedIn = true;
-    let openMenu = 0;
+	import Button from "./Button.svelte";
+	import { slide } from "svelte/transition";
+	import { userStore } from "$lib/authStore";
 
-    function changeMenu() {
-        openMenu = 1 - openMenu.valueOf(); // change from 1 or 0 for true/false
-    }
+	let user;
+	userStore.subscribe((value) => {
+		user = value && value.email ? value : null;
+	});
 
-    function saveChanges() {
-        console.log('save changes');
+	// user = true; // for testing
 
-    }
+	let openMenu = false;
 
-    function deleteChanges() {
-        console.log('delete changes');
-    }
+	function changeMenu() {
+		openMenu = !openMenu;
+	}
 
+	function saveChanges() {
+		console.log("save changes");
+	}
+
+	function deleteChanges() {
+		console.log("delete changes");
+	}
 </script>
 
-{#if logedIn}
-    <div class="edit-items">
-        <button class="menu-button" on:click={changeMenu}>Edit</button>
-
-        {#if openMenu}
-            <button class="dropdown-options" on:click={saveChanges}>Save</button>
-            <button class="dropdown-options" on:click={deleteChanges}>Delete</button>
-        {/if}
-
-    </div>
-    
+{#if user}
+	<div transition:slide class="edit-items">
+		{#if !openMenu}
+			<button transition:slide on:click={changeMenu}
+				><span class="material-symbols-rounded i">edit</span>Edit</button>
+		{:else if openMenu}
+			<button transition:slide on:click={changeMenu}
+				><span class="material-symbols-rounded i">close</span>Close</button>
+			<div transition:slide class="line" />
+			<button transition:slide class="options" on:click={saveChanges}
+				><span class="material-symbols-rounded i">save</span>Save</button>
+			<div transition:slide class="line" />
+			<button transition:slide class="options" on:click={deleteChanges}
+				><span class="material-symbols-rounded i">delete</span>Delete</button>
+		{/if}
+	</div>
 {/if}
 
 <style>
-    .edit-items {
-        position: absolute;
-        left: 95%;
-    }
+	.edit-items {
+		width: 10rem;
+		position: fixed;
+		display: flex;
+		flex-direction: column;
+		top: 10rem;
+		right: 2rem;
+		z-index: 20;
+		border-radius: var(--font-size-small);
+		background: var(--color-text-card);
+		box-shadow: 5px 5px 3em #00000022;
+		margin: 0;
+		padding: 0;
+	}
 
-    .menu-button {
-        font-family: var(--font-sans);
-        font-size: var(--font-size-small);
-        font: var(--font-sans);
+	button {
+		cursor: pointer;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		font-family: var(--font-sans);
+		font-size: var(--font-size-small);
+		font: var(--font-sans);
 		color: var(--button-color);
-        background: var(--button-background);
-		border: 2px solid var(--button-border);
-        border-radius: 5px;
-        gap: 5px;
-    }
-    
-    .menu-button:hover, .dropdown-options:hover {
-		color: var(--button-hover-color);
-        background: var(--button-hover-background);
+		background: none;
+		border: none;
+		padding: 0.75rem 2rem;
+	}
+
+	.line {
+		display: flex;
+		align-self: center;
+		width: 80%;
+		height: 1px;
+		background-color: #00000020;
+	}
+
+	.i {
+		margin: 0.5rem 0;
+		font-size: var(--font-size-medium);
+	}
+
+	button:hover,
+	.options:hover {
+		font-weight: 900;
 		transition: background-color 0.15s ease-out;
-    }
+	}
 
-    .menu-button:active, .dropdown-options:active {
-        transition: none;
-        background-color: var(--button-active-background);
-        transform: scale(0.98);
-    }
-
-    .dropdown-options {
-		color: var(--button-color);
-        background: var(--button-background);
-        font-size: 1.1rem;
-		border: 2px solid var(--button-border);
-        border-radius: 5px;
-        gap: 5px;
-    }
-
-    /* .dropdown-options:hover {
-        background: var(--button-hover-background);
-        color: var(--button-hover-color);
-        transition: background-color 0.15s ease-out;
-    }
-
-    .dropdown-options:active {
-        transition: none;
-        background-color: var(--button-active-background);
-        transform: scale(0.98);
-    } */
-
+	button:active,
+	.options:active {
+		transition: none;
+		transform: scale(0.95);
+	}
 </style>
