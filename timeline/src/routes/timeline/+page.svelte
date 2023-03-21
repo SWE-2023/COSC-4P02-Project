@@ -140,7 +140,7 @@
 
 <style>
 	.layout {
-		min-height: 100vh;
+		min-height: 80vh;
 		width: 100%;
 		display: flex;
 		justify-content: center;
