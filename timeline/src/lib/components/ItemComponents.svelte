@@ -3,11 +3,13 @@
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
+	export let editMode;
 	export let title;
 	export let media;
 	export let image_credit;
 	export let start_date;
 	export let body;
+	let imagePlaceholder = media;
 	let formatted_date;
 	let full = false;
 
@@ -36,27 +38,59 @@
 	}
 </script>
 
-<section class="item-components">
-	<div class="media-component">
-		<div class="tip v-align">
-			<span class="material-symbols-rounded "> info </span>
-			<p>Click the image to toggle fullscreen.</p>
+{#if editMode}
+	<section class="edit-mode">
+		<div class="media-component">
+			<img
+				class="placeholder-image"
+				src={imagePlaceholder}
+				alt={title} />
+			<div class="image-info">
+				<input bind:value={imagePlaceholder} class="image-input" placeholder="Type image link here!" >
+				<input class="credit-input" placeholder={image_credit}>
+			</div>
 		</div>
-		<Fullscreen let:onToggle>
-			<div class="image-cont">
-				{#if media}
-					{#if media.includes("youtube.com")}
-						<iframe
-							class="video"
-							title="youtube video"
-							src={media.replace("watch?v=", "embed/")}
-							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowfullscreen />
+		<div class="text-component">
+			<textarea class="title-input" placeholder={title}></textarea>
+			<input class="date-input" placeholder={start_date}>
+			{#if body}
+				<textarea class="desc-input" placeholder={body}></textarea> 
+			{/if}
+		</div>
+	</section>
+{:else}
+	<section class="item-components">
+		<div class="media-component">
+			<div class="tip v-align">
+				<span class="material-symbols-rounded "> info </span>
+				<p>Click the image to toggle fullscreen.</p>
+			</div>
+			<Fullscreen let:onToggle>
+				<div class="image-cont">
+					{#if media}
+						{#if media.includes("youtube.com")}
+							<iframe
+								class="video"
+								title="youtube video"
+								src={media.replace("watch?v=", "embed/")}
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+								allowfullscreen />
+						{:else}
+							<img
+								class={full ? "image fullscreen" : "image"}
+								src={media}
+								alt={title}
+								on:click={() => {
+									onToggle();
+									full = !full;
+								}}
+								on:keydown={handleKeyDown} />
+						{/if}
 					{:else}
 						<img
 							class={full ? "image fullscreen" : "image"}
-							src={media}
+							src={placeholder}
 							alt={title}
 							on:click={() => {
 								onToggle();
@@ -64,36 +98,25 @@
 							}}
 							on:keydown={handleKeyDown} />
 					{/if}
-				{:else}
-					<img
-						class={full ? "image fullscreen" : "image"}
-						src={placeholder}
-						alt={title}
-						on:click={() => {
-							onToggle();
-							full = !full;
-						}}
-						on:keydown={handleKeyDown} />
-				{/if}
-			</div>
-		</Fullscreen>
-		{#if image_credit != "null"}
-			<div class="image_cred">
-				<a href={image_credit} target="_blank" rel="noreferrer">Source</a>
-			</div>
-		{/if}
-	</div>
-	<div class="text-component">
-		<h1 class="title">{title}</h1>
-		<p class="date"><i>{formatted_date}</i></p>
-		<Text2Speech {title} {formatted_date} {body} />
-		{#if body}
-			<p class="desc">{body}</p>
-		{/if}
-	</div>
-</section>
-
-<svelte:window on:keypress={handleKeyDown} />
+				</div>
+			</Fullscreen>
+			{#if image_credit != "null"}
+				<div class="image_cred">
+					<a href={image_credit} target="_blank" rel="noreferrer">Source</a>
+				</div>
+			{/if}
+		</div>
+		<div class="text-component">
+			<h1 class="title">{title}</h1>
+			<p class="date"><i>{formatted_date}</i></p>
+			<Text2Speech {title} {formatted_date} {body} />
+			{#if body}
+				<p class="desc">{body}</p>
+			{/if}
+		</div>
+	</section>
+{/if}
+	<svelte:window on:keypress={handleKeyDown} />
 
 <style>
 	:root {
@@ -290,4 +313,59 @@
 	.tip:hover p {
 		width: calc(var(--font-size-small) * 20);
 	}
+
+	textarea {
+		resize: none;
+	}
+
+	.image-input, .credit-input, .title-input, .date-input, .desc-input {
+		text-align: left;
+		margin: 0.5em 0.5em 2em;
+		padding: 0.8em;
+		border-radius: 0.5em;
+		border: 2px solid white;
+		box-shadow: 0 0 1px 1px #0000004d;
+		
+	}
+
+	.image-info{
+		display: flex;
+		flex-direction: row;
+	}
+
+	.date-input{
+		height:10px;
+	}
+
+	.title-input{
+		width: 40em;
+		height: 2em;
+	}
+
+	.date-input{
+		width:5em;
+	}
+
+	.desc-input{
+		width: 50em;
+		height: 20em;
+	}
+
+	.edit-mode, .text-component, .media-component {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.placeholder-image {
+		width: clamp(300px,40%,500px);
+		height:clamp(300px,40%,500px);
+		z-index: 1;
+		object-position: center center;
+		object-fit: cover;
+		border-radius: 1.5vw;
+		box-shadow: 1rem 0rem 28px 0 #00000030;
+	}
+
 </style>

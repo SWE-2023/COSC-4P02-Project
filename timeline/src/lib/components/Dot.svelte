@@ -1,12 +1,15 @@
 <script>
+	export let lockDot;
 	export let eventOne;
 	export let eventTwo;
 	export let isActive = false;
 
 	function handleClick() {
-		isActive = !isActive;
-		eventOne();
-		eventTwo();
+		if(!lockDot){
+			isActive = !isActive;
+			eventOne();
+			eventTwo();
+		}
 	}
 </script>
 

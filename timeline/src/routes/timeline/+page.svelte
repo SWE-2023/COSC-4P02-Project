@@ -20,6 +20,8 @@
 	let selectedItem = timeline[0];
 	let atFirst = true;
 	let atLast = false;
+	let isEditing = false;
+	let lockSelection = false;
 	let currentIndex = 0;
 
 	let currentItem = {
@@ -31,17 +33,21 @@
 	};
 
 	function pageUp() {
-		transitionDirection = "up";
-		if (!atFirst) {
-			selectedItem = timeline[--currentIndex];
-			update();
+		if(!lockSelection){
+			transitionDirection = "up";
+			if (!atFirst) {
+				selectedItem = timeline[--currentIndex];
+				update();
+			}
 		}
 	}
 	function pageDown() {
-		transitionDirection = "down";
-		if (!atLast) {
-			selectedItem = timeline[++currentIndex];
-			update();
+		if(!lockSelection){
+			transitionDirection = "down";
+			if (!atLast) {
+				selectedItem = timeline[++currentIndex];
+				update();
+			}
 		}
 	}
 
@@ -62,15 +68,17 @@
 	let upVisible = false;
 	let downVisible = false;
 	function showArrows(event) {
-		if (window.innerWidth < 1000) {
-			upVisible = true;
-			downVisible = true;
-			return;
+		if(!lockSelection){
+			if (window.innerWidth < 1000) {
+				upVisible = true;
+				downVisible = true;
+				return;
+			}
+			let y = event.clientY;
+			let height = window.innerHeight;
+			upVisible = y < height * 0.1;
+			downVisible = y > height * 0.8;
 		}
-		let y = event.clientY;
-		let height = window.innerHeight;
-		upVisible = y < height * 0.2;
-		downVisible = y > height * 0.8;
 	}
 
 	function gotoItem() {
@@ -80,6 +88,7 @@
 			update();
 		}
 	}
+
 </script>
 
 <svelte:head>
@@ -88,23 +97,28 @@
 </svelte:head>
 
 <svelte:window on:mousemove={showArrows} />
-
 <PageTransitionFade>
 	<SearchBar
 		bind:selection={dropDownSelection}
 		titles={searchData}
 		on:selection={gotoItem}
 		on:selection={update} />
-	<Arrow on:moveUp={pageUp} disabled={atFirst} visible={upVisible} />
+	<Arrow bind:lock={lockSelection} on:moveUp={pageUp} disabled={atFirst} visible={upVisible} />
 	<TimelineBar
+		bind:lock={lockSelection}
 		timeData={timeline}
 		bind:currentItem={selectedItem}
 		on:change={update} />
-	<EventEdit />
+	<EventEdit 
+		bind:lockPage={lockSelection}
+		bind:enableEditing={isEditing}
+
+	/>
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
 				<ItemComponents
+					bind:editMode={isEditing}
 					title={currentItem.title}
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}
@@ -114,7 +128,7 @@
 		</section>
 	{/key}
 
-	<Arrow down on:moveDown={pageDown} disabled={atLast} visible={downVisible} />
+	<Arrow bind:lock={lockSelection} down on:moveDown={pageDown} disabled={atLast} visible={downVisible} />
 </PageTransitionFade>
 
 <style>

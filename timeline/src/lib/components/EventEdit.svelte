@@ -2,6 +2,8 @@
 	import Button from "./Button.svelte";
 	import { slide } from "svelte/transition";
 	import { userStore } from "$lib/authStore";
+	export let lockPage;
+	export let enableEditing;
 
 	let user;
 	userStore.subscribe((value) => {
@@ -14,6 +16,8 @@
 
 	function changeMenu() {
 		openMenu = !openMenu;
+		lockPage = !lockPage;
+		enableEditing = !enableEditing;	
 	}
 
 	function saveChanges() {
@@ -23,6 +27,8 @@
 	function deleteChanges() {
 		console.log("delete changes");
 	}
+
+
 </script>
 
 {#if user}

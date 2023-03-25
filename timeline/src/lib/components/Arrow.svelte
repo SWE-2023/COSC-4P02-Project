@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from "svelte";
-
+	export let lock;
 	export let down = false;
 	export let disabled = false;
 	export let visible = false;
@@ -13,11 +13,13 @@
 	const goDown = () => dispatch("moveDown");
 
 	function handleKeyDown(event) {
-		if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-			goUp();
-		} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-			goDown();
-		}
+		if(!lock){
+			if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+				goUp();
+			} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+				goDown();
+			}
+		}	
 	}
 </script>
 
