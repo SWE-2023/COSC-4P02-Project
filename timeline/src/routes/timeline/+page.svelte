@@ -6,7 +6,7 @@
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
-	import { format } from "date-fns";
+	
 
 	export let data;
 	let { timeline } = data;
@@ -15,18 +15,6 @@
 	// map timeline titles to search data
 	let searchData = timeline.map((item) => item.title);
 	let dropDownSelection = "";
-
-	// makes date readable
-	function formatDate(date) {
-		if (date.slice(5) == "01-01") {
-			return "circa " + date.slice(0, 4);
-		}
-		date = new Date(date + "T00:00:00");
-		if (date == "Invalid Date") {
-			return date;
-		}
-		return format(date, "MMMM d, yyyy");
-	}
 
 	let transitionDirection;
 	let selectedItem = timeline[0];
@@ -120,7 +108,7 @@
 					title={currentItem.title}
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}
-					start_date={formatDate(currentItem.start_date)}
+					start_date={currentItem.start_date}
 					body={currentItem.body} />
 			</ItemTransition>
 		</section>

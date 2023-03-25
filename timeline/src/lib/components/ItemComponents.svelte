@@ -2,12 +2,28 @@
 	// @ts-nocheck
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
+	import { format } from "date-fns";
 	export let title;
 	export let media;
 	export let image_credit;
 	export let start_date;
 	export let body;
+	let formatted_date;
 	let full = false;
+
+	// makes date readable
+	function formatDate(date) {
+		if (date.slice(5) == "01-01") {
+			return "circa " + date.slice(0, 4);
+		}
+		date = new Date(date + "T00:00:00");
+		if (date == "Invalid Date") {
+			return date;
+		}
+		return format(date, "MMMM d, yyyy");
+	}
+
+	formatted_date = formatDate(start_date);
 
 	let placeholder =
 		"https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
@@ -69,8 +85,8 @@
 	</div>
 	<div class="text-component">
 		<h1 class="title">{title}</h1>
-		<p class="date"><i>{start_date}</i></p>
-		<Text2Speech {title} {start_date} {body} />
+		<p class="date"><i>{formatted_date}</i></p>
+		<Text2Speech {title} {formatted_date} {body} />
 		{#if body}
 			<p class="desc">{body}</p>
 		{/if}
