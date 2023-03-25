@@ -23,6 +23,8 @@
 	let isEditing = false;
 	let lockSelection = false;
 	let currentIndex = 0;
+	let scroll;
+	let searchBarOpacity = 1;
 
 	let currentItem = {
 		title: selectedItem.title,
@@ -89,6 +91,10 @@
 		}
 	}
 
+	function updateOpacity(){
+		searchBarOpacity = scroll > 42 ? 0 : 1;
+	}
+
 </script>
 
 <svelte:head>
@@ -96,11 +102,12 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<svelte:window on:mousemove={showArrows} />
+<svelte:window bind:scrollY={scroll} on:scroll={updateOpacity} on:mousemove={showArrows} />
 <PageTransitionFade>
 	<SearchBar
 		bind:selection={dropDownSelection}
 		titles={searchData}
+		barOpacity={searchBarOpacity}
 		on:selection={gotoItem}
 		on:selection={update} />
 	<Arrow bind:lock={lockSelection} on:moveUp={pageUp} disabled={atFirst} visible={upVisible} />
@@ -112,7 +119,6 @@
 	<EventEdit 
 		bind:lockPage={lockSelection}
 		bind:enableEditing={isEditing}
-
 	/>
 	{#key selectedItem}
 		<section class="layout">

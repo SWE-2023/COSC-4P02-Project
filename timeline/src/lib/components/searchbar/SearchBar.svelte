@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
 
+	export let barOpacity;
 	export let selection;
 	export let titles;
 
@@ -33,7 +34,7 @@
 
 <svelte:window bind:innerWidth={screenWidth} on:click={handleClickOutside} />
 
-<div class="search-container">
+<div class="search-container" style="opacity:{barOpacity}">
 	<div class="bar">
 		<input
 			type="text"
