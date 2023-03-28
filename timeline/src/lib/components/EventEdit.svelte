@@ -27,7 +27,8 @@
 	});
 
 	const dispatch = createEventDispatcher();
-	const reset = () => dispatch("reset");
+	const resetEdit = () => dispatch("resetEdit");
+	const resetAdd = () => dispatch("resetAdd");
 	user = true; // for testing
 
 	function changeMenu() {
@@ -42,31 +43,60 @@
 
 	const cancelChanges = () => {
 		changeMenu();
-		reset();
+		resetEdit();
 	}
 
 	const cancelAdd= () => {
 		addNew();
+		resetAdd();
+	}
+
+	function isValidDateFormat(dateString) {
+		// Check that the string is in the format YYYY-MM-DD
+		const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+		if (!dateRegex.test(dateString)) {
+			return false;
+		}
+
+		// Split the string into year, month, and day components
+		const [year, month, day] = dateString.split('-');
+
+		// Check that the month is in the range 01-12
+		if (Number(month) < 1 || Number(month) > 12) {
+			return false;
+		}
+
+		// Check that the day is in the range 01-31
+		if (Number(day) < 1 || Number(day) > 31) {
+			return false;
+		}
+
+		// All checks passed, so the date is valid
+		return true;
 	}
 
 	const saveChanges = async() => {
 		if(changedTitle.length != 0 && changedStart_date.length != 0){
-			try {
-				const { data, error } = await supabase
-						.from('timeline')
-						.update(
-						{ title: changedTitle }, 
-						{ image: changedMedia }, 
-						{ image_credit: changedImage_credit }, 
-						{ start_date: changedStart_date }, 
-						{ body: changedBody })
-						.eq("id", currentEntry)
-				}catch(error){
-					console.log("Title" + error)
-				}
-			dispatch("saveEdit");	
-			changeMenu();
-			reset();
+			if(isValidDateFormat(changedStart_date)){
+				try {
+					const { data, error } = await supabase
+							.from('timeline')
+							.update(
+							{ title: changedTitle }, 
+							{ image: changedMedia }, 
+							{ image_credit: changedImage_credit }, 
+							{ start_date: changedStart_date }, 
+							{ body: changedBody })
+							.eq("id", currentEntry)
+					}catch(error){
+						console.log(error) //replace with toast?
+					}
+				dispatch("saveEdit");	
+				changeMenu();
+				reset();
+			}else{
+				//taost
+			}
 		}else{
 			//toast
 		}
@@ -74,7 +104,17 @@
 
 	const saveNew= async() => {
 		if(newTitle.length != 0 && newStart_date.length != 0){
+			if(isValidDateFormat(newStart_date)){
+				try {
 
+				}catch(error){
+					console.log(error) //replace with toast?
+				}
+			}else{
+				//toast
+			}
+		}else{
+			//toast
 		}	
 	}
 

@@ -13,12 +13,12 @@
 	$: ({ timeline } = data);
 
 	async function refresh() {
-		// let { data, error } = await fetch();
-		// if (error) {
-		// 	console.log(error);
-		// } else {
-		// 	timeline = data;
-		// }	
+		let { data, error } = await fetch();
+		if (error) {
+			console.log(error);
+		} else {
+			timeline = data;
+		}	
 	}
 
 	// map timeline titles to search data
@@ -122,6 +122,14 @@
 		editedBody = selectedItem.body;
 	}
 
+	function setAddFields(){
+		 addedTitle = "";
+		addedMedia = "";
+		addedImage_credit = "";
+		addedStart_date = "";
+		addedBody = "";
+	}
+
 </script>
 
 <svelte:head>
@@ -160,7 +168,8 @@
 		newBody={addedBody}
 		currentEntry={currentIndex+1}
 		on:saveEdit={refresh}
-		on:reset={setEditFields}/>
+		on:resetEdit={setEditFields}
+		on:resetAdd={setAddFields}/>
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
