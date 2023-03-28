@@ -6,19 +6,22 @@
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
-	import { fetch } from '$lib/supabaseClient'
+	import supabase from "$lib/supabaseClient";
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
 
 	async function refresh() {
-		let { data, error } = await fetch();
-		if (error) {
-			console.log(error);
-		} else {
-			timeline = data;
-		}	
+		try{
+			const { data } = await supabase
+				.from("timeline")
+				.select("id, title, image, image_credit, body, start_date")
+				.order("created_at", { ascending: false });
+			timeline = data ?? [];
+		}catch(error){
+			console.log("refresh failed") //repalce with toast
+		}
 	}
 
 	// map timeline titles to search data
@@ -123,7 +126,7 @@
 	}
 
 	function setAddFields(){
-		 addedTitle = "";
+		addedTitle = "";
 		addedMedia = "";
 		addedImage_credit = "";
 		addedStart_date = "";
@@ -194,7 +197,6 @@
 			</ItemTransition>
 		</section>
 	{/key}
-
 	<Arrow lock={lockSelection} down on:moveDown={pageDown} disabled={atLast} visible={downVisible} />
 </PageTransitionFade>
 

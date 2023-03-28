@@ -6,6 +6,7 @@
 	import { slide } from "svelte/transition";
 	import { userStore } from "$lib/authStore";
 	import { createEventDispatcher } from "svelte";
+	import { toast } from "@zerodevx/svelte-toast";
 	export let lockPage;
 	export let enableEditing;
 	export let enableAdding;
@@ -79,21 +80,28 @@
 		if(changedTitle.length != 0 && changedStart_date.length != 0){
 			if(isValidDateFormat(changedStart_date)){
 				try {
-					const { data, error } = await supabase
-							.from('timeline')
-							.update(
-							{ title: changedTitle }, 
-							{ image: changedMedia }, 
-							{ image_credit: changedImage_credit }, 
-							{ start_date: changedStart_date }, 
-							{ body: changedBody })
-							.eq("id", currentEntry)
+					const { error } = await supabase
+						.from('timeline')
+						.update({
+							title: changedTitle,
+							image: changedMedia,
+							image_credit: changedImage_credit,
+							start_date: changedStart_date,
+							body: changedBody
+						})
+						.eq("id", currentEntry);
+
+						if (error) {
+							throw error;
+						}
+
+						dispatch("saveEdit");	
+						changeMenu();
+						resetEdit();
+
 					}catch(error){
 						console.log(error) //replace with toast?
 					}
-				dispatch("saveEdit");	
-				changeMenu();
-				reset();
 			}else{
 				//taost
 			}
