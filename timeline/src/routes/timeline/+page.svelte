@@ -6,11 +6,22 @@
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
-	
+	import { fetch } from '$lib/supabaseClient'
+	import { onMount } from "svelte";
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
+
+
+	async function refresh() {
+		let { data, error } = await fetch();
+		if (error) {
+			console.log(error);
+		} else {
+			timeline = data;
+		}
+	}
 
 	// map timeline titles to search data
 	let searchData = timeline.map((item) => item.title);

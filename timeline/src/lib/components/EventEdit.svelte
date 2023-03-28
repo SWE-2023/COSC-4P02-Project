@@ -28,6 +28,10 @@
 		console.log("delete changes");
 	}
 
+	function addNew() {
+		console.log("add new");
+	}
+
 
 </script>
 
@@ -36,9 +40,11 @@
 		{#if !openMenu}
 			<button transition:slide on:click={changeMenu}
 				><span class="material-symbols-rounded i">edit</span>Edit</button>
+			<button transition:slide on:click={addNew}
+				><span class="material-symbols-rounded i">add</span>Add</button>
 		{:else if openMenu}
 			<button transition:slide on:click={changeMenu}
-				><span class="material-symbols-rounded i">close</span>Close</button>
+				><span class="material-symbols-rounded i">close</span>Cancel</button>
 			<div transition:slide class="line" />
 			<button transition:slide class="options" on:click={saveChanges}
 				><span class="material-symbols-rounded i">save</span>Save</button>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import supabase from "$lib/supabaseClient";
 import { writable } from "svelte/store";
 import { toast } from "@zerodevx/svelte-toast";
