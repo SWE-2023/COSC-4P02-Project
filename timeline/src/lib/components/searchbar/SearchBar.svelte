@@ -6,6 +6,7 @@
 	export let barOpacity;
 	export let selection;
 	export let titles;
+	export let lock;
 
 	let filtered = [];
 	let search = "";
@@ -38,6 +39,7 @@
 	<div class="bar">
 		<input
 			type="text"
+			disabled={lock}
 			placeholder="Search"
 			class={clicked && filtered.length == 0 && !search
 				? "search-box"
@@ -95,6 +97,7 @@
 		box-sizing: border-box;
 		width: clamp(1rem, 33vw, 30rem);
 		z-index: 99999;
+		transition: opacity 0.22s ease-in-out, transform 0.05s ease-in-out;
 	}
 
 	.bar {
