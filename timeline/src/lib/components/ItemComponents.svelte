@@ -3,13 +3,28 @@
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
-	export let editMode;
+	export let editMode; 
+	export let addMode;
 	export let title;
 	export let media;
 	export let image_credit;
 	export let start_date;
 	export let body;
-	let imagePlaceholder = media;
+	export let titleEdit;
+	export let mediaEdit;
+	export let image_creditEdit;
+	export let start_dateEdit;
+	export let bodyEdit;
+	export let titleAdd;
+	export let mediaAdd;
+	export let image_creditAdd;
+	export let start_dateAdd;
+	export let bodyAdd;
+	
+
+	let editImagePlaceholder = media;
+	let addImageOpacity = 0;
+	let addImagePlaceholder;
 	let formatted_date;
 	let full = false;
 
@@ -27,8 +42,7 @@
 
 	formatted_date = formatDate(start_date);
 
-	let placeholder =
-		"https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
+	let placeholder ="https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
 
 	function handleKeyDown(e) {
 		if (e.key === "Space Bar") {
@@ -36,6 +50,15 @@
 			full = !full;
 		}
 	}
+
+	const resetEditPlaceholder = () => editImagePlaceholder = media;
+	const changeEditPlaceholder = () => editImagePlaceholder = mediaEdit;
+	const hidePlaceholder = () => addImageOpacity = 0;
+	const changeAddPlaceholder = () => {
+		addImagePlaceholder = mediaAdd;
+		addImageOpacity = 1;
+	}
+
 </script>
 
 {#if editMode}
@@ -43,18 +66,41 @@
 		<div class="media-component">
 			<img
 				class="placeholder-image"
-				src={imagePlaceholder}
-				alt={title} />
+				src={editImagePlaceholder}
+				alt={title}
+				on:error={resetEditPlaceholder}/>
 			<div class="image-info">
-				<input bind:value={imagePlaceholder} class="image-input" placeholder="Type image link here!" >
-				<input class="credit-input" placeholder={image_credit}>
+				<input bind:value={mediaEdit} on:input={changeEditPlaceholder} class="image-input">
+				<input bind:value={image_creditEdit} class="credit-input">
 			</div>
 		</div>
 		<div class="text-component">
-			<textarea class="title-input" placeholder={title}></textarea>
-			<input class="date-input" placeholder={start_date}>
+			<textarea bind:value={titleEdit} class="title-input"></textarea>
+			<input bind:value={start_dateEdit} class="date-input">
 			{#if body}
-				<textarea class="desc-input" placeholder={body}></textarea> 
+				<textarea bind:value={bodyEdit} class="desc-input"></textarea> 
+			{/if}
+		</div>
+	</section>
+{:else if addMode}
+	<section class="add-mode">
+		<div class="media-component">
+			<img
+				style="opacity:{addImageOpacity}"
+				class="placeholder-image"
+				src={addImagePlaceholder}
+				alt={titleAdd}
+				on:error={hidePlaceholder}/>
+			<div class="image-info">
+				<input bind:value={mediaAdd} on:input={changeAddPlaceholder} class="image-input" placeholder="Image address">
+				<input bind:value={image_creditAdd} class="credit-input" placeholder="Image source">
+			</div>
+		</div>
+		<div class="text-component">
+			<textarea bind:value={titleAdd} class="title-input" placeholder="Title"></textarea>
+			<input bind:value={start_dateAdd} class="date-input" placeholder="Start date">
+			{#if body}
+				<textarea bind:value={bodyAdd} class="desc-input" placeholder="Description"></textarea> 
 			{/if}
 		</div>
 	</section>
@@ -351,7 +397,7 @@
 		height: 20em;
 	}
 
-	.edit-mode, .text-component, .media-component {
+	.edit-mode, .add-mode, .text-component, .media-component {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
