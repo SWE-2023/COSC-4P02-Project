@@ -3,6 +3,7 @@
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
+	import PageTransitionBlur from "./PageTransitionBlur.svelte";
 
 	export let editMode;
 	export let addMode;
@@ -13,11 +14,8 @@
 	export let body;
 	export let editList;
 	export let addList;
-	
 
 	let editImagePlaceholder = media;
-	let addImageOpacity = 0;
-	let addImagePlaceholder;
 	let formatted_date;
 	let full = false;
 
@@ -45,128 +43,149 @@
 		}
 	}
 
-	const resetEditPlaceholder = () => (editImagePlaceholder = media);
 	const changeEditPlaceholder = () => (editImagePlaceholder = mediaEdit);
-	const hidePlaceholder = () => (addImageOpacity = 0);
-	const changeAddPlaceholder = () => {
-		addImagePlaceholder = mediaAdd;
-		addImageOpacity = 1;
-	};
 </script>
 
-<section class="item-components">
-	<div class="media-component">
-		<div class="tip v-align">
-			<span class="material-symbols-rounded "> info </span>
-			<p>Click the image to toggle fullscreen.</p>
-		</div>
-		<Fullscreen let:onToggle>
-			<div class="image-cont">
-				{#if editMode}
-					<div class="edit-cont">
-						<img class="image-edit" src={editImagePlaceholder} alt={title} />
-						<div class="input-cont">
-							<label for="media">Image URL</label>
-							<input bind:value={editList.media} on:input={changeEditPlaceholder} />
-						</div>
-						<div class="input-cont">
-							<label for="image_credit">Image source</label>
-							<input bind:value={editList.image_credit} />
-						</div>
+{#key editMode || addMode}
+	<PageTransitionBlur>
+		<section class="item-components">
+			<div class="media-component">
+				{#if !editMode && !addMode}
+					<div class="tip v-align">
+						<span class="material-symbols-rounded "> info </span>
+						<p>Click the image to toggle fullscreen.</p>
 					</div>
-				{:else if addMode}
-					<div class="edit-cont">
-						<img class="image-edit" src={editImagePlaceholder} alt={title} />
-						<div class="input-cont">
-							<label for="media">Image URL</label>
-							<input bind:value={addList.media} on:input={changeEditPlaceholder} />
-						</div>
-						<div class="input-cont">
-							<label for="image_credit">Image source</label>
-							<input bind:value={addList.image_credit} />
-						</div>
-					</div>
-				{:else if media}
-					{#if media.includes("youtube.com")}
-						<iframe
-							class="video"
-							title="youtube video"
-							src={media.replace("watch?v=", "embed/")}
-							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowfullscreen />
-					{:else}
-						<img
-							class={full ? "image fullscreen" : "image"}
-							src={media}
-							alt={title}
-							on:click={() => {
-								onToggle();
-								full = !full;
-							}}
-							on:keydown={handleKeyDown} />
-					{/if}
 				{:else}
-					<img
-						class={full ? "image fullscreen" : "image"}
-						src={placeholder}
-						alt={title}
-						on:click={() => {
-							onToggle();
-							full = !full;
-						}}
-						on:keydown={handleKeyDown} />
+					<div>
+						<h2 class="notice">
+							{editMode ? "Edit" : "Add"}ing item
+						</h2>
+					</div>
+				{/if}
+				<Fullscreen let:onToggle>
+					<div class="image-cont">
+						{#if editMode}
+							<div class="edit-cont">
+								<img
+									class="image-edit"
+									src={editList.media}
+									alt={editList.title} />
+								<div class="input-cont">
+									<label for="media">Image URL</label>
+									<input
+										placeholder="https://example.com/image.jpg"
+										bind:value={editList.media}
+										on:input={changeEditPlaceholder} />
+								</div>
+								<div class="input-cont">
+									<label for="image_credit">Image source</label>
+									<input
+										placeholder="https://website.com/source"
+										bind:value={editList.image_credit} />
+								</div>
+							</div>
+						{:else if addMode}
+							<div class="edit-cont">
+								<img
+									class="image-edit"
+									src={addList.mediaAdd}
+									alt={addList.title} />
+								<div class="input-cont">
+									<label for="media">Image URL</label>
+									<input
+										placeholder="https://example.com/image.jpg"
+										bind:value={addList.media}
+										on:input={changeEditPlaceholder} />
+								</div>
+								<div class="input-cont">
+									<label for="image_credit">Image source</label>
+									<input
+										placeholder="https://website.com/source"
+										bind:value={addList.image_credit} />
+								</div>
+							</div>
+						{:else if media}
+							{#if media.includes("youtube.com")}
+								<iframe
+									class="video"
+									title="youtube video"
+									src={media.replace("watch?v=", "embed/")}
+									frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen />
+							{:else}
+								<img
+									class={full ? "image fullscreen" : "image"}
+									src={media}
+									alt={title}
+									on:click={() => {
+										onToggle();
+										full = !full;
+									}}
+									on:keydown={handleKeyDown} />
+							{/if}
+						{:else}
+							<img
+								class={full ? "image fullscreen" : "image"}
+								src={placeholder}
+								alt={title}
+								on:click={() => {
+									onToggle();
+									full = !full;
+								}}
+								on:keydown={handleKeyDown} />
+						{/if}
+					</div>
+				</Fullscreen>
+				{#if image_credit != "null"}
+					{#if !editMode && !addMode}
+						<div class="image_cred">
+							<a href={image_credit} target="_blank" rel="noreferrer">Source</a>
+						</div>
+					{/if}
 				{/if}
 			</div>
-		</Fullscreen>
-		{#if image_credit != "null"}
-			{#if !editMode && !addMode}
-				<div class="image_cred">
-					<a href={image_credit} target="_blank" rel="noreferrer">Source</a>
-				</div>
-			{/if}
-		{/if}
-	</div>
-	<div class="text-component">
-		{#if editMode}
-			<div class="input-cont">
-				<label for="title">Title</label>
-				<input bind:value={editList.title} />
+			<div class="text-component">
+				{#if editMode}
+					<div class="input-cont">
+						<label for="title">Title</label>
+						<input placeholder="Event Title" bind:value={editList.title} />
+					</div>
+					<div class="input-cont">
+						<label for="start_date">Start date</label>
+						<input placeholder="YYYY-MM-DD" bind:value={editList.start_date} />
+					</div>
+					<div class="input-cont">
+						<label for="body">Description</label>
+						<textarea placeholder="Description" bind:value={editList.body} />
+					</div>
+				{:else if addMode}
+					<div class="input-cont">
+						<label for="title">Title</label>
+						<input placeholder="Event Title" bind:value={addList.title} />
+					</div>
+					<div class="input-cont">
+						<label for="start_date">Start date</label>
+						<input placeholder="YYYY-MM-DD" bind:value={addList.start_date} />
+					</div>
+					<div class="input-cont">
+						<label for="body">Description</label>
+						<textarea placeholder="Description" bind:value={addList.body} />
+					</div>
+				{:else}
+					<h1 class="title">{title}</h1>
+					<p class="date"><i>{formatted_date}</i></p>
+					<div class="tts">
+						<Text2Speech {title} {formatted_date} {body} />
+					</div>
+					{#if body}
+						<p class="desc">{body}</p>
+					{/if}
+				{/if}
 			</div>
-			<div class="input-cont">
-				<label for="start_date">Start date</label>
-				<input bind:value={editList.start_date} />
-			</div>
-			<div class=input-cont>
-				<label for="body">Description</label>
-				<textarea bind:value={editList.body} />
-			</div>
-		{:else if addMode}
-			<div class="input-cont">
-				<label for="title">Title</label>
-				<input bind:value={addList.title} />
-			</div>
-			<div class="input-cont">
-				<label for="start_date">Start date</label>
-				<input bind:value={addList.start_date} />
-			</div>
-			<div class=input-cont>
-				<label for="body">Description</label>
-				<textarea bind:value={addList.body} />
-			</div>
-		{:else}
-			<h1 class="title">{title}</h1>
-			<p class="date"><i>{formatted_date}</i></p>
-			<div class="tts">
-				<Text2Speech {title} {formatted_date} {body} />
-			</div>
-			{#if body}
-				<p class="desc">{body}</p>
-			{/if}
-		{/if}
-	</div>
-	<!-- {/if} -->
-</section>
+		</section>
+	</PageTransitionBlur>
+{/key}
 
 <svelte:window on:keypress={handleKeyDown} />
 
@@ -300,6 +319,10 @@
 		}
 	}
 
+	.media-component {
+		width:100%;
+	}
+
 	.video {
 		z-index: 1;
 		max-width: 50vw;
@@ -375,8 +398,22 @@
 
 	/* EDIT */
 
+	.notice {
+		color: var(--color-theme-1);
+		font-family: var(--font-sans);
+		padding:0.5rem;
+		border:1px dashed var(--color-theme-1);
+		border-radius:1rem;
+		margin: 0 auto;
+		display:flex;
+		align-items:center;
+		justify-content:center;
+	}
+
 	.edit-cont {
 		display: flex;
+		width: 100%;
+		flex:1;
 		flex-flow: row wrap;
 		align-items: center;
 		justify-content: center;
@@ -391,22 +428,24 @@
 	}
 
 	label {
-		font-size:1em;
-		padding-left:1rem;
+		font-size: 1em;
+		padding-left: 1rem;
 		color: var(--color-text);
 	}
 
 	input,
 	textarea {
+		text-overflow: ellipsis;
 		flex: 1 1 auto;
 		text-align: left;
 		margin: 0.5em 0;
 		padding: 0.8em;
 		border-radius: 0.5em 0.5rem 0 0;
 		outline: none;
-		border:none;
+		border: none;
 		border-bottom: 2px solid var(--color-theme-1);
-		background: #ffffff22;
+		background:transparent;
+		backdrop-filter: invert(0.1) sepia(0.1) saturate(0.1)  brightness(1.1) contrast(1.1);
 		font-size: 1.2em;
 		color: var(--color-text);
 		font-family: var(--font-sans);
@@ -414,7 +453,7 @@
 	}
 
 	textarea {
-		height:clamp(10rem, 20vh, 30rem);
+		height: clamp(10rem, 20vh, 30rem);
 		resize: none;
 	}
 
@@ -426,10 +465,12 @@
 	.image-edit {
 		display: flex;
 		width: 100%;
-		max-height: 50vh;
+		height: 100%;
+		height: 50vh;
 		z-index: 1;
 		object-position: center center;
 		object-fit: contain;
-		border-radius: 0.5vw;
+		border-radius: 1.5vw;
+		background: var(--color-bg-2);
 	}
 </style>
