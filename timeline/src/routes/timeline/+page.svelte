@@ -68,6 +68,7 @@
 				update();
 			}
 		}
+		setFields();
 	}
 	function pageDown() {
 		if(!lockSelection){
@@ -77,6 +78,7 @@
 				update();
 			}
 		}
+		setFields();
 	}
 
 	function update() {
@@ -91,6 +93,7 @@
 		currentIndex = timeline.indexOf(selectedItem);
 		atFirst = selectedItem == timeline[0];
 		atLast = selectedItem == timeline[timeline.length - 1];
+		setFields();
 	}
 
 	let upVisible = false;
@@ -115,6 +118,7 @@
 			selectedItem = item;
 			update();
 		}
+		setFields();
 	}
 
 	function updateOpacity(){
@@ -122,20 +126,16 @@
 	}
 
 	function setFields(){
-		if(isEditing){
-			console.log("reset")
-			edit.title = selectedItem.title;
-			edit.media = selectedItem.image;
-			edit.image_credit = selectedItem.image_credit;
-			edit.start_date = selectedItem.start_date;
-			edit.body = selectedItem.body;
-		}else{
-			add.title = "";
-			add.media = "";
-			add.image_credit = "";
-			add.start_date = "";
-			add.body = "";
-		}
+		edit.title = selectedItem.title;
+		edit.media = selectedItem.image;
+		edit.image_credit = selectedItem.image_credit;
+		edit.start_date = selectedItem.start_date;
+		edit.body = selectedItem.body;
+		add.title = "";
+		add.media = "";
+		add.image_credit = "";
+		add.start_date = "";
+		add.body = "";
 	}
 
 </script>

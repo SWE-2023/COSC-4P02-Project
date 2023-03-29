@@ -34,15 +34,13 @@
 	}
 
 	const cancelChanges = () => {
-		reset();
 		changeMenu();
-		
+		reset();
 	}
 
 	const cancelAdd= () => {
-		reset();
 		addNew();
-		
+		reset();
 	}
 
 	function isValidDateFormat(dateString) {
@@ -88,9 +86,9 @@
 							throw error;
 						}
 
-						dispatch("saveEdit");
-						reset();	
+						dispatch("saveEdit");	
 						changeMenu();
+						reset();
 					}catch(error){
 						console.log(error) 
 						//toast
