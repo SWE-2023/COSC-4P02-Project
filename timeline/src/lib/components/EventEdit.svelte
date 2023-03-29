@@ -11,25 +11,16 @@
 	export let enableEditing;
 	export let enableAdding;
 	export let currentEntry;
-	export let changedTitle;
-	export let changedMedia;
-	export let changedImage_credit;
-	export let changedStart_date;
-	export let changedBody;  
-	export let newTitle;
-	export let newMedia;
-	export let newImage_credit;
-	export let newStart_date;
-	export let newBody;  
-	
+	export let changes;
+	export let newItem;
+	  
 	let user;
 	userStore.subscribe((value) => {
 		user = value && value.email ? value : null;
 	});
 
 	const dispatch = createEventDispatcher();
-	const resetEdit = () => dispatch("resetEdit");
-	const resetAdd = () => dispatch("resetAdd");
+	const reset = () => dispatch("reset");
 	user = true; // for testing
 
 	function changeMenu() {
@@ -43,13 +34,15 @@
 	}
 
 	const cancelChanges = () => {
+		reset();
 		changeMenu();
-		resetEdit();
+		
 	}
 
 	const cancelAdd= () => {
+		reset();
 		addNew();
-		resetAdd();
+		
 	}
 
 	function isValidDateFormat(dateString) {
@@ -77,17 +70,17 @@
 	}
 
 	const saveChanges = async() => {
-		if(changedTitle.length != 0 && changedStart_date.length != 0){
-			if(isValidDateFormat(changedStart_date)){
+		if(changes.title.length != 0 && changes.start_date.length != 0){
+			if(isValidDateFormat(changes.start_date)){
 				try {
 					const { error } = await supabase
 						.from('timeline')
 						.update({
-							title: changedTitle,
-							image: changedMedia,
-							image_credit: changedImage_credit,
-							start_date: changedStart_date,
-							body: changedBody
+							title: changes.title,
+							image: changes.media,
+							image_credit: changes.image_credit,
+							start_date: changes.start_date,
+							body: changes.body
 						})
 						.eq("id", currentEntry);
 
@@ -95,12 +88,12 @@
 							throw error;
 						}
 
-						dispatch("saveEdit");	
+						dispatch("saveEdit");
+						reset();	
 						changeMenu();
-						resetEdit();
-
 					}catch(error){
-						console.log(error) //replace with toast?
+						console.log(error) 
+						//toast
 					}
 			}else{
 				//taost
@@ -111,8 +104,8 @@
 	}
 
 	const saveNew= async() => {
-		if(newTitle.length != 0 && newStart_date.length != 0){
-			if(isValidDateFormat(newStart_date)){
+		if(newItem.title.length != 0 && newItem.start_date.length != 0){
+			if(isValidDateFormat(newItem.start_date)){
 				try {
 
 				}catch(error){

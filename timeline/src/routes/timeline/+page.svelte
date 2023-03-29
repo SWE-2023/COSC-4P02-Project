@@ -35,16 +35,20 @@
 	let isEditing = false;
 	let isAdding = false;
 	let lockSelection = false;
-	let editedTitle = selectedItem.title;
-	let editedMedia = selectedItem.image;
-	let editedImage_credit = selectedItem.image_credit;
-	let editedStart_date = selectedItem.start_date;
-	let editedBody = selectedItem.body;
-	let addedTitle = "";
-	let addedMedia = "";
-	let addedImage_credit = "";
-	let addedStart_date = "";
-	let addedBody = "";
+	let edit = {
+		title: selectedItem.title,
+		media: selectedItem.image,
+		image_credit: selectedItem.image_credit,
+		start_date: selectedItem.start_date,
+		body: selectedItem.body
+	}
+	let add = {
+		title: "",
+		media: "",
+		image_credit: "",
+		start_date: "",
+		body: ""
+	}
 	let scroll;
 	let searchBarOpacity = 1;
 
@@ -117,20 +121,21 @@
 		searchBarOpacity = scroll > 42 ? 0 : 1;
 	}
 
-	function setEditFields(){
-		editedTitle = selectedItem.title;
-		editedMedia = selectedItem.image;
-		editedImage_credit = selectedItem.image_credit;
-		editedStart_date = selectedItem.start_date;
-		editedBody = selectedItem.body;
-	}
-
-	function setAddFields(){
-		addedTitle = "";
-		addedMedia = "";
-		addedImage_credit = "";
-		addedStart_date = "";
-		addedBody = "";
+	function setFields(){
+		if(isEditing){
+			console.log("reset")
+			edit.title = selectedItem.title;
+			edit.media = selectedItem.image;
+			edit.image_credit = selectedItem.image_credit;
+			edit.start_date = selectedItem.start_date;
+			edit.body = selectedItem.body;
+		}else{
+			add.title = "";
+			add.media = "";
+			add.image_credit = "";
+			add.start_date = "";
+			add.body = "";
+		}
 	}
 
 </script>
@@ -160,36 +165,19 @@
 		bind:lockPage={lockSelection}
 		bind:enableEditing={isEditing}
 		bind:enableAdding={isAdding}
-		changedTitle={editedTitle}
-		changedMedia={editedMedia}
-		changedImage_credit={editedImage_credit}
-		changedStart_date={editedStart_date}
-		changedBody={editedBody}  
-		newTitle={addedTitle}
-		newMedia={addedMedia}
-		newImage_credit={addedImage_credit}
-		newStart_date={addedStart_date}
-		newBody={addedBody}
-		currentEntry={currentIndex+1}
+		changes={edit}
+		newItem={add}
+		currentEntry={selectedItem.id}
 		on:saveEdit={refresh}
-		on:resetEdit={setEditFields}
-		on:resetAdd={setAddFields}/>
+		on:reset={setFields}/>
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
 				<ItemComponents
 					editMode={isEditing}
 					addMode={isAdding}
-					bind:titleEdit={editedTitle}
-					bind:mediaEdit={editedMedia}
-					bind:image_creditEdit={editedImage_credit}
-					bind:start_dateEdit={editedStart_date}
-					bind:bodyEdit={editedBody}
-					bind:titleAdd={addedTitle}
-					bind:mediaAdd={addedMedia}
-					bind:image_creditAdd={addedImage_credit}
-					bind:start_dateAdd={addedStart_date}
-					bind:bodyAdd={addedBody}
+					bind:editList = {edit}
+					bind:addList={add}
 					title={currentItem.title}
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}

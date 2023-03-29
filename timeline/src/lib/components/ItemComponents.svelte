@@ -11,16 +11,9 @@
 	export let image_credit;
 	export let start_date;
 	export let body;
-	export let titleEdit;
-	export let mediaEdit;
-	export let image_creditEdit;
-	export let start_dateEdit;
-	export let bodyEdit;
-	export let titleAdd;
-	export let mediaAdd;
-	export let image_creditAdd;
-	export let start_dateAdd;
-	export let bodyAdd;
+	export let editList;
+	export let addList;
+	
 
 	let editImagePlaceholder = media;
 	let addImageOpacity = 0;
@@ -74,11 +67,11 @@
 						<img class="image-edit" src={editImagePlaceholder} alt={title} />
 						<div class="input-cont">
 							<label for="media">Image URL</label>
-							<input bind:value={mediaEdit} on:input={changeEditPlaceholder} />
+							<input bind:value={editList.media} on:input={changeEditPlaceholder} />
 						</div>
 						<div class="input-cont">
 							<label for="image_credit">Image source</label>
-							<input bind:value={image_creditEdit} />
+							<input bind:value={editList.image_credit} />
 						</div>
 					</div>
 				{:else if addMode}
@@ -86,11 +79,11 @@
 						<img class="image-edit" src={editImagePlaceholder} alt={title} />
 						<div class="input-cont">
 							<label for="media">Image URL</label>
-							<input bind:value={mediaAdd} on:input={changeEditPlaceholder} />
+							<input bind:value={addList.media} on:input={changeEditPlaceholder} />
 						</div>
 						<div class="input-cont">
 							<label for="image_credit">Image source</label>
-							<input bind:value={image_creditAdd} />
+							<input bind:value={addList.image_credit} />
 						</div>
 					</div>
 				{:else if media}
@@ -138,28 +131,28 @@
 		{#if editMode}
 			<div class="input-cont">
 				<label for="title">Title</label>
-				<input bind:value={titleEdit} />
+				<input bind:value={editList.title} />
 			</div>
 			<div class="input-cont">
 				<label for="start_date">Start date</label>
-				<input bind:value={start_dateEdit} />
+				<input bind:value={editList.start_date} />
 			</div>
 			<div class=input-cont>
 				<label for="body">Description</label>
-				<textarea bind:value={bodyEdit} />
+				<textarea bind:value={editList.body} />
 			</div>
 		{:else if addMode}
 			<div class="input-cont">
 				<label for="title">Title</label>
-				<input bind:value={titleAdd} />
+				<input bind:value={addList.title} />
 			</div>
 			<div class="input-cont">
 				<label for="start_date">Start date</label>
-				<input bind:value={start_dateAdd} />
+				<input bind:value={addList.start_date} />
 			</div>
 			<div class=input-cont>
 				<label for="body">Description</label>
-				<textarea bind:value={bodyAdd} />
+				<textarea bind:value={addList.body} />
 			</div>
 		{:else}
 			<h1 class="title">{title}</h1>
