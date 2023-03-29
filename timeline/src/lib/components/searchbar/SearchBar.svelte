@@ -1,5 +1,4 @@
 <script>
-	import { currentSizeStore } from "./../../stores/store.js";
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
 
@@ -96,7 +95,7 @@
 		align-items: center;
 		box-sizing: border-box;
 		width: clamp(1rem, 33vw, 30rem);
-		z-index: 99999;
+		z-index: 999;
 		transition: opacity 0.22s ease-in-out, transform 0.05s ease-in-out;
 	}
 

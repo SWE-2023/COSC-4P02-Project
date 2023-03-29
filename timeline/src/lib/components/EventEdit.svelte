@@ -1,8 +1,7 @@
 <script>
-// @ts-nocheck
-	
-	import supabase from "../supabaseClient";
-	import Button from "./Button.svelte";
+	// @ts-nocheck
+
+	import supabase from "$lib/supabaseClient";
 	import { slide } from "svelte/transition";
 	import { userStore } from "$lib/authStore";
 	import { createEventDispatcher } from "svelte";
@@ -13,7 +12,8 @@
 	export let currentEntry;
 	export let changes;
 	export let newItem;
-	  
+
+	
 	let user;
 	userStore.subscribe((value) => {
 		user = value && value.email ? value : null;
@@ -21,12 +21,12 @@
 
 	const dispatch = createEventDispatcher();
 	const resetEdit = () => dispatch("resetEdit");
-	const resetAdd = () => dispatch("resetAdd")
-	user = true; // for testing
+	const resetAdd = () => dispatch("resetAdd");
+	// user = true; // for testing
 
 	function changeMenu() {
 		lockPage = !lockPage;
-		enableEditing = !enableEditing;	
+		enableEditing = !enableEditing;
 	}
 
 	function addNew() {
@@ -37,92 +37,98 @@
 	const cancelChanges = () => {
 		changeMenu();
 		resetEdit();
-	}
+	};
 
-	const cancelAdd= () => {
+	const cancelAdd = () => {
 		addNew();
 		resetAdd();
-	}
+	};
 
 	function isValidDateFormat(dateString) {
-		// Check that the string is in the format YYYY-MM-DD
 		const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 		if (!dateRegex.test(dateString)) {
 			return false;
 		}
 
-		// Split the string into year, month, and day components
-		const [year, month, day] = dateString.split('-');
+		const [year, month, day] = dateString.split("-");
 
-		// Check that the month is in the range 01-12
 		if (Number(month) < 1 || Number(month) > 12) {
 			return false;
 		}
 
-		// Check that the day is in the range 01-31
 		if (Number(day) < 1 || Number(day) > 31) {
 			return false;
 		}
 
-		// All checks passed, so the date is valid
 		return true;
 	}
 
-	const saveChanges = async() => {
-		if(changes.title.length != 0 && changes.start_date.length != 0){
-			if(isValidDateFormat(changes.start_date)){
+	const saveChanges = async () => {
+		if (changes.title.length != 0 && changes.start_date.length != 0) {
+			if (isValidDateFormat(changes.start_date)) {
 				try {
 					const { error } = await supabase
-						.from('timeline')
+						.from("timeline")
 						.update({
 							title: changes.title,
 							image: changes.media,
 							image_credit: changes.image_credit,
 							start_date: changes.start_date,
-							body: changes.body
+							body: changes.body,
 						})
 						.eq("id", currentEntry);
 
-						if (error) {
-							throw error;
-						}
-
-						dispatch("saveEdit");	
-						changeMenu();
-						resetEdit();
-					}catch(error){
-						console.log(error) 
-						//toast
+					if (error) {
+						throw error;
 					}
-			}else{
-				//taost
-			}
-		}else{
-			//toast
-		}
-	}
 
-	const saveNew= async() => {
-		if(newItem.title.length != 0 && newItem.start_date.length != 0){
-			if(isValidDateFormat(newItem.start_date)){
-				try {
-
-				}catch(error){
-					console.log(error) //replace with toast?
+					dispatch("saveEdit");
+					changeMenu();
+					resetEdit();
+					toast.push("Changes saved.");
+				} catch (error) {
+					toast.push(`Error: ${error.message}`);
 				}
-			}else{
-				//toast
+			} else {
+				toast.push("Please enter a valid date.");
 			}
-		}else{
-			//toast
-		}	
-	}
+		} else {
+			toast.push("Please fill out the date and title fields.");
+		}
+	};
 
-	function deleteEntry() {
-		console.log(currentEntry);
-	}
+	const saveNew = async () => {
+		if (newItem.title.length != 0 && newItem.start_date.length != 0) {
+			if (isValidDateFormat(newItem.start_date)) {
+				try {
+					const { error } = await supabase.from("timeline").insert({
+						title: newItem.title,
+						image: newItem.media,
+						image_credit: newItem.image_credit,
+						start_date: newItem.start_date,
+						body: newItem.body,
+					});
 
+					if (error) {
+						throw error;
+					}
 
+					dispatch("saveNew");
+					addNew();
+					resetAdd();
+					toast.push("New entry saved.");
+				} catch (error) {
+					toast.push(`Error: ${error.message}`);
+				}
+			} else {
+				toast.push("Please enter a valid date.");
+			}
+		} else {
+			toast.push("Please fill out the date and title fields.");
+		}
+	};
+
+	function deleteEntry() {}
 </script>
 
 {#if user}
@@ -131,16 +137,16 @@
 			<button transition:slide on:click={cancelChanges}
 				><span class="material-symbols-rounded i">close</span>Cancel</button>
 			<div transition:slide class="line" />
-			<button transition:slide class="options" on:click={saveChanges} 
+			<button transition:slide class="options" on:click={saveChanges}
 				><span class="material-symbols-rounded i">save</span>Save</button>
 			<div transition:slide class="line" />
 			<button transition:slide class="options" on:click={deleteEntry}
 				><span class="material-symbols-rounded i">delete</span>Delete</button>
 		{:else if enableAdding}
 			<button transition:slide on:click={cancelAdd}
-			><span class="material-symbols-rounded i">close</span>Cancel</button>
+				><span class="material-symbols-rounded i">close</span>Cancel</button>
 			<div transition:slide class="line" />
-			<button transition:slide class="options" on:click={saveNew} 
+			<button transition:slide class="options" on:click={saveNew}
 				><span class="material-symbols-rounded i">save</span>Save</button>
 		{:else}
 			<button transition:slide on:click={changeMenu}
@@ -177,7 +183,7 @@
 		font-family: var(--font-sans);
 		font-size: var(--font-size-small);
 		font: var(--font-sans);
-		color: var(--button-color);
+		color: var(--color-theme-1);
 		background: none;
 		border: none;
 		padding: 0.75rem 2rem;

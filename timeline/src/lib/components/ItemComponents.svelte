@@ -176,7 +176,7 @@
 					<h1 class="title">{title}</h1>
 					<p class="date"><i>{formatted_date}</i></p>
 					<div class="tts">
-						<Text2Speech {title} {formatted_date} {body} />
+						<Text2Speech {title} date={formatted_date} {body} />
 					</div>
 					{#if body}
 						<p class="desc">{body}</p>

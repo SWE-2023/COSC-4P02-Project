@@ -7,20 +7,22 @@
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
 	import supabase from "$lib/supabaseClient";
+	import { onMount } from "svelte";
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
 
 	async function refresh() {
-		try{
-			const { data } = await supabase
-				.from("timeline")
-				.select("id, title, image, image_credit, body, start_date")
-				.order("created_at", { ascending: false });
-			timeline = data ?? [];
-		}catch(error){
-			console.log("refresh failed") //repalce with toast
+		const { data: fetchedData, error } = await supabase
+			.from("timeline")
+			.select("id, title, image, image_credit, body, start_date")
+			.order("start_date");
+
+		if (error) {
+			console.error("Error fetching timeline data:", error.message);
+		} else {
+			data.timeline = fetchedData ?? [];
 		}
 	}
 
@@ -35,20 +37,23 @@
 	let isEditing = false;
 	let isAdding = false;
 	let lockSelection = false;
+
 	let edit = {
 		title: selectedItem.title,
 		media: selectedItem.image,
 		image_credit: selectedItem.image_credit,
 		start_date: selectedItem.start_date,
-		body: selectedItem.body
-	}
+		body: selectedItem.body,
+	};
+
 	let add = {
 		title: "",
 		media: "",
 		image_credit: "",
 		start_date: "",
-		body: ""
-	}
+		body: "",
+	};
+
 	let scroll;
 	let searchBarOpacity = 1;
 
@@ -61,7 +66,7 @@
 	};
 
 	function pageUp() {
-		if(!lockSelection){
+		if (!lockSelection) {
 			transitionDirection = "up";
 			if (!atFirst) {
 				selectedItem = timeline[--currentIndex];
@@ -71,7 +76,7 @@
 		setEditFields();
 	}
 	function pageDown() {
-		if(!lockSelection){
+		if (!lockSelection) {
 			transitionDirection = "down";
 			if (!atLast) {
 				selectedItem = timeline[++currentIndex];
@@ -99,7 +104,7 @@
 	let upVisible = false;
 	let downVisible = false;
 	function showArrows(event) {
-		if(!lockSelection){
+		if (!lockSelection) {
 			if (window.innerWidth < 1000) {
 				upVisible = true;
 				downVisible = true;
@@ -121,11 +126,19 @@
 		setEditFields();
 	}
 
-	function updateOpacity(){
-		searchBarOpacity = scroll > 42 ? 0 : 1;
+	function updateOpacity() {
+		if (scroll > 100) {
+			searchBarOpacity = 0;
+		} else {
+			searchBarOpacity = 1 - scroll / 100;
+		}
+		// reset to 1 if at top
+		if (scroll == 0) {
+			searchBarOpacity = 1;
+		}
 	}
 
-	function setEditFields(){
+	function setEditFields() {
 		edit.title = selectedItem.title;
 		edit.media = selectedItem.image;
 		edit.image_credit = selectedItem.image_credit;
@@ -133,14 +146,13 @@
 		edit.body = selectedItem.body;
 	}
 
-	function setAddFields(){
+	function setAddFields() {
 		add.title = "";
 		add.media = "";
 		add.image_credit = "";
 		add.start_date = "";
 		add.body = "";
 	}
-
 </script>
 
 <svelte:head>
@@ -148,7 +160,10 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<svelte:window bind:scrollY={scroll} on:scroll={updateOpacity} on:mousemove={showArrows} />
+<svelte:window
+	bind:scrollY={scroll}
+	on:scroll={updateOpacity}
+	on:mousemove={showArrows} />
 
 <PageTransitionFade>
 	<SearchBar
@@ -158,39 +173,49 @@
 		barOpacity={searchBarOpacity}
 		on:selection={gotoItem}
 		on:selection={update} />
-	<Arrow lock={lockSelection} on:moveUp={pageUp} disabled={atFirst} visible={upVisible} />
+	<Arrow
+		lock={lockSelection}
+		on:moveUp={pageUp}
+		disabled={atFirst}
+		visible={upVisible} />
 	<TimelineBar
 		lock={lockSelection}
 		timeData={timeline}
 		bind:currentItem={selectedItem}
 		on:change={update} />
-	<EventEdit 
+	<EventEdit
 		bind:lockPage={lockSelection}
 		bind:enableEditing={isEditing}
 		bind:enableAdding={isAdding}
 		changes={edit}
 		newItem={add}
 		currentEntry={selectedItem.id}
-		on:saveEdit={refresh}
 		on:resetEdit={setEditFields}
-		on:resetAdd={setAddFields}/>
+		on:resetAdd={setAddFields}
+		on:saveEdit={refresh}
+		 />
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
 				<ItemComponents
 					editMode={isEditing}
 					addMode={isAdding}
-					bind:editList = {edit}
+					bind:editList={edit}
 					bind:addList={add}
 					title={currentItem.title}
 					media={currentItem.image}
 					image_credit={currentItem.image_credit}
 					start_date={currentItem.start_date}
-					body={currentItem.body}/>
+					body={currentItem.body} />
 			</ItemTransition>
 		</section>
 	{/key}
-	<Arrow lock={lockSelection} down on:moveDown={pageDown} disabled={atLast} visible={downVisible} />
+	<Arrow
+		lock={lockSelection}
+		down
+		on:moveDown={pageDown}
+		disabled={atLast}
+		visible={downVisible} />
 </PageTransitionFade>
 
 <style>
