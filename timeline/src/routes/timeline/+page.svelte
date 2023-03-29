@@ -68,7 +68,7 @@
 				update();
 			}
 		}
-		setFields();
+		setEditFields();
 	}
 	function pageDown() {
 		if(!lockSelection){
@@ -78,7 +78,7 @@
 				update();
 			}
 		}
-		setFields();
+		setEditFields();
 	}
 
 	function update() {
@@ -93,7 +93,7 @@
 		currentIndex = timeline.indexOf(selectedItem);
 		atFirst = selectedItem == timeline[0];
 		atLast = selectedItem == timeline[timeline.length - 1];
-		setFields();
+		setEditFields();
 	}
 
 	let upVisible = false;
@@ -118,19 +118,22 @@
 			selectedItem = item;
 			update();
 		}
-		setFields();
+		setEditFields();
 	}
 
 	function updateOpacity(){
 		searchBarOpacity = scroll > 42 ? 0 : 1;
 	}
 
-	function setFields(){
+	function setEditFields(){
 		edit.title = selectedItem.title;
 		edit.media = selectedItem.image;
 		edit.image_credit = selectedItem.image_credit;
 		edit.start_date = selectedItem.start_date;
 		edit.body = selectedItem.body;
+	}
+
+	function setAddFields(){
 		add.title = "";
 		add.media = "";
 		add.image_credit = "";
@@ -169,7 +172,8 @@
 		newItem={add}
 		currentEntry={selectedItem.id}
 		on:saveEdit={refresh}
-		on:reset={setFields}/>
+		on:resetEdit={setEditFields}
+		on:resetAdd={setAddFields}/>
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>

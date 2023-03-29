@@ -20,7 +20,8 @@
 	});
 
 	const dispatch = createEventDispatcher();
-	const reset = () => dispatch("reset");
+	const resetEdit = () => dispatch("resetEdit");
+	const resetAdd = () => dispatch("resetAdd")
 	user = true; // for testing
 
 	function changeMenu() {
@@ -35,12 +36,12 @@
 
 	const cancelChanges = () => {
 		changeMenu();
-		reset();
+		resetEdit();
 	}
 
 	const cancelAdd= () => {
 		addNew();
-		reset();
+		resetAdd();
 	}
 
 	function isValidDateFormat(dateString) {
@@ -88,7 +89,7 @@
 
 						dispatch("saveEdit");	
 						changeMenu();
-						reset();
+						resetEdit();
 					}catch(error){
 						console.log(error) 
 						//toast
