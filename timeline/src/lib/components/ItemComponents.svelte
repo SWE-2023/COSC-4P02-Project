@@ -3,7 +3,8 @@
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
-	export let editMode; 
+
+	export let editMode;
 	export let addMode;
 	export let title;
 	export let media;
@@ -20,7 +21,6 @@
 	export let image_creditAdd;
 	export let start_dateAdd;
 	export let bodyAdd;
-	
 
 	let editImagePlaceholder = media;
 	let addImageOpacity = 0;
@@ -42,7 +42,8 @@
 
 	formatted_date = formatDate(start_date);
 
-	let placeholder ="https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
+	let placeholder =
+		"https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
 
 	function handleKeyDown(e) {
 		if (e.key === "Space Bar") {
@@ -51,92 +52,60 @@
 		}
 	}
 
-	const resetEditPlaceholder = () => editImagePlaceholder = media;
-	const changeEditPlaceholder = () => editImagePlaceholder = mediaEdit;
-	const hidePlaceholder = () => addImageOpacity = 0;
+	const resetEditPlaceholder = () => (editImagePlaceholder = media);
+	const changeEditPlaceholder = () => (editImagePlaceholder = mediaEdit);
+	const hidePlaceholder = () => (addImageOpacity = 0);
 	const changeAddPlaceholder = () => {
 		addImagePlaceholder = mediaAdd;
 		addImageOpacity = 1;
-	}
-
+	};
 </script>
 
-{#if editMode}
-	<section class="edit-mode">
-		<div class="media-component">
-			<img
-				class="placeholder-image"
-				src={editImagePlaceholder}
-				alt={title}
-				on:error={resetEditPlaceholder}/>
-			<div class="image-info">
-				<input bind:value={mediaEdit} on:input={changeEditPlaceholder} class="image-input">
-				<input bind:value={image_creditEdit} class="credit-input">
-			</div>
+<section class="item-components">
+	<div class="media-component">
+		<div class="tip v-align">
+			<span class="material-symbols-rounded "> info </span>
+			<p>Click the image to toggle fullscreen.</p>
 		</div>
-		<div class="text-component">
-			<textarea bind:value={titleEdit} class="title-input"></textarea>
-			<input bind:value={start_dateEdit} class="date-input">
-			{#if body}
-				<textarea bind:value={bodyEdit} class="desc-input"></textarea> 
-			{/if}
-		</div>
-	</section>
-{:else if addMode}
-	<section class="add-mode">
-		<div class="media-component">
-			<img
-				style="opacity:{addImageOpacity}"
-				class="placeholder-image"
-				src={addImagePlaceholder}
-				alt={titleAdd}
-				on:error={hidePlaceholder}/>
-			<div class="image-info">
-				<input bind:value={mediaAdd} on:input={changeAddPlaceholder} class="image-input" placeholder="Image address">
-				<input bind:value={image_creditAdd} class="credit-input" placeholder="Image source">
-			</div>
-		</div>
-		<div class="text-component">
-			<textarea bind:value={titleAdd} class="title-input" placeholder="Title"></textarea>
-			<input bind:value={start_dateAdd} class="date-input" placeholder="Start date">
-			{#if body}
-				<textarea bind:value={bodyAdd} class="desc-input" placeholder="Description"></textarea> 
-			{/if}
-		</div>
-	</section>
-{:else}
-	<section class="item-components">
-		<div class="media-component">
-			<div class="tip v-align">
-				<span class="material-symbols-rounded "> info </span>
-				<p>Click the image to toggle fullscreen.</p>
-			</div>
-			<Fullscreen let:onToggle>
-				<div class="image-cont">
-					{#if media}
-						{#if media.includes("youtube.com")}
-							<iframe
-								class="video"
-								title="youtube video"
-								src={media.replace("watch?v=", "embed/")}
-								frameborder="0"
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-								allowfullscreen />
-						{:else}
-							<img
-								class={full ? "image fullscreen" : "image"}
-								src={media}
-								alt={title}
-								on:click={() => {
-									onToggle();
-									full = !full;
-								}}
-								on:keydown={handleKeyDown} />
-						{/if}
+		<Fullscreen let:onToggle>
+			<div class="image-cont">
+				{#if editMode}
+					<div class="edit-cont">
+						<img class="image-edit" src={editImagePlaceholder} alt={title} />
+						<div class="input-cont">
+							<label for="media">Image URL</label>
+							<input bind:value={mediaEdit} on:input={changeEditPlaceholder} />
+						</div>
+						<div class="input-cont">
+							<label for="image_credit">Image source</label>
+							<input bind:value={image_creditEdit} />
+						</div>
+					</div>
+				{:else if addMode}
+					<div class="edit-cont">
+						<img class="image-edit" src={editImagePlaceholder} alt={title} />
+						<div class="input-cont">
+							<label for="media">Image URL</label>
+							<input bind:value={mediaAdd} on:input={changeEditPlaceholder} />
+						</div>
+						<div class="input-cont">
+							<label for="image_credit">Image source</label>
+							<input bind:value={image_creditAdd} />
+						</div>
+					</div>
+				{:else if media}
+					{#if media.includes("youtube.com")}
+						<iframe
+							class="video"
+							title="youtube video"
+							src={media.replace("watch?v=", "embed/")}
+							frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen />
 					{:else}
 						<img
 							class={full ? "image fullscreen" : "image"}
-							src={placeholder}
+							src={media}
 							alt={title}
 							on:click={() => {
 								onToggle();
@@ -144,25 +113,69 @@
 							}}
 							on:keydown={handleKeyDown} />
 					{/if}
-				</div>
-			</Fullscreen>
-			{#if image_credit != "null"}
+				{:else}
+					<img
+						class={full ? "image fullscreen" : "image"}
+						src={placeholder}
+						alt={title}
+						on:click={() => {
+							onToggle();
+							full = !full;
+						}}
+						on:keydown={handleKeyDown} />
+				{/if}
+			</div>
+		</Fullscreen>
+		{#if image_credit != "null"}
+			{#if !editMode && !addMode}
 				<div class="image_cred">
 					<a href={image_credit} target="_blank" rel="noreferrer">Source</a>
 				</div>
 			{/if}
-		</div>
-		<div class="text-component">
+		{/if}
+	</div>
+	<div class="text-component">
+		{#if editMode}
+			<div class="input-cont">
+				<label for="title">Title</label>
+				<input bind:value={titleEdit} />
+			</div>
+			<div class="input-cont">
+				<label for="start_date">Start date</label>
+				<input bind:value={start_dateEdit} />
+			</div>
+			<div class=input-cont>
+				<label for="body">Description</label>
+				<textarea bind:value={bodyEdit} />
+			</div>
+		{:else if addMode}
+			<div class="input-cont">
+				<label for="title">Title</label>
+				<input bind:value={titleAdd} />
+			</div>
+			<div class="input-cont">
+				<label for="start_date">Start date</label>
+				<input bind:value={start_dateAdd} />
+			</div>
+			<div class=input-cont>
+				<label for="body">Description</label>
+				<textarea bind:value={bodyAdd} />
+			</div>
+		{:else}
 			<h1 class="title">{title}</h1>
 			<p class="date"><i>{formatted_date}</i></p>
-			<Text2Speech {title} {formatted_date} {body} />
+			<div class="tts">
+				<Text2Speech {title} {formatted_date} {body} />
+			</div>
 			{#if body}
 				<p class="desc">{body}</p>
 			{/if}
-		</div>
-	</section>
-{/if}
-	<svelte:window on:keypress={handleKeyDown} />
+		{/if}
+	</div>
+	<!-- {/if} -->
+</section>
+
+<svelte:window on:keypress={handleKeyDown} />
 
 <style>
 	:root {
@@ -172,7 +185,7 @@
 	.tts {
 		display: flex;
 		flex-direction: row;
-		width:100%;
+		width: 100%;
 		justify-content: right;
 	}
 
@@ -305,7 +318,7 @@
 		box-shadow: 1rem 0rem 28px 0 #00000030;
 	}
 
-	img:hover {
+	.image:hover {
 		cursor: zoom-in;
 		transform: scale(1.01);
 		box-shadow: 0.5rem 0rem 32px 0 #00000030;
@@ -367,58 +380,63 @@
 		width: calc(var(--font-size-small) * 20);
 	}
 
+	/* EDIT */
+
+	.edit-cont {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		margin: 1rem;
+	}
+
+	.input-cont {
+		flex: 1 1 30%;
+		display: flex;
+		flex-flow: column wrap;
+	}
+
+	label {
+		font-size:1em;
+		padding-left:1rem;
+		color: var(--color-text);
+	}
+
+	input,
 	textarea {
+		flex: 1 1 auto;
+		text-align: left;
+		margin: 0.5em 0;
+		padding: 0.8em;
+		border-radius: 0.5em 0.5rem 0 0;
+		outline: none;
+		border:none;
+		border-bottom: 2px solid var(--color-theme-1);
+		background: #ffffff22;
+		font-size: 1.2em;
+		color: var(--color-text);
+		font-family: var(--font-sans);
+		transition: all 0.3s var(--curve);
+	}
+
+	textarea {
+		height:clamp(10rem, 20vh, 30rem);
 		resize: none;
 	}
 
-	.image-input, .credit-input, .title-input, .date-input, .desc-input {
-		text-align: left;
-		margin: 0.5em 0.5em 2em;
-		padding: 0.8em;
-		border-radius: 0.5em;
-		border: 2px solid white;
-		box-shadow: 0 0 1px 1px #0000004d;
-		
+	input:focus,
+	textarea:focus {
+		border-bottom: 5px solid var(--color-theme-1);
 	}
 
-	.image-info{
+	.image-edit {
 		display: flex;
-		flex-direction: row;
-	}
-
-	.date-input{
-		height:10px;
-	}
-
-	.title-input{
-		width: 40em;
-		height: 2em;
-	}
-
-	.date-input{
-		width:5em;
-	}
-
-	.desc-input{
-		width: 50em;
-		height: 20em;
-	}
-
-	.edit-mode, .add-mode, .text-component, .media-component {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-	
-	.placeholder-image {
-		width: clamp(300px,40%,500px);
-		height:clamp(300px,40%,500px);
+		width: 100%;
+		max-height: 50vh;
 		z-index: 1;
 		object-position: center center;
-		object-fit: cover;
-		border-radius: 1.5vw;
-		box-shadow: 1rem 0rem 28px 0 #00000030;
+		object-fit: contain;
+		border-radius: 0.5vw;
 	}
-
 </style>

@@ -141,6 +141,7 @@
 </svelte:head>
 
 <svelte:window bind:scrollY={scroll} on:scroll={updateOpacity} on:mousemove={showArrows} />
+
 <PageTransitionFade>
 	<SearchBar
 		lock={lockSelection}
