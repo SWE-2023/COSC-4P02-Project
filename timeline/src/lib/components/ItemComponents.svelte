@@ -169,6 +169,13 @@
 		--vid-ratio: 0.5625;
 	}
 
+	.tts {
+		display: flex;
+		flex-direction: row;
+		width:100%;
+		justify-content: right;
+	}
+
 	h1 {
 		font-family: var(--font-serif);
 		font-size: var(--font-size-xxlarge);
