@@ -11,12 +11,16 @@
 	let { timeline } = data;
 	$: ({ timeline } = data);
 
-	function refresh() {
-		location.reload();
+	// map timeline titles and years to searchData
+	let searchData = [];
+	$: {
+		searchData = timeline.map((item) => {
+			return {
+				title: item.title,
+				year: item.start_date.slice(0, 4),
+			};
+		});
 	}
-
-	// map timeline titles to search data
-	let searchData = timeline.map((item) => item.title);
 	let dropDownSelection = "";
 	let transitionDirection;
 	let selectedItem = timeline[0];
@@ -150,7 +154,7 @@
 	<SearchBar
 		lock={lockSelection}
 		bind:selection={dropDownSelection}
-		titles={searchData}
+		data={searchData}
 		on:selection={gotoItem}
 		on:selection={update} />
 	<Arrow
@@ -172,7 +176,6 @@
 		currentEntry={selectedItem.id}
 		on:resetEdit={setEditFields}
 		on:resetAdd={setAddFields}
-		on:saveEdit={refresh}
 		on:saveNew={handleAdd}
 		on:entryDeleted={handleDelete} />
 	{#if timeline.length > 0}

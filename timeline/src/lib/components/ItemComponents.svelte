@@ -46,7 +46,6 @@
 			full = !full;
 		}
 	}
-	
 </script>
 
 {#key editing || adding}
@@ -59,8 +58,8 @@
 						<p>Click the image to toggle fullscreen.</p>
 					</div>
 				{:else}
-					<div>
-						<h2 class="notice">
+					<div class="notice">
+						<h2 >
 							{editing ? "Edit" : "Add"}ing item
 						</h2>
 					</div>
@@ -77,7 +76,7 @@
 									<label for="media">Image URL</label>
 									<input
 										placeholder="https://example.com/image.jpg"
-										bind:value={editList.media}/>
+										bind:value={editList.media} />
 								</div>
 								<div class="input-cont">
 									<label for="image_credit">Image source</label>
@@ -90,13 +89,13 @@
 							<div class="edit-cont">
 								<img
 									class="image-edit"
-									src={addList.mediaAdd}
+									src={addList.media}
 									alt={addList.title} />
 								<div class="input-cont">
 									<label for="media">Image URL</label>
 									<input
 										placeholder="https://example.com/image.jpg"
-										bind:value={addList.media}/>
+										bind:value={addList.media} />
 								</div>
 								<div class="input-cont">
 									<label for="image_credit">Image source</label>
@@ -141,43 +140,62 @@
 				{#if item.image_credit != "null"}
 					{#if !editing && !adding}
 						<div class="image_cred">
-							<a href={item.image_credit} target="_blank" rel="noreferrer">Source</a>
+							<a href={item.image_credit} target="_blank" rel="noreferrer"
+								>Source</a>
 						</div>
 					{/if}
 				{/if}
 			</div>
 			<div class="text-component">
 				{#if editing}
-					<div class="input-cont">
-						<label for="title">Title</label>
-						<input placeholder="Event Title" bind:value={editList.title} />
-					</div>
-					<div class="input-cont">
-						<label for="start_date">Start date</label>
-						<input placeholder="YYYY-MM-DD" bind:value={editList.start_date} />
-					</div>
-					<div class="input-cont">
-						<label for="body">Description</label>
-						<textarea placeholder="Description" bind:value={editList.body} />
-					</div>
+					<form>
+						<div class="input-cont">
+							<label for="title">Title</label>
+							<input placeholder="Event Title" bind:value={editList.title} />
+						</div>
+						<div class="input-cont">
+							<label for="start_date">Start date</label>
+							<input
+								placeholder="YYYY-MM-DD"
+								bind:value={editList.start_date} />
+						</div>
+						<div class="input-cont">
+							<label for="body">Description</label>
+							<textarea placeholder="Description" bind:value={editList.body} />
+						</div>
+					</form>
 				{:else if adding}
-					<div class="input-cont">
-						<label for="title">Title</label>
-						<input placeholder="Event Title" bind:value={addList.title} />
-					</div>
-					<div class="input-cont">
-						<label for="start_date">Start date</label>
-						<input placeholder="YYYY-MM-DD" bind:value={addList.start_date} />
-					</div>
-					<div class="input-cont">
-						<label for="body">Description</label>
-						<textarea placeholder="Description" bind:value={addList.body} />
-					</div>
+					<form>
+						<div class="input-cont">
+							<label for="title"
+								>Title <span style="color:var(--color-theme-1)">*</span></label>
+							<input
+								placeholder="Event Title"
+								bind:value={addList.title}
+								required />
+						</div>
+						<div class="input-cont">
+							<label for="start_date"
+								>Start date <span style="color:var(--color-theme-1)">*</span
+								></label>
+							<input
+								placeholder="YYYY-MM-DD"
+								bind:value={addList.start_date}
+								required />
+						</div>
+						<div class="input-cont">
+							<label for="body">Description</label>
+							<textarea placeholder="Description" bind:value={addList.body} />
+						</div>
+					</form>
 				{:else}
 					<h1 class="title">{item.title}</h1>
 					<p class="date"><i>{formatted_date}</i></p>
 					<div class="tts">
-						<Text2Speech title={item.title} date={formatted_date} body={item.body} />
+						<Text2Speech
+							title={item.title}
+							date={formatted_date}
+							body={item.body} />
 					</div>
 					{#if item.body}
 						<p class="desc">{item.body}</p>
@@ -257,6 +275,7 @@
 	}
 
 	.image-cont {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -318,10 +337,6 @@
 			min-height: 0vh;
 			max-height: 40vh;
 		}
-	}
-
-	.media-component {
-		width:100%;
 	}
 
 	.video {
@@ -400,21 +415,26 @@
 	/* ---------------------- EDIT ---------------------- */
 
 	.notice {
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.notice h2 {
 		color: var(--color-theme-1);
 		font-family: var(--font-sans);
-		padding:0.5rem;
-		border:1px dashed var(--color-theme-1);
-		border-radius:1rem;
-		margin: 0 auto;
-		display:flex;
+		font-size: var(--font-size-small);border: 1px dashed var(--color-theme-1);
+		border-radius: var(--font-size-xsmall);	
+		padding: 0.5rem 3rem;
 		align-items:center;
-		justify-content:center;
+		justify-content: center;
+		margin:0;
 	}
 
 	.edit-cont {
 		display: flex;
 		width: 100%;
-		flex:1;
+		flex: 1 1 49%;
 		flex-flow: row wrap;
 		align-items: center;
 		justify-content: center;
@@ -423,7 +443,7 @@
 	}
 
 	.input-cont {
-		flex: 1 1 30%;
+		flex: 1 1 49%;
 		display: flex;
 		flex-flow: column wrap;
 	}
@@ -445,9 +465,10 @@
 		outline: none;
 		border: none;
 		border-bottom: 2px solid var(--color-theme-1);
-		background:transparent;
-		backdrop-filter: invert(0.1) sepia(0.1) saturate(0.1)  brightness(1.1) contrast(1.1);
-		font-size: 1.2em;
+		background: transparent;
+		backdrop-filter: invert(0.1) sepia(0.1) saturate(0.1) brightness(1.1)
+			contrast(1.1);
+		font-size: var(--font-size-small);
 		color: var(--color-text);
 		font-family: var(--font-sans);
 		transition: all 0.3s var(--curve);
@@ -464,10 +485,11 @@
 	}
 
 	.image-edit {
-		display: flex;
-		/* flex:1; */
-		width: 100%;
-		max-height: 50vh;
+		position: relative;
+		left: 0;
+		width: clamp(5rem, 70vw, 60rem);
+		height: clamp(10rem, 30vw, 30rem);
+		border: 2px solid var(--color-theme-1);
 		z-index: 1;
 		object-position: center center;
 		object-fit: contain;
