@@ -114,7 +114,7 @@
 					dispatch("saveNew");
 					addNew();
 					resetAdd();
-					toast.push("New entry saved.");
+					toast.push("New entry added.");
 					location.reload();
 				} catch (error) {
 					toast.push(`Error: ${error.message}`);
@@ -128,6 +128,7 @@
 	};
 
 	const deleteEntry = async () => {
+		console.log(currentEntry)
 		try {
 			const { data, error } = await supabase
 				.from("timeline")
@@ -137,9 +138,9 @@
 			if (error) {
 				throw error;
 			}
-
 			dispatch("entryDeleted");
-			toast.push("Entry deleted.");
+			toast.push("Entry deleted successfully.");
+			location.reload();
 		} catch (error) {
 			toast.push(`Error: ${error.message}`);
 		}

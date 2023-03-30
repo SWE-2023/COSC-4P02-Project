@@ -169,7 +169,7 @@
 		bind:enableAdding={isAdding}
 		changes={edit}
 		newItem={add}
-		currentEntry={currentIndex + 1}
+		currentEntry={selectedItem.id}
 		on:resetEdit={setEditFields}
 		on:resetAdd={setAddFields}
 		on:saveEdit={refresh}
