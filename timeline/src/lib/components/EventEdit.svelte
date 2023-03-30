@@ -101,7 +101,9 @@
 		if (newItem.title.length != 0 && newItem.start_date.length != 0) {
 			if (isValidDateFormat(newItem.start_date)) {
 				try {
-					const { error } = await supabase.from("timeline").insert({
+					const { error } = await supabase
+					.from("timeline")
+					.insert({
 						title: newItem.title,
 						image: newItem.media,
 						image_credit: newItem.image_credit,
@@ -128,7 +130,24 @@
 		}
 	};
 
-	function deleteEntry() {}
+	const deleteEntry = async() => {
+		try{
+			const { data, error } = await supabase
+			.from('timeline')
+			.delete()
+			.eq("id", currentEntry);
+
+			if (error) {
+				throw error;
+			}
+	
+			dispatch("EntryDeleted");
+			toast.push("Entry deleted.");
+		} catch (error){
+			toast.push(`Error: ${error.message}`);
+		}
+	}
+
 </script>
 
 {#if user}
