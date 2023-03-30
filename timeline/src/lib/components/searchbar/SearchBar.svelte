@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
 
-	export let barOpacity;
 	export let selection;
 	export let titles;
 	export let lock;
@@ -34,11 +33,12 @@
 
 <svelte:window bind:innerWidth={screenWidth} on:click={handleClickOutside} />
 
-<div class="search-container" style="opacity:{barOpacity}">
-	<div class="bar">
+<div class="search-container" style={lock ? `top:-10rem !important;`:``} >
+	<div class="bar" >
 		<input
 			type="text"
 			disabled={lock}
+			
 			placeholder="Search"
 			class={clicked && filtered.length == 0 && !search
 				? "search-box"
@@ -87,7 +87,7 @@
 	}
 
 	.search-container {
-		position: fixed;
+		position: absolute;
 		top: calc(1.85rem + (var(--font-size-xsmall) * -1));
 		right: calc(5rem + var(--font-size-base));
 		display: flex;
@@ -96,7 +96,7 @@
 		box-sizing: border-box;
 		width: clamp(1rem, 33vw, 30rem);
 		z-index: 999;
-		transition: opacity 0.22s ease-in-out, transform 0.05s ease-in-out;
+		transition: opacity 0.22s ease-in-out, transform 0.05s ease-in-out, top 0.22s ease-in-out;
 	}
 
 	.bar {

@@ -465,9 +465,9 @@
 
 	.image-edit {
 		display: flex;
+		/* flex:1; */
 		width: 100%;
-		height: 100%;
-		height: 50vh;
+		max-height: 50vh;
 		z-index: 1;
 		object-position: center center;
 		object-fit: contain;

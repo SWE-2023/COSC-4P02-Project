@@ -43,9 +43,6 @@
 		body: "",
 	};
 
-	let scroll;
-	let searchBarOpacity = 1;
-
 	let currentItem = {
 		title: selectedItem.title,
 		image: selectedItem.image,
@@ -60,7 +57,6 @@
 			selectedItem = timeline[--currentIndex];
 			update();
 		}
-		searchBarOpacity = 1;
 		setEditFields();
 	}
 	function pageDown() {
@@ -69,8 +65,6 @@
 			selectedItem = timeline[++currentIndex];
 			update();
 		}
-
-		searchBarOpacity = 1;
 		setEditFields();
 	}
 
@@ -114,14 +108,6 @@
 		setEditFields();
 	}
 
-	function updateOpacity() {
-		if (scroll > 100) {
-			searchBarOpacity = 0;
-		} else {
-			searchBarOpacity = 1 - scroll / 100;
-		}
-	}
-
 	function setEditFields() {
 		edit.title = selectedItem.title;
 		edit.media = selectedItem.image;
@@ -158,8 +144,6 @@
 </svelte:head>
 
 <svelte:window
-	bind:scrollY={scroll}
-	on:scroll={updateOpacity}
 	on:mousemove={showArrows} />
 
 <PageTransitionFade>
@@ -167,7 +151,6 @@
 		lock={lockSelection}
 		bind:selection={dropDownSelection}
 		titles={searchData}
-		barOpacity={searchBarOpacity}
 		on:selection={gotoItem}
 		on:selection={update} />
 	<Arrow
