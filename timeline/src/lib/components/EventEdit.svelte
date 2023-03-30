@@ -80,18 +80,20 @@
 						throw error;
 					}
 
-					dispatch("saveEdit");
 					changeMenu();
 					resetEdit();
-					toast.push("Changes saved.");
+					toast.push("<b>Success</b><br>Changes saved. Refreshing items...");
+					setTimeout(() => {
+						location.reload();
+					}, 2000);
 				} catch (error) {
 					toast.push(`Error: ${error.message}`);
 				}
 			} else {
-				toast.push("Please enter a valid date.");
+				toast.push("<b>Error</b><br>Please enter a valid date.");
 			}
 		} else {
-			toast.push("Please fill out the date and title fields.");
+			toast.push("<b>Error</b><br>Please fill out the date and title fields.");
 		}
 	};
 
@@ -114,22 +116,27 @@
 					dispatch("saveNew");
 					addNew();
 					resetAdd();
-					toast.push("New entry added.");
-					location.reload();
+					toast.push("<b>Success</b><br>New entry added. Refreshing items...");
+					setTimeout(() => {
+						location.reload();
+					}, 2000);
 				} catch (error) {
-					toast.push(`Error: ${error.message}`);
+					toast.push(`<b>Query Error</b><br>${error.message}`);
 				}
 			} else {
-				toast.push("Please enter a valid date.");
+				toast.push("<b>Error</b><br>Please enter a valid date.");
 			}
 		} else {
-			toast.push("Please fill out the date and title fields.");
+			toast.push("<b>Error</b><br>Please fill out the date and title fields.");
 		}
 	};
 
 	const deleteEntry = async () => {
-		console.log(currentEntry)
 		try {
+			if (confirm("Are you sure you want to delete this entry?") == false){
+				toast.push("<b>Cancelled</b><br>Item not deleted.");
+				return;
+			}
 			const { data, error } = await supabase
 				.from("timeline")
 				.delete()
@@ -139,11 +146,15 @@
 				throw error;
 			}
 			dispatch("entryDeleted");
-			toast.push("Entry deleted successfully.");
-			location.reload();
+			toast.push(
+				"<b>Success</b><br>Entry deleted successfully. Refreshing items..."
+			);
+			setTimeout(() => {
+				location.reload();
+			}, 2000);
 		} catch (error) {
-			toast.push(`Error: ${error.message}`);
-		}
+			toast.push(`<b>Query Error</b><br>${error.message}`);
+		} 
 	};
 </script>
 
@@ -229,5 +240,4 @@
 		transition: none;
 		transform: scale(0.95);
 	}
-
 </style>
