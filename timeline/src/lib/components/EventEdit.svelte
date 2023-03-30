@@ -115,6 +115,7 @@
 					addNew();
 					resetAdd();
 					toast.push("New entry saved.");
+					location.reload();
 				} catch (error) {
 					toast.push(`Error: ${error.message}`);
 				}
