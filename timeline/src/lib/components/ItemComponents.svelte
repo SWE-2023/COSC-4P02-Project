@@ -5,18 +5,21 @@
 	import { format } from "date-fns";
 	import PageTransitionBlur from "./PageTransitionBlur.svelte";
 
-	export let editMode;
-	export let addMode;
-	export let emptyMode;
-	export let title;
-	export let media;
-	export let image_credit;
-	export let start_date;
-	export let body;
+	// timeline view settings
+	export let editing;
+	export let adding;
+
+	export let item = {
+		title: "",
+		media: "",
+		image_credit: "",
+		body: "",
+		start_date: "",
+	};
+
 	export let editList;
 	export let addList;
 
-	let editImagePlaceholder = media;
 	let formatted_date;
 	let full = false;
 
@@ -32,7 +35,7 @@
 		return format(date, "MMMM d, yyyy");
 	}
 
-	formatted_date = formatDate(start_date);
+	formatted_date = formatDate(item.start_date);
 
 	let placeholder =
 		"https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
@@ -43,15 +46,14 @@
 			full = !full;
 		}
 	}
-
-	const changeEditPlaceholder = () => (editImagePlaceholder = mediaEdit);
+	
 </script>
 
-{#key editMode || addMode}
+{#key editing || adding}
 	<PageTransitionBlur>
 		<section class="item-components">
 			<div class="media-component">
-				{#if !editMode && !addMode}
+				{#if !editing && !adding}
 					<div class="tip v-align">
 						<span class="material-symbols-rounded "> info </span>
 						<p>Click the image to toggle fullscreen.</p>
@@ -59,13 +61,13 @@
 				{:else}
 					<div>
 						<h2 class="notice">
-							{editMode ? "Edit" : "Add"}ing item
+							{editing ? "Edit" : "Add"}ing item
 						</h2>
 					</div>
 				{/if}
 				<Fullscreen let:onToggle>
 					<div class="image-cont">
-						{#if editMode}
+						{#if editing}
 							<div class="edit-cont">
 								<img
 									class="image-edit"
@@ -75,8 +77,7 @@
 									<label for="media">Image URL</label>
 									<input
 										placeholder="https://example.com/image.jpg"
-										bind:value={editList.media}
-										on:input={changeEditPlaceholder} />
+										bind:value={editList.media}/>
 								</div>
 								<div class="input-cont">
 									<label for="image_credit">Image source</label>
@@ -85,7 +86,7 @@
 										bind:value={editList.image_credit} />
 								</div>
 							</div>
-						{:else if addMode}
+						{:else if adding}
 							<div class="edit-cont">
 								<img
 									class="image-edit"
@@ -95,8 +96,7 @@
 									<label for="media">Image URL</label>
 									<input
 										placeholder="https://example.com/image.jpg"
-										bind:value={addList.media}
-										on:input={changeEditPlaceholder} />
+										bind:value={addList.media}/>
 								</div>
 								<div class="input-cont">
 									<label for="image_credit">Image source</label>
@@ -105,20 +105,20 @@
 										bind:value={addList.image_credit} />
 								</div>
 							</div>
-						{:else if media}
-							{#if media.includes("youtube.com")}
+						{:else if item.media}
+							{#if item.media.includes("youtube.com")}
 								<iframe
 									class="video"
 									title="youtube video"
-									src={media.replace("watch?v=", "embed/")}
+									src={item.media.replace("watch?v=", "embed/")}
 									frameborder="0"
 									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 									allowfullscreen />
 							{:else}
 								<img
 									class={full ? "image fullscreen" : "image"}
-									src={media}
-									alt={title}
+									src={item.media}
+									alt={item.title}
 									on:click={() => {
 										onToggle();
 										full = !full;
@@ -129,7 +129,7 @@
 							<img
 								class={full ? "image fullscreen" : "image"}
 								src={placeholder}
-								alt={title}
+								alt={item.title}
 								on:click={() => {
 									onToggle();
 									full = !full;
@@ -138,16 +138,16 @@
 						{/if}
 					</div>
 				</Fullscreen>
-				{#if image_credit != "null"}
-					{#if !editMode && !addMode}
+				{#if item.image_credit != "null"}
+					{#if !editing && !adding}
 						<div class="image_cred">
-							<a href={image_credit} target="_blank" rel="noreferrer">Source</a>
+							<a href={item.image_credit} target="_blank" rel="noreferrer">Source</a>
 						</div>
 					{/if}
 				{/if}
 			</div>
 			<div class="text-component">
-				{#if editMode}
+				{#if editing}
 					<div class="input-cont">
 						<label for="title">Title</label>
 						<input placeholder="Event Title" bind:value={editList.title} />
@@ -160,7 +160,7 @@
 						<label for="body">Description</label>
 						<textarea placeholder="Description" bind:value={editList.body} />
 					</div>
-				{:else if addMode}
+				{:else if adding}
 					<div class="input-cont">
 						<label for="title">Title</label>
 						<input placeholder="Event Title" bind:value={addList.title} />
@@ -173,18 +173,14 @@
 						<label for="body">Description</label>
 						<textarea placeholder="Description" bind:value={addList.body} />
 					</div>
-				{:else if emptyMode}
-					<div>
-
-					</div>
 				{:else}
-					<h1 class="title">{title}</h1>
+					<h1 class="title">{item.title}</h1>
 					<p class="date"><i>{formatted_date}</i></p>
 					<div class="tts">
-						<Text2Speech {title} date={formatted_date} {body} />
+						<Text2Speech title={item.title} date={formatted_date} body={item.body} />
 					</div>
-					{#if body}
-						<p class="desc">{body}</p>
+					{#if item.body}
+						<p class="desc">{item.body}</p>
 					{/if}
 				{/if}
 			</div>
@@ -401,7 +397,7 @@
 		width: calc(var(--font-size-small) * 20);
 	}
 
-	/* EDIT */
+	/* ---------------------- EDIT ---------------------- */
 
 	.notice {
 		color: var(--color-theme-1);
@@ -445,7 +441,7 @@
 		text-align: left;
 		margin: 0.5em 0;
 		padding: 0.8em;
-		border-radius: 0.5em 0.5rem 0 0;
+		border-radius: var(--font-size-xsmall) var(--font-size-xsmall) 0 0;
 		outline: none;
 		border: none;
 		border-bottom: 2px solid var(--color-theme-1);
@@ -475,7 +471,7 @@
 		z-index: 1;
 		object-position: center center;
 		object-fit: contain;
-		border-radius: 1.5vw;
+		border-radius: var(--font-size-medium);
 		background: var(--color-bg-2);
 	}
 </style>
