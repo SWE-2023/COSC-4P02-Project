@@ -6,24 +6,13 @@
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
-	import supabase from "$lib/supabaseClient";
-	import { onMount } from "svelte";
 
 	export let data;
 	let { timeline } = data;
 	$: ({ timeline } = data);
 
-	async function refresh() {
-		const { data: fetchedData, error } = await supabase
-			.from("timeline")
-			.select("id, title, image, image_credit, body, start_date")
-			.order("start_date");
-
-		if (error) {
-			console.error("Error fetching timeline data:", error.message);
-		} else {
-			data.timeline = fetchedData ?? [];
-		}
+	function refresh() {
+		location.reload();
 	}
 
 	// map timeline titles to search data
@@ -37,7 +26,6 @@
 	let isEditing = false;
 	let isAdding = false;
 	let lockSelection = false;
-	let noEntries = false;
 
 	let edit = {
 		title: selectedItem.title,
@@ -67,23 +55,22 @@
 	};
 
 	function pageUp() {
-		if (!lockSelection) {
-			transitionDirection = "up";
-			if (!atFirst) {
-				selectedItem = timeline[--currentIndex];
-				update();
-			}
+		transitionDirection = "up";
+		if (!atFirst) {
+			selectedItem = timeline[--currentIndex];
+			update();
 		}
+		searchBarOpacity = 1;
 		setEditFields();
 	}
 	function pageDown() {
-		if (!lockSelection) {
-			transitionDirection = "down";
-			if (!atLast) {
-				selectedItem = timeline[++currentIndex];
-				update();
-			}
+		transitionDirection = "down";
+		if (!atLast) {
+			selectedItem = timeline[++currentIndex];
+			update();
 		}
+
+		searchBarOpacity = 1;
 		setEditFields();
 	}
 
@@ -133,10 +120,6 @@
 		} else {
 			searchBarOpacity = 1 - scroll / 100;
 		}
-		// reset to 1 if at top
-		if (scroll == 0) {
-			searchBarOpacity = 1;
-		}
 	}
 
 	function setEditFields() {
@@ -155,25 +138,18 @@
 		add.body = "";
 	}
 
-	function handleAdd(){
-		if(noEntries){
-			selectedItem = timeline[0]
-			noEntries = !noEntries;
-			update();
-		}
+	function handleAdd() {
+		selectedItem = timeline[0];
+		update();
 	}
 
-	function handleDelete(){
-		if(timeline.length >= 1){
+	function handleDelete() {
+		if (timeline.length >= 1) {
 			selectedItem = timeline[0];
 			isEditing = !isEditing;
 			update();
-		}else{
-			noEntries = !noEntries;
 		}
 	}
-
-
 </script>
 
 <svelte:head>
@@ -210,35 +186,47 @@
 		bind:enableAdding={isAdding}
 		changes={edit}
 		newItem={add}
-		currentEntry={currentIndex+1}
+		currentEntry={currentIndex + 1}
 		on:resetEdit={setEditFields}
 		on:resetAdd={setAddFields}
 		on:saveEdit={refresh}
 		on:saveNew={handleAdd}
-		on:EntryDeleted={handleDelete}/>
-	{#key selectedItem}
-		<section class="layout">
-			<ItemTransition direction={transitionDirection}>
-				<ItemComponents
-					editMode={isEditing}
-					addMode={isAdding}
-					emptyMode={noEntries}
-					bind:editList={edit}
-					bind:addList={add}
-					title={currentItem.title}
-					media={currentItem.image}
-					image_credit={currentItem.image_credit}
-					start_date={currentItem.start_date}
-					body={currentItem.body} />
-			</ItemTransition>
-		</section>
-	{/key}
+		on:entryDeleted={handleDelete} />
+	{#if timeline.length > 0}
+		{#key selectedItem}
+			<section class="layout">
+				<ItemTransition direction={transitionDirection}>
+					<ItemComponents
+						editing={isEditing}
+						adding={isAdding}
+						bind:editList={edit}
+						bind:addList={add}
+						item={{
+							title: selectedItem.title,
+							media: selectedItem.image,
+							image_credit: selectedItem.image_credit,
+							body: selectedItem.body,
+							start_date: selectedItem.start_date,
+						}} />
+				</ItemTransition>
+			</section>
+		{/key}
+		{:else}
+			<section class="layout col">
+				<img width='64' style="mix-blend-mode:darken" src="https://play-lh.googleusercontent.com/i-0HlK6I-K5ZVI28HFa4iXz0T22Mg2WjQ4gMsEYvqmSNdifp2NE41ZiaUCavmbIimQ"/>
+				<h1>
+					No items in timeline. Click 'Add' to create a new event.
+				</h1>
+			</section>
+	{/if}
+	
 	<Arrow
 		lock={lockSelection}
 		down
 		on:moveDown={pageDown}
 		disabled={atLast}
 		visible={downVisible} />
+		
 </PageTransitionFade>
 
 <style>

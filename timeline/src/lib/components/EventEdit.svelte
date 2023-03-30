@@ -13,7 +13,6 @@
 	export let changes;
 	export let newItem;
 
-	
 	let user;
 	userStore.subscribe((value) => {
 		user = value && value.email ? value : null;
@@ -22,7 +21,6 @@
 	const dispatch = createEventDispatcher();
 	const resetEdit = () => dispatch("resetEdit");
 	const resetAdd = () => dispatch("resetAdd");
-	// user = true; // for testing
 
 	function changeMenu() {
 		lockPage = !lockPage;
@@ -101,9 +99,7 @@
 		if (newItem.title.length != 0 && newItem.start_date.length != 0) {
 			if (isValidDateFormat(newItem.start_date)) {
 				try {
-					const { error } = await supabase
-					.from("timeline")
-					.insert({
+					const { error } = await supabase.from("timeline").insert({
 						title: newItem.title,
 						image: newItem.media,
 						image_credit: newItem.image_credit,
@@ -130,27 +126,26 @@
 		}
 	};
 
-	const deleteEntry = async() => {
-		try{
+	const deleteEntry = async () => {
+		try {
 			const { data, error } = await supabase
-			.from('timeline')
-			.delete()
-			.eq("id", currentEntry);
+				.from("timeline")
+				.delete()
+				.eq("id", currentEntry);
 
 			if (error) {
 				throw error;
 			}
-	
-			dispatch("EntryDeleted");
+
+			dispatch("entryDeleted");
 			toast.push("Entry deleted.");
-		} catch (error){
+		} catch (error) {
 			toast.push(`Error: ${error.message}`);
 		}
-	}
-
+	};
 </script>
 
-{#if user}
+{#if user && user.email}
 	<div transition:slide class="edit-items">
 		{#if enableEditing}
 			<button transition:slide on:click={cancelChanges}
@@ -179,14 +174,14 @@
 
 <style>
 	.edit-items {
-		width: 10rem;
+		right: -0.5rem;
+		border-radius: var(--font-size-small) 0 0 var(--font-size-small);
+		width: clamp(5rem, 15vw, 10rem);
 		position: fixed;
 		display: flex;
 		flex-direction: column;
 		top: 10rem;
-		right: 2rem;
 		z-index: 20;
-		border-radius: var(--font-size-small);
 		background: var(--color-text-card);
 		box-shadow: 5px 5px 3em #00000022;
 		margin: 0;
@@ -205,7 +200,7 @@
 		color: var(--color-theme-1);
 		background: none;
 		border: none;
-		padding: 0.75rem 2rem;
+		padding: 0.75rem clamp(0.25rem, 0.5vw, 1rem);
 	}
 
 	.line {
@@ -232,4 +227,5 @@
 		transition: none;
 		transform: scale(0.95);
 	}
+
 </style>
