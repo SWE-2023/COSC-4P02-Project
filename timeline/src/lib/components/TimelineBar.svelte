@@ -60,7 +60,7 @@
 		<div class="lineItem">
 			<div style="top:{getSpacing(td.id)}vh">
 				<Dot
-					bind:lockDot={lock}
+					lockDot={lock}
 					eventOne={() => setDetails(td)}
 					eventTwo={() => change()}
 					isActive={false}>
