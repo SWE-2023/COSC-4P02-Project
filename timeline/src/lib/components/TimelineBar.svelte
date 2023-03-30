@@ -1,9 +1,9 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 	import Dot from "$lib/components/Dot.svelte";
-	export let lock;
 	export let timeData;
 	export let currentItem;
+	export let disabled;
 
 	function year(date) {
 		const year = date.substring(0, 4);
@@ -54,27 +54,26 @@
 
 <svelte:window on:resize={updateGap} />
 
-<span style="height:{timelineHeight}vh" class="line" />
-<div class="line-components">
-	{#each timeData as td, i (i)}
-		<div class="lineItem">
-			<div style="top:{getSpacing(td.id)}vh">
-				<Dot
-					lockDot={lock}
-					eventOne={() => setDetails(td)}
-					eventTwo={() => change()}
-					isActive={false}>
-					<div class="date">{td.id}</div>
-				</Dot>
+	<span style="height:{timelineHeight}vh" class="line" />
+	<div class="line-components" style={disabled ? "pointer-events: none;" : ""}>
+		{#each timeData as td, i (i)}
+			<div class="lineItem">
+				<div style="top:{getSpacing(td.id)}vh">
+					<Dot
+						eventOne={() => setDetails(td)}
+						eventTwo={() => change()}
+						isActive={false}>
+						<div class="date">{td.id}</div>
+					</Dot>
+				</div>
 			</div>
-		</div>
-	{/each}
-	<ul class="timescale" style="height:{timelineHeight}vh;">
-		{#each decades as decade}
-			<li>{decade}</li>
 		{/each}
-	</ul>
-</div>
+		<ul class="timescale" style="height:{timelineHeight}vh;">
+			{#each decades as decade}
+				<li>{decade}</li>
+			{/each}
+		</ul>
+	</div>
 
 <style>
 	.line {

@@ -176,7 +176,7 @@
 		disabled={atFirst}
 		visible={upVisible} />
 	<TimelineBar
-		lock={lockSelection}
+		disabled={lockSelection}
 		timeData={timeline}
 		bind:currentItem={selectedItem}
 		on:change={update} />
