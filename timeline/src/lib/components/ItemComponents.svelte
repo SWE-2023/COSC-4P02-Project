@@ -7,6 +7,7 @@
 
 	export let editMode;
 	export let addMode;
+	export let emptyMode;
 	export let title;
 	export let media;
 	export let image_credit;
@@ -171,6 +172,10 @@
 					<div class="input-cont">
 						<label for="body">Description</label>
 						<textarea placeholder="Description" bind:value={addList.body} />
+					</div>
+				{:else if emptyMode}
+					<div>
+
 					</div>
 				{:else}
 					<h1 class="title">{title}</h1>
