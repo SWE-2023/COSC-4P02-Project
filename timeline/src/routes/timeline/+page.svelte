@@ -37,6 +37,7 @@
 	let isEditing = false;
 	let isAdding = false;
 	let lockSelection = false;
+	let noEntries = false;
 
 	let edit = {
 		title: selectedItem.title,
@@ -153,6 +154,26 @@
 		add.start_date = "";
 		add.body = "";
 	}
+
+	function handleAdd(){
+		if(noEntries){
+			selectedItem = timeline[0]
+			noEntries = !noEntries;
+			update();
+		}
+	}
+
+	function handleDelete(){
+		if(timeline.length >= 1){
+			selectedItem = timeline[0];
+			isEditing = !isEditing;
+			update();
+		}else{
+			noEntries = !noEntries;
+		}
+	}
+
+
 </script>
 
 <svelte:head>
@@ -189,17 +210,19 @@
 		bind:enableAdding={isAdding}
 		changes={edit}
 		newItem={add}
-		currentEntry={selectedItem.id}
+		currentEntry={currentIndex+1}
 		on:resetEdit={setEditFields}
 		on:resetAdd={setAddFields}
 		on:saveEdit={refresh}
-		 />
+		on:saveNew={handleAdd}
+		on:EntryDeleted={handleDelete}/>
 	{#key selectedItem}
 		<section class="layout">
 			<ItemTransition direction={transitionDirection}>
 				<ItemComponents
 					editMode={isEditing}
 					addMode={isAdding}
+					emptyMode={noEntries}
 					bind:editList={edit}
 					bind:addList={add}
 					title={currentItem.title}
