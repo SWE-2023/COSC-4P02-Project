@@ -107,6 +107,18 @@
 		}
 	}
 
+	function handleKeydown(event) {
+		if (
+			event.key === "ArrowLeft" ||
+			event.key === "ArrowRight" ||
+			event.key === "Home" ||
+			event.key === "End"
+		) {
+			event.preventDefault();
+			setCursorPositionToEnd();
+		}
+	}
+
 	async function upload(e) {
 		loading = true;
 		const file = e.target.files[0];
@@ -286,7 +298,8 @@
 									on:input={autofill}
 									bind:this={inputElement}
 									on:click={setCursorPositionToEnd}
-									on:focus={setCursorPositionToEnd} />
+									on:focus={setCursorPositionToEnd}
+									on:keydown={handleKeydown} />
 							{:else if adding}
 								<input
 									type="text"
@@ -294,7 +307,8 @@
 									on:input={autofill}
 									bind:this={inputElement}
 									on:click={setCursorPositionToEnd}
-									on:focus={setCursorPositionToEnd} />
+									on:focus={setCursorPositionToEnd}
+									on:keydown={handleKeydown} />
 							{/if}
 						</div>
 						<div class="input-cont">
