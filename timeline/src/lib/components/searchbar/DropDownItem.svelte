@@ -17,7 +17,7 @@
 	{#if item.title}
 		<p style="color:{color}" class="text"><b>{item.year}</b> • {item.title}</p>
 	{:else}
-		<p style="color:grey" class="text">No Results</p>
+		<p style="color:grey" class="text">{item}</p>
 	{/if}
 </button>
 
