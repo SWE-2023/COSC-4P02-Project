@@ -3,11 +3,14 @@
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
-	import PageTransitionBlur from "./PageTransitionBlur.svelte";
+	import PageTransitionBlur from "$lib/components/PageTransitionBlur.svelte";
+	import supabase from "$lib/supabaseClient";
+	import { toast } from "@zerodevx/svelte-toast";
 
 	// timeline view settings
 	export let editing;
 	export let adding;
+	let loading = false;
 
 	export let item = {
 		title: "",
@@ -37,9 +40,6 @@
 
 	formatted_date = formatDate(item.start_date);
 
-	let placeholder =
-		"https://joadre.com/wp-content/uploads/2019/02/no-image.jpg";
-
 	function handleKeyDown(e) {
 		if (e.key === "Space Bar") {
 			onToggle();
@@ -49,51 +49,104 @@
 
 	function autofill(event) {
 		const { value, selectionStart, selectionEnd } = event.target;
-    	const isCursorAtEnd = selectionStart === value.length && selectionEnd === value.length;
-    
-		if (event.inputType === 'deleteContentBackward') {
-			if(!isCursorAtEnd){
+		const isCursorAtEnd =
+			selectionStart === value.length && selectionEnd === value.length;
+
+		if (event.inputType === "deleteContentBackward") {
+			if (!isCursorAtEnd) {
 				event.preventDefault();
 				event.target.setSelectionRange(value.length, value.length);
-				const input = event.target.value.replace(/\D/g, '');
+				const input = event.target.value.replace(/\D/g, "");
 				const year = input.slice(0, 4);
 				const month = input.slice(4, 6);
 				const day = input.slice(6, 8);
 
-				let formattedDate = '';
+				let formattedDate = "";
 				if (year) {
 					formattedDate += year;
 					if (month) {
-						formattedDate += '-' + month;
+						formattedDate += "-" + month;
 						if (day) {
-							formattedDate += '-' + day;
+							formattedDate += "-" + day;
 						}
 					}
 				}
 
-				editing ? editList.start_date = formattedDate : addList.start_date = formattedDate;
+				editing
+					? (editList.start_date = formattedDate)
+					: (addList.start_date = formattedDate);
 			}
-		}else{
-			const input = event.target.value.replace(/\D/g, '');
+		} else {
+			const input = event.target.value.replace(/\D/g, "");
 			const year = input.slice(0, 4);
 			const month = input.slice(4, 6);
 			const day = input.slice(6, 8);
 
-			let formattedDate = '';
+			let formattedDate = "";
 			if (year) {
 				formattedDate += year;
 				if (month) {
-					formattedDate += '-' + month;
+					formattedDate += "-" + month;
 					if (day) {
-						formattedDate += '-' + day;
+						formattedDate += "-" + day;
 					}
 				}
 			}
 
-			editing ? editList.start_date = formattedDate : addList.start_date = formattedDate;
+			editing
+				? (editList.start_date = formattedDate)
+				: (addList.start_date = formattedDate);
 		}
 	}
 
+	let inputElement;
+	function setCursorPositionToEnd() {
+		if (inputElement) {
+			const inputValueLength = inputElement.value.length;
+			inputElement.setSelectionRange(inputValueLength, inputValueLength);
+		}
+	}
+
+	async function upload(e) {
+		loading = true;
+		const file = e.target.files[0];
+		if (file) {
+			if (file.size > 4 * 1024 * 1024) {
+				toast.push(`<b>Error:</b><br>File size should be less than 4MB`);
+				return;
+			} else {
+				const { data, error } = await supabase.storage
+					.from("images")
+					.upload(file.name, file);
+				if (error) {
+					if (error.error === "Duplicate") {
+						const imageUrl = supabase.storage
+							.from("images")
+							.getPublicUrl(file.name);
+						if (editing) {
+							editList.media = imageUrl.data["publicUrl"];
+						} else if (adding) {
+							addList.media = imageUrl.data["publicUrl"];
+						}
+					} else {
+						toast.push(
+							`<b>Error ${error.satusCode}: ${error.error}</b><br>${error.message}`
+						);
+					}
+				} else {
+					const imageUrl = supabase.storage
+						.from("images")
+						.getPublicUrl(file.name);
+					if (editing) {
+						editList.media = imageUrl.data["publicUrl"];
+					} else if (adding) {
+						addList.media = imageUrl.data["publicUrl"];
+					}
+				}
+			}
+		}
+		loading = false;
+	}
 </script>
 
 {#key editing || adding}
@@ -101,55 +154,76 @@
 		<section class="item-components">
 			<div class="media-component">
 				{#if !editing && !adding}
-					<div class="tip v-align">
-						<span class="material-symbols-rounded "> info </span>
-						<p>Click the image to toggle fullscreen.</p>
-					</div>
+					{#if item.media}
+						<div class="tip v-align">
+							<span class="material-symbols-rounded "> info </span>
+							<p>Click the image to toggle fullscreen.</p>
+						</div>
+					{/if}
 				{:else}
 					<div class="notice">
-						<h2 >
+						<h2>
 							{editing ? "Edit" : "Add"}ing item
 						</h2>
 					</div>
+					<p
+						style="font-size:var(--font-size-small);margin-bottom:0;padding-bottom:0;justify-content:center;align-items:center;display:flex;gap:0.5rem;">
+						<span
+							style="font-size:var(--font-size-small)"
+							class="material-symbols-rounded"
+							>{loading ? "autorenew" : "cloud_upload"}</span
+						>{loading ? "Uploading..." : "Upload image"}
+					</p>
 				{/if}
 				<Fullscreen let:onToggle>
 					<div class="image-cont">
-						{#if editing}
+						{#if editing || adding}
 							<div class="edit-cont">
+								<input
+									type="file"
+									class="image-edit upload"
+									id="file_upload"
+									on:change={upload} />
 								<img
 									class="image-edit"
-									src={editList.media}
-									alt={editList.title} />
+									src={adding ? addList.media : editList.media}
+									alt={adding ? addList.title : editList.title} />
+								<div style="width:100%;text-align:center;">
+									<p
+										style="font-size:var(--font-size-small);align-content:center">
+										<i
+											>Paste image URL or drag and drop onto image section (4MB
+											limit).</i>
+									</p>
+								</div>
+
 								<div class="input-cont">
 									<label for="media">Image URL</label>
-									<input
-										placeholder="https://example.com/image.jpg"
-										bind:value={editList.media} />
+									{#if editing}
+										<input
+											type="text"
+											placeholder="https://example.com/image.jpg"
+											bind:value={editList.media} />
+									{:else if adding}
+										<input
+											type="text"
+											placeholder="https://example.com/image.jpg"
+											bind:value={addList.media} />
+									{/if}
 								</div>
 								<div class="input-cont">
 									<label for="image_credit">Image source</label>
-									<input
-										placeholder="https://website.com/source"
-										bind:value={editList.image_credit} />
-								</div>
-							</div>
-						{:else if adding}
-							<div class="edit-cont">
-								<img
-									class="image-edit"
-									src={addList.media}
-									alt={addList.title} />
-								<div class="input-cont">
-									<label for="media">Image URL</label>
-									<input
-										placeholder="https://example.com/image.jpg"
-										bind:value={addList.media} />
-								</div>
-								<div class="input-cont">
-									<label for="image_credit">Image source</label>
-									<input
-										placeholder="https://website.com/source"
-										bind:value={addList.image_credit} />
+									{#if editing}
+										<input
+											type="text"
+											placeholder="https://example.com"
+											bind:value={editList.image_credit} />
+									{:else if adding}
+										<input
+											type="text"
+											placeholder="https://example.com"
+											bind:value={addList.image_credit} />
+									{/if}
 								</div>
 							</div>
 						{:else if item.media}
@@ -172,20 +246,10 @@
 									}}
 									on:keydown={handleKeyDown} />
 							{/if}
-						{:else}
-							<img
-								class={full ? "image fullscreen" : "image"}
-								src={placeholder}
-								alt={item.title}
-								on:click={() => {
-									onToggle();
-									full = !full;
-								}}
-								on:keydown={handleKeyDown} />
 						{/if}
 					</div>
 				</Fullscreen>
-				{#if item.image_credit != "null"}
+				{#if item.image_credit != "null" && item.media}
 					{#if !editing && !adding}
 						<div class="image_cred">
 							<a href={item.image_credit} target="_blank" rel="noreferrer"
@@ -195,32 +259,55 @@
 				{/if}
 			</div>
 			<div class="text-component">
-				{#if editing}
-					<div class="input-cont">
-						<label for="title">Title</label>
-						<input placeholder="Event Title" bind:value={editList.title} />
-					</div>
-					<div class="input-cont">
-						<label for="start_date">Start date</label>
-						<input placeholder="YYYY-MM-DD" bind:value={editList.start_date} on:input={autofill}/>
-					</div>
-					<div class="input-cont">
-						<label for="body">Description</label>
-						<textarea placeholder="Description" bind:value={editList.body} />
-					</div>
-				{:else if adding}
-					<div class="input-cont">
-						<label for="title">Title</label>
-						<input placeholder="Event Title" bind:value={addList.title} />
-					</div>
-					<div class="input-cont">
-						<label for="start_date">Start date</label>
-						<input placeholder="YYYY-MM-DD" bind:value={addList.start_date} on:input={autofill}/>
-					</div>
-					<div class="input-cont">
-						<label for="body">Description</label>
-						<textarea placeholder="Description" bind:value={addList.body} />
-					</div>
+				{#if editing || adding}
+					<form>
+						<div class="input-cont">
+							<label for="title"
+								>Title <span style="color:var(--color-theme-1)">*</span></label>
+							{#if editing}
+								<input
+									type="text"
+									placeholder="Title"
+									bind:value={editList.title} />
+							{:else if adding}
+								<input
+									type="text"
+									placeholder="Title"
+									bind:value={addList.title} />
+							{/if}
+						</div>
+						<div class="input-cont">
+							<label for="start_date"
+								>Date <span style="color:var(--color-theme-1)">*</span></label>
+							{#if editing}
+								<input
+									type="text"
+									bind:value={editList.start_date}
+									on:input={autofill}
+									bind:this={inputElement}
+									on:click={setCursorPositionToEnd}
+									on:focus={setCursorPositionToEnd} />
+							{:else if adding}
+								<input
+									type="text"
+									bind:value={addList.start_date}
+									on:input={autofill}
+									bind:this={inputElement}
+									on:click={setCursorPositionToEnd}
+									on:focus={setCursorPositionToEnd} />
+							{/if}
+						</div>
+						<div class="input-cont">
+							<label for="body">Description</label>
+							{#if editing}
+								<textarea
+									placeholder="Description"
+									bind:value={editList.body} />
+							{:else if adding}
+								<textarea placeholder="Description" bind:value={addList.body} />
+							{/if}
+						</div>
+					</form>
 				{:else}
 					<h1 class="title">{item.title}</h1>
 					<p class="date"><i>{formatted_date}</i></p>
@@ -390,20 +477,25 @@
 	}
 
 	.image_cred {
-		font-size: var(--font-size-xsmall);
 		display: flex;
 		justify-content: center;
 	}
 
 	.image_cred a {
+		font-size: var(--font-size-xsmall);
 		color: var(--color-text);
-		padding: 0.5rem 4rem;
-		opacity: 0.5;
+		padding: 1rem 2rem 0.5rem 2rem;
+		border-radius: 0 0 0.5rem 0.5rem;
+		margin: 0 0 0.5rem 0;
+		opacity: 0.75;
 		font-weight: 400;
-		transition: all 0.15s ease-in-out;
+		transform: translateY(-1rem);
+		background: var(--color-bg-2);
+		transition: all 0.15s var(--curve);
 	}
 	.image_cred a:hover {
 		opacity: 1;
+		transform: translateY(-0.5rem);
 		color: var(--color-theme-2);
 		text-decoration: none;
 	}
@@ -448,7 +540,7 @@
 	/* ---------------------- EDIT ---------------------- */
 
 	.notice {
-		display:flex;
+		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
@@ -456,12 +548,13 @@
 	.notice h2 {
 		color: var(--color-theme-1);
 		font-family: var(--font-sans);
-		font-size: var(--font-size-small);border: 1px dashed var(--color-theme-1);
-		border-radius: var(--font-size-xsmall);	
+		font-size: var(--font-size-small);
+		border: 1px dashed var(--color-theme-1);
+		border-radius: var(--font-size-xsmall);
 		padding: 0.5rem 3rem;
-		align-items:center;
+		align-items: center;
 		justify-content: center;
-		margin:0;
+		margin: 0;
 	}
 
 	.edit-cont {
@@ -487,23 +580,24 @@
 		color: var(--color-text);
 	}
 
-	input,
+	input[type="text"],
 	textarea {
 		text-overflow: ellipsis;
 		flex: 1 1 auto;
 		text-align: left;
 		margin: 0.5em 0;
-		padding: 0.8em;
+		padding: 0.9em;
 		border-radius: var(--font-size-xsmall) var(--font-size-xsmall) 0 0;
 		outline: none;
 		border: none;
-		border-bottom: 2px solid var(--color-theme-1);
+		/* border-bottom: 2px solid var(--color-theme-1); */
 		background: transparent;
 		backdrop-filter: invert(0.1) sepia(0.1) saturate(0.1) brightness(1.1)
 			contrast(1.1);
 		font-size: var(--font-size-small);
 		color: var(--color-text);
 		font-family: var(--font-sans);
+		box-shadow: inset 0 -4px 0 -1px var(--color-theme-1);
 		transition: all 0.3s var(--curve);
 	}
 
@@ -514,19 +608,30 @@
 
 	input:focus,
 	textarea:focus {
-		border-bottom: 5px solid var(--color-theme-1);
+		box-shadow: inset 0 -6px 0 -1px var(--color-theme-1);
 	}
 
 	.image-edit {
 		position: relative;
-		left: 0;
 		width: clamp(5rem, 70vw, 60rem);
 		height: clamp(10rem, 30vw, 30rem);
-		border: 2px solid var(--color-theme-1);
-		z-index: 1;
+		border: 3px solid var(--color-theme-1);
+		z-index: 2;
 		object-position: center center;
 		object-fit: contain;
 		border-radius: var(--font-size-medium);
 		background: var(--color-bg-2);
+	}
+
+	.upload {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		margin: 0 auto;
+		bottom: 0;
+		opacity: 0;
+		background: grey;
+		z-index: 5;
 	}
 </style>
