@@ -23,13 +23,6 @@
 				transition:fly={{ x: -24, delay: 100 }}>
 				<a href="/about" on:click={() => (open = false)}>About</a>
 			</li>
-			<li
-				aria-current={$page.url.pathname.startsWith("/contact")
-					? "page"
-					: undefined}
-				transition:fly={{ x: -24, delay: 150 }}>
-				<a href="/contact" on:click={() => (open = false)}>Contact</a>
-			</li>
 			{#if user && user.email}
 				<li
 					aria-current={$page.url.pathname.startsWith("/login")
