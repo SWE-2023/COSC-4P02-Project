@@ -98,7 +98,7 @@
 			}
 			let y = event.clientY;
 			let height = window.innerHeight;
-			upVisible = y < height * 0.1;
+			upVisible = y < height * 0.2;
 			downVisible = y > height * 0.8;
 		}
 	}
