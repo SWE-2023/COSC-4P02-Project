@@ -48,56 +48,25 @@
 	}
 
 	function autofill(event) {
-		const { value, selectionStart, selectionEnd } = event.target;
-		const isCursorAtEnd =
-			selectionStart === value.length && selectionEnd === value.length;
+		const input = event.target.value.replace(/\D/g, "");
+		const year = input.slice(0, 4);
+		const month = input.slice(4, 6);
+		const day = input.slice(6, 8);
 
-		if (event.inputType === "deleteContentBackward") {
-			if (!isCursorAtEnd) {
-				event.preventDefault();
-				event.target.setSelectionRange(value.length, value.length);
-				const input = event.target.value.replace(/\D/g, "");
-				const year = input.slice(0, 4);
-				const month = input.slice(4, 6);
-				const day = input.slice(6, 8);
-
-				let formattedDate = "";
-				if (year) {
-					formattedDate += year;
-					if (month) {
-						formattedDate += "-" + month;
-						if (day) {
-							formattedDate += "-" + day;
-						}
-					}
-				}
-
-				editing
-					? (editList.start_date = formattedDate)
-					: (addList.start_date = formattedDate);
-			}
-		} else {
-			const input = event.target.value.replace(/\D/g, "");
-			const year = input.slice(0, 4);
-			const month = input.slice(4, 6);
-			const day = input.slice(6, 8);
-
-			let formattedDate = "";
-			if (year) {
-				formattedDate += year;
-				if (month) {
-					formattedDate += "-" + month;
-					if (day) {
-						formattedDate += "-" + day;
-					}
+		let formattedDate = "";
+		if (year) {
+			formattedDate += year;
+			if (month) {
+				formattedDate += "-" + month;
+				if (day) {
+					formattedDate += "-" + day;
 				}
 			}
-
-			editing
-				? (editList.start_date = formattedDate)
-				: (addList.start_date = formattedDate);
 		}
+
+		editing? (editList.start_date = formattedDate): (addList.start_date = formattedDate);
 	}
+	
 
 	let inputElement;
 	function setCursorPositionToEnd() {
