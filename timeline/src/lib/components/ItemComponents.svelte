@@ -110,6 +110,7 @@
 	function handleKeydown(event) {
 		if (
 			event.key === "ArrowLeft" ||
+			event.key === "ArrowUp" ||
 			event.key === "ArrowRight" ||
 			event.key === "Home" ||
 			event.key === "End"
