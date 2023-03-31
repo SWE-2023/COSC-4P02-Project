@@ -3,7 +3,7 @@
 
 	export let body;
 	export let title;
-	export let start_date;
+	export let date;
 	
     let speaking = false;
 	let currentUtterance;
@@ -13,7 +13,7 @@
 		if (!speaking) {
 			const utterances = [
 				new SpeechSynthesisUtterance(title),
-				new SpeechSynthesisUtterance(start_date),
+				new SpeechSynthesisUtterance(date),
 				new SpeechSynthesisUtterance(body),
 			];
 

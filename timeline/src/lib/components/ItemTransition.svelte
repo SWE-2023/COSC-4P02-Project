@@ -5,7 +5,7 @@
 	export let direction;
 
 	let transition = fly;
-	let offset = 250;
+	let offset = 100;
 
 	const unsubscribe = reduceMotionStore.subscribe((value) => {
 		if (value) {
@@ -19,7 +19,7 @@
 </script>
 
 <div
-	in:transition={{ duration: 333, delay: 334, x: 0, y: direction == "up" ? -offset : offset}}
-	out:transition={{ duration: 333, x: 0, y: direction == "up" ? offset : -offset }}>
+	in:transition={{ duration: 400, delay: 401, x: 0, y: direction == "up" ? -offset : offset}}
+	out:transition={{ duration: 400, x: 0, y: direction == "up" ? offset : -offset }}>
 	<slot />
 </div>

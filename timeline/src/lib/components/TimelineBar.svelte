@@ -1,33 +1,30 @@
+
 <script>
 	import { createEventDispatcher } from "svelte";
 	import Dot from "$lib/components/Dot.svelte";
-
 	export let timeData;
 	export let currentItem;
+	export let disabled;
 
 	function year(date) {
 		const year = date.substring(0, 4);
 		return year;
 	}
 
-	for (let i = 0; i < timeData.length; i++) {
-		timeData[i].id = year(timeData[i].start_date);
-	}
-
 	const timelineHeight = 80; // in vh
 	let scale = 20; // values lower than 10 will cause issues
 	let decades = [];
-	let lowest = Math.floor(timeData[0].id / scale) * scale; // round down to nearest 20 year
-	let highest = Math.ceil(timeData[timeData.length - 1].id / scale) * scale; // round up to nearest 20 year
+	let lowest = Math.floor(year(timeData[0].start_date) / scale) * scale; // round down to nearest 20 year
+	let highest = Math.ceil(year(timeData[timeData.length - 1].start_date) / scale) * scale; // round up to nearest 20 year
 
 	for (let i = lowest; i <= highest; i += scale) {
 		decades.push(i);
 	}
 
-	function getSpacing(id) {
+	function getSpacing(date) {
 		const top = lowest;
 		const bottom = highest;
-		const current = id;
+		const current = year(date);
 		const percentage = (current - top) / (bottom - top);
 		const spacing = percentage * (timelineHeight - 2);
 		return spacing;
@@ -43,8 +40,8 @@
 			20,
 			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
 		);
-		lowest = Math.floor(timeData[0].id / scale) * scale;
-		highest = Math.ceil(timeData[timeData.length - 1].id / scale) * scale;
+		lowest = Math.floor(year(timeData[0].start_date) / scale) * scale;
+		highest = Math.ceil(year(timeData[timeData.length - 1].start_date) / scale) * scale;
 		decades = [];
 		for (let i = lowest; i <= highest; i += scale) {
 			decades.push(i);
@@ -54,26 +51,26 @@
 
 <svelte:window on:resize={updateGap} />
 
-<span style="height:{timelineHeight}vh" class="line" />
-<div class="line-components">
-	{#each timeData as td, i (i)}
-		<div class="lineItem">
-			<div style="top:{getSpacing(td.id)}vh">
-				<Dot
-					eventOne={() => setDetails(td)}
-					eventTwo={() => change()}
-					isActive={false}>
-					<div class="date">{td.id}</div>
-				</Dot>
+	<span style="height:{timelineHeight}vh" class="line" />
+	<div class="line-components" style={disabled ? "pointer-events: none;" : ""}>
+		{#each timeData as td, i (i)}
+			<div class="lineItem">
+				<div style="top:{getSpacing(td.start_date)}vh">
+					<Dot
+						eventOne={() => setDetails(td)}
+						eventTwo={() => change()}
+						isActive={false}>
+						<div class="date">{year(td.start_date)}</div>
+					</Dot>
+				</div>
 			</div>
-		</div>
-	{/each}
-	<ul class="timescale" style="height:{timelineHeight}vh;">
-		{#each decades as decade}
-			<li>{decade}</li>
 		{/each}
-	</ul>
-</div>
+		<ul class="timescale" style="height:{timelineHeight}vh;">
+			{#each decades as decade}
+				<li>{decade}</li>
+			{/each}
+		</ul>
+	</div>
 
 <style>
 	.line {

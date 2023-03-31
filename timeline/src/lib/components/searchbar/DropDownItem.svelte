@@ -1,43 +1,46 @@
 <script>
-    import { slide } from "svelte/transition";
+	import { slide } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
+	import { quintOut } from "svelte/easing";
 	export let selectedTitle;
-	export let itemTitle;
-    export let color = "var(--color-text)";
+	export let item;
+	export let color = "var(--color-text)";
 	const dispatch = createEventDispatcher();
 
 	function handleClick() {
-		selectedTitle = itemTitle;
-        dispatch("selection");
+		selectedTitle = item.title;
+		dispatch("selection");
 	}
 </script>
 
-
-<button class="item" on:click={handleClick} transition:slide
-	><p style="color:{color}" class="text">{itemTitle}</p>
+<button class="item" on:click={handleClick} transition:slide={{ duration: 250, easing: quintOut }}>
+	{#if item.title}
+		<p style="color:{color}" class="text"><b>{item.year}</b> • {item.title}</p>
+	{:else}
+		<p style="color:grey" class="text">No Results</p>
+	{/if}
 </button>
 
 <style>
 	.item {
 		display: flex;
-        width:100%;
+		width: 100%;
 		align-items: center;
-        background:var(--color-bg-1);
-        border:none;
-        border-top:1px solid var(--color-bg-2);
-        transition:border 0.05s ease-in-out;
+		background: var(--color-bg-1);
+		border: none;
+		border-top: 1px solid var(--color-bg-2);
+		transition: border 0.05s ease-in-out;
 	}
 
-    .item:hover {
-        background:var(--color-text-card);
-    }
+	.item:hover {
+		background: var(--color-text-card);
+	}
 
-
-    .item p {
-        margin:var(--font-size-xsmall);
-        text-align: left;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+	.item p {
+		margin: var(--font-size-xsmall);
+		text-align: left;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
 </style>

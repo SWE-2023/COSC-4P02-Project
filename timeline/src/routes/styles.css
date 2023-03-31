@@ -54,6 +54,8 @@
 	--hc-color-theme-2-light: #4693ff;
 	--hc-color-text: rgba(255, 255, 255, 1);
 
+	--curve: cubic-bezier(0.08, 0.84, 0.1, 0.97);
+
 	--border: 0px solid white;
 	--background-gradient: linear-gradient(
 		90deg,
@@ -151,4 +153,15 @@ label {
 
 button:focus:not(:focus-visible) {
 	outline: none;
+}
+
+/*  utils */
+.col {
+	display: flex;
+	flex-flow: column wrap;
+}
+
+.row {
+	display: flex;
+	flex-flow: row wrap;
 }
