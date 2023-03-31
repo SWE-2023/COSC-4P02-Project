@@ -1,9 +1,11 @@
 <script>
+// @ts-nocheck
+
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
 
 	export let selection;
-	export let titles;
+	export let data;
 	export let lock;
 
 	let filtered = [];
@@ -16,10 +18,10 @@
 
 	const findTitles = () => {
 		const keywords = search.toLowerCase().split(" ");
-		filtered = titles
-			.filter((title) => {
+		filtered = data
+			.filter((item) => {
 				return keywords.every((keyword) =>
-					title.toLowerCase().includes(keyword)
+					(item.title.toLowerCase() + " " + item.year).includes(keyword)
 				);
 			})
 			.slice(0, 10); // max 10
@@ -29,16 +31,26 @@
 		if (event.target.closest(".search-container")) return;
 		clicked = true;
 	}
+
+	function handleShortcut(event) {
+		if (event.key == "/" && !event.target.closest("input")) {
+			event.preventDefault();
+			document.querySelector("html").scrollTo(0, 0);
+			document.querySelector("input").focus();
+		}
+	}
 </script>
 
-<svelte:window bind:innerWidth={screenWidth} on:click={handleClickOutside} />
+<svelte:window
+	bind:innerWidth={screenWidth}
+	on:click={handleClickOutside}
+	on:keydown={handleShortcut} />
 
-<div class="search-container" style={lock ? `top:-10rem !important;`:``} >
-	<div class="bar" >
+<div class="search-container" style={lock ? `top:-10rem !important;` : ``}>
+	<div class="bar">
 		<input
 			type="text"
 			disabled={lock}
-			
 			placeholder="Search"
 			class={clicked && filtered.length == 0 && !search
 				? "search-box"
@@ -60,22 +72,22 @@
 			<span class="material-symbols-rounded i"> search </span>
 		{/if}
 	</div>
-	{#if search && !clicked && filtered.length}
+	{#if search && !clicked && filtered.length > 0}
 		<div class="results">
-			{#each filtered as title}
+			{#each filtered as data}
 				<DropDownItem
 					bind:selectedTitle={selection}
-					itemTitle={title}
+					item={data}
 					on:selection={notify}
 					on:selection={() => (clicked = true)} />
 			{/each}
 		</div>
 	{:else}
 		<div class="results" style="pointer-events:none;">
-			<DropDownItem color=grey
+			<DropDownItem
+				color="grey"
 				bind:selectedTitle={selection}
-				itemTitle="No results." 
-				/>
+				item="No results." />
 		</div>
 	{/if}
 </div>
@@ -96,7 +108,8 @@
 		box-sizing: border-box;
 		width: clamp(1rem, 33vw, 30rem);
 		z-index: 999;
-		transition: opacity 0.22s ease-in-out, transform 0.05s ease-in-out, top 0.22s ease-in-out;
+		transition: opacity 0.22s ease-in-out, transform 0.05s ease-in-out,
+			top 0.22s ease-in-out;
 	}
 
 	.bar {
@@ -109,7 +122,7 @@
 		color: var(--color-text);
 		height: var(--height);
 		width: 100%;
-		border: 2px solid  var(--color-bg-2);
+		border: 2px solid var(--color-bg-2);
 		padding: 0.1rem 0 0.1rem 1.5rem;
 		border-radius: var(--font-size-small);
 		font-size: var(--font-size-small);

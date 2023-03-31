@@ -47,38 +47,30 @@
 		}
 	}
 
-	// function autofill(event) {
-	// 	const value = event.target.value;
-	// 	const length = value.length;
-
-	// 	if (length === 4 || length === 7) {
-	// 		event.target.value = value + "-";
-	// 	}else if(length === 5 || length === 8){
-	// 		event.target.value = value.substring(0, length - 1);
-	// 	}else{
-
-	// 	}
-	// }
-
 	function autofill(event) {
-		const input = event.target.value.replace(/\D/g, '');
-		const year = input.slice(0, 4);
-		const month = input.slice(4, 6);
-		const day = input.slice(6, 8);
+  const input = event.target.value.replace(/\D/g, '');
+  const year = input.slice(0, 4);
+  const month = input.slice(4, 6);
+  const day = input.slice(6, 8);
+  const cursorPos = event.target.selectionStart;
 
-		let formattedDate = '';
-		if (year) {
-			formattedDate += year;
-			if (month) {
-			formattedDate += '-' + month;
-			if (day) {
-				formattedDate += '-' + day;
-			}
-			}
-		}
-		
-		event.target.value = formattedDate;
-	}
+  let formattedDate = '';
+  if (year) {
+    formattedDate += year;
+    if (month) {
+      formattedDate += '-' + month;
+      if (day) {
+        formattedDate += '-' + day;
+      }
+    }
+  }
+
+  if (event.key === 'Backspace' && cursorPos < formattedDate.length) {
+    event.preventDefault();
+  } else {
+    event.target.value = formattedDate;
+  }
+}
 		
 
 </script>
@@ -93,8 +85,8 @@
 						<p>Click the image to toggle fullscreen.</p>
 					</div>
 				{:else}
-					<div>
-						<h2 class="notice">
+					<div class="notice">
+						<h2 >
 							{editing ? "Edit" : "Add"}ing item
 						</h2>
 					</div>
@@ -111,7 +103,7 @@
 									<label for="media">Image URL</label>
 									<input
 										placeholder="https://example.com/image.jpg"
-										bind:value={editList.media}/>
+										bind:value={editList.media} />
 								</div>
 								<div class="input-cont">
 									<label for="image_credit">Image source</label>
@@ -124,13 +116,13 @@
 							<div class="edit-cont">
 								<img
 									class="image-edit"
-									src={addList.mediaAdd}
+									src={addList.media}
 									alt={addList.title} />
 								<div class="input-cont">
 									<label for="media">Image URL</label>
 									<input
 										placeholder="https://example.com/image.jpg"
-										bind:value={addList.media}/>
+										bind:value={addList.media} />
 								</div>
 								<div class="input-cont">
 									<label for="image_credit">Image source</label>
@@ -175,7 +167,8 @@
 				{#if item.image_credit != "null"}
 					{#if !editing && !adding}
 						<div class="image_cred">
-							<a href={item.image_credit} target="_blank" rel="noreferrer">Source</a>
+							<a href={item.image_credit} target="_blank" rel="noreferrer"
+								>Source</a>
 						</div>
 					{/if}
 				{/if}
@@ -211,7 +204,10 @@
 					<h1 class="title">{item.title}</h1>
 					<p class="date"><i>{formatted_date}</i></p>
 					<div class="tts">
-						<Text2Speech title={item.title} date={formatted_date} body={item.body} />
+						<Text2Speech
+							title={item.title}
+							date={formatted_date}
+							body={item.body} />
 					</div>
 					{#if item.body}
 						<p class="desc">{item.body}</p>
@@ -291,6 +287,7 @@
 	}
 
 	.image-cont {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -352,10 +349,6 @@
 			min-height: 0vh;
 			max-height: 40vh;
 		}
-	}
-
-	.media-component {
-		width:100%;
 	}
 
 	.video {
@@ -434,21 +427,26 @@
 	/* ---------------------- EDIT ---------------------- */
 
 	.notice {
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.notice h2 {
 		color: var(--color-theme-1);
 		font-family: var(--font-sans);
-		padding:0.5rem;
-		border:1px dashed var(--color-theme-1);
-		border-radius:1rem;
-		margin: 0 auto;
-		display:flex;
+		font-size: var(--font-size-small);border: 1px dashed var(--color-theme-1);
+		border-radius: var(--font-size-xsmall);	
+		padding: 0.5rem 3rem;
 		align-items:center;
-		justify-content:center;
+		justify-content: center;
+		margin:0;
 	}
 
 	.edit-cont {
 		display: flex;
 		width: 100%;
-		flex:1;
+		flex: 1 1 49%;
 		flex-flow: row wrap;
 		align-items: center;
 		justify-content: center;
@@ -457,7 +455,7 @@
 	}
 
 	.input-cont {
-		flex: 1 1 30%;
+		flex: 1 1 49%;
 		display: flex;
 		flex-flow: column wrap;
 	}
@@ -479,9 +477,10 @@
 		outline: none;
 		border: none;
 		border-bottom: 2px solid var(--color-theme-1);
-		background:transparent;
-		backdrop-filter: invert(0.1) sepia(0.1) saturate(0.1)  brightness(1.1) contrast(1.1);
-		font-size: 1.2em;
+		background: transparent;
+		backdrop-filter: invert(0.1) sepia(0.1) saturate(0.1) brightness(1.1)
+			contrast(1.1);
+		font-size: var(--font-size-small);
 		color: var(--color-text);
 		font-family: var(--font-sans);
 		transition: all 0.3s var(--curve);
@@ -498,10 +497,11 @@
 	}
 
 	.image-edit {
-		display: flex;
-		/* flex:1; */
-		width: 100%;
-		max-height: 50vh;
+		position: relative;
+		left: 0;
+		width: clamp(5rem, 70vw, 60rem);
+		height: clamp(10rem, 30vw, 30rem);
+		border: 2px solid var(--color-theme-1);
 		z-index: 1;
 		object-position: center center;
 		object-fit: contain;
