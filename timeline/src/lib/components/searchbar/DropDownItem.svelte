@@ -7,7 +7,7 @@
 	const dispatch = createEventDispatcher();
 
 	function handleClick() {
-		selectedTitle = item;
+		selectedTitle = item.title;
 		dispatch("selection");
 	}
 </script>
