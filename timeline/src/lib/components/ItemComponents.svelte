@@ -169,7 +169,7 @@
 				{#if !editing && !adding}
 					{#if item.media}
 						<div class="tip v-align">
-							<span class="material-symbols-rounded "> info </span>
+							<span class="material-symbols-rounded"> info </span>
 							<p>Click the image to toggle fullscreen.</p>
 						</div>
 					{/if}
@@ -179,11 +179,10 @@
 							{editing ? "Edit" : "Add"}ing item
 						</h2>
 					</div>
-					<p
-						style="font-size:var(--font-size-small);margin-bottom:0;padding-bottom:0;justify-content:center;align-items:center;display:flex;gap:0.5rem;">
+					<p class={loading ? "upload-notice red" : "upload-notice"}>
 						<span
 							style="font-size:var(--font-size-small)"
-							class="material-symbols-rounded"
+							class={loading ? "material-symbols-rounded i" : "material-symbols-rounded"}
 							>{loading ? "autorenew" : "cloud_upload"}</span
 						>{loading ? "Uploading..." : "Upload image"}
 					</p>
@@ -605,7 +604,6 @@
 		border-radius: var(--font-size-xsmall) var(--font-size-xsmall) 0 0;
 		outline: none;
 		border: none;
-		/* border-bottom: 2px solid var(--color-theme-1); */
 		background: transparent;
 		backdrop-filter: invert(0.1) sepia(0.1) saturate(0.1) brightness(1.1)
 			contrast(1.1);
@@ -648,5 +646,33 @@
 		opacity: 0;
 		background: grey;
 		z-index: 5;
+	}
+
+	.upload-notice {
+		font-size: var(--font-size-small);
+		margin-bottom: 0;
+		padding-bottom: 0;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.i {
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	.red {
+		font-weight: 700;
+		color: var(--color-theme-1);
 	}
 </style>
