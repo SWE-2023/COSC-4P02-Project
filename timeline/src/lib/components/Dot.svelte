@@ -23,7 +23,7 @@
 		border-radius: 100vh;
 		border: none;
 		transform-origin: 16% 50%;
-		transition: all 0.15s ease-in-out;
+		transition: all 0.15s var(--curve);
 		z-index: 10;
 	}
 
