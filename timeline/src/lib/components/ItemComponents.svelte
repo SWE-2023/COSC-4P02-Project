@@ -48,30 +48,24 @@
 	}
 
 	function autofill(event) {
-  const input = event.target.value.replace(/\D/g, '');
-  const year = input.slice(0, 4);
-  const month = input.slice(4, 6);
-  const day = input.slice(6, 8);
-  const cursorPos = event.target.selectionStart;
+		const input = event.target.value.replace(/\D/g, '');
+		const year = input.slice(0, 4);
+		const month = input.slice(4, 6);
+		const day = input.slice(6, 8);
 
-  let formattedDate = '';
-  if (year) {
-    formattedDate += year;
-    if (month) {
-      formattedDate += '-' + month;
-      if (day) {
-        formattedDate += '-' + day;
-      }
-    }
-  }
+		let formattedDate = '';
+		if (year) {
+			formattedDate += year;
+			if (month) {
+				formattedDate += '-' + month;
+				if (day) {
+					formattedDate += '-' + day;
+				}
+			}
+		}
 
-  if (event.key === 'Backspace' && cursorPos < formattedDate.length) {
-    event.preventDefault();
-  } else {
-    event.target.value = formattedDate;
-  }
-}
-		
+		editing ? editList.start_date = formattedDate : addList.start_date = formattedDate;
+	}
 
 </script>
 
