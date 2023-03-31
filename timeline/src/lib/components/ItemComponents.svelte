@@ -46,6 +46,27 @@
 			full = !full;
 		}
 	}
+
+	function autofill(event) {
+		const input = event.target.value.replace(/\D/g, '');
+		const year = input.slice(0, 4);
+		const month = input.slice(4, 6);
+		const day = input.slice(6, 8);
+
+		let formattedDate = '';
+		if (year) {
+			formattedDate += year;
+			if (month) {
+				formattedDate += '-' + month;
+				if (day) {
+					formattedDate += '-' + day;
+				}
+			}
+		}
+
+		editing ? editList.start_date = formattedDate : addList.start_date = formattedDate;
+	}
+
 </script>
 
 {#key editing || adding}
@@ -148,46 +169,31 @@
 			</div>
 			<div class="text-component">
 				{#if editing}
-					<form>
-						<div class="input-cont">
-							<label for="title">Title</label>
-							<input placeholder="Event Title" bind:value={editList.title} />
-						</div>
-						<div class="input-cont">
-							<label for="start_date">Start date</label>
-							<input
-								placeholder="YYYY-MM-DD"
-								bind:value={editList.start_date} />
-						</div>
-						<div class="input-cont">
-							<label for="body">Description</label>
-							<textarea placeholder="Description" bind:value={editList.body} />
-						</div>
-					</form>
+					<div class="input-cont">
+						<label for="title">Title</label>
+						<input placeholder="Event Title" bind:value={editList.title} />
+					</div>
+					<div class="input-cont">
+						<label for="start_date">Start date</label>
+						<input placeholder="YYYY-MM-DD" bind:value={editList.start_date} on:input={autofill}/>
+					</div>
+					<div class="input-cont">
+						<label for="body">Description</label>
+						<textarea placeholder="Description" bind:value={editList.body} />
+					</div>
 				{:else if adding}
-					<form>
-						<div class="input-cont">
-							<label for="title"
-								>Title <span style="color:var(--color-theme-1)">*</span></label>
-							<input
-								placeholder="Event Title"
-								bind:value={addList.title}
-								required />
-						</div>
-						<div class="input-cont">
-							<label for="start_date"
-								>Start date <span style="color:var(--color-theme-1)">*</span
-								></label>
-							<input
-								placeholder="YYYY-MM-DD"
-								bind:value={addList.start_date}
-								required />
-						</div>
-						<div class="input-cont">
-							<label for="body">Description</label>
-							<textarea placeholder="Description" bind:value={addList.body} />
-						</div>
-					</form>
+					<div class="input-cont">
+						<label for="title">Title</label>
+						<input placeholder="Event Title" bind:value={addList.title} />
+					</div>
+					<div class="input-cont">
+						<label for="start_date">Start date</label>
+						<input placeholder="YYYY-MM-DD" bind:value={addList.start_date} on:input={autofill}/>
+					</div>
+					<div class="input-cont">
+						<label for="body">Description</label>
+						<textarea placeholder="Description" bind:value={addList.body} />
+					</div>
 				{:else}
 					<h1 class="title">{item.title}</h1>
 					<p class="date"><i>{formatted_date}</i></p>
