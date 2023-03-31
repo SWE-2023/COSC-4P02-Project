@@ -33,6 +33,7 @@
 		margin: 0 auto;
 	}
 	.year {
+		user-select: none;
 		position: absolute;
 		top: -1.5rem;
 		font-size: 1rem;
