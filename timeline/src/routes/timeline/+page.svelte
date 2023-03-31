@@ -22,6 +22,7 @@
 		});
 	}
 
+
 	let dropDownSelection = "";
 	let transitionDirection;
 	let selectedItem = timeline[0];
