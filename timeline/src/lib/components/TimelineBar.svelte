@@ -1,10 +1,12 @@
 
 <script>
 	import { createEventDispatcher } from "svelte";
+	import Cursor from "$lib/components/Cursor.svelte";
 	import Dot from "$lib/components/Dot.svelte";
 	export let timeData;
 	export let currentItem;
 	export let disabled;
+	let yPos = 0;
 
 	function year(date) {
 		const year = date.substring(0, 4);
@@ -47,34 +49,38 @@
 			decades.push(i);
 		}
 	}
+
 </script>
 
 <svelte:window on:resize={updateGap} />
 
+	<div class="timeline-container" on:mousemove={(e) => (yPos = e.clientY)}>
 	<span style="height:{timelineHeight}vh" class="line" />
-	<div class="line-components" style={disabled ? "pointer-events: none;" : ""}>
-		{#each timeData as td, i (i)}
-			<div class="lineItem">
-				<div style="top:{getSpacing(td.start_date)}vh">
-					<Dot
-						eventOne={() => setDetails(td)}
-						eventTwo={() => change()}
-						isActive={false}>
-						<div class="date">{year(td.start_date)}</div>
-					</Dot>
+		<div class="line-components" style={disabled ? "pointer-events: none;" : ""} >
+		<Cursor pos={yPos} />
+			{#each timeData as td, i (i)}
+				<div class="lineItem">
+					<div style="top:{getSpacing(td.start_date)}vh">
+						<Dot
+							eventOne={() => setDetails(td)}
+							eventTwo={() => change()}
+							isActive={false}>
+							<div class="date">{year(td.start_date)}</div>
+						</Dot>
+					</div>
 				</div>
-			</div>
-		{/each}
-		<ul class="timescale" style="height:{timelineHeight}vh;">
-			{#each decades as decade}
-				<li>{decade}</li>
 			{/each}
-		</ul>
-	</div>
+			<ul class="timescale" style="height:{timelineHeight}vh;">
+				{#each decades as decade}
+					<li>{decade}</li>
+				{/each}
+			</ul>
+		</div>
+</div>
 
 <style>
 	.line {
-		border-radius:25px;
+		border-radius: 25px;
 		position: fixed;
 		width: 4px;
 		background-color: var(--color-theme-1);
@@ -89,7 +95,7 @@
 	}
 
 	.timescale {
-		font-size:var(--font-size-small);
+		font-size: var(--font-size-small);
 		user-select: none;
 		z-index: -9;
 		opacity: 1;
@@ -131,12 +137,22 @@
 		top: calc(var(--font-size-small) * -0.2);
 		font-size: var(--font-size-small);
 		left: 0.2rem;
-		opacity: 0.1;
+		opacity: 0;
 
 		transform-origin: center;
 		z-index: -2;
 		padding: 0 2.5rem 0 2rem;
 		transition: all 0.15s ease-in-out;
+	}
+
+	.timeline-container {
+		z-index:999;
+		position: fixed;
+		width:10rem;
+		/* background:red; */
+		opacity:1;
+		left:0;
+		height:100%;
 	}
 
 	@media (max-width: 1000px) {
@@ -154,12 +170,15 @@
 		}
 	}
 
-	.lineItem:hover .date, .lineItem:focus-within .date, .lineItem:focus .date, .lineItem:active .date {
+	.lineItem:hover .date,
+	.lineItem:focus-within .date,
+	.lineItem:focus .date,
+	.lineItem:active .date {
 		cursor: pointer;
 		color: #e0dbd4; /* doesnt change since background is red */
 		transform: scale(1.2);
 		opacity: 1;
-		top: calc(var(--font-size-small) * 0);
+		top: 0;
 		z-index: 111;
 	}
 </style>

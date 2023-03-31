@@ -32,6 +32,7 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/supabase-js": "^2.10.0",
+		"d3": "^7.8.2",
 		"date-fns": "^2.29.3",
 		"esbuild": "^0.17.11",
 		"svelte-fullscreen": "^2.0.0",

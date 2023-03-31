@@ -47,6 +47,12 @@
 		}
 	}
 
+	function handleFocus(event) {
+		let input = event.target;
+		input.selectionStart = input.selectionEnd;
+		input.selectionEnd = input.value.length;
+	}
+
 	function autofill(event) {
 		const input = event.target.value.replace(/\D/g, "");
 		const year = input.slice(0, 4);
@@ -462,6 +468,7 @@
 	.image_cred {
 		display: flex;
 		justify-content: center;
+		
 	}
 
 	.image_cred a {
