@@ -88,6 +88,7 @@
 					toast.push(`Error: ${error.message}`);
 				}
 			} else {
+				console.log(changes.start_date)
 				toast.push("Please enter a valid date.");
 			}
 		} else {

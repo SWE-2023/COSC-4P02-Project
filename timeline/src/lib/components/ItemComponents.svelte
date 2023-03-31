@@ -46,7 +46,41 @@
 			full = !full;
 		}
 	}
-	
+
+	// function autofill(event) {
+	// 	const value = event.target.value;
+	// 	const length = value.length;
+
+	// 	if (length === 4 || length === 7) {
+	// 		event.target.value = value + "-";
+	// 	}else if(length === 5 || length === 8){
+	// 		event.target.value = value.substring(0, length - 1);
+	// 	}else{
+
+	// 	}
+	// }
+
+	function autofill(event) {
+		const input = event.target.value.replace(/\D/g, '');
+		const year = input.slice(0, 4);
+		const month = input.slice(4, 6);
+		const day = input.slice(6, 8);
+
+		let formattedDate = '';
+		if (year) {
+			formattedDate += year;
+			if (month) {
+			formattedDate += '-' + month;
+			if (day) {
+				formattedDate += '-' + day;
+			}
+			}
+		}
+		
+		event.target.value = formattedDate;
+	}
+		
+
 </script>
 
 {#key editing || adding}
@@ -154,7 +188,7 @@
 					</div>
 					<div class="input-cont">
 						<label for="start_date">Start date</label>
-						<input placeholder="YYYY-MM-DD" bind:value={editList.start_date} />
+						<input placeholder="YYYY-MM-DD" bind:value={editList.start_date} on:input={autofill}/>
 					</div>
 					<div class="input-cont">
 						<label for="body">Description</label>
@@ -167,7 +201,7 @@
 					</div>
 					<div class="input-cont">
 						<label for="start_date">Start date</label>
-						<input placeholder="YYYY-MM-DD" bind:value={addList.start_date} />
+						<input placeholder="YYYY-MM-DD" bind:value={addList.start_date} on:input={autofill}/>
 					</div>
 					<div class="input-cont">
 						<label for="body">Description</label>
