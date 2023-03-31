@@ -83,9 +83,9 @@
 					changeMenu();
 					resetEdit();
 					toast.push("<b>Success</b><br>Changes saved. Refreshing items...");
-					setTimeout(() => {
+							setTimeout(() => {
 						location.reload();
-					}, 2000);
+					}, 0);
 				} catch (error) {
 					toast.push(`Error: ${error.message}`);
 				}
@@ -118,9 +118,9 @@
 					addNew();
 					resetAdd();
 					toast.push("<b>Success</b><br>New entry added. Refreshing items...");
-					setTimeout(() => {
+							setTimeout(() => {
 						location.reload();
-					}, 2000);
+					}, 0);
 				} catch (error) {
 					toast.push(`<b>Query Error</b><br>${error.message}`);
 				}
@@ -134,7 +134,7 @@
 
 	const deleteEntry = async () => {
 		try {
-			if (confirm("Are you sure you want to delete this entry?") == false){
+			if (confirm("Are you sure you want to delete this entry?") == false) {
 				toast.push("<b>Cancelled</b><br>Item not deleted.");
 				return;
 			}
@@ -152,11 +152,12 @@
 			);
 			setTimeout(() => {
 				location.reload();
-			}, 2000);
+			}, 0);
 		} catch (error) {
 			toast.push(`<b>Query Error</b><br>${error.message}`);
-		} 
+		}
 	};
+
 </script>
 
 {#if user && user.email}
