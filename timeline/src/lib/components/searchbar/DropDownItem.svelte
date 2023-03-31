@@ -1,6 +1,7 @@
 <script>
 	import { slide } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
+	import { quintOut } from "svelte/easing";
 	export let selectedTitle;
 	export let item;
 	export let color = "var(--color-text)";
@@ -12,11 +13,11 @@
 	}
 </script>
 
-<button class="item" on:click={handleClick} transition:slide>
+<button class="item" on:click={handleClick} transition:slide={{ duration: 250, easing: quintOut }}>
 	{#if item.title}
 		<p style="color:{color}" class="text"><b>{item.year}</b> • {item.title}</p>
 	{:else}
-		<p style="color:{color}" class="text">{item}</p>
+		<p style="color:grey" class="text">No Results</p>
 	{/if}
 </button>
 

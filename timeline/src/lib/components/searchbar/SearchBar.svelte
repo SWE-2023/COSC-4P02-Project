@@ -106,10 +106,16 @@
 		flex-direction: column;
 		align-items: center;
 		box-sizing: border-box;
+		border:2px solid transparent;
+		border-radius: var(--font-size-small);
 		width: clamp(1rem, 33vw, 30rem);
 		z-index: 999;
-		transition: opacity 0.22s ease-in-out, transform 0.05s ease-in-out,
-			top 0.22s ease-in-out;
+		transition: opacity 0.22s var(--curve), transform 0.05s var(--curve),
+			top 0.22s var(--curve);
+	}
+
+	.search-container:focus-within {
+		border:2px solid var(--color-theme-1);
 	}
 
 	.bar {
@@ -122,17 +128,16 @@
 		color: var(--color-text);
 		height: var(--height);
 		width: 100%;
-		border: 2px solid var(--color-bg-2);
+		border: none;
 		padding: 0.1rem 0 0.1rem 1.5rem;
 		border-radius: var(--font-size-small);
 		font-size: var(--font-size-small);
 		background: var(--color-bg-1);
-		transition: all 0.15s ease-in-out;
+		transition: all 0.15s var(--curve);
 	}
 
 	.search-box:focus {
 		outline: none;
-		border: 2px solid var(--color-theme-1);
 		border-bottom: none;
 	}
 
@@ -148,14 +153,11 @@
 	.results {
 		opacity: 0;
 		height: -100px;
-		width: calc(100% - 4px);
+		width: 100%;
 		overflow: hidden;
 		background: var(--color-bg-1);
-		border-left: 2px solid var(--color-theme-1);
-		border-right: 2px solid var(--color-theme-1);
-		border-bottom: 2px solid var(--color-theme-1);
 		border-radius: 0 0 var(--font-size-small) var(--font-size-small);
-		transition: all 0.15s ease-in-out;
+		transition: all 0.15s var(--curve);
 	}
 
 	.i {
