@@ -53,7 +53,6 @@
 </script>
 
 <svelte:window on:resize={updateGap} />
-
 	<div class="timeline-container" on:mousemove={(e) => (yPos = e.clientY)}>
 	<span style="height:{timelineHeight}vh" class="line" />
 		<div class="line-components" style={disabled ? "pointer-events: none;" : ""} >
@@ -79,6 +78,10 @@
 </div>
 
 <style>
+	:root {
+		--foot-height:2px;
+	}
+
 	.line {
 		border-radius: 25px;
 		position: fixed;
@@ -86,6 +89,28 @@
 		background-color: var(--color-theme-1);
 		left: 40px;
 		transition: left 0.5s ease-in-out;
+	}
+
+	.line::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: -5.6px;
+		width: 16px;
+		height: var(--foot-height);
+		border-radius: 10rem;
+		background-color: var(--color-theme-1);
+	}
+
+	.line::before {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: -5.6px;
+		width: 16px;
+		height: var(--foot-height);
+		border-radius: 10rem;
+		background-color: var(--color-theme-1);
 	}
 
 	.line-components {
@@ -98,7 +123,7 @@
 		font-size: var(--font-size-small);
 		user-select: none;
 		z-index: -9;
-		opacity: 1;
+		opacity: 0.66;
 		list-style: none;
 		margin: 0;
 		display: flex;
@@ -146,13 +171,14 @@
 	}
 
 	.timeline-container {
-		z-index:999;
 		position: fixed;
-		width:10rem;
-		/* background:red; */
+		width:calc(var(--font-size-base)*4);
 		opacity:1;
 		left:0;
-		height:100%;
+		height:80%;
+		/* background:var(--color-bg-2); */
+		padding:1.5rem;
+		border-radius:0 var(--font-size-large) var(--font-size-large) 0;
 	}
 
 	@media (max-width: 1000px) {
@@ -160,7 +186,7 @@
 			left: -2px;
 		}
 		.timescale {
-			left: 1.5rem;
+			left: 1rem;
 		}
 		.date {
 			padding: 0 2.5rem 0 1rem;

@@ -106,22 +106,23 @@ a:hover {
 	text-decoration: underline;
 }
 
-section.page h1 {
-	font-size: var(--font-size-xxxlarge);
+
+h1 {
 	font-family: var(--font-serif);
-	padding: 2em 0 0 0;
+	font-size: var(--font-size-xxlarge);
 	font-weight: 700;
-	text-align: center;
-	margin: 0;
+	margin: 1rem 0;
+	padding-top:3rem;
 }
 
 section.page p {
-	padding: 1em 0 1em 0;
-	font-size: var(--font-size-base);
-	font-weight: 800;
-	text-align: center;
-	text-transform: uppercase;
+		font-family: var(--font-sans);
+		font-size: var(--font-size-base);
+		padding: 1em 0 1em 0;
+		margin: 0.5rem 0;
 }
+
+
 
 .text-column {
 	display: flex;

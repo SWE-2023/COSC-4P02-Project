@@ -57,7 +57,7 @@
 		border-radius: 0.5rem 0.5rem;
 		padding: 1.2em 2em;
 		cursor: pointer;
-		transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+		transition: background-color 0.33s var(--curve), color 0.33s var(--curve);
 	}
 	.button {
 		background: var(--button-background);
@@ -72,12 +72,12 @@
 	.button:hover {
 		background: var(--button-hover-background);
 		color: var(--button-hover-color);
-		transition: background-color 0.15s ease-out;
+		transition: background-color 0.33s var(--curve);
 	}
 	.alt-button:hover {
 		background: var(--button-active-background);
 		color: var(--button-hover-color);
-		transition: background-color 0.15s ease-out;
+		transition: background-color 0.33s var(--curve);
 	}
 	.button:disabled,
 	.alt-button:disabled {

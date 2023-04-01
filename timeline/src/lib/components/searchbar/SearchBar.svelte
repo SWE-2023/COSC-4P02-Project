@@ -129,7 +129,7 @@
 		height: var(--height);
 		width: 100%;
 		border:none;
-		box-shadow: 0 0 0 2px var(--color-theme-1);
+		box-shadow: 0 0 0 2px #bbb;
 		padding: 0.1rem 0 0.1rem 1.5rem;
 		border-radius: var(--font-size-xsmall);
 		font-size: var(--font-size-small);

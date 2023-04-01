@@ -1,4 +1,4 @@
-<script >
+<script>
 	export let pos = 0;
 	let startYear = 1720;
 	let endYear = 2020;
@@ -18,10 +18,9 @@
 	}
 </script>
 
-
-<div class="cursor" >
-	<div class="year" style="left: 20%;transform: translateY({(pos*5)-400}%);">
-		{updateCurrentYear(pos)}
+<div class="cursor">
+	<div class="year" style="transform: translateY({pos * 5 - 400}%);">
+		<!-- {updateCurrentYear(pos)} -->
 	</div>
 </div>
 
@@ -36,6 +35,7 @@
 		user-select: none;
 		position: absolute;
 		top: -1.5rem;
+		left: 5rem !important;
 		font-size: 1rem;
 		font-weight: bold;
 		white-space: nowrap;

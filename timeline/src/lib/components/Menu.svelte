@@ -78,12 +78,12 @@
 		color: #0d0d0d;
 		cursor: pointer;
 		padding: 0;
-		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
+		transition: letter-spacing 0.2s ease-in-out, color 0.33s var(--curve);
 	}
 
 	li[aria-current="page"] {
 		border-right: var(--color-theme-1) 0.25em solid;
-		transition: border-right 0.2s ease-in-out;
+		transition: border-right 0.33s var(--curve);
 	}
 
 	li a {
