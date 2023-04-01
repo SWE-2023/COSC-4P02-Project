@@ -21,6 +21,8 @@
 			};
 		});
 	}
+
+
 	let dropDownSelection = "";
 	let transitionDirection;
 	let selectedItem = timeline[0];
@@ -140,6 +142,7 @@
 			update();
 		}
 	}
+	
 </script>
 
 <svelte:head>
