@@ -9,15 +9,18 @@
 	export let currentItem;
 	export let disabled;
 
+	let dragging = false;
+	let startY;
 	let screenHeight = 0;
 	let pos = 100;
 	let visible;
 	let zoom = 1;
+	let zoomOffset = 0;
+
 	let zoomTweened = tweened(zoom, {
 		duration: 300,
 		easing: cubicOut,
 	});
-	let zoomOffset = 0;
 	$: zoomOffsetTweened = tweened(zoomOffset, {
 		duration: 300,
 		easing: cubicOut,
@@ -51,7 +54,7 @@
 		const bottom = highest;
 		const current = getYear(date);
 		const percentage = (current - top) / (bottom - top) - $zoomOffsetTweened;
-		const spacing = $zoomTweened * percentage * (timelineHeight - 2);
+		const spacing = percentage * (timelineHeight - 2) * $zoomTweened;
 		return spacing;
 	};
 
@@ -94,6 +97,26 @@
 		}, 301);
 	}
 
+	function handleDragStart(e) {
+		startY = e.touches ? e.touches[0].clientY : e.clientY;
+		dragging = true;
+	}
+
+	function handleDragEnd() {
+		dragging = false;
+	}
+
+	function handleDragMove(e) {
+		if (!dragging) return;
+		const currentY = e.touches ? e.touches[0].clientY : e.clientY;
+		const deltaY = (startY - currentY) / (100 * $zoomTweened);
+		const newZoomOffset = $zoomOffsetTweened + deltaY;
+		if (newZoomOffset < 0 || newZoomOffset > 1 - 1 / $zoomTweened) return;
+		zoomOffsetTweened.set(newZoomOffset);
+		startY = currentY;
+		visible = false;
+	}
+
 	function handleWheel(e) {
 		e.preventDefault();
 		const newZoomOffset = $zoomOffsetTweened + e.deltaY / (500 * $zoomTweened);
@@ -131,12 +154,17 @@
 	});
 </script>
 
-<svelte:window on:resize={updateGap} />
+<svelte:window on:resize={updateGap} on:mouseup={handleDragEnd}/>
 
-<div
-	class="timeline-container"
-	on:wheel={handleWheel}
-	on:dblclick={handleZoomIn}>
+<div class="timeline-container"
+on:wheel={handleWheel}
+on:dblclick={handleZoomIn}
+on:mousedown={handleDragStart}
+on:mousemove={handleDragMove}
+on:mouseup={handleDragEnd}
+on:touchstart={handleDragStart}
+on:touchmove={handleDragMove}
+on:touchend={handleDragEnd}>
 	<div>
 		<span style="height:{timelineHeight}vh" class="line" />
 		<div
@@ -168,11 +196,14 @@
 	</div>
 </div>
 <button class="reset" on:click={resetZoom}
-	><span class="material-symbols-rounded i">refresh</span></button>
+	><span class="material-symbols-rounded i">refresh</span>
+</button>
 <button class="zoom-out" on:click={handleZoomOut}
-	><span class="material-symbols-rounded i">remove</span></button>
+	><span class="material-symbols-rounded i">remove</span>
+</button>
 <button class="zoom-in" on:click={handleZoomIn}
-	><span class="material-symbols-rounded i">add</span></button>
+	><span class="material-symbols-rounded i">add</span>
+</button>
 
 <style>
 	:root {
@@ -211,6 +242,7 @@
 	}
 
 	.line-components {
+		user-select: none;
 		position: relative;
 		left: 20px;
 		transition: left 0.5s var(--curve);
@@ -218,7 +250,7 @@
 
 	.dot {
 		position: relative;
-		z-index: -1;
+		z-index: 0;
 	}
 
 	.dot:hover {
@@ -268,6 +300,8 @@
 	}
 
 	.timeline-container {
+		cursor:grab;
+		user-select: none;
 		position: fixed;
 		width: calc(var(--font-size-base) * 8);
 		opacity: 1;
@@ -277,6 +311,10 @@
 		box-shadow: inset 0 0 1rem 0px #00000015;
 		border-radius: 0 1.5rem 1.5rem 0;
 		height: 80%;
+	}
+
+	.timeline-container:active {
+		cursor: grabbing;
 	}
 
 	button {
@@ -310,7 +348,8 @@
 		animation: rotate 1s forwards var(--curve);
 	}
 
-	.zoom-in .i:hover, .zoom-out .i:hover {
+	.zoom-in .i:hover,
+	.zoom-out .i:hover {
 		color: var(--color-theme-1-light);
 	}
 
@@ -340,6 +379,7 @@
 		}
 		.timeline-container {
 			width: calc(var(--font-size-base) * 4);
+			box-shadow: none;
 		}
 		button {
 			margin: 0.25rem;
