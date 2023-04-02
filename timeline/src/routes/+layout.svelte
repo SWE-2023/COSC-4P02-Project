@@ -40,6 +40,7 @@
 	}
 	.background {
 		opacity: var(--bg-opacity);
+		width: calc(100vw + 20rem);
 		filter: blur(0px);
 		transition: filter 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61),
 			opacity 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
@@ -69,7 +70,7 @@
 		flex-direction: column;
 		padding: 1rem;
 		width: 100%;
-		max-width: 85%;
+		max-width: 82%;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
