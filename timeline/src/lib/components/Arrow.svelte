@@ -41,7 +41,7 @@
 
 <style>
 	:root {
-		--anim: 0.4s cubic-bezier(0.13, 0.94, 0.16, 1.15);
+		--anim: 0.33s cubic-bezier(0.13, 0.94, 0.16, 1.15);
 	}
 
 	.arrow-button {

@@ -31,7 +31,8 @@
 	const timelineHeight = 80; // in vh
 	let decadeGap = 20; // values lower than 10 will cause issues
 	let decades = [];
-	let lowest = Math.floor(getYear(timeData[0].start_date) / decadeGap) * decadeGap; // round down to nearest 20 year
+	let lowest =
+		Math.floor(getYear(timeData[0].start_date) / decadeGap) * decadeGap; // round down to nearest 20 year
 	let highest =
 		Math.ceil(getYear(timeData[timeData.length - 1].start_date) / decadeGap) *
 		decadeGap; // round up to nearest 20 year
@@ -69,6 +70,19 @@
 		updateGap();
 	}
 
+	function handleZoomOut() {
+		const newZoom = $zoomTweened - 0.5;
+		if (newZoom < 1) {
+			resetZoom();
+			return;
+		}
+		zoomTweened.set(newZoom);
+		visible = false;
+		setTimeout(() => {
+			updateGap();
+		}, 301);
+	}
+
 	function resetZoom() {
 		zoomTweened.set(1);
 		zoomOffsetTweened.set(0);
@@ -82,7 +96,7 @@
 
 	function handleWheel(e) {
 		e.preventDefault();
-		const newZoomOffset = $zoomOffsetTweened + e.deltaY / (500 * $zoomTweened)
+		const newZoomOffset = $zoomOffsetTweened + e.deltaY / (500 * $zoomTweened);
 		if (newZoomOffset < 0 || newZoomOffset > 1 - 1 / $zoomTweened) return;
 		zoomOffsetTweened.set(newZoomOffset);
 		visible = false;
@@ -110,7 +124,7 @@
 		visible = true;
 		pos = e.clientY;
 	}
-	
+
 	onMount(() => {
 		screenHeight = innerHeight;
 		updateGap();
@@ -144,7 +158,7 @@
 					</div>
 				</div>
 			{/each}
-			<Cursor {pos} {visible} {year}/>
+			<Cursor {pos} {visible} {year} />
 		</div>
 		<ul class="timescale" style={timescaleStyle}>
 			{#each decades as decade}
@@ -152,11 +166,13 @@
 			{/each}
 		</ul>
 	</div>
-	<button class="reset" on:click={resetZoom}
-		><span class="material-symbols-rounded i">refresh</span></button>
-	<button class="zoom-in" on:click={handleZoomIn}
-		><span class="material-symbols-rounded i">add</span></button>
 </div>
+<button class="reset" on:click={resetZoom}
+	><span class="material-symbols-rounded i">refresh</span></button>
+<button class="zoom-out" on:click={handleZoomOut}
+	><span class="material-symbols-rounded i">remove</span></button>
+<button class="zoom-in" on:click={handleZoomIn}
+	><span class="material-symbols-rounded i">add</span></button>
 
 <style>
 	:root {
@@ -257,7 +273,9 @@
 		opacity: 1;
 		left: 0;
 		overflow: hidden;
-
+		background: var(--color-bg-1);
+		box-shadow: inset 0 0 1rem 0px #00000015;
+		border-radius: 0 1.5rem 1.5rem 0;
 		height: 80%;
 	}
 
@@ -274,13 +292,16 @@
 		transition: all 0.5s var(--curve);
 	}
 
-	.zoom-in {
+	.zoom-out {
 		left: 3rem;
 	}
 
+	.zoom-in {
+		left: 6rem;
+	}
 
 	.i {
-		user-select:none;
+		user-select: none;
 		transition: transform 0.5s var(--curve);
 	}
 
@@ -289,11 +310,12 @@
 		animation: rotate 1s forwards var(--curve);
 	}
 
-	.zoom-in .i:hover {
+	.zoom-in .i:hover, .zoom-out .i:hover {
 		color: var(--color-theme-1-light);
 	}
 
-	.i:active, .i:focus {
+	.i:active,
+	.i:focus {
 		transform: scale(0.9);
 	}
 
@@ -316,11 +338,17 @@
 		.line-components {
 			left: -1.4rem;
 		}
+		.timeline-container {
+			width: calc(var(--font-size-base) * 4);
+		}
 		button {
 			margin: 0.25rem;
 		}
-		.zoom-in {
+		.zoom-out {
 			left: 2rem;
+		}
+		.zoom-in {
+			left: 4rem;
 		}
 	}
 </style>
