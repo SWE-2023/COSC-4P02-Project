@@ -13,31 +13,43 @@
 		});
 	});
 
-	let yPos = spring(pos, { stiffness: 0.1, damping: 0.99 });
+	let yPos = spring(pos, { stiffness: 0.15, damping: 0.99 });
 	$: yPos.update(() => pos);
 </script>
 
 <div class="cursor" style="transform:translateY({$yPos - 5}px);">
-	<div class={visible ? "pill" : "pill hidden"}><p>{displayedYear}</p></div>
+	<div class={visible ? "pill" : "pill hidden"}><p>{displayedYear ? displayedYear : "..."}</p></div>
 </div>
 
 <style>
 	.cursor {
+		user-select:none;
 		position: fixed;
 		top: 0;
-		left: 40px;
+		z-index:2;
+		left: 36px;
 		pointer-events: none;
+		transition: all 0.5s var(--curve);
+	}
+
+	@media (max-width: 1000px) {
+		.cursor {
+			left: -7px;
+		}
 	}
 
 	.pill {
 		position: absolute;
-		left: -10px;
-		transform: translateY(-33%);
+		left: -14px;
+		transform:scaleX(1) translateY(-33%);
 		width: calc(2 * var(--font-size-small) + 4.5rem);
 		height: calc(1.5 * var(--font-size-small));
 		border-radius: 100rem;
+		border: 3px solid var(--color-bg-1);
 		background-color: var(--color-theme-1);
 		transition: all 0.5s var(--curve);
+		transform-origin:18px 50%;
+		mix-blend-mode: lighten;
 	}
 
 	p {
@@ -53,6 +65,11 @@
 	}
 
 	.hidden {
-		width: 0;
+		border: 3px solid transparent;
+		transform:scaleX(0);
+	}
+	
+	.hidden * {
+		opacity: 0;
 	}
 </style>

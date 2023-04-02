@@ -3,53 +3,97 @@
 	import { tweened } from "svelte/motion";
 	import Cursor from "$lib/components/Cursor.svelte";
 	import Dot from "$lib/components/Dot.svelte";
-  import { cubicOut } from "svelte/easing";
+	import { cubicOut } from "svelte/easing";
+	import { onMount } from "svelte";
 	export let timeData;
 	export let currentItem;
 	export let disabled;
 
-	
+	let screenHeight = 0;
 	let pos = 100;
-	let visible = true;
-	const year = tweened(1720, {
-		duration: 600,
-		easing: cubicOut
+	let visible;
+	let zoom = 1;
+	let zoomTweened = tweened(zoom, {
+		duration: 300,
+		easing: cubicOut,
 	});
-	
+	let zoomOffset = 0;
+	$: zoomOffsetTweened = tweened(zoomOffset, {
+		duration: 300,
+		easing: cubicOut,
+	});
+
 	function getYear(date) {
 		const year = date.substring(0, 4);
 		return parseInt(year);
 	}
 
 	const timelineHeight = 80; // in vh
-	let scale = 20; // values lower than 10 will cause issues
+	let decadeGap = 20; // values lower than 10 will cause issues
 	let decades = [];
-	let lowest = Math.floor(getYear(timeData[0].start_date) / scale) * scale; // round down to nearest 20 year
+	let lowest = Math.floor(getYear(timeData[0].start_date) / decadeGap) * decadeGap; // round down to nearest 20 year
 	let highest =
-		Math.ceil(getYear(timeData[timeData.length - 1].start_date) / scale) *
-		scale; // round up to nearest 20 year
+		Math.ceil(getYear(timeData[timeData.length - 1].start_date) / decadeGap) *
+		decadeGap; // round up to nearest 20 year
 
-	for (let i = lowest; i <= highest; i += scale) {
+	for (let i = lowest; i <= highest; i += decadeGap) {
 		decades.push(i);
 	}
 
-	function getSpacing(date) {
+	const year = tweened(decades[0], {
+		duration: 600,
+		easing: cubicOut,
+	});
+
+	$: getSpacing = (date) => {
 		const top = lowest;
 		const bottom = highest;
 		const current = getYear(date);
-		const percentage = (current - top) / (bottom - top);
-		const spacing = percentage * (timelineHeight - 2);
+		const percentage = (current - top) / (bottom - top) - $zoomOffsetTweened;
+		const spacing = $zoomTweened * percentage * (timelineHeight - 2);
 		return spacing;
-	}
+	};
+
+	$: timescaleStyle = `height:${
+		timelineHeight * $zoomTweened
+	}vh; transform: translateY(-${$zoomOffsetTweened * 100}%)`;
 
 	const dispatch = createEventDispatcher();
 	const change = () => dispatch("change");
 	const setDetails = (item) => (currentItem = item);
 
+	function handleZoomIn() {
+		const newZoom = $zoomTweened + 0.5;
+		zoomTweened.set(newZoom);
+		visible = false;
+		updateGap();
+	}
+
+	function resetZoom() {
+		zoomTweened.set(1);
+		zoomOffsetTweened.set(0);
+		pos = 100;
+		year.set(decades[0]);
+		visible = true;
+		setTimeout(() => {
+			updateGap();
+		}, 301);
+	}
+
+	function handleWheel(e) {
+		e.preventDefault();
+		const newZoomOffset = $zoomOffsetTweened + e.deltaY / (500 * $zoomTweened)
+		if (newZoomOffset < 0 || newZoomOffset > 1 - 1 / $zoomTweened) return;
+		zoomOffsetTweened.set(newZoomOffset);
+		visible = false;
+	}
+
 	function updateGap() {
-		const screenHeight = window.innerHeight;
+		if ($zoomTweened < 1.5) decadeGap = 20;
+		else if ($zoomTweened < 2.5) decadeGap = 10;
+		else decadeGap = 5;
 		const scale = Math.max(
-			20,
+			decadeGap,
 			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
 		);
 		lowest = Math.floor(getYear(timeData[0].start_date) / scale) * scale;
@@ -63,39 +107,55 @@
 	}
 
 	function handleMove(e) {
-		pos = e.clientY;
 		visible = true;
+		pos = e.clientY;
 	}
+	
+	onMount(() => {
+		screenHeight = innerHeight;
+		updateGap();
+	});
 </script>
 
 <svelte:window on:resize={updateGap} />
-<div class="timeline-container"  on:keydown>
-	<span style="height:{timelineHeight}vh" class="line" />
-	<div class="line-components" style={disabled ? "pointer-events: none;" : ""}>
-		{#each timeData as td, i (i)}
-			<div
-				class="lineItem"
-				on:keydown
-				on:click={handleMove}
-				on:click={() => (year.set(getYear(td.start_date)))}
-				>
-				<div style="top:{getSpacing(td.start_date)}vh">
-					<Dot
-						eventOne={() => setDetails(td)}
-						eventTwo={() => change()}
-						isActive={false}>
-						<div class="date">{getYear(td.start_date)}</div>
-					</Dot>
+
+<div
+	class="timeline-container"
+	on:wheel={handleWheel}
+	on:dblclick={handleZoomIn}>
+	<div>
+		<span style="height:{timelineHeight}vh" class="line" />
+		<div
+			class="line-components"
+			style={disabled ? "pointer-events: none;" : ""}>
+			{#each timeData as td, i (i)}
+				<div
+					class="lineItem"
+					on:keydown
+					on:click={handleMove}
+					on:click={() => year.set(getYear(td.start_date))}>
+					<div
+						class="dot"
+						style="transform:translateY({getSpacing(td.start_date)}vh)">
+						<Dot
+							eventOne={() => setDetails(td)}
+							eventTwo={() => change()}
+							year={getYear(td.start_date)} />
+					</div>
 				</div>
-			</div>
-		{/each}
-		<ul class="timescale" style="height:{timelineHeight}vh;">
+			{/each}
+			<Cursor {pos} {visible} {year}/>
+		</div>
+		<ul class="timescale" style={timescaleStyle}>
 			{#each decades as decade}
 				<li>{decade}</li>
 			{/each}
 		</ul>
-		<Cursor {pos} {visible} {year} />
 	</div>
+	<button class="reset" on:click={resetZoom}
+		><span class="material-symbols-rounded i">refresh</span></button>
+	<button class="zoom-in" on:click={handleZoomIn}
+		><span class="material-symbols-rounded i">add</span></button>
 </div>
 
 <style>
@@ -135,9 +195,18 @@
 	}
 
 	.line-components {
-		position: fixed;
-		left: 36px;
+		position: relative;
+		left: 20px;
 		transition: left 0.5s var(--curve);
+	}
+
+	.dot {
+		position: relative;
+		z-index: -1;
+	}
+
+	.dot:hover {
+		z-index: 1;
 	}
 
 	.timescale {
@@ -151,9 +220,14 @@
 		flex-direction: column;
 		justify-content: space-between;
 		position: absolute;
-		left: 2.5rem;
+		left: calc(3.75 * var(--font-size-base));
 		padding: 0;
 		transition: left 0.5s var(--curve);
+	}
+
+	::marker {
+		content: "—   ";
+		color: var(--color-bg-2);
 	}
 
 	li {
@@ -177,27 +251,59 @@
 		position: relative;
 	}
 
-	.date {
-		color: var(--color-text);
-		user-select: none;
-		top: calc(var(--font-size-small) * -0.2);
-		font-size: var(--font-size-small);
-		left: 0rem;
-		opacity: 0;
+	.timeline-container {
+		position: fixed;
+		width: calc(var(--font-size-base) * 8);
+		opacity: 1;
+		left: 0;
+		overflow: hidden;
 
-		transform-origin: center;
-		z-index: -2;
-		padding: 0 2.5rem 0 2rem;
+		height: 80%;
+	}
+
+	button {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		margin: 1.5rem;
+		cursor: pointer;
+		background: none;
+		border: none;
+		color: var(--color-theme-1);
+		font-size: var(--font-size-base);
 		transition: all 0.5s var(--curve);
 	}
 
-	.timeline-container {
-		position: fixed;
-		width: calc(var(--font-size-base) * 4);
-		opacity: 1;
-		left: 0;
-		height: 80%;
-		border-radius: 0 var(--font-size-large) var(--font-size-large) 0;
+	.zoom-in {
+		left: 3rem;
+	}
+
+
+	.i {
+		user-select:none;
+		transition: transform 0.5s var(--curve);
+	}
+
+	.reset .i:hover {
+		color: var(--color-theme-1-light);
+		animation: rotate 1s forwards var(--curve);
+	}
+
+	.zoom-in .i:hover {
+		color: var(--color-theme-1-light);
+	}
+
+	.i:active, .i:focus {
+		transform: scale(0.9);
+	}
+
+	@keyframes rotate {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 
 	@media (max-width: 1000px) {
@@ -207,21 +313,14 @@
 		.timescale {
 			left: 1rem;
 		}
-		.date {
-			padding: 0 2.5rem 0 1rem;
-		}
 		.line-components {
-			left: -5px;
+			left: -1.4rem;
 		}
-	}
-
-	.lineItem:hover .date,
-	.lineItem:focus .date,
-	.lineItem:active .date {
-		cursor: pointer;
-		color: var(--color-text); 
-		text-shadow: 0 0 15px 14px var(--color-theme-1);
-		transform: scale(1.2);
-		opacity: 1;
+		button {
+			margin: 0.25rem;
+		}
+		.zoom-in {
+			left: 2rem;
+		}
 	}
 </style>
