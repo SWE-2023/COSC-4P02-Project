@@ -168,11 +168,14 @@
 	</div>
 </div>
 <button class="reset" on:click={resetZoom}
-	><span class="material-symbols-rounded i">refresh</span></button>
+	><span class="material-symbols-rounded i">refresh</span>
+</button>
 <button class="zoom-out" on:click={handleZoomOut}
-	><span class="material-symbols-rounded i">remove</span></button>
+	><span class="material-symbols-rounded i">remove</span>
+</button>
 <button class="zoom-in" on:click={handleZoomIn}
-	><span class="material-symbols-rounded i">add</span></button>
+	><span class="material-symbols-rounded i">add</span>
+</button>
 
 <style>
 	:root {
@@ -218,7 +221,7 @@
 
 	.dot {
 		position: relative;
-		z-index: -1;
+		z-index: 0;
 	}
 
 	.dot:hover {
@@ -310,7 +313,8 @@
 		animation: rotate 1s forwards var(--curve);
 	}
 
-	.zoom-in .i:hover, .zoom-out .i:hover {
+	.zoom-in .i:hover,
+	.zoom-out .i:hover {
 		color: var(--color-theme-1-light);
 	}
 
