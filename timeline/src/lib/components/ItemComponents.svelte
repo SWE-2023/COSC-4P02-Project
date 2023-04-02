@@ -64,9 +64,10 @@
 			}
 		}
 
-		editing? (editList.start_date = formattedDate): (addList.start_date = formattedDate);
+		editing
+			? (editList.start_date = formattedDate)
+			: (addList.start_date = formattedDate);
 	}
-	
 
 	let inputElement;
 	function setCursorPositionToEnd() {
@@ -151,7 +152,9 @@
 					<p class={loading ? "upload-notice red" : "upload-notice"}>
 						<span
 							style="font-size:var(--font-size-small)"
-							class={loading ? "material-symbols-rounded i" : "material-symbols-rounded"}
+							class={loading
+								? "material-symbols-rounded i"
+								: "material-symbols-rounded"}
 							>{loading ? "autorenew" : "cloud_upload"}</span
 						>{loading ? "Uploading..." : "Upload image"}
 					</p>
@@ -263,6 +266,7 @@
 							{#if editing}
 								<input
 									type="text"
+									placeholder="YYYY-MM-DD"
 									bind:value={editList.start_date}
 									on:input={autofill}
 									bind:this={inputElement}
@@ -272,6 +276,7 @@
 							{:else if adding}
 								<input
 									type="text"
+									placeholder="YYYY-MM-DD"
 									bind:value={addList.start_date}
 									on:input={autofill}
 									bind:this={inputElement}
@@ -294,6 +299,7 @@
 				{:else}
 					<h1 class="title">{item.title}</h1>
 					<p class="date"><i>{formatted_date}</i></p>
+					<hr />
 					<div class="tts">
 						<Text2Speech
 							title={item.title}
@@ -316,25 +322,27 @@
 		--vid-ratio: 0.5625;
 	}
 
-	.tts {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		justify-content: right;
-	}
-
-	h1 {
-		font-family: var(--font-serif);
-		font-size: var(--font-size-xxlarge);
-		font-weight: 700;
-		margin: 0;
+	hr {
+		margin-top: 2rem;
+		width: 50%;
+		height: 1px;
+		border: none;
+		opacity: 0.33;
+		background-color: var(--color-text);
 	}
 
 	p {
 		font-family: var(--font-sans);
 		font-size: var(--font-size-base);
 		padding: 1em 0 1em 0;
-		margin: 0.5rem;
+		margin: 0.5rem 0;
+	}
+
+	.tts {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		justify-content: right;
 	}
 
 	.item-components {
@@ -345,6 +353,7 @@
 		align-items: center;
 		transition: all 0.2s ease-in-out;
 		margin-bottom: 3rem;
+		
 	}
 
 	.item-components > div {
@@ -355,6 +364,7 @@
 		flex: 1 1 33%;
 		padding: 2rem 2rem;
 		border-radius: 2rem;
+		max-width: 60rem;
 		background: var(--color-text-card);
 		box-shadow: 1rem 0rem 28px 0 #00000010;
 		text-align: justify;
@@ -472,14 +482,15 @@
 		margin: 0 0 0.5rem 0;
 		opacity: 0.75;
 		font-weight: 400;
-		transform: translateY(-1rem);
+		transform: translateY(-0.75rem);
 		background: var(--color-bg-2);
-		transition: all 0.15s var(--curve);
+		transition: all 0.33s var(--curve);
 	}
+
 	.image_cred a:hover {
 		opacity: 1;
 		transform: translateY(-0.5rem);
-		color: var(--color-theme-2);
+		color: var(--color-theme-1);
 		text-decoration: none;
 	}
 
@@ -549,6 +560,7 @@
 		justify-content: center;
 		gap: 1rem;
 		margin: 1rem;
+		max-width: 60rem;
 	}
 
 	.input-cont {
@@ -561,6 +573,11 @@
 		font-size: 1em;
 		padding-left: 1rem;
 		color: var(--color-text);
+	}
+
+	input::placeholder, textarea::placeholder {
+		color: var(--color-text);
+		opacity: 0.5;
 	}
 
 	input[type="text"],
@@ -603,6 +620,7 @@
 		object-fit: contain;
 		border-radius: var(--font-size-medium);
 		background: var(--color-bg-2);
+		
 	}
 
 	.upload {

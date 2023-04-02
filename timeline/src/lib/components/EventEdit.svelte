@@ -6,7 +6,6 @@
 	import { userStore } from "$lib/authStore";
 	import { createEventDispatcher } from "svelte";
 	import { toast } from "@zerodevx/svelte-toast";
-	import { quintOut } from "svelte/easing";
 	export let lockPage;
 	export let enableEditing;
 	export let enableAdding;

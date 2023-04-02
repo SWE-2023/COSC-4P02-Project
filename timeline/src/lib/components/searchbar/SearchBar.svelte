@@ -87,7 +87,7 @@
 			<DropDownItem
 				color="grey"
 				bind:selectedTitle={selection}
-				item="No results." />
+				item="No Results" />
 		</div>
 	{/if}
 </div>
@@ -107,10 +107,10 @@
 		align-items: center;
 		box-sizing: border-box;
 		border:2px solid transparent;
-		border-radius: var(--font-size-small);
+		border-radius: var(--font-size-xsmall);
 		width: clamp(1rem, 33vw, 30rem);
 		z-index: 999;
-		transition: opacity 0.22s var(--curve), transform 0.05s var(--curve),
+		transition: opacity 0.22s var(--curve), transform 0.3s var(--curve),
 			top 0.22s var(--curve);
 	}
 
@@ -128,21 +128,23 @@
 		color: var(--color-text);
 		height: var(--height);
 		width: 100%;
-		border: none;
+		border:none;
+		box-shadow: 0 0 0 2px #bbb;
 		padding: 0.1rem 0 0.1rem 1.5rem;
-		border-radius: var(--font-size-small);
+		border-radius: var(--font-size-xsmall);
 		font-size: var(--font-size-small);
 		background: var(--color-bg-1);
-		transition: all 0.15s var(--curve);
+		transition: all 0.3s var(--curve);
 	}
 
 	.search-box:focus {
 		outline: none;
+		box-shadow: 0 0 0 0px var(--color-theme-1);
 		border-bottom: none;
 	}
 
 	.has-results:focus {
-		border-radius: var(--font-size-small) var(--font-size-small) 0 0;
+		border-radius: var(--font-size-xsmall) var(--font-size-xsmall) 0 0;
 	}
 
 	.search-container:focus-within > .results {
@@ -156,8 +158,8 @@
 		width: 100%;
 		overflow: hidden;
 		background: var(--color-bg-1);
-		border-radius: 0 0 var(--font-size-small) var(--font-size-small);
-		transition: all 0.15s var(--curve);
+		border-radius: 0 0 var(--font-size-xsmall) var(--font-size-xsmall);
+		transition: all 0.3s var(--curve);
 	}
 
 	.i {

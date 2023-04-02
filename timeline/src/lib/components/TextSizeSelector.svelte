@@ -81,7 +81,7 @@
 		border-radius: 100rem;
 		border: 1px solid var(--border);
 		font-weight: 900;
-		transition: all 0.12s ease-in-out;
+		transition: all 0.33s var(--curve);
 	}
 
 	.btn > span {

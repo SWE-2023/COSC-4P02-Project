@@ -29,14 +29,15 @@
 						? "page"
 						: undefined}
 					transition:fly={{ x: -24, delay: 150 }}>
-					<p>{user.email}</p>
 					<a
-						href="/login"
+						href="/"
 						on:click={(event) => {
 							event.preventDefault();
 							logout();
 							open = false;
-						}}>Log Out</a>
+						}}>
+						<p>{user.email}</p>
+						Log Out</a>
 				</li>
 			{:else}
 				<li
@@ -78,12 +79,12 @@
 		color: #0d0d0d;
 		cursor: pointer;
 		padding: 0;
-		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
+		transition: letter-spacing 0.2s ease-in-out, color 0.33s var(--curve);
 	}
 
 	li[aria-current="page"] {
 		border-right: var(--color-theme-1) 0.25em solid;
-		transition: border-right 0.2s ease-in-out;
+		transition: border-right 0.33s var(--curve);
 	}
 
 	li a {
@@ -104,7 +105,7 @@
 
 	li p {
 		margin: 0;
-		padding: 1.5rem 3rem 0.5rem 3rem;
+		padding: 1.5rem 3rem 0.5rem 0;
 		font-size: var(--font-size-xsmall);
 		color: var(--color-theme-1);
 	}

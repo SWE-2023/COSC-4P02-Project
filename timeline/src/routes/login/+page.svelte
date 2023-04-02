@@ -32,13 +32,9 @@
 			<p>Click the button below to log out</p>
 			<div class="form">
 				<div class="form-buttons">
-					<div><Button text="Back" on:click={history.back}  /></div>
+					<div><Button text="Back" href="/" /></div>
 					<div>
-						<Button
-							alt
-							on:click={logout}
-							text="Log Out"
-							{loading} />
+						<Button alt on:click={logout} text="Log Out" {loading} />
 					</div>
 				</div>
 			</div>
@@ -55,7 +51,7 @@
 					placeholder="username@email.com" />
 
 				<div class="form-buttons">
-					<div><Button text="Back" on:click={history.back} /></div>
+					<div><Button text="Back" href="/" /></div>
 					<div>
 						<Button
 							alt
