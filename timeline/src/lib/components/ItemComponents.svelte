@@ -266,6 +266,7 @@
 							{#if editing}
 								<input
 									type="text"
+									placeholder="YYYY-MM-DD"
 									bind:value={editList.start_date}
 									on:input={autofill}
 									bind:this={inputElement}
@@ -275,6 +276,7 @@
 							{:else if adding}
 								<input
 									type="text"
+									placeholder="YYYY-MM-DD"
 									bind:value={addList.start_date}
 									on:input={autofill}
 									bind:this={inputElement}
@@ -571,6 +573,11 @@
 		font-size: 1em;
 		padding-left: 1rem;
 		color: var(--color-text);
+	}
+
+	input::placeholder, textarea::placeholder {
+		color: var(--color-text);
+		opacity: 0.5;
 	}
 
 	input[type="text"],
