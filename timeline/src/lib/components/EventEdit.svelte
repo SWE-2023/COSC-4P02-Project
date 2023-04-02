@@ -1,6 +1,5 @@
 <script>
 	// @ts-nocheck
-
 	import supabase from "$lib/supabaseClient";
 	import { slide } from "svelte/transition";
 	import { userStore } from "$lib/authStore";
@@ -190,6 +189,7 @@
 
 <style>
 	.edit-items {
+		user-select: none;
 		right: -0.5rem;
 		border-radius: var(--font-size-small) 0 0 var(--font-size-small);
 		width: clamp(5rem, 15vw, 10rem);
