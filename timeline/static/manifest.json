@@ -1,0 +1,34 @@
+{
+	"name": "Niagara-on-the-Lake Interactive Timeline",
+	"short_name": "NOTL Timeline",
+	"start_url": "/",
+	"display": "fullscreen",
+	"background_color": "#ffffff",
+	"theme_color": "#000000",
+	"shortcuts": [
+	  {
+		"name": "View Timeline",
+		"short_name": "Timeline",
+		"description": "View the timeline",
+		"url": "/timeline?utm_source=homescreen",
+		"icons": [
+		  {
+			"src": "favicon (96x96).png",
+			"sizes": "96x96"
+		  }
+		]
+	  }
+	],
+	"icons": [
+	  {
+		"src": "favicon.png",
+		"sizes": "512x512",
+		"type": "image/png",
+		"purpose": "maskable any"
+	  }
+	],
+	"description": "An interactive timeline for the town of Niagara-on-the-Lake, Ontario, Canada.",
+	"dir": "ltr",
+	"lang": "en",
+	"orientation": "portrait"
+  }

@@ -21,7 +21,7 @@
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 
-	--light-color-bg-1: #ffffff;
+	--light-color-bg-1: #fcfcfc;
 	--light-color-bg-2: #e0dbd4;
 	--light-color-text-card: #e9e6e1;
 	--light-bg-opacity: 0.25;
@@ -53,6 +53,8 @@
 	--hc-color-theme-1-light: #fd2235;
 	--hc-color-theme-2-light: #4693ff;
 	--hc-color-text: rgba(255, 255, 255, 1);
+
+	--curve: cubic-bezier(0.08, 0.84, 0.1, 0.97);
 
 	--border: 0px solid white;
 	--background-gradient: linear-gradient(
@@ -104,22 +106,23 @@ a:hover {
 	text-decoration: underline;
 }
 
-section.page h1 {
-	font-size: var(--font-size-xxxlarge);
+
+h1 {
 	font-family: var(--font-serif);
-	padding: 2em 0 0 0;
+	font-size: var(--font-size-xxlarge);
 	font-weight: 700;
-	text-align: center;
-	margin: 0;
+	margin: 1rem 0;
+	padding-top:3rem;
 }
 
 section.page p {
-	padding: 1em 0 1em 0;
-	font-size: var(--font-size-base);
-	font-weight: 800;
-	text-align: center;
-	text-transform: uppercase;
+		font-family: var(--font-sans);
+		font-size: var(--font-size-base);
+		padding: 1em 0 1em 0;
+		margin: 0.5rem 0;
 }
+
+
 
 .text-column {
 	display: flex;
@@ -128,6 +131,11 @@ section.page p {
 	flex-direction: column;
 	justify-content: center;
 	margin: 0 auto;
+}
+
+.v-align {
+	display: flex;
+	align-items: center;
 }
 
 input {
@@ -146,4 +154,15 @@ label {
 
 button:focus:not(:focus-visible) {
 	outline: none;
+}
+
+/*  utils */
+.col {
+	display: flex;
+	flex-flow: column wrap;
+}
+
+.row {
+	display: flex;
+	flex-flow: row wrap;
 }
