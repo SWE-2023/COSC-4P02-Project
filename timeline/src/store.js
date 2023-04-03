@@ -26,3 +26,14 @@ currentSizeStore.subscribe(
 	(value) =>
 		typeof localStorage !== "undefined" && (localStorage.currentSize = value)
 );
+
+// current theme
+export const currentTheme =
+	typeof localStorage !== "undefined" && localStorage.currentTheme;
+export const currentThemeStore = writable(currentTheme);
+currentThemeStore.subscribe(
+	(value) =>
+		typeof localStorage !== "undefined" && (localStorage.currentTheme = value)
+);
+
+

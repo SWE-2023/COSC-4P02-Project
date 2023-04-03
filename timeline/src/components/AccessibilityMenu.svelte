@@ -15,6 +15,7 @@
 		reduceMotionStore.set(!reduceMotion);
 	}
 
+
 	const themes = {
 		"Dark Mode": {
 			"--color-theme-1": "var(--dark-color-theme-1)",
