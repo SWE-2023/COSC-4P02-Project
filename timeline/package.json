@@ -1,42 +1,43 @@
 {
-	"name": "timeline",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
-	},
-	"devDependencies": {
-		"@fontsource/fira-mono": "^4.5.10",
-		"@neoconfetti/svelte": "^1.0.0",
-		"@sveltejs/adapter-auto": "^1.0.0",
-		"@sveltejs/kit": "^1.5.5",
-		"@types/cookie": "^0.5.1",
-		"@zerodevx/svelte-toast": "^0.9.2",
-		"eslint": "^8.28.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte3": "^4.0.0",
-		"prettier": "^2.8.0",
-		"prettier-plugin-svelte": "^2.8.1",
-		"scss": "^0.2.4",
-		"svelte": "^3.54.0",
-		"svelte-check": "^3.0.1",
-		"svelte-preprocess": "^5.0.1",
-		"typescript": "^4.9.3",
-		"vite": "^4.0.0"
-	},
-	"type": "module",
-	"dependencies": {
-		"@supabase/supabase-js": "^2.10.0",
-		"d3": "^7.8.2",
-		"date-fns": "^2.29.3",
-		"esbuild": "^0.17.11",
-		"svelte-fullscreen": "^2.0.0",
-		"svelte-hamburgers": "^4.0.1",
-		"svelte-legos": "^0.0.6"
-	}
+  "name": "timeline",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+    "lint": "prettier --plugin-search-dir . --check . && eslint .",
+    "format": "prettier --plugin-search-dir . --write ."
+  },
+  "devDependencies": {
+    "@fontsource/fira-mono": "^4.5.10",
+    "@neoconfetti/svelte": "^1.0.0",
+    "@playwright/test": "^1.32.1",
+    "@sveltejs/adapter-auto": "^1.0.0",
+    "@sveltejs/kit": "^1.5.5",
+    "@types/cookie": "^0.5.1",
+    "@zerodevx/svelte-toast": "^0.9.2",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-svelte3": "^4.0.0",
+    "prettier": "^2.8.0",
+    "prettier-plugin-svelte": "^2.8.1",
+    "scss": "^0.2.4",
+    "svelte": "^3.54.0",
+    "svelte-check": "^3.0.1",
+    "svelte-preprocess": "^5.0.1",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.10.0",
+    "d3": "^7.8.2",
+    "date-fns": "^2.29.3",
+    "esbuild": "^0.17.11",
+    "svelte-fullscreen": "^2.0.0",
+    "svelte-hamburgers": "^4.0.1",
+    "svelte-legos": "^0.0.6"
+  }
 }
