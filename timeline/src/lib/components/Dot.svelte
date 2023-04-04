@@ -97,7 +97,7 @@
 			margin-left: calc(1.5*var(--font-size-base));
 		}
 		.dot-container:hover .dot {
-			transform:scale(1.2) translateX(3px);
+			transform:scale(1.2) translateX(2px);
 		}
 	}
 </style>

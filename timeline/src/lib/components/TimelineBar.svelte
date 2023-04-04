@@ -1,4 +1,5 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from "svelte";
 	import { tweened } from "svelte/motion";
 	import Cursor from "$lib/components/Cursor.svelte";
@@ -11,11 +12,22 @@
 
 	let dragging = false;
 	let startY;
-	let screenHeight = 0;
+	let screenHeight;
 	let pos = 100;
 	let visible;
 	let zoom = 1;
 	let zoomOffset = 0;
+	let isFirefox;
+	let isSafari;
+	const timelineHeight = 80; // in vh
+	let lowest;	
+	let highest;
+	let decadeGap; // values lower than 10 will cause issues
+	let decades = [];
+	
+	const dispatch = createEventDispatcher();
+	const change = () => dispatch("change");
+	const setDetails = (item) => (currentItem = item);
 
 	let zoomTweened = tweened(zoom, {
 		duration: 300,
@@ -31,21 +43,8 @@
 		return parseInt(year);
 	}
 
-	const timelineHeight = 80; // in vh
-	let decadeGap = 20; // values lower than 10 will cause issues
-	let decades = [];
-	let lowest =
-		Math.floor(getYear(timeData[0].start_date) / decadeGap) * decadeGap; // round down to nearest 20 year
-	let highest =
-		Math.ceil(getYear(timeData[timeData.length - 1].start_date) / decadeGap) *
-		decadeGap; // round up to nearest 20 year
-
-	for (let i = lowest; i <= highest; i += decadeGap) {
-		decades.push(i);
-	}
-
 	const year = tweened(decades[0], {
-		duration: 600,
+		duration: 500,
 		easing: cubicOut,
 	});
 
@@ -61,10 +60,6 @@
 	$: timescaleStyle = `height:${
 		timelineHeight * $zoomTweened
 	}vh; transform: translateY(-${$zoomOffsetTweened * 100}%)`;
-
-	const dispatch = createEventDispatcher();
-	const change = () => dispatch("change");
-	const setDetails = (item) => (currentItem = item);
 
 	function handleZoomIn() {
 		const newZoom = $zoomTweened + 0.5;
@@ -129,14 +124,16 @@
 		if ($zoomTweened < 1.5) decadeGap = 20;
 		else if ($zoomTweened < 2.5) decadeGap = 10;
 		else decadeGap = 5;
+
 		const scale = Math.max(
 			decadeGap,
 			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
 		);
-		lowest = Math.floor(getYear(timeData[0].start_date) / scale) * scale;
+		lowest = (Math.floor(getYear(timeData[0].start_date) / scale) * scale) - 10;
 		highest =
-			Math.ceil(getYear(timeData[timeData.length - 1].start_date) / scale) *
-			scale;
+			(Math.ceil(getYear(timeData[timeData.length - 1].start_date) / scale) *
+			scale) + 10;
+
 		decades = [];
 		for (let i = lowest; i <= highest; i += scale) {
 			decades.push(i);
@@ -148,28 +145,37 @@
 		pos = e.clientY;
 	}
 
+	
 	onMount(() => {
 		screenHeight = innerHeight;
 		updateGap();
+		isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+		isSafari =
+		navigator.userAgent.toLowerCase().indexOf("safari") > -1 &&
+		navigator.userAgent.toLowerCase().indexOf("chrome") === -1;
 	});
 </script>
 
-<svelte:window on:resize={updateGap} on:mouseup={handleDragEnd}/>
+<svelte:window on:resize={updateGap} on:mouseup={handleDragEnd} />
 
-<div class="timeline-container"
-on:wheel={handleWheel}
-on:dblclick={handleZoomIn}
-on:mousedown={handleDragStart}
-on:mousemove={handleDragMove}
-on:mouseup={handleDragEnd}
-on:touchstart={handleDragStart}
-on:touchmove={handleDragMove}
-on:touchend={handleDragEnd}>
+<div
+	in:fade
+	class="timeline-container"
+	on:wheel={handleWheel}
+	on:dblclick={handleZoomIn}
+	on:mousedown={handleDragStart}
+	on:mousemove={handleDragMove}
+	on:mouseup={handleDragEnd}
+	on:touchstart={handleDragStart}
+	on:touchmove={handleDragMove}
+	on:touchend={handleDragEnd}>
 	<div>
 		<span style="height:{timelineHeight}vh" class="line" />
 		<div
-			class="line-components"
-			style={disabled ? "pointer-events: none;" : ""}>
+			class={disabled ? "line-components disabled" : "line-components"}
+			style={isFirefox || isSafari
+				? "--left-offset:-2px"
+				: "--left-offset:0px"}>
 			{#each timeData as td, i (i)}
 				<div
 					class="lineItem"
@@ -188,7 +194,7 @@ on:touchend={handleDragEnd}>
 			{/each}
 			<Cursor {pos} {visible} {year} />
 		</div>
-		<ul class="timescale" style={timescaleStyle}>
+		<ul class="timescale" style={timescaleStyle} in:fade>
 			{#each decades as decade}
 				<li>{decade}</li>
 			{/each}
@@ -208,13 +214,14 @@ on:touchend={handleDragEnd}>
 <style>
 	:root {
 		--foot-height: 2px;
+		--left: 20px;
 	}
 
 	.line {
 		border-radius: 25px;
 		position: fixed;
 		width: 4px;
-		left: calc(40px);
+		left: var(--left);
 		background-color: var(--color-theme-1);
 		transition: left 0.5s var(--curve);
 	}
@@ -244,27 +251,32 @@ on:touchend={handleDragEnd}>
 	.line-components {
 		user-select: none;
 		position: relative;
-		left: 20px;
+		left: calc(20px - var(--left-offset));
 		transition: left 0.5s var(--curve);
+	}
+
+	.disabled {
+		pointer-events: none;
 	}
 
 	.dot {
 		position: relative;
-		z-index: 0;
+		z-index: 1;
 	}
 
 	.dot:hover {
-		z-index: 1;
+		z-index: 2;
 	}
 
 	.timescale {
 		font-size: var(--font-size-small);
 		user-select: none;
-		z-index: -9;
+		z-index: -1;
 		opacity: 0.66;
 		list-style: none;
 		margin: 0;
 		display: flex;
+		height: 80vh;
 		flex-direction: column;
 		justify-content: space-between;
 		position: absolute;
@@ -300,12 +312,14 @@ on:touchend={handleDragEnd}>
 	}
 
 	.timeline-container {
-		cursor:grab;
+		cursor: grab;
 		user-select: none;
+		-webkit-user-select: none;
 		position: fixed;
 		width: calc(var(--font-size-base) * 8);
 		opacity: 1;
-		left: 0;
+		z-index: 1;
+		left: calc(var(--left) - 2.1 * var(--font-size-base));
 		overflow: hidden;
 		background: var(--color-bg-1);
 		box-shadow: inset 0 0 1rem 0px #00000015;
@@ -321,7 +335,7 @@ on:touchend={handleDragEnd}>
 		position: fixed;
 		bottom: 0;
 		left: 0;
-		margin: 1.5rem;
+		margin: 0.5vw;
 		cursor: pointer;
 		background: none;
 		border: none;
@@ -372,17 +386,19 @@ on:touchend={handleDragEnd}>
 			left: -2px;
 		}
 		.timescale {
-			left: 1rem;
+			left: var(--left);
 		}
 		.line-components {
-			left: -1.4rem;
+			left: calc(-1.4rem - var(--left-offset));
 		}
 		.timeline-container {
 			width: calc(var(--font-size-base) * 4);
+			background: none;
 			box-shadow: none;
+			left: 0;
 		}
 		button {
-			margin: 0.25rem;
+			margin: 0.5vw;
 		}
 		.zoom-out {
 			left: 2rem;
