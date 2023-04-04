@@ -1,6 +1,7 @@
 <script>
-	import { spring } from "svelte/motion";
+	import { spring,tweened } from "svelte/motion";
 	import { onMount } from "svelte";
+	import { cubicOut } from "svelte/easing";
 	export let pos = 0;
 	export let visible = false;
 	export let year;
@@ -13,8 +14,9 @@
 		});
 	});
 
-	let yPos = spring(pos, { stiffness: 0.15, damping: 0.99 });
+	let yPos = tweened(pos, {duration: 50, easing: cubicOut});
 	$: yPos.update(() => pos);
+	
 </script>
 
 <div class="cursor" style="transform:translateY({$yPos - 5}px);">
@@ -27,7 +29,8 @@
 		position: fixed;
 		top: 0;
 		z-index:2;
-		left: 36px;
+		/* left: 36px; */
+		left: var(--left);
 		pointer-events: none;
 		transition: all 0.5s var(--curve);
 	}
