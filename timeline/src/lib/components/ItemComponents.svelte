@@ -353,6 +353,7 @@
 		align-items: center;
 		transition: all 0.2s ease-in-out;
 		margin-bottom: 3rem;
+		z-index:2;
 		
 	}
 
@@ -396,7 +397,7 @@
 	}
 
 	.image {
-		z-index: 1;
+		z-index: 2;
 		cursor: pointer;
 		min-height: 60vh;
 		max-height: 50vh;
@@ -421,7 +422,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-		z-index: 100;
+		z-index: 2;
 	}
 
 	.image.fullscreen:hover {
@@ -453,7 +454,7 @@
 	}
 
 	.video {
-		z-index: 1;
+		z-index: 2;
 		max-width: 50vw;
 		width: 60vw;
 		height: calc(60vw * var(--vid-ratio));
@@ -632,7 +633,7 @@
 		bottom: 0;
 		opacity: 0;
 		background: grey;
-		z-index: 5;
+		z-index: 3;
 	}
 
 	.upload-notice {
