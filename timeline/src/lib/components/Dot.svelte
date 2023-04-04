@@ -1,4 +1,5 @@
 <script>
+	import { draw } from "svelte/transition";
 	export let eventOne;
 	export let eventTwo;
 	export let year;
@@ -18,7 +19,7 @@
 		width="32"
 		height="32"
 		viewBox="0 0 16 16">
-		<circle class="dot" cx="8" cy="8" r="3.5" />
+		<circle in:draw class="dot" cx="8" cy="8" r="3.5" />
 	</svg>
 	<div class="date">{year}</div>
 </button>
