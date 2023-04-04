@@ -1,5 +1,5 @@
 <script>
-	import { fade } from 'svelte/transition';
+	import { fade } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
 	import { tweened } from "svelte/motion";
 	import Cursor from "$lib/components/Cursor.svelte";
@@ -12,7 +12,7 @@
 
 	let dragging = false;
 	let startY;
-	let screenHeight;
+	let screenHeight = 1080;
 	let pos = 100;
 	let visible;
 	let zoom = 1;
@@ -20,11 +20,11 @@
 	let isFirefox;
 	let isSafari;
 	const timelineHeight = 80; // in vh
-	let lowest;	
+	let lowest;
 	let highest;
 	let decadeGap; // values lower than 10 will cause issues
 	let decades = [];
-	
+
 	const dispatch = createEventDispatcher();
 	const change = () => dispatch("change");
 	const setDetails = (item) => (currentItem = item);
@@ -113,7 +113,6 @@
 	}
 
 	function handleWheel(e) {
-		e.preventDefault();
 		const newZoomOffset = $zoomOffsetTweened + e.deltaY / (500 * $zoomTweened);
 		if (newZoomOffset < 0 || newZoomOffset > 1 - 1 / $zoomTweened) return;
 		zoomOffsetTweened.set(newZoomOffset);
@@ -129,10 +128,11 @@
 			decadeGap,
 			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
 		);
-		lowest = (Math.floor(getYear(timeData[0].start_date) / scale) * scale) - 10;
+		lowest = Math.floor(getYear(timeData[0].start_date) / scale) * scale - 10;
 		highest =
-			(Math.ceil(getYear(timeData[timeData.length - 1].start_date) / scale) *
-			scale) + 10;
+			Math.ceil(getYear(timeData[timeData.length - 1].start_date) / scale) *
+				scale +
+			10;
 
 		decades = [];
 		for (let i = lowest; i <= highest; i += scale) {
@@ -145,29 +145,28 @@
 		pos = e.clientY;
 	}
 
-	
 	onMount(() => {
-		screenHeight = innerHeight;
-		updateGap();
 		isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
 		isSafari =
-		navigator.userAgent.toLowerCase().indexOf("safari") > -1 &&
-		navigator.userAgent.toLowerCase().indexOf("chrome") === -1;
+			navigator.userAgent.toLowerCase().indexOf("safari") > -1 &&
+			navigator.userAgent.toLowerCase().indexOf("chrome") === -1;
 	});
+	updateGap();
+
 </script>
 
-<svelte:window on:resize={updateGap} on:mouseup={handleDragEnd} />
+<svelte:window bind:innerHeight={screenHeight} on:resize={updateGap} on:mouseup={handleDragEnd} />
 
 <div
 	in:fade
 	class="timeline-container"
-	on:wheel={handleWheel}
+	on:wheel|preventDefault={handleWheel}
 	on:dblclick={handleZoomIn}
 	on:mousedown={handleDragStart}
 	on:mousemove={handleDragMove}
 	on:mouseup={handleDragEnd}
-	on:touchstart={handleDragStart}
-	on:touchmove={handleDragMove}
+	on:touchstart|passive={handleDragStart}
+	on:touchmove|passive={handleDragMove}
 	on:touchend={handleDragEnd}>
 	<div>
 		<span style="height:{timelineHeight}vh" class="line" />
@@ -194,8 +193,8 @@
 			{/each}
 			<Cursor {pos} {visible} {year} />
 		</div>
-		<ul class="timescale" style={timescaleStyle} in:fade>
-			{#each decades as decade}
+		<ul class="timescale" style={timescaleStyle}>
+			{#each decades as decade, i}
 				<li>{decade}</li>
 			{/each}
 		</ul>

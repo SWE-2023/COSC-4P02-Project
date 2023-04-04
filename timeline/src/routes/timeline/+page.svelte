@@ -22,7 +22,6 @@
 		});
 	}
 
-
 	let dropDownSelection = "";
 	let transitionDirection;
 	let selectedItem = timeline[0];
@@ -58,16 +57,16 @@
 	};
 
 	function pageUp() {
-		transitionDirection = "up";
 		if (!atFirst) {
+			transitionDirection = "up";
 			selectedItem = timeline[--currentIndex];
 			update();
 		}
 		setEditFields();
 	}
 	function pageDown() {
-		transitionDirection = "down";
 		if (!atLast) {
+			transitionDirection = "down";
 			selectedItem = timeline[++currentIndex];
 			update();
 		}
@@ -83,10 +82,16 @@
 			start_date: selectedItem.start_date,
 		};
 
+		if (timeline.indexOf(selectedItem) > currentIndex) {
+			transitionDirection = "down";
+		} else if (timeline.indexOf(selectedItem) < currentIndex) {
+			transitionDirection = "up";
+		}
 		currentIndex = timeline.indexOf(selectedItem);
 		atFirst = selectedItem == timeline[0];
 		atLast = selectedItem == timeline[timeline.length - 1];
 		setEditFields();
+		console.log(transitionDirection);
 	}
 
 	let upVisible = false;
@@ -142,7 +147,6 @@
 			update();
 		}
 	}
-	
 </script>
 
 <svelte:head>
@@ -150,8 +154,7 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<svelte:window
-	on:mousemove={showArrows} />
+<svelte:window on:mousemove={showArrows} />
 
 <PageTransitionFade>
 	<SearchBar
@@ -181,8 +184,8 @@
 		on:resetAdd={setAddFields}
 		on:saveNew={handleAdd}
 		on:entryDeleted={handleDelete} />
-	{#if timeline.length > 0}
-		{#key selectedItem}
+		{#if timeline.length > 0}
+		{#key `${selectedItem.id}-${transitionDirection}`}
 			<section class="layout">
 				<ItemTransition direction={transitionDirection}>
 					<ItemComponents
@@ -200,22 +203,23 @@
 				</ItemTransition>
 			</section>
 		{/key}
-		{:else}
-			<section class="layout col">
-				<img alt="google dino" width='64' style="mix-blend-mode:darken" src="https://play-lh.googleusercontent.com/i-0HlK6I-K5ZVI28HFa4iXz0T22Mg2WjQ4gMsEYvqmSNdifp2NE41ZiaUCavmbIimQ"/>
-				<h1>
-					No items in timeline. Click 'Add' to create a new event.
-				</h1>
-			</section>
+	{:else}
+		<section class="layout col">
+			<img
+				alt="google dino"
+				width="64"
+				style="mix-blend-mode:darken"
+				src="https://play-lh.googleusercontent.com/i-0HlK6I-K5ZVI28HFa4iXz0T22Mg2WjQ4gMsEYvqmSNdifp2NE41ZiaUCavmbIimQ" />
+			<h1>No items in timeline. Click 'Add' to create a new event.</h1>
+		</section>
 	{/if}
-	
+
 	<Arrow
 		lock={lockSelection}
 		down
 		on:moveDown={pageDown}
 		disabled={atLast}
 		visible={downVisible} />
-		
 </PageTransitionFade>
 
 <style>
