@@ -1,10 +1,26 @@
 <script>
 	import { fly } from "svelte/transition";
-	import { reduceMotionStore } from "$lib/stores/store";
-	import { createEventDispatcher } from "svelte";
+	import { currentThemeStore, reduceMotionStore } from "$lib/stores/store";
+	import { createEventDispatcher, onMount } from "svelte";
 	import TextSizeSelector from "$lib/components/TextSizeSelector.svelte";
 
 	export let open;
+
+	onMount(() => {
+		const storedTheme = typeof localStorage !== "undefined" && localStorage.currentTheme;
+		if (storedTheme === "Dark") {
+			toggleDark();
+		} else if (storedTheme === "Contrast") {
+			toggleContrast();
+		} else {
+			toggleLight();
+	}
+	});
+
+	let store_theme;
+	currentThemeStore.subscribe((value) => {
+		store_theme = value;
+	});
 
 	let reduceMotion;
 	reduceMotionStore.subscribe((value) => {
@@ -14,6 +30,7 @@
 	function toggleReduceMotion() {
 		reduceMotionStore.set(!reduceMotion);
 	}
+
 
 	const themes = {
 		"Dark Mode": {
@@ -51,45 +68,53 @@
 	};
 
 	let nextTheme = "Dark Mode";
+	let currentTheme = "Light Mode";
 	const dispatcher = createEventDispatcher();
 
-	function toggleLightorDark() {
+	function toggleLight() {
+		currentTheme = "Light Mode";
+		//store_theme = "Light";
+		currentThemeStore.set("Light");
 		const root = document.documentElement;
-		const theme = themes[nextTheme];
+		const theme = themes["Light Mode"];
+
+		Object.entries(theme).forEach(([key, value]) => {
+			root.style.setProperty(key, value);
+		});
+		root.style.setProperty("--button-color", "var(--light-color-theme-1)");
+		root.style.setProperty("--button-hover-color", "#ffffff");
+		root.style.setProperty("--button-active-background", "var(--light-color-theme-1-light)");
+		root.style.setProperty("--border", "var(--light-color-theme-1)");
+		dispatcher("themeSelect", "darkText");
+
+		nextTheme = "Dark Mode";
+		open = false;
+	}
+
+	function toggleDark() {
+		currentTheme = "Dark Mode";
+		//store_theme = "Dark";
+		currentThemeStore.set("Dark");
+		const root = document.documentElement;
+		const theme = themes["Dark Mode"];
 
 		Object.entries(theme).forEach(([key, value]) => {
 			root.style.setProperty(key, value);
 		});
 
-		if (nextTheme === "Light Mode") {
-			location.reload();
-			dispatcher("themeSelect", "darkText");
-		} else {
-			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)");
-			root.style.setProperty(
-				"--color-theme-1-light",
-				"var(--dark-color-theme-1-light)"
-			);
-			root.style.setProperty("--color-theme-2", "var(--dark-color-theme-2)");
-			root.style.setProperty(
-				"--color-theme-2-light",
-				"var(--dark-color-theme-2-light)"
-			);
-			root.style.setProperty("--color-bg-1", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-bg-2", "var(--dark-color-bg-2)");
-			root.style.setProperty("--background-gradient", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-text", "var(--dark-color-text)");
-			root.style.setProperty("--button-color", "#ffffff");
-			root.style.setProperty("--button-hover-color", "#000000");
-			root.style.setProperty("--button-active-background", "#ffffff");
-			root.style.setProperty("--border", "2px solid white");
-			dispatcher("themeSelect", "lightText");
-		}
+		root.style.setProperty("--button-color", "#ffffff");
+		root.style.setProperty("--button-hover-color", "#000000");
+		root.style.setProperty("--button-active-background", "#ffffff");
+		root.style.setProperty("--border", "2px solid white");
+		dispatcher("themeSelect", "lightText");
 
-		nextTheme = nextTheme === "Light Mode" ? "Dark Mode" : "Light Mode";
+		nextTheme = "Light Mode";
 		open = false;
 	}
+
 	function toggleContrast() {
+		//store_theme = "Contrast";
+		currentThemeStore.set("Contrast");
 		const root = document.documentElement;
 		open = false;
 		const hcProps = [
@@ -114,6 +139,7 @@
 		root.style.setProperty("--border", "2px solid white");
 		dispatcher("themeSelect", "light");
 	}
+
 </script>
 
 {#if open}
@@ -124,7 +150,7 @@
 			<li transition:fly={{ x: 24, delay: 50 }}>
 				<span
 					id="light_dark_theme"
-					on:click={toggleLightorDark}
+					on:click={() => currentTheme === 'Light Mode' ? toggleDark() : toggleLight()}
 					on:keydown>{nextTheme}</span>
 			</li>
 			<li transition:fly={{ x: 24, delay: 100 }}>

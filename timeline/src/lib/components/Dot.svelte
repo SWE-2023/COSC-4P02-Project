@@ -1,4 +1,5 @@
 <script>
+	import { draw } from "svelte/transition";
 	export let eventOne;
 	export let eventTwo;
 	export let year;
@@ -18,7 +19,7 @@
 		width="32"
 		height="32"
 		viewBox="0 0 16 16">
-		<circle class="dot" cx="8" cy="8" r="3.5" />
+		<circle in:draw class="dot" cx="8" cy="8" r="3.5" />
 	</svg>
 	<div class="date">{year}</div>
 </button>
@@ -97,7 +98,7 @@
 			margin-left: calc(1.5*var(--font-size-base));
 		}
 		.dot-container:hover .dot {
-			transform:scale(1.2) translateX(3px);
+			transform:scale(1.2) translateX(2px);
 		}
 	}
 </style>

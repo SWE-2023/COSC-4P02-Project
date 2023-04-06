@@ -1,12 +1,12 @@
 <script>
 	// @ts-nocheck
+	import { fade } from 'svelte/transition';
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
-	import PageTransitionBlur from "$lib/components/PageTransitionBlur.svelte";
 	import supabase from "$lib/supabaseClient";
 	import { toast } from "@zerodevx/svelte-toast";
-
+	
 	// timeline view settings
 	export let editing;
 	export let adding;
@@ -133,186 +133,182 @@
 </script>
 
 {#key editing || adding}
-	<PageTransitionBlur>
-		<section class="item-components">
-			<div class="media-component">
-				{#if !editing && !adding}
-					{#if item.media}
-						<div class="tip v-align">
-							<span class="material-symbols-rounded"> info </span>
-							<p>Click the image to toggle fullscreen.</p>
-						</div>
-					{/if}
-				{:else}
-					<div class="notice">
-						<h2>
-							{editing ? "Edit" : "Add"}ing item
-						</h2>
+	<section class="item-components">
+		<div class="media-component">
+			{#if !editing && !adding}
+				{#if item.media}
+					<div class="tip v-align">
+						<span class="material-symbols-rounded"> info </span>
+						<p>Click the image to toggle fullscreen.</p>
 					</div>
-					<p class={loading ? "upload-notice red" : "upload-notice"}>
-						<span
-							style="font-size:var(--font-size-small)"
-							class={loading
-								? "material-symbols-rounded i"
-								: "material-symbols-rounded"}
-							>{loading ? "autorenew" : "cloud_upload"}</span
-						>{loading ? "Uploading..." : "Upload image"}
-					</p>
 				{/if}
-				<Fullscreen let:onToggle>
-					<div class="image-cont">
-						{#if editing || adding}
-							<div class="edit-cont">
-								<input
-									type="file"
-									class="image-edit upload"
-									id="file_upload"
-									on:change={upload} />
-								<img
-									class="image-edit"
-									src={adding ? addList.media : editList.media}
-									alt={adding ? addList.title : editList.title} />
-								<div style="width:100%;text-align:center;">
-									<p
-										style="font-size:var(--font-size-small);align-content:center">
-										<i
-											>Paste image URL or drag and drop onto image section (4MB
-											limit).</i>
-									</p>
-								</div>
-
-								<div class="input-cont">
-									<label for="media">Image URL</label>
-									{#if editing}
-										<input
-											type="text"
-											placeholder="https://example.com/image.jpg"
-											bind:value={editList.media} />
-									{:else if adding}
-										<input
-											type="text"
-											placeholder="https://example.com/image.jpg"
-											bind:value={addList.media} />
-									{/if}
-								</div>
-								<div class="input-cont">
-									<label for="image_credit">Image source</label>
-									{#if editing}
-										<input
-											type="text"
-											placeholder="https://example.com"
-											bind:value={editList.image_credit} />
-									{:else if adding}
-										<input
-											type="text"
-											placeholder="https://example.com"
-											bind:value={addList.image_credit} />
-									{/if}
-								</div>
+			{:else}
+				<div class="notice">
+					<h2>
+						{editing ? "Edit" : "Add"}ing item
+					</h2>
+				</div>
+				<p class={loading ? "upload-notice red" : "upload-notice"}>
+					<span
+						style="font-size:var(--font-size-small)"
+						class={loading
+							? "material-symbols-rounded i"
+							: "material-symbols-rounded"}
+						>{loading ? "autorenew" : "cloud_upload"}</span
+					>{loading ? "Uploading..." : "Upload image"}
+				</p>
+			{/if}
+			<Fullscreen let:onToggle>
+				<div class="image-cont">
+					{#if editing || adding}
+						<div class="edit-cont">
+							<input
+								type="file"
+								class="image-edit upload"
+								id="file_upload"
+								on:change={upload} />
+							<img
+								class="image-edit"
+								src={adding ? addList.media : editList.media}
+								alt={adding ? addList.title : editList.title} />
+							<div style="width:100%;text-align:center;">
+								<p
+									style="font-size:var(--font-size-small);align-content:center">
+									<i
+										>Paste image URL or drag and drop onto image section (4MB
+										limit).</i>
+								</p>
 							</div>
-						{:else if item.media}
-							{#if item.media.includes("youtube.com")}
-								<iframe
-									class="video"
-									title="youtube video"
-									src={item.media.replace("watch?v=", "embed/")}
-									frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowfullscreen />
-							{:else}
-								<img
-									class={full ? "image fullscreen" : "image"}
-									src={item.media}
-									alt={item.title}
-									on:click={() => {
-										onToggle();
-										full = !full;
-									}}
-									on:keydown={handleKeyDown} />
-							{/if}
+
+							<div class="input-cont">
+								<label for="media">Image URL</label>
+								{#if editing}
+									<input
+										type="text"
+										placeholder="https://example.com/image.jpg"
+										bind:value={editList.media} />
+								{:else if adding}
+									<input
+										type="text"
+										placeholder="https://example.com/image.jpg"
+										bind:value={addList.media} />
+								{/if}
+							</div>
+							<div class="input-cont">
+								<label for="image_credit">Image source</label>
+								{#if editing}
+									<input
+										type="text"
+										placeholder="https://example.com"
+										bind:value={editList.image_credit} />
+								{:else if adding}
+									<input
+										type="text"
+										placeholder="https://example.com"
+										bind:value={addList.image_credit} />
+								{/if}
+							</div>
+						</div>
+					{:else if item.media}
+						{#if item.media.includes("youtube.com")}
+							<iframe
+								class="video"
+								title="youtube video"
+								src={item.media.replace("watch?v=", "embed/")}
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+								allowfullscreen />
+						{:else}
+							<img
+								class={full ? "image fullscreen" : "image"}
+								src={item.media}
+								alt={item.title}
+								on:click={() => {
+									onToggle();
+									full = !full;
+								}}
+								on:keydown={handleKeyDown} />
+						{/if}
+					{/if}
+				</div>
+			</Fullscreen>
+			{#if item.image_credit != "null" && item.media}
+				{#if !editing && !adding}
+					<div class="image_cred">
+						<a href={item.image_credit} target="_blank" rel="noreferrer"
+							>Source</a>
+					</div>
+				{/if}
+			{/if}
+		</div>
+		<div class="text-component">
+			{#if editing || adding}
+				<form>
+					<div class="input-cont">
+						<label for="title"
+							>Title <span style="color:var(--color-theme-1)">*</span></label>
+						{#if editing}
+							<input
+								type="text"
+								placeholder="Title"
+								bind:value={editList.title} />
+						{:else if adding}
+							<input
+								type="text"
+								placeholder="Title"
+								bind:value={addList.title} />
 						{/if}
 					</div>
-				</Fullscreen>
-				{#if item.image_credit != "null" && item.media}
-					{#if !editing && !adding}
-						<div class="image_cred">
-							<a href={item.image_credit} target="_blank" rel="noreferrer"
-								>Source</a>
-						</div>
-					{/if}
-				{/if}
-			</div>
-			<div class="text-component">
-				{#if editing || adding}
-					<form>
-						<div class="input-cont">
-							<label for="title"
-								>Title <span style="color:var(--color-theme-1)">*</span></label>
-							{#if editing}
-								<input
-									type="text"
-									placeholder="Title"
-									bind:value={editList.title} />
-							{:else if adding}
-								<input
-									type="text"
-									placeholder="Title"
-									bind:value={addList.title} />
-							{/if}
-						</div>
-						<div class="input-cont">
-							<label for="start_date"
-								>Date <span style="color:var(--color-theme-1)">*</span></label>
-							{#if editing}
-								<input
-									type="text"
-									placeholder="YYYY-MM-DD"
-									bind:value={editList.start_date}
-									on:input={autofill}
-									bind:this={inputElement}
-									on:click={setCursorPositionToEnd}
-									on:focus={setCursorPositionToEnd}
-									on:keydown={handleKeydown} />
-							{:else if adding}
-								<input
-									type="text"
-									placeholder="YYYY-MM-DD"
-									bind:value={addList.start_date}
-									on:input={autofill}
-									bind:this={inputElement}
-									on:click={setCursorPositionToEnd}
-									on:focus={setCursorPositionToEnd}
-									on:keydown={handleKeydown} />
-							{/if}
-						</div>
-						<div class="input-cont">
-							<label for="body">Description</label>
-							{#if editing}
-								<textarea
-									placeholder="Description"
-									bind:value={editList.body} />
-							{:else if adding}
-								<textarea placeholder="Description" bind:value={addList.body} />
-							{/if}
-						</div>
-					</form>
-				{:else}
-					<h1 class="title">{item.title}</h1>
-					<p class="date"><i>{formatted_date}</i></p>
-					<hr />
-					<div class="tts">
-						<Text2Speech
-							title={item.title}
-							date={formatted_date}
-							body={item.body} />
+					<div class="input-cont">
+						<label for="start_date"
+							>Date <span style="color:var(--color-theme-1)">*</span></label>
+						{#if editing}
+							<input
+								type="text"
+								placeholder="YYYY-MM-DD"
+								bind:value={editList.start_date}
+								on:input={autofill}
+								bind:this={inputElement}
+								on:click={setCursorPositionToEnd}
+								on:focus={setCursorPositionToEnd}
+								on:keydown={handleKeydown} />
+						{:else if adding}
+							<input
+								type="text"
+								placeholder="YYYY-MM-DD"
+								bind:value={addList.start_date}
+								on:input={autofill}
+								bind:this={inputElement}
+								on:click={setCursorPositionToEnd}
+								on:focus={setCursorPositionToEnd}
+								on:keydown={handleKeydown} />
+						{/if}
 					</div>
-					{#if item.body}
-						<p class="desc">{item.body}</p>
-					{/if}
+					<div class="input-cont">
+						<label for="body">Description</label>
+						{#if editing}
+							<textarea placeholder="Description" bind:value={editList.body} />
+						{:else if adding}
+							<textarea placeholder="Description" bind:value={addList.body} />
+						{/if}
+					</div>
+				</form>
+			{:else}
+				<h1 class="title">{item.title}</h1>
+				<p class="date"><i>{formatted_date}</i></p>
+				<hr />
+				<div class="tts">
+					<Text2Speech
+						title={item.title}
+						date={formatted_date}
+						body={item.body} />
+				</div>
+				{#if item.body}
+					<p class="desc">{item.body}</p>
 				{/if}
-			</div>
-		</section>
-	</PageTransitionBlur>
+			{/if}
+		</div>
+	</section>
 {/key}
 
 <svelte:window on:keypress={handleKeyDown} />
@@ -353,7 +349,7 @@
 		align-items: center;
 		transition: all 0.2s ease-in-out;
 		margin-bottom: 3rem;
-		
+		z-index: 2;
 	}
 
 	.item-components > div {
@@ -366,7 +362,7 @@
 		border-radius: 2rem;
 		max-width: 60rem;
 		background: var(--color-text-card);
-		box-shadow: 1rem 0rem 28px 0 #00000010;
+		box-shadow: 5px 5px 16px 0 #00000020;
 		text-align: justify;
 	}
 
@@ -396,7 +392,7 @@
 	}
 
 	.image {
-		z-index: 1;
+		z-index: 2;
 		cursor: pointer;
 		min-height: 60vh;
 		max-height: 50vh;
@@ -421,7 +417,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-		z-index: 100;
+		z-index: 2;
 	}
 
 	.image.fullscreen:hover {
@@ -453,7 +449,7 @@
 	}
 
 	.video {
-		z-index: 1;
+		z-index: 2;
 		max-width: 50vw;
 		width: 60vw;
 		height: calc(60vw * var(--vid-ratio));
@@ -575,7 +571,8 @@
 		color: var(--color-text);
 	}
 
-	input::placeholder, textarea::placeholder {
+	input::placeholder,
+	textarea::placeholder {
 		color: var(--color-text);
 		opacity: 0.5;
 	}
@@ -620,7 +617,6 @@
 		object-fit: contain;
 		border-radius: var(--font-size-medium);
 		background: var(--color-bg-2);
-		
 	}
 
 	.upload {
@@ -632,7 +628,7 @@
 		bottom: 0;
 		opacity: 0;
 		background: grey;
-		z-index: 5;
+		z-index: 3;
 	}
 
 	.upload-notice {

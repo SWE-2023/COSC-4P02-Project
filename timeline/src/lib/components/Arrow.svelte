@@ -13,10 +13,13 @@
 	const goDown = () => dispatch("moveDown");
 
 	function handleKeyDown(event) {
+		
 		if(!lock){
 			if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+				event.preventDefault();
 				goUp();
 			} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+				event.preventDefault();
 				goDown();
 			}
 		}	

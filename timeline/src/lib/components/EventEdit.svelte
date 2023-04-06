@@ -197,7 +197,7 @@
 		display: flex;
 		flex-direction: column;
 		top: 10rem;
-		z-index: 20;
+		z-index: 2;
 		background: var(--color-text-card);
 		box-shadow: 5px 5px 3em #00000022;
 		margin: 0;

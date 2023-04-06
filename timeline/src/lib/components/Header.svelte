@@ -12,7 +12,7 @@
 	let logoOpacity = 1;
 	let isTheme = true;
 
-	function handleThemeSelect(event) {
+	function handleThemeLogo(event) {
 		isTheme = event.detail === "darkText";
 	}
 
@@ -65,7 +65,7 @@
 				}}>settings</span>
 			<AccessibilityMenu
 				bind:open={isAccessibilityOpen}
-				on:themeSelect={handleThemeSelect} />
+				on:themeSelect={handleThemeLogo} />
 		</div>
 	</nav>
 </header>
@@ -133,6 +133,6 @@
 		left: 0;
 		width: 100%;
 		height: 5rem;
-		z-index: 100;
+		z-index: 5;
 	}
 </style>
