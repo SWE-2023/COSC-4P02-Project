@@ -6,6 +6,8 @@
 
 	export let open;
 
+	let store_theme = "Light";
+
 	let reduceMotion;
 	reduceMotionStore.subscribe((value) => {
 		reduceMotion = value;
@@ -52,45 +54,48 @@
 	};
 
 	let nextTheme = "Dark Mode";
+	let currentTheme = "Light Mode";
 	const dispatcher = createEventDispatcher();
 
-	function toggleLightorDark() {
+	function toggleLight() {
+		currentTheme = "Light Mode";
+		store_theme = "Light";
 		const root = document.documentElement;
-		const theme = themes[nextTheme];
+		const theme = themes["Light Mode"];
 
 		Object.entries(theme).forEach(([key, value]) => {
 			root.style.setProperty(key, value);
 		});
 
-		if (nextTheme === "Light Mode") {
-			location.reload();
-			dispatcher("themeSelect", "darkText");
-		} else {
-			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)");
-			root.style.setProperty(
-				"--color-theme-1-light",
-				"var(--dark-color-theme-1-light)"
-			);
-			root.style.setProperty("--color-theme-2", "var(--dark-color-theme-2)");
-			root.style.setProperty(
-				"--color-theme-2-light",
-				"var(--dark-color-theme-2-light)"
-			);
-			root.style.setProperty("--color-bg-1", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-bg-2", "var(--dark-color-bg-2)");
-			root.style.setProperty("--background-gradient", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-text", "var(--dark-color-text)");
-			root.style.setProperty("--button-color", "#ffffff");
-			root.style.setProperty("--button-hover-color", "#000000");
-			root.style.setProperty("--button-active-background", "#ffffff");
-			root.style.setProperty("--border", "2px solid white");
-			dispatcher("themeSelect", "lightText");
-		}
+		dispatcher("themeSelect", "darkText");
 
-		nextTheme = nextTheme === "Light Mode" ? "Dark Mode" : "Light Mode";
+		nextTheme = "Dark Mode";
 		open = false;
 	}
+
+	function toggleDark() {
+		currentTheme = "Dark Mode";
+		store_theme = "Dark";
+		const root = document.documentElement;
+		const theme = themes["Dark Mode"];
+
+		Object.entries(theme).forEach(([key, value]) => {
+			root.style.setProperty(key, value);
+		});
+
+		root.style.setProperty("--button-color", "#ffffff");
+		root.style.setProperty("--button-hover-color", "#000000");
+		root.style.setProperty("--button-active-background", "#ffffff");
+		root.style.setProperty("--border", "2px solid white");
+		dispatcher("themeSelect", "lightText");
+
+		nextTheme = "Light Mode";
+		open = false;
+	}
+
+
 	function toggleContrast() {
+		store_theme = "Contrast";
 		const root = document.documentElement;
 		open = false;
 		const hcProps = [
@@ -125,7 +130,7 @@
 			<li transition:fly={{ x: 24, delay: 50 }}>
 				<span
 					id="light_dark_theme"
-					on:click={toggleLightorDark}
+					on:click={() => currentTheme === 'Light Mode' ? toggleDark() : toggleLight()}
 					on:keydown>{nextTheme}</span>
 			</li>
 			<li transition:fly={{ x: 24, delay: 100 }}>
