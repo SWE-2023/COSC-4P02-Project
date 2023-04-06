@@ -81,7 +81,10 @@
 		Object.entries(theme).forEach(([key, value]) => {
 			root.style.setProperty(key, value);
 		});
-
+		root.style.setProperty("--button-color", "var(--light-color-theme-1)");
+		root.style.setProperty("--button-hover-color", "#ffffff");
+		root.style.setProperty("--button-active-background", "var(--light-color-theme-1-light)");
+		root.style.setProperty("--border", "var(--light-color-theme-1)");
 		dispatcher("themeSelect", "darkText");
 
 		nextTheme = "Dark Mode";
