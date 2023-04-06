@@ -1,12 +1,26 @@
 <script>
 	import { fly } from "svelte/transition";
-	import { reduceMotionStore } from "$lib/stores/store";
-	import { createEventDispatcher } from "svelte";
+	import { currentThemeStore, reduceMotionStore } from "$lib/stores/store";
+	import { createEventDispatcher, onMount } from "svelte";
 	import TextSizeSelector from "$lib/components/TextSizeSelector.svelte";
 
 	export let open;
 
-	let store_theme = "Light";
+	onMount(() => {
+		const storedTheme = typeof localStorage !== "undefined" && localStorage.currentTheme;
+		if (storedTheme === "Dark") {
+			toggleDark();
+		} else if (storedTheme === "Contrast") {
+			toggleContrast();
+		} else {
+			toggleLight();
+	}
+	});
+
+	let store_theme;
+	currentThemeStore.subscribe((value) => {
+		store_theme = value;
+	});
 
 	let reduceMotion;
 	reduceMotionStore.subscribe((value) => {
@@ -59,7 +73,8 @@
 
 	function toggleLight() {
 		currentTheme = "Light Mode";
-		store_theme = "Light";
+		//store_theme = "Light";
+		currentThemeStore.set("Light");
 		const root = document.documentElement;
 		const theme = themes["Light Mode"];
 
@@ -75,7 +90,8 @@
 
 	function toggleDark() {
 		currentTheme = "Dark Mode";
-		store_theme = "Dark";
+		//store_theme = "Dark";
+		currentThemeStore.set("Dark");
 		const root = document.documentElement;
 		const theme = themes["Dark Mode"];
 
@@ -93,9 +109,9 @@
 		open = false;
 	}
 
-
 	function toggleContrast() {
-		store_theme = "Contrast";
+		//store_theme = "Contrast";
+		currentThemeStore.set("Contrast");
 		const root = document.documentElement;
 		open = false;
 		const hcProps = [
@@ -120,6 +136,7 @@
 		root.style.setProperty("--border", "2px solid white");
 		dispatcher("themeSelect", "light");
 	}
+
 </script>
 
 {#if open}
