@@ -59,6 +59,10 @@
 		--font-size-xxxxlarge: calc(var(--font-size-base) * 4); /* 4.8rem */
 	}
 
+	.btn {
+		border: none !important;
+	}
+
 	.btn-group {
 		display: flex;
 		flex-direction: row;
