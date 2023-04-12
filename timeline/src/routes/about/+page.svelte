@@ -16,7 +16,7 @@
 			alt="Niagara-on-the-Lake Museum Logo" />
 		<div>
 			
-			<h1 style="text-align:left;">About Niagara-on-the-Lake</h1>
+			<h1>About Niagara-on-the-Lake</h1>
 			<p>
 				Niagara-on-the-Lake (NOTL) is a small town located in southern Ontario,
 				Canada. Despite its size, it has a rich history dating back to the 19th
@@ -25,7 +25,7 @@
 				Today, NOTL is known for its beautiful flowers and trees and is home to
 				the summer Shaw Festival and its iconic wineries.
 			</p>
-			<h1 style="text-align:center;">About The Niagara-on-the-Lake Museum</h1>
+			<h1>About the Museum</h1>
 			<p>
 				The NOTL Museum is operated and owned by the Niagara Historical Society
 				(est. 1895) and continues to present and represent Niagara-on-the-Lake’s
@@ -36,21 +36,25 @@
 				also hosts two temporary exhibitions yearly and over 80 engaging
 				programs that are enjoyed by people from all walks of life.
 			</p>
-			<h1 style="text-align:right;">About Niagara-on-the-Lake Timeline</h1>
+			<h1>About the Timeline</h1>
 			<p>
 				The Niagara-on-the-Lake Timeline is a project created a team of student developers 
 				from Brock University created for the Niagara-on-the-Lake Museum.
-				The project is a digital timeline that documents the history of NOTL from
+				The project is an interactive timeline that documents the history of NOTL from
 				1720 to the present day. The timeline is developed for the Software Engineering II course
 				taught by Prof. Naser Ezzati-Jivan at Brock University. The timeline is
-				designed to be accessible for all users, both on on desktop and mobile devices.
+				designed to be accessible for all users, both on desktop and mobile devices.
 			</p>
 		</div>
 	</section>
 </PageTransition>
 
 <style>
-
+	
+	h1 {
+		text-align:center;
+	}
+	
 	.page {
 		text-align:justify;
 		display: flex;
