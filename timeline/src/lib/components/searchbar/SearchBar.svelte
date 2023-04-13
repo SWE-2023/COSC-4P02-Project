@@ -1,5 +1,5 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
@@ -82,12 +82,19 @@
 					on:selection={() => (clicked = true)} />
 			{/each}
 		</div>
+	{:else if search == ""}
+		<div class="results" style="pointer-events:none;">
+			<DropDownItem
+				color="grey"
+				bind:selectedTitle={selection}
+				item="Type something..." />
+		</div>
 	{:else}
 		<div class="results" style="pointer-events:none;">
 			<DropDownItem
 				color="grey"
 				bind:selectedTitle={selection}
-				item="No Results" />
+				item="No results..." />
 		</div>
 	{/if}
 </div>
@@ -98,6 +105,8 @@
 		--height: calc(2 * var(--font-size-base));
 	}
 
+	
+
 	.search-container {
 		position: absolute;
 		top: calc(1.85rem + (var(--font-size-xsmall) * -1));
@@ -106,16 +115,23 @@
 		flex-direction: column;
 		align-items: center;
 		box-sizing: border-box;
-		border:2px solid transparent;
+		border: 2px solid transparent;
 		border-radius: var(--font-size-xsmall);
 		width: clamp(1rem, 33vw, 30rem);
 		z-index: 999;
-		transition: opacity 0.22s var(--curve), transform 0.3s var(--curve),
-			top 0.22s var(--curve);
+		transition: opacity 0.1s var(--curve), width 0.5s var(--curve), right 0.5s var(--curve), border 0.1s var(--curve);
 	}
 
 	.search-container:focus-within {
-		border:2px solid var(--color-theme-1);
+		border: 2px solid var(--color-theme-1);
+		width: calc(40vw - 2rem);
+	}
+
+	@media (max-width: 1000px) {
+		.search-container:focus-within {
+			width: calc(100vw - 2rem);
+			right: 1rem;
+		}
 	}
 
 	.bar {
@@ -128,7 +144,7 @@
 		color: var(--color-text);
 		height: var(--height);
 		width: 100%;
-		border:none;
+		border: none;
 		box-shadow: 0 0 0 2px #bbb;
 		padding: 0.1rem 0 0.1rem 1.5rem;
 		border-radius: var(--font-size-xsmall);
