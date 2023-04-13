@@ -27,7 +27,9 @@
 			alt="Niagara-on-the-Lake Main Street"
 			src="assets/landing-page-bg-4.webp" />
 	</div>
+	{#if $page.url.pathname !== "/timeline"}
 	<Footer />
+	{/if}
 </div>
 
 <style>

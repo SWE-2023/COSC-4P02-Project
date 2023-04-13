@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-	<title>Log In</title>
+	<title>Log In | Niagara-on-the-Lake Timeline</title>
 	<meta name="description" content="Log in to your account" />
 </svelte:head>
 
