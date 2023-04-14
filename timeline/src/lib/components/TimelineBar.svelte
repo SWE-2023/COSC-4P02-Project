@@ -14,7 +14,7 @@
 	let startY;
 	let screenHeight = 1080;
 	let screenWidth = 1920;
-	let pos = 150;
+	let pos = 100;
 	let visible;
 	let zoom = 1;
 	let zoomOffset = 0;
@@ -86,7 +86,7 @@
 	function resetZoom() {
 		zoomTweened.set(1);
 		zoomOffsetTweened.set(0);
-		pos = 150;
+		pos = 100;
 		year.set(decades[0]);
 		visible = true;
 		setTimeout(() => {
@@ -122,7 +122,7 @@
 	}
 
 	function updateHeight() {
-		if (screenWidth < 800) {
+		if (screenWidth < 768) {
 			timelineHeight = 70;
 		} else {
 			timelineHeight = 80;
@@ -131,13 +131,18 @@
 
 	function updateGap() {
 		updateHeight();
-		if ($zoomTweened < 1.5) decadeGap = 20;
-		else if ($zoomTweened < 2.5) decadeGap = 10;
+		let timelineHeightInPercentage = timelineHeight * 0.01 * screenHeight;
+
+		if ($zoomTweened < 1.5) decadeGap = 100 - timelineHeight;
+		else if ($zoomTweened < 2.5) decadeGap = (100 - timelineHeight) / 2;
 		else decadeGap = 5;
 
 		const scale = Math.max(
 			decadeGap,
-			Math.min(timelineHeight, Math.round((750 - screenHeight) / 50) * 10)
+			Math.min(
+				timelineHeightInPercentage,
+				Math.round((750 - screenHeight) / 50) * 10
+			)
 		);
 		lowest = Math.floor(getYear(timeData[0].start_date) / scale) * scale - 10;
 		highest =
@@ -405,6 +410,7 @@
 
 	button:active {
 		filter: invert(0.3);
+		scale: 0.95;
 		transition: none;
 	}
 

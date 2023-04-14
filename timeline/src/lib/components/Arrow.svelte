@@ -9,8 +9,8 @@
 		"arrow-button " + (down ? "down" : "up") + (visible ? " " : " hidden");
 
 	const dispatch = createEventDispatcher();
-	const goUp = () => dispatch("moveUp");
-	const goDown = () => dispatch("moveDown");
+	const goUp = () => dispatch("moveup");
+	const goDown = () => dispatch("movedown");
 
 	function handleKeyDown(event) {
 		
@@ -49,18 +49,18 @@
 
 	.arrow-button {
 		position: fixed;
-		left: 50%;
+		left: 11rem;
 		transform: translateX(-50%);
 		z-index: 99;
 		transition: top var(--anim), bottom var(--anim);
 	}
 
 	.up {
-		top: 3rem;
+		top: 10vh;
 	}
 
 	.down {
-		bottom: 3rem;
+		bottom: 7vh;
 	}
 
 	.up.hidden {
@@ -72,33 +72,31 @@
 	}
 
 	.circle {
-		width: calc(3 * var(--font-size-base));
-		height:  calc(3 * var(--font-size-base));
+		width: calc(2.5 * var(--font-size-base));
+		height:  calc(2.5 * var(--font-size-base));
 		border-radius: 100%;
 		opacity: 0.5;
 		background-color: var(--color-bg-1);
 		border: 3px solid var(--light-color-bg-1);
-		box-shadow: 2px 2px 5px 1px #00000022;
-		mix-blend-mode: screen;
-		transition: all 0.15s ease-in-out;
+		transition: all 0.5s var(--curve);
 	}
 
 	.button {
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
-		padding: 1.5rem 6rem;
+		padding: 1rem 1rem;
 	}
 
 	.circle:hover,
 	.button:hover > .circle {
-		border: 3px solid var(--color-theme-2-light);
+		border: 2px solid var(--color-theme-1);
 		opacity: 1;
 	}
 
 	.down-arrow,  .up-arrow {
-		color: var(--color-text);
-		font-size: calc(3 * var(--font-size-base));
+		color: var(--color-theme-1);
+		font-size: calc(2.5 * var(--font-size-base));
 	}
 
 	.down-arrow {

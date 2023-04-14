@@ -15,7 +15,7 @@
 	<div on:click|stopPropagation>
 		<slot name="header" />
 		<hr />
-		<slot />
+		<div class=content><slot /></div>
 		<hr />
 		<div class=btn><Button autofocus text={"OK"} on:click={() => dialog.close()}/></div>
 	</div>
@@ -24,12 +24,14 @@
 <style>
 	dialog {
 		max-width: 40em;
+		max-height:50rem;
 		background: var(--color-bg-2);
 		color: var(--color-text);
 		border-radius: 1rem;
 		border: none;
 		padding: 0;
 	}
+
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
 		transition:all 0.5s var(--curve);
@@ -43,6 +45,11 @@
 
 	dialog > div {
 		padding: 1.5em;
+	}
+
+	.content {
+		max-height: 30rem;
+		overflow-y: auto;
 	}
 
 	dialog[open] {

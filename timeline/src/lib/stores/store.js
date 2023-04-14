@@ -36,4 +36,12 @@ currentThemeStore.subscribe(
 		typeof localStorage !== "undefined" && (localStorage.currentTheme = value)
 );
 
-
+// current timeline index
+export const currentItemIndex =
+	typeof localStorage !== "undefined" &&
+	parseInt(localStorage.currentItemIndex || 0);
+export const currentItemIndexStore = writable(currentItemIndex);
+currentItemIndexStore.subscribe(
+	(value) =>
+		typeof localStorage !== "undefined" && (localStorage.currentItemIndex = value)
+);

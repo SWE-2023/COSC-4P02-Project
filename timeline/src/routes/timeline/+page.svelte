@@ -7,11 +7,12 @@
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
 	import Modal from "$lib/components/Modal.svelte";
+	import supabase from "$lib/supabaseClient.js";
+	import { currentItemIndexStore } from "$lib/stores/store.js";
 	import { onMount } from "svelte";
 
 	export let data;
 	let { timeline } = data;
-	$: ({ timeline } = data);
 
 	// map timeline titles and years to searchData
 	let searchData = [];
@@ -25,9 +26,11 @@
 	}
 
 	let showModal = false;
-	let firstVisit = true;
 	let screenWidth = 1920;
+	let screenHeight = 1080;
 	let touchStartPos = 0;
+
+	let index;
 
 	let dropDownSelection = "";
 	let transitionDirection;
@@ -38,6 +41,8 @@
 	let isEditing = false;
 	let isAdding = false;
 	let lockSelection = false;
+	let upVisible = true;
+	let downVisible = true;
 
 	let edit = {
 		title: selectedItem.title,
@@ -98,24 +103,16 @@
 		setEditFields();
 	}
 
-	let upVisible = false;
-	let downVisible = false;
-	function showArrows(event) {
-		if (screenWidth < 1000) {
-			upVisible = false;
-			downVisible = false;
-			return;
-		}
+	function showArrows() {
 		if (!lockSelection) {
-			if (window.innerWidth < 1000) {
+			if (screenWidth < 1000) {
+				upVisible = false;
+				downVisible = false;
+				return;
+			} else {
 				upVisible = true;
 				downVisible = true;
-				return;
 			}
-			let y = event.clientY;
-			let height = window.innerHeight;
-			upVisible = y < height * 0.2;
-			downVisible = y > height * 0.8;
 		}
 	}
 
@@ -186,13 +183,49 @@
 		}
 	}
 
-	onMount(() => {
+	async function fetchTimelineData() {
+		const { data } = await supabase
+			.from("timeline")
+			.select("id, title, image, image_credit, body, start_date")
+			.order("start_date");
+		data && (timeline = data);
+	}
+
+	onMount(async () => {
+		showArrows();
 		const firstVisit = localStorage.getItem("firstVisit");
 
 		if (!firstVisit) {
 			showModal = true;
 			localStorage.setItem("firstVisit", "false");
 		}
+
+		currentItemIndexStore.subscribe((value) => {
+			index = value;
+		});
+
+		const timelineChannel = supabase
+			.channel("custom-all-channel")
+			.on(
+				"postgres_changes",
+				{ event: "*", schema: "public", table: "timeline" },
+				() => {
+					fetchTimelineData();
+				}
+			)
+			.subscribe();
+
+		await fetchTimelineData();
+
+		if (timeline.length > 0 && index) {
+			currentIndex = index;
+			selectedItem = timeline[index];
+			update();
+		}
+
+		return () => {
+			supabase.removeChannel(timelineChannel);
+		};
 	});
 </script>
 
@@ -202,10 +235,11 @@
 </svelte:head>
 
 <svelte:window
-	on:mousemove={showArrows}
+	bind:innerHeight={screenHeight}
 	bind:innerWidth={screenWidth}
+	on:resize={showArrows}
 	on:touchstart={handleTouchStart}
-	on:touchmove|preventDefault
+	on:touchmove|passive
 	on:touchend|passive={handleTouchEnd} />
 
 <PageTransitionFade>
@@ -253,12 +287,12 @@
 				to clear the search bar.
 			</li>
 		</ul>
-		<h3>Navigation Buttons </h3>
+		<h3>Navigation Buttons</h3>
 		<ul>
 			<li>
 				<span class="material-symbols-rounded r">smartphone</span>
 				<b> Mobile &mdash; </b>
-				<span class="material-symbols-rounded i">swipe</span> swipe left or right
+				Swipe <span class="material-symbols-rounded i">swipe</span> left or right
 				to navigate through timeline items.
 			</li>
 			<li>
@@ -273,15 +307,15 @@
 			<li>
 				<span class="material-symbols-rounded r">keyboard_alt</span>
 				<b> Keyboard &mdash;</b>
-				<span class="material-symbols-rounded i">keyboard_arrow_up</span>/<span
-					class="material-symbols-rounded i">keyboard_arrow_left</span>
+				Press<span class="material-symbols-rounded i">keyboard_arrow_up</span
+				>/<span class="material-symbols-rounded i">keyboard_arrow_left</span>
 				or
 				<span class="material-symbols-rounded i">keyboard_arrow_down</span
 				>/<span class="material-symbols-rounded i">keyboard_arrow_right</span> to
 				navigate up or down through timeline items.
 			</li>
 		</ul>
-		<h3>Accessibility </h3>
+		<h3>Accessibility</h3>
 		<ul>
 			<li>
 				Press the
@@ -291,6 +325,11 @@
 				playback.
 			</li>
 		</ul>
+		<p>
+			To see this message again, click on the <span
+				class="material-symbols-rounded i">help</span> button at the bottom right
+			of the page.
+		</p>
 	</Modal>
 	<SearchBar
 		lock={lockSelection}
@@ -300,7 +339,7 @@
 		on:selection={update} />
 	<Arrow
 		lock={lockSelection}
-		on:moveUp={handleUpArrow}
+		on:moveup={handleUpArrow}
 		disabled={atFirst}
 		visible={upVisible} />
 	<TimelineBar
@@ -352,9 +391,14 @@
 	<Arrow
 		lock={lockSelection}
 		down
-		on:moveDown={handleDownArrow}
+		on:movedown={handleDownArrow}
 		disabled={atLast}
 		visible={downVisible} />
+	<div class="help">
+		<button on:click={() => (showModal = true)}>
+			<span class="material-symbols-rounded i">help</span>
+		</button>
+	</div>
 </PageTransitionFade>
 
 <style>
@@ -389,5 +433,29 @@
 
 	.rotate-90 {
 		transform: rotate(90deg);
+	}
+
+	.help {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		margin: 1rem;
+	}
+
+	.help button {
+		background: var(--color-bg-2);
+		border-radius: 5rem;
+		padding: 0.5rem;
+		border: none;
+		transition: all 0.5s var(--curve);
+	}
+
+	.help button:hover {
+		filter: invert(0.1);
+	}
+
+	.help button:active {
+		filter: invert(0.3);
+		scale: 0.95;
 	}
 </style>
