@@ -5,12 +5,13 @@
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
 	import supabase from "$lib/supabaseClient";
+	import { loadingAction } from 'svelte-legos';
 	import { toast } from "@zerodevx/svelte-toast";
 	
 	// timeline view settings
 	export let editing;
 	export let adding;
-	let loading = false;
+	let loading = true;
 
 	export let item = {
 		title: "",
@@ -219,15 +220,18 @@
 								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 								allowfullscreen />
 						{:else}
-							<img
-								class={full ? "image fullscreen" : "image"}
-								src={item.media}
-								alt={item.title}
-								on:click={() => {
-									onToggle();
-									full = !full;
-								}}
-								on:keydown={handleKeyDown} />
+							<div class="image-placeholder" use:loadingAction={loading}>
+								<img
+									on:load={() => loading = false}
+									class={full ? "image fullscreen" : "image"}
+									src={item.media}
+									alt={item.title}
+									on:click={() => {
+										onToggle();
+										full = !full;
+									}}
+									on:keydown={handleKeyDown} />
+							</div>
 						{/if}
 					{/if}
 				</div>
@@ -334,6 +338,10 @@
 		margin: 0.5rem 0;
 	}
 
+	.image-placeholder {
+		display:flex;
+	}
+
 	.tts {
 		display: flex;
 		flex-direction: row;
@@ -362,7 +370,7 @@
 		border-radius: 2rem;
 		max-width: 60rem;
 		background: var(--color-text-card);
-		box-shadow: 5px 5px 16px 0 #00000020;
+		box-shadow: 5px 5px 7px 0 #00000020;
 		text-align: justify;
 	}
 
@@ -400,7 +408,7 @@
 		object-position: center center;
 		object-fit: cover;
 		border-radius: 1.5vw;
-		box-shadow: 1rem 0rem 28px 0 #00000030;
+		box-shadow: 5px 5px 7px 0 #00000020;
 		transition: all 0.3s ease-in-out;
 	}
 
@@ -456,7 +464,7 @@
 		object-position: center center;
 		object-fit: cover;
 		border-radius: 1.5vw;
-		box-shadow: 1rem 0rem 28px 0 #00000030;
+		box-shadow: 1rem 0rem 7px 0 #00000030;
 	}
 
 	.image:hover {
@@ -480,7 +488,7 @@
 		font-weight: 400;
 		transform: translateY(-0.75rem);
 		background: var(--color-bg-2);
-		transition: all 0.33s var(--curve);
+		transition: all 0.5s var(--curve);
 	}
 
 	.image_cred a:hover {
