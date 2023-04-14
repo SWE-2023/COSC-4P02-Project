@@ -130,9 +130,9 @@ section.page p {
 	margin: 0 auto;
 }
 
-.v-align {
-	display: flex;
-	align-items: center;
+code {
+	font-family: var(--font-mono);
+	font-size: var(--font-size-small);
 }
 
 input {
@@ -162,4 +162,18 @@ button:focus:not(:focus-visible) {
 .row {
 	display: flex;
 	flex-flow: row wrap;
+}
+
+.v-align {
+	display: flex;
+	align-items: center;
+}
+
+.h-align {
+	display: flex;
+	justify-content: center;
+}
+
+.radius {
+	border-radius: 0.5rem;
 }
