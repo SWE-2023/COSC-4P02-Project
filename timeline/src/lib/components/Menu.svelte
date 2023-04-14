@@ -80,12 +80,12 @@
 		color: #0d0d0d;
 		cursor: pointer;
 		padding: 0;
-		transition: letter-spacing 0.2s ease-in-out, color 0.33s var(--curve);
+		transition: all 0.5s var(--curve);
 	}
 
 	li[aria-current="page"] {
 		border-right: var(--color-theme-1) 0.25em solid;
-		transition: border-right 0.33s var(--curve);
+		transition: border-right 0.5s var(--curve);
 	}
 
 	li a {
@@ -112,8 +112,7 @@
 	}
 
 	li:hover {
-		background: rgba(16, 13, 46, 0.082);
-		letter-spacing: 0.12em;
+		backdrop-filter: invert(0.1);
 		color: var(--color-theme-1);
 	}
 </style>

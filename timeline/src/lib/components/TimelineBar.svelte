@@ -6,14 +6,13 @@
 	import Dot from "$lib/components/Dot.svelte";
 	import { cubicOut } from "svelte/easing";
 	import { onMount } from "svelte";
+	import { windowWidth, windowHeight } from "$lib/stores/window";
 	export let timeData;
 	export let currentItem;
 	export let disabled;
 
 	let dragging = false;
 	let startY;
-	let screenHeight = 1080;
-	let screenWidth = 1920;
 	let pos = 100;
 	let visible;
 	let zoom = 1;
@@ -106,7 +105,7 @@
 	function handleDragMove(e) {
 		if (!dragging) return;
 		const currentY = e.touches ? e.touches[0].clientY : e.clientY;
-		const deltaY = (startY - currentY) / (100 * $zoomTweened);
+		const deltaY = (startY - currentY) / (50 * $zoomTweened);
 		const newZoomOffset = $zoomOffsetTweened + deltaY;
 		if (newZoomOffset < 0 || newZoomOffset > 1 - 1 / $zoomTweened) return;
 		zoomOffsetTweened.set(newZoomOffset);
@@ -122,7 +121,7 @@
 	}
 
 	function updateHeight() {
-		if (screenWidth < 1000) {
+		if ($windowWidth < 1000) {
 			timelineHeight = 70;
 		} else {
 			timelineHeight = 80;
@@ -131,7 +130,7 @@
 
 	function updateGap() {
 		updateHeight();
-		let timelineHeightInPercentage = timelineHeight * 0.01 * screenHeight;
+		let timelineHeightInPercentage = timelineHeight * 0.01 * $windowHeight;
 
 		if ($zoomTweened < 1.5) decadeGap = 100 - timelineHeight;
 		else if ($zoomTweened < 2.5) decadeGap = (100 - timelineHeight) / 2;
@@ -141,7 +140,7 @@
 			decadeGap,
 			Math.min(
 				timelineHeightInPercentage,
-				Math.round((750 - screenHeight) / 50) * 10
+				Math.round((750 - $windowHeight) / 50) * 10
 			)
 		);
 		lowest = Math.floor(getYear(timeData[0].start_date) / scale) * scale - 10;
@@ -172,8 +171,6 @@
 </script>
 
 <svelte:window
-	bind:innerHeight={screenHeight}
-	bind:innerWidth={screenWidth}
 	on:resize={updateGap}
 	on:mouseup={handleDragEnd} />
 
@@ -222,13 +219,13 @@
 	</div>
 </div>
 <div class="btns">
-	<button class="reset" on:click={resetZoom}
+	<button class="reset" on:click={resetZoom} title="Reset Zoom"
 		><span class="material-symbols-rounded i">refresh</span>
-	</button>
-	<button class="zoom-out" on:click={handleZoomOut}
+	</button> 
+	<button class="zoom-out" on:click={handleZoomOut} title="Zoom Out"
 		><span class="material-symbols-rounded i">remove</span>
 	</button>
-	<button class="zoom-in" on:click={handleZoomIn}
+	<button class="zoom-in" on:click={handleZoomIn} title="Zoom In"
 		><span class="material-symbols-rounded i">add</span>
 	</button>
 </div>
@@ -380,15 +377,9 @@
 		z-index: 99;
 	}
 
-	@media (max-width: 1000px) {
-		.btns {
-			flex-flow: column;
-		}
-	}
-
 	button {
 		cursor: pointer;
-		background: none;
+		background: var(--color-bg-1);
 		user-select: none;
 		color: var(--color-theme-1);
 		line-height: 0;
@@ -397,16 +388,15 @@
 		margin: 0;
 		padding: 0;
 		justify-self: center;
-		background: var(--color-bg-2);
+		filter: invert(0.1);
 		border-radius: 100rem;
-		border: none !important;
-		border: 1px solid var(--border);
+		border: var(--border);
 		font-weight: 900;
 		transition: all 0.5s var(--curve);
 	}
 
 	button:hover {
-		filter: invert(0.1);
+		filter: invert(0.2);
 	}
 
 	button:active {
@@ -425,14 +415,17 @@
 	}
 
 	@media (max-width: 1000px) {
-		.line {
-			left: -2px;
+		:root {
+			--left: 4px;
 		}
-		.timescale {
+		.line {
 			left: var(--left);
 		}
+		.timescale {
+			left: calc(5*var(--left));
+		}
 		.line-components {
-			left: calc(-1.4rem - var(--left-offset));
+			left: calc((var(--left) - 20px) - var(--left-offset));
 		}
 		.timeline-container {
 			width: calc(var(--font-size-base) * 4);
@@ -440,14 +433,8 @@
 			box-shadow: none;
 			left: 0;
 		}
-		button {
-			margin: 0.5vw;
-		}
-		.zoom-out {
-			left: 2rem;
-		}
-		.zoom-in {
-			left: 4rem;
+		.btns {
+			flex-flow: column;
 		}
 	}
 </style>

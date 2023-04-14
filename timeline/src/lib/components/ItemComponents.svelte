@@ -365,6 +365,7 @@
 		padding: 2rem 2rem;
 		border-radius: 2rem;
 		max-width: 60rem;
+		border: var(--border);
 		background: var(--color-text-card);
 		filter: drop-shadow(5px 5px 7px 0 #00000020);
 		text-align: justify;

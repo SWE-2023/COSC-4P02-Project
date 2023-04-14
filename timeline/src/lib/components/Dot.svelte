@@ -51,8 +51,7 @@
 		stroke: var(--color-bg-1);
 		stroke-width: 0;
 		transform-origin: center;
-		filter: saturate(0.5) brightness(1.5);
-		transition: all 0.5s var(--curve);
+		transition: transform 0.5s var(--curve);
 	}
 
 	.date {
@@ -72,7 +71,7 @@
 
 	.dot-container:hover .dot {
 		stroke-width: 2.5;
-		filter: saturate(0.5) brightness(2);
+		fill: var(--color-theme-1-light);
 		transform:scale(1.33);
 	}
 

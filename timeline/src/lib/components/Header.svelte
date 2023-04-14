@@ -1,13 +1,14 @@
 <script>
 	import { Hamburger } from "svelte-hamburgers";
-	import { countStore } from "$lib/stores/store";
-	import { fly, slide } from "svelte/transition";
+	import { countStore, themeStore } from "$lib/stores/store";
+	import { slide } from "svelte/transition";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
 	import { userStore, logout } from "$lib/authStore";
-	import { set } from "$lib/components/TextSizeSelector.svelte";
+	import { setFontSize } from "$lib/components/TextSizeSelector.svelte";
+	import { scrollY, windowWidth } from "$lib/stores/window";
+	import { searchbarVisible } from "$lib/stores/store";
 	import AccessibilityMenu from "$lib/components/AccessibilityMenu.svelte";
-	import Menu from "$lib/components/Menu.svelte";
 
 	let user;
 	userStore.subscribe((value) => {
@@ -16,104 +17,105 @@
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
-	let scrollY = 0;
 	let shadow = 0;
-	let bg = 1;
-	let isTheme = true;
 
-	function handleThemeLogo(event) {
-		isTheme = event.detail === "darkText";
+	$: {
+		shadow = $scrollY > 70 ? 1 : 0;
+	}
+
+	$: {
+		isMenuOpen = $searchbarVisible;
+	}
+
+	function checkVisibility() {
+		if ($windowWidth < 1000) {
+			isMenuOpen = false;
+			searchbarVisible.set(true);
+		} else {
+			isMenuOpen = true;
+			searchbarVisible.set(true);
+		}
 	}
 
 	function handleHeader() {
 		if (!$page.url.pathname.startsWith("/timeline")) {
-			bg = 1;
 		} else {
 			shadow = 0;
-			bg = 0;
 		}
 	}
 
-	function handleScroll() {
-		if (!$page.url.pathname.startsWith("/timeline")) {
-			scrollY = window.scrollY;
-			shadow = scrollY > 60 ? 1 : 0;
-			bg = 1;
-		} else {
-			shadow = 0;
-			bg = 0;
+	function searchSwitch() {
+		if ($windowWidth < 1000) {
+			searchbarVisible.set(!$searchbarVisible);
 		}
 	}
-
-	handleHeader();
 
 	function count() {
 		countStore.update((n) => Number(n) + 1);
 	}
 
 	onMount(() => {
-		set();
+		setFontSize();
+		handleHeader();
+		checkVisibility();
 	});
 </script>
 
-<svelte:window on:scroll={handleScroll} />
+<svelte:window on:resize={checkVisibility} />
 
 <header>
-	<nav
-		class={shadow ? "shadow" : ""}
-		style={bg ? "background: var(--color-bg-1);" : ""}>
+	<nav class={shadow ? "shadow" : ""}>
 		<div class="left">
-			{#if $page.url.pathname.startsWith("/timeline")}
-				<a href="/"
+			{#if !($windowWidth < 1000)}
+				<a href="/" style="margin-right:1rem;"
 					><img
 						on:click={count}
 						on:keypress={count}
-						src={isTheme
+						src={$themeStore === "light-theme" ||
+						$themeStore === "reading-theme"
 							? "assets/notl-museum.svg"
 							: "assets/notl-museum-dark.svg"}
 						alt="logo"
 						class="logo"
 						id="notl_logo" /></a>
-				<div style="margin-left:1rem;" in:slide={{ axis: "x" }}>
+			{/if}
+			{#if $page.url.pathname.startsWith("/timeline")}
+				<div transition:slide={{ axis: "x" }}>
 					<Hamburger
+						on:click={searchSwitch}
 						bind:open={isMenuOpen}
 						--color="var(--color-theme-1)"
 						type="arrowalt" />
 				</div>
-				<Menu bind:open={isMenuOpen} />
-			{:else}
-				<a href="/"
-					><img
-						on:click={count}
-						on:keypress={count}
-						src={isTheme
-							? "assets/notl-museum.svg"
-							: "assets/notl-museum-dark.svg"}
-						alt="logo"
-						class="logo"
-						id="notl_logo" /></a>
-				<ul>
+			{/if}
+			{#if isMenuOpen || !$page.url.pathname.startsWith("/timeline")}
+				<ul
+					style={!$page.url.pathname.startsWith("/timeline")
+						? "margin-left:1rem;"
+						: "margin-left:0"}>
 					<li
 						aria-current={$page.url.pathname === "/" ? "page" : undefined}
-						in:slide>
+						transition:slide={{ axis: "x" }}>
 						<a href="/">Home</a>
 					</li>
 					<li
-					aria-current={$page.url.pathname === "/about" ? "page" : undefined}
-					in:slide>
-					<a href="/about">About</a>
-				</li>
-				<li
-					aria-current={$page.url.pathname === "/timeline" ? "page" : undefined}
-					in:slide>
-					<a href="/timeline">Explore</a>
-				</li>
+						aria-current={$page.url.pathname === "/about" ? "page" : undefined}
+						transition:slide={{ axis: "x" }}>
+						<a href="/about">About</a>
+					</li>
+					<li
+						aria-current={$page.url.pathname === "/timeline"
+							? "page"
+							: undefined}
+						transition:slide={{ axis: "x" }}>
+						<a href="/timeline">Explore</a>
+					</li>
 					{#if user && user.email}
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
 								: undefined}
-							in:slide>
+							transition:slide={{ axis: "x" }}>
 							<a
 								title="Signed in as {user.email}"
 								href="/"
@@ -128,7 +130,7 @@
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
 								: undefined}
-							in:slide>
+							transition:slide={{ axis: "x" }}>
 							<a class="login" href="/login">Log In</a>
 						</li>
 					{/if}
@@ -146,9 +148,7 @@
 						isAccessibilityOpen = !isAccessibilityOpen;
 					}
 				}}>settings</span>
-			<AccessibilityMenu
-				bind:open={isAccessibilityOpen}
-				on:themeSelect={handleThemeLogo} />
+			<AccessibilityMenu bind:open={isAccessibilityOpen} />
 		</div>
 	</nav>
 </header>
@@ -159,12 +159,14 @@
 		align-items: center;
 		justify-content: space-between;
 		position: fixed;
+		background-color: var(--nav-color);
+		backdrop-filter: blur(10px);
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 5rem;
 		z-index: 1;
-		transition: all 1s var(--curve);
+		transition: all 0.2s var(--curve);
 	}
 
 	nav.shadow {
@@ -175,21 +177,12 @@
 		display: flex;
 		align-items: baseline;
 		gap: clamp(0.25rem, 1vw, 2rem);
-		margin-left: 3rem;
-		width: calc(20 * var(--font-size-base));
 		list-style: none;
 		padding: 0;
 	}
 
 	li {
-		color: #0d0d0d;
-		cursor: pointer;
-		padding: 0;
-		transition: all 0.5s var(--curve), color 0.5s var(--curve);
-	}
-
-	li a:hover {
-		color: var(--color-theme-1);
+		white-space: nowrap;
 	}
 
 	li[aria-current="page"] a {
@@ -218,6 +211,7 @@
 	}
 
 	li a {
+		font-size:clamp(var(--font-size-xsmall), 3vw, var(--font-size-small));
 		display: block;
 		padding: 0.5em 0.5em;
 		color: var(--color-text);

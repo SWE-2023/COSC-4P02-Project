@@ -9,6 +9,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import supabase from "$lib/supabaseClient.js";
 	import { currentItemIndexStore } from "$lib/stores/store.js";
+	import { windowWidth } from "$lib/stores/window";
 	import { onMount } from "svelte";
 
 	export let data;
@@ -31,8 +32,6 @@
 	});
 
 	let showModal = false;
-	let screenWidth = 1920;
-	let screenHeight = 1080;
 	let touchStartPos = 0;
 
 	let dropDownSelection = "";
@@ -109,7 +108,7 @@
 
 	function showArrows() {
 		if (!lockSelection) {
-			if (screenWidth < 1000) {
+			if ($windowWidth < 1000) {
 				upVisible = false;
 				downVisible = false;
 				return;
@@ -235,8 +234,6 @@
 </svelte:head>
 
 <svelte:window
-	bind:innerHeight={screenHeight}
-	bind:innerWidth={screenWidth}
 	on:resize={showArrows}
 	on:touchstart={handleTouchStart}
 	on:touchmove|passive
@@ -318,11 +315,12 @@
 		<h3>Fullscreen</h3>
 		<ul>
 			<li>
-				Click on the image to view it in fullscreen mode. Click on the
-				image again to exit fullscreen mode.
+				Click on the image to view it in fullscreen mode. Click on the image
+				again to exit fullscreen mode.
 			</li>
 			<li>
-				On mobile, pinch <span class="material-symbols-rounded i">pinch</span> to zoom in and out of the image.
+				On mobile, pinch <span class="material-symbols-rounded i">pinch</span> to
+				zoom in and out of the image.
 			</li>
 		</ul>
 		<h3>Accessibility</h3>
@@ -412,7 +410,7 @@
 		disabled={atLast}
 		visible={downVisible} />
 	<div class="help">
-		<button on:click={() => (showModal = true)}>
+		<button title="Show Quick Start Guide" on:click={() => (showModal = true)}>
 			<span class="material-symbols-rounded i">help</span>
 		</button>
 	</div>
@@ -425,13 +423,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-left:calc(var(--font-size-base) * 2);
 		transition: margin-left 0.5s ease;
 	}
 
 	@media (max-width: 1000px) {
 		.layout {
-			width: 107%;
+			margin-left: 1.75rem;
+			width: 105%;
 			margin-bottom: 10rem;
 		}
 	}
@@ -454,26 +452,30 @@
 	}
 
 	.help {
+		
 		position: fixed;
 		bottom: 0;
 		right: 0;
+		z-index: 99;
 		margin: 1rem;
 	}
 
 	.help button {
-		background: var(--color-bg-2);
+		cursor: pointer;
+		background: none;
+		backdrop-filter: invert(0.1);
 		border-radius: 5rem;
 		padding: 0.5rem;
-		border: none;
+		border: var(--border);
 		transition: all 0.5s var(--curve);
 	}
 
 	.help button:hover {
-		filter: invert(0.1);
+		backdrop-filter: invert(0.2);
 	}
 
 	.help button:active {
-		filter: invert(0.3);
+		backdrop-filter: invert(0.3);
 		scale: 0.95;
 	}
 

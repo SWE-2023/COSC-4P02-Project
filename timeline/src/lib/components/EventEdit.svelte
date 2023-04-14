@@ -161,25 +161,25 @@
 	{#key enableAdding || enableEditing}
 		<div transition:slide={{ axis: "y" }} class="edit-items">
 			{#if enableEditing}
-				<button on:click={cancelChanges}
+				<button on:click={cancelChanges} title="Cancel Changes"
 					><span class="material-symbols-rounded i">close</span>Cancel</button>
 				<div class="line" />
-				<button class="options" on:click={saveChanges}
+				<button class="options" on:click={saveChanges} title="Save Changes"
 					><span class="material-symbols-rounded i">save</span>Save</button>
 				<div class="line" />
-				<button class="options" on:click={deleteEntry}
+				<button class="options" on:click={deleteEntry} title="Delete Entry"
 					><span class="material-symbols-rounded i">delete</span>Delete</button>
 			{:else if enableAdding}
-				<button on:click={cancelAdd}
+				<button on:click={cancelAdd} title="Cancel Changes"
 					><span class="material-symbols-rounded i">close</span>Cancel</button>
 				<div class="line" />
-				<button class="options" on:click={saveNew}
+				<button class="options" on:click={saveNew} title="Save Changes"
 					><span class="material-symbols-rounded i">save</span>Save</button>
 			{:else}
-				<button on:click={changeMenu}
+				<button on:click={changeMenu} title="Edit Items"
 					><span class="material-symbols-rounded i">edit</span>Edit</button>
 				<div class="line" />
-				<button on:click={addNew}
+				<button on:click={addNew} title="Add New Item"
 					><span class="material-symbols-rounded i">add</span>Add</button>
 			{/if}
 		</div>
@@ -194,7 +194,7 @@
 		height: calc(3.5 * var(--font-size-base));
 		width: clamp(20rem, 80vw, 50rem);
 		position: fixed;
-		left: calc(50% - clamp(20rem, 80vw, 50rem) / 2);
+		left: calc(50% - (clamp(20rem, 80vw, 50rem) / 2));
 		justify-content: space-evenly;
 		display: flex;
 		flex-direction: row;
@@ -202,7 +202,10 @@
 		background: var(--color-text-card);
 		margin: 0;
 		padding: 0;
-		box-shadow: 0 0 0 2px #00000050;
+		border-top: var(--border);
+		border-right: var(--border);
+		border-left: var(--border);
+
 		transition: all 0.5s var(--curve);
 	}
 

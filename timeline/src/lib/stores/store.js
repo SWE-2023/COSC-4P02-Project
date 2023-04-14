@@ -28,12 +28,10 @@ currentSizeStore.subscribe(
 );
 
 // current theme
-export const currentTheme =
-	typeof localStorage !== "undefined" && localStorage.currentTheme;
-export const currentThemeStore = writable(currentTheme);
-currentThemeStore.subscribe(
-	(value) =>
-		typeof localStorage !== "undefined" && (localStorage.currentTheme = value)
+export const theme = typeof localStorage !== "undefined" && localStorage.theme;
+export const themeStore = writable(theme || "light-theme");
+themeStore.subscribe(
+	(value) => typeof localStorage !== "undefined" && (localStorage.theme = value)
 );
 
 // current timeline index
@@ -48,3 +46,6 @@ currentItemIndexStore.subscribe((value) => {
 		localStorage.currentItemIndex = value;
 	}
 });
+
+// searchbar vis
+export const searchbarVisible = writable(true);

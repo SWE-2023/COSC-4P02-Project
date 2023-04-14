@@ -26,18 +26,6 @@
 {/if}
 
 <style>
-	:root {
-		--button-color: var(--color-theme-1);
-		--button-background: transparent;
-		--button-border: var(--button-color);
-		--button-hover-color: var(--color-bg-1);
-		--button-hover-background: var(--button-color);
-		--button-active-background: var(--light-color-theme-1-light);
-
-		--button-disabled-color: #0000004d;
-		--button-disabled-background: #0000001a;
-		--button-disabled-border: var(--button-disabled-background);
-	}
 	a {
 		display: flex;
 		margin: 0.5em;

@@ -82,9 +82,9 @@
 		width: calc(2.5 * var(--font-size-base));
 		height: calc(2.5 * var(--font-size-base));
 		border-radius: 100%;
-		opacity: 0.5;
+		opacity: var(--arrow-opacity);
 		background-color: var(--color-bg-1);
-		border: 3px solid var(--light-color-bg-1);
+		border: var(--border);
 		transition: all 0.5s var(--curve);
 	}
 

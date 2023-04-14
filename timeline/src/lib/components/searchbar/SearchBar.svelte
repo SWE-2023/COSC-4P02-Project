@@ -1,8 +1,9 @@
 <script>
 	// @ts-nocheck
-
+	import { fly } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
+	import { searchbarVisible } from "$lib/stores/store";
 
 	export let selection;
 	export let data;
@@ -11,7 +12,6 @@
 	let filtered = [];
 	let search = "";
 	let clicked = false;
-	let screenWidth;
 
 	const dispatch = createEventDispatcher();
 	const notify = () => dispatch("selection");
@@ -41,63 +41,65 @@
 	}
 </script>
 
-<svelte:window
-	bind:innerWidth={screenWidth}
-	on:click={handleClickOutside}
-	on:keydown={handleShortcut} />
+<svelte:window on:click={handleClickOutside} on:keydown={handleShortcut} />
 
-<div class="search-container" style={lock ? `top:-10rem !important;` : ``}>
-	<div class="bar">
-		<input
-			type="text"
-			disabled={lock}
-			placeholder="Search"
-			class={clicked && filtered.length == 0 && !search
-				? "search-box"
-				: "search-box has-results"}
-			bind:value={search}
-			on:click={() => (clicked = false)}
-			on:input={() => {
-				findTitles();
-				clicked = false;
-			}} />
-		{#if search}
-			<span
-				class="material-symbols-rounded i"
-				on:keydown
-				on:click={() => (search = "")}>
-				close
-			</span>
+{#if $searchbarVisible}
+	<div
+		class="search-container"
+		style={lock ? `top:-10rem !important;` : ``}
+		transition:fly={{x:50}}>
+		<div class="bar">
+			<input
+				type="text"
+				disabled={lock}
+				placeholder="Search"
+				class={clicked && filtered.length == 0 && !search
+					? "search-box"
+					: "search-box has-results"}
+				bind:value={search}
+				on:click={() => (clicked = false)}
+				on:input={() => {
+					findTitles();
+					clicked = false;
+				}} />
+			{#if search}
+				<span
+					class="material-symbols-rounded i"
+					on:keydown
+					on:click={() => (search = "")}>
+					close
+				</span>
+			{:else}
+				<span class="material-symbols-rounded i"> search </span>
+			{/if}
+		</div>
+		{#if search && !clicked && filtered.length > 0}
+			<div class="results">
+				{#each filtered as data}
+					<DropDownItem
+						bind:selectedTitle={selection}
+						item={data}
+						on:selection={notify}
+						on:selection={() => (clicked = true)} />
+				{/each}
+			</div>
+		{:else if search == ""}
+			<div class="results" style="pointer-events:none;">
+				<DropDownItem
+					color="grey"
+					bind:selectedTitle={selection}
+					item="Type something..." />
+			</div>
 		{:else}
-			<span class="material-symbols-rounded i"> search </span>
+			<div class="results" style="pointer-events:none;">
+				<DropDownItem
+					color="grey"
+					bind:selectedTitle={selection}
+					item="No results..." />
+			</div>
 		{/if}
 	</div>
-	{#if search && !clicked && filtered.length > 0}
-		<div class="results">
-			{#each filtered as data}
-				<DropDownItem
-					bind:selectedTitle={selection}
-					item={data}
-					on:selection={notify}
-					on:selection={() => (clicked = true)} />
-			{/each}
-		</div>
-	{:else if search == ""}
-		<div class="results" style="pointer-events:none;">
-			<DropDownItem
-				color="grey"
-				bind:selectedTitle={selection}
-				item="Type something..." />
-		</div>
-	{:else}
-		<div class="results" style="pointer-events:none;">
-			<DropDownItem
-				color="grey"
-				bind:selectedTitle={selection}
-				item="No results..." />
-		</div>
-	{/if}
-</div>
+{/if}
 
 <style>
 	:root {
@@ -105,10 +107,8 @@
 		--height: calc(2 * var(--font-size-base));
 	}
 
-	
-
 	.search-container {
-		position: absolute;
+		position: fixed;
 		top: calc(1.85rem + (var(--font-size-xsmall) * -1));
 		right: calc(5rem + var(--font-size-base));
 		display: flex;
@@ -117,14 +117,18 @@
 		box-sizing: border-box;
 		border: 2px solid transparent;
 		border-radius: var(--font-size-xsmall);
-		width: clamp(1rem, 33vw, 30rem);
+		width: clamp(1rem, 40vw, 30rem);
 		z-index: 999;
-		transition: opacity 0.1s var(--curve), width 0.5s var(--curve), right 0.5s var(--curve), border 0.1s var(--curve);
+		box-shadow: 3px 3px 16px 0 #00000000;
+		transition: opacity 0.1s var(--curve), width 0.5s var(--curve),
+			right 0.5s var(--curve), border 0.1s var(--curve),
+			box-shadow 0.5s var(--curve);
 	}
 
 	.search-container:focus-within {
 		border: 2px solid var(--color-theme-1);
-		width: calc(40vw - 2rem);
+		box-shadow: 3px 3px 16px 0 #00000040;
+		width: calc(50vw - 2rem);
 	}
 
 	@media (max-width: 1000px) {

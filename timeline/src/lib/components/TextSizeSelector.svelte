@@ -6,7 +6,7 @@
 		size = value;
 	});
 
-	export function set() {
+	export function setFontSize() {
 		const root = document.documentElement;
 		root.style.setProperty("--font-size-base", `${size}rem`);
 	}
@@ -14,35 +14,35 @@
 	function handleIncrease() {
 		if (size <= 2.5) {
 			size += 0.1;
-			set();
+			setFontSize();
 			currentSizeStore.set(size);
 		}
 	}
 
 	function handleDecrease() {
-		if (size >= 0.70) {
+		if (size >= 0.7) {
 			size -= 0.1;
-			set();
+			setFontSize();
 			currentSizeStore.set(size);
 		}
 	}
 
 	function handleReset() {
 		size = 1.2;
-		set();
+		setFontSize();
 		currentSizeStore.set(size);
 	}
 </script>
 
 <div class="btn-group">
-	<button class=btn disabled>
-		<span class="material-symbols-rounded"> format_size </span>
+	<button class="btn" disabled>
+		<span class="material-symbols-rounded"> format_size </span><b>&nbsp;{(Number($currentSizeStore)/1.2).toFixed(1)}x</b>
 	</button>
-	<button class=btn on:click={handleDecrease}
+	<button title="Decrease Font Size" class="btn" on:click={handleDecrease}
 		><span class="material-symbols-rounded"> remove </span></button>
-	<button class=btn on:click={handleReset}
+	<button title="Reset Font Size" class="btn" on:click={handleReset}
 		><span class="material-symbols-rounded"> refresh </span></button>
-	<button class=btn on:click={handleIncrease}
+	<button title="Increase Font Size" class="btn" on:click={handleIncrease}
 		><span class="material-symbols-rounded"> add </span></button>
 </div>
 
@@ -60,7 +60,7 @@
 	}
 
 	.btn {
-		border: none !important;
+		border: none;
 	}
 
 	.btn-group {
@@ -68,37 +68,48 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-content: center;
-		padding:0 var(--font-size-xxlarge);
-		gap: 5px;
+		padding: 0 var(--font-size-xxlarge);
+		/* gap: 5px; */
 	}
 
-	.btn-group .btn {
+	.btn-group .btn:not(:disabled) {
 		user-select: none;
 		color: var(--color-theme-1);
 		line-height: 0;
-		height: calc((var(--font-size-base) * 1) + 1.5rem);
-		width: calc(var(--font-size-base) * 1 + 1.5rem);
-		margin: 0;
-		padding: 0;
+		height: 3em;
+		width: 3em;
+		margin: 2px;
 		justify-self: center;
-		background: var(--color-bg-2);
-		border-radius: 100rem;
-		border: 1px solid var(--border);
+		background: none;
+		backdrop-filter: invert(0.1);
+		border-radius: 5rem;
+		border:var(--border);
 		font-weight: 900;
 		transition: all 0.33s var(--curve);
+	}
+
+	b {
+		line-height:0;
+		vertical-align:4px;
+	}
+
+	.btn:disabled > span{
+		font-size: var(--font-size-base);
 	}
 
 	.btn > span {
 		font-size: var(--font-size-medium);
 	}
 
-	.btn-group .btn:disabled, .btn-group .btn:disabled:hover, .btn-group .btn:disabled:active {
+	.btn-group .btn:disabled,
+	.btn-group .btn:disabled:hover,
+	.btn-group .btn:disabled:active {
 		color: var(--color-text);
-		background:none;
+		background: none;
 	}
 
-	.btn-group .btn:hover {
-		filter: invert(0.1);
+	.btn-group .btn:hover:not(:disabled) {
+		filter: invert(0.2);
 	}
 
 	.btn-group .btn:active {
