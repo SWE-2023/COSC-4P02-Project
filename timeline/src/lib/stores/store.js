@@ -37,11 +37,14 @@ currentThemeStore.subscribe(
 );
 
 // current timeline index
-export const currentItemIndex =
-	typeof localStorage !== "undefined" &&
-	parseInt(localStorage.currentItemIndex || 0);
-export const currentItemIndexStore = writable(currentItemIndex);
-currentItemIndexStore.subscribe(
-	(value) =>
-		typeof localStorage !== "undefined" && (localStorage.currentItemIndex = value)
-);
+const initialIndex =
+	typeof localStorage !== "undefined"
+		? parseInt(localStorage.currentItemIndex || "0")
+		: 0;
+export const currentItemIndexStore = writable(initialIndex);
+
+currentItemIndexStore.subscribe((value) => {
+	if (typeof localStorage !== "undefined") {
+		localStorage.currentItemIndex = value;
+	}
+});

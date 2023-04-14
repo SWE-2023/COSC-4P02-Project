@@ -25,12 +25,15 @@
 		});
 	}
 
+	let itemIndex = 0;
+	currentItemIndexStore.subscribe((value) => {
+		itemIndex = value;
+	});
+
 	let showModal = false;
 	let screenWidth = 1920;
 	let screenHeight = 1080;
 	let touchStartPos = 0;
-
-	let index;
 
 	let dropDownSelection = "";
 	let transitionDirection;
@@ -101,6 +104,7 @@
 		atFirst = selectedItem == timeline[0];
 		atLast = selectedItem == timeline[timeline.length - 1];
 		setEditFields();
+		currentItemIndexStore.set(currentIndex);
 	}
 
 	function showArrows() {
@@ -200,10 +204,6 @@
 			localStorage.setItem("firstVisit", "false");
 		}
 
-		currentItemIndexStore.subscribe((value) => {
-			index = value;
-		});
-
 		const timelineChannel = supabase
 			.channel("custom-all-channel")
 			.on(
@@ -215,11 +215,11 @@
 			)
 			.subscribe();
 
-		await fetchTimelineData();
+		// await fetchTimelineData();
 
-		if (timeline.length > 0 && index) {
-			currentIndex = index;
-			selectedItem = timeline[index];
+		if (timeline.length > 0 && itemIndex !== 0) {
+			currentIndex = itemIndex;
+			selectedItem = timeline[itemIndex];
 			update();
 		}
 

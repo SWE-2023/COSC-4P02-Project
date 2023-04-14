@@ -13,6 +13,8 @@
 	export let adding;
 	let loading = true;
 
+	let uploading = false;
+
 	export let item = {
 		title: "",
 		media: "",
@@ -92,7 +94,7 @@
 	}
 
 	async function upload(e) {
-		loading = true;
+		uploading = true;
 		const file = e.target.files[0];
 		if (file) {
 			if (file.size > 4 * 1024 * 1024) {
@@ -129,7 +131,7 @@
 				}
 			}
 		}
-		loading = false;
+		uploading = false;
 	}
 </script>
 
@@ -140,7 +142,7 @@
 				{#if item.media}
 					<div class="tip v-align">
 						<span class="material-symbols-rounded"> info </span>
-						<p>Click the image to toggle fullscreen.</p>
+						<p>&nbsp;Click the image to toggle fullscreen.</p>
 					</div>
 				{/if}
 			{:else}
@@ -149,14 +151,14 @@
 						{editing ? "Edit" : "Add"}ing item
 					</h2>
 				</div>
-				<p class={loading ? "upload-notice red" : "upload-notice"}>
+				<p class={uploading ? "upload-notice red" : "upload-notice"}>
 					<span
 						style="font-size:var(--font-size-small)"
-						class={loading
+						class={uploading
 							? "material-symbols-rounded i"
 							: "material-symbols-rounded"}
-						>{loading ? "autorenew" : "cloud_upload"}</span
-					>{loading ? "Uploading..." : "Upload image"}
+						>{uploading ? "autorenew" : "cloud_upload"}</span
+					>{uploading ? "Uploading..." : "Upload image"}
 				</p>
 			{/if}
 			<Fullscreen let:onToggle>
