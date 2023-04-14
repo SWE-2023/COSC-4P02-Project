@@ -19,7 +19,6 @@ self.addEventListener("activate", (event) => {
 			if (key !== CACHE) await caches.delete(key);
 		}
 	}
-
 	event.waitUntil(deleteOldCaches());
 });
 
@@ -32,42 +31,6 @@ self.addEventListener("fetch", (event) => {
 
 		if (ASSETS.includes(url.pathname)) {
 			return cache.match(event.request);
-		}
-
-		// Check if the request is for an image
-		if (/\.jpg$|\.png$|\.jpeg$|\.gif$|\.webp$/.test(url.pathname)) {
-			const imageCache = await caches.open("image-cache");
-			const cachedImage = await imageCache.match(event.request);
-
-			if (cachedImage) {
-				return cachedImage;
-			} else {
-				try {
-					const imageResponse = await fetch(event.request);
-					imageCache.put(event.request, imageResponse.clone());
-					return imageResponse;
-				} catch {
-					// Fallback in case of no network and no cache
-				}
-			}
-		}
-
-		// Check if the request is for a font
-		else if (/\.woff$|\.woff2$|\.ttf$|\.otf$|\.css$|\.eot$/.test(url.pathname)) {
-			const fontCache = await caches.open("font-cache");
-			const cachedFont = await fontCache.match(event.request);
-
-			if (cachedFont) {
-				return cachedFont;
-			} else {
-				try {
-					const fontResponse = await fetch(event.request);
-					fontCache.put(event.request, fontResponse.clone());
-					return fontResponse;
-				} catch {
-					// Fallback in case of no network and no cache
-				}
-			}
 		}
 
 		try {
