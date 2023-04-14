@@ -193,8 +193,6 @@
 			showModal = true;
 			localStorage.setItem("firstVisit", "false");
 		}
-
-		showModal = true; // testing
 	});
 </script>
 

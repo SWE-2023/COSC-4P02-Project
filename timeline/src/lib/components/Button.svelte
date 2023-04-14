@@ -7,6 +7,7 @@
 		dispatch("click");
 	}
 	export let text = "Button";
+	export let autofocus = false;
 	export let disabled = false;
 	export let href = "#";
 	export let alt = false;
@@ -23,13 +24,14 @@
 	disabled = disabled button (default = false)
 -->
 
+<!-- svelte-ignore a11y-autofocus -->
 {#if alt}
 	<a {href} style="scale:{scale}" >
-		<button use:loadingAction={loading} class="alt-button" on:click={click} {disabled}>{text}</button>
+		<button {autofocus} use:loadingAction={loading} class="alt-button" on:click={click} {disabled}>{text}</button>
 	</a>
 {:else}
 	<a {href} style="scale:{scale}">
-		<button use:loadingAction={loading} class="button" on:click={click} {disabled}>{text}</button>
+		<button {autofocus} use:loadingAction={loading} class="button" on:click={click} {disabled}>{text}</button>
 	</a>
 {/if}
 

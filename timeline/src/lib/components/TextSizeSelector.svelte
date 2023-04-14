@@ -81,7 +81,7 @@
 		margin: 0;
 		padding: 0;
 		justify-self: center;
-		background: #0000001a;
+		background: var(--color-bg-2);
 		border-radius: 100rem;
 		border: 1px solid var(--border);
 		font-weight: 900;
@@ -98,11 +98,11 @@
 	}
 
 	.btn-group .btn:hover {
-		background: #00000044;
+		filter: invert(0.1);
 	}
 
 	.btn-group .btn:active {
-		background: #00000066;
+		filter: invert(0.3);
 		transition: none;
 	}
 </style>
