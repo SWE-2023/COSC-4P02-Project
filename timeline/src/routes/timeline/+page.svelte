@@ -6,6 +6,8 @@
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import { onMount } from "svelte";
 
 	export let data;
 	let { timeline } = data;
@@ -21,6 +23,11 @@
 			};
 		});
 	}
+
+	let showModal = false;
+	let firstVisit = true;
+	let screenWidth = 1920;
+	let touchStartPos = 0;
 
 	let dropDownSelection = "";
 	let transitionDirection;
@@ -58,7 +65,6 @@
 
 	function pageUp() {
 		if (!atFirst) {
-			transitionDirection = "up";
 			selectedItem = timeline[--currentIndex];
 			update();
 		}
@@ -66,7 +72,6 @@
 	}
 	function pageDown() {
 		if (!atLast) {
-			transitionDirection = "down";
 			selectedItem = timeline[++currentIndex];
 			update();
 		}
@@ -91,12 +96,16 @@
 		atFirst = selectedItem == timeline[0];
 		atLast = selectedItem == timeline[timeline.length - 1];
 		setEditFields();
-		console.log(transitionDirection);
 	}
 
 	let upVisible = false;
 	let downVisible = false;
 	function showArrows(event) {
+		if (screenWidth < 1000) {
+			upVisible = false;
+			downVisible = false;
+			return;
+		}
 		if (!lockSelection) {
 			if (window.innerWidth < 1000) {
 				upVisible = true;
@@ -147,6 +156,46 @@
 			update();
 		}
 	}
+
+	function handleDownArrow() {
+		transitionDirection = "down";
+		pageDown();
+	}
+
+	function handleUpArrow() {
+		transitionDirection = "up";
+		pageUp();
+	}
+
+	function handleTouchStart(e) {
+		touchStartPos = e.touches[0].clientX;
+	}
+
+	function handleTouchEnd(e) {
+		const touchEndX = e.changedTouches[0].clientX;
+		const deltaX = touchEndX - touchStartPos;
+
+		if (Math.abs(deltaX) > 100) {
+			if (deltaX > 0) {
+				transitionDirection = "right";
+				pageUp();
+			} else {
+				transitionDirection = "left";
+				pageDown();
+			}
+		}
+	}
+
+	onMount(() => {
+		const firstVisit = localStorage.getItem("firstVisit");
+
+		if (!firstVisit) {
+			showModal = true;
+			localStorage.setItem("firstVisit", "false");
+		}
+
+		showModal = true; // testing
+	});
 </script>
 
 <svelte:head>
@@ -154,9 +203,97 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<svelte:window on:mousemove={showArrows} />
+<svelte:window
+	on:mousemove={showArrows}
+	bind:innerWidth={screenWidth}
+	on:touchstart={handleTouchStart}
+	on:touchmove|preventDefault
+	on:touchend|passive={handleTouchEnd} />
 
 <PageTransitionFade>
+	<Modal bind:showModal>
+		<h2 slot="header">How to use the timeline</h2>
+		<p>
+			Welcome! There are several ways to navigate the timeline. Below are some
+			instructions to help you get started.
+		</p>
+		<h3>
+			Timeline <span class="material-symbols-rounded r rotate-90">commit</span>
+		</h3>
+		<ul>
+			<li>
+				Click on timeline items <span
+					class="material-symbols-rounded i rotate-90">commit</span> in the left
+				column to navigate to it.
+			</li>
+			<li>
+				Click the <span class="material-symbols-rounded i">add</span> button or double-click
+				to zoom in the timeline.
+			</li>
+			<li>
+				Click the <span class="material-symbols-rounded i">remove</span> button
+				to zoom out the timeline bar, and
+				<span class="material-symbols-rounded i">refresh</span> to reset both zoom
+				and position.
+			</li>
+			<li>
+				Click and drag or scroll on the timeline to move up or down once zoomed
+				in.
+			</li>
+		</ul>
+		<h3>Search Bar <span class="material-symbols-rounded r">search</span></h3>
+		<ul>
+			<li>
+				Click on the search bar or hit <code>'/'</code> and type in a keyword or
+				year to search for a timeline item.
+			</li>
+			<li>
+				Click on the timeline item in the search results to navigate to it.
+			</li>
+			<li>
+				Click on the <span class="material-symbols-rounded i">close</span> button
+				to clear the search bar.
+			</li>
+		</ul>
+		<h3>Navigation Buttons </h3>
+		<ul>
+			<li>
+				<span class="material-symbols-rounded r">smartphone</span>
+				<b> Mobile &mdash; </b>
+				<span class="material-symbols-rounded i">swipe</span> swipe left or right
+				to navigate through timeline items.
+			</li>
+			<li>
+				<span class="material-symbols-rounded r">mouse</span>
+				<b> Mouse &mdash; </b>
+				Click on the
+				<span class="material-symbols-rounded i">keyboard_arrow_up</span>/<span
+					class="material-symbols-rounded i">keyboard_arrow_down</span> floating
+				buttons at the top and bottom of the screen to navigate up or down through
+				timeline items.
+			</li>
+			<li>
+				<span class="material-symbols-rounded r">keyboard_alt</span>
+				<b> Keyboard &mdash;</b>
+				<span class="material-symbols-rounded i">keyboard_arrow_up</span>/<span
+					class="material-symbols-rounded i">keyboard_arrow_left</span>
+				or
+				<span class="material-symbols-rounded i">keyboard_arrow_down</span
+				>/<span class="material-symbols-rounded i">keyboard_arrow_right</span> to
+				navigate up or down through timeline items.
+			</li>
+		</ul>
+		<h3>Accessibility </h3>
+		<ul>
+			<li>
+				Press the
+				<span class="material-symbols-rounded i">volume_up</span>
+				button to hear a description of the current timeline item. Press the
+				<span class="material-symbols-rounded i">stop</span> button to stop the audio
+				playback.
+			</li>
+		</ul>
+	</Modal>
 	<SearchBar
 		lock={lockSelection}
 		bind:selection={dropDownSelection}
@@ -165,7 +302,7 @@
 		on:selection={update} />
 	<Arrow
 		lock={lockSelection}
-		on:moveUp={pageUp}
+		on:moveUp={handleUpArrow}
 		disabled={atFirst}
 		visible={upVisible} />
 	<TimelineBar
@@ -184,7 +321,7 @@
 		on:resetAdd={setAddFields}
 		on:saveNew={handleAdd}
 		on:entryDeleted={handleDelete} />
-		{#if timeline.length > 0}
+	{#if timeline.length > 0}
 		{#key `${selectedItem.id}-${transitionDirection}`}
 			<section class="layout">
 				<ItemTransition direction={transitionDirection}>
@@ -217,7 +354,7 @@
 	<Arrow
 		lock={lockSelection}
 		down
-		on:moveDown={pageDown}
+		on:moveDown={handleDownArrow}
 		disabled={atLast}
 		visible={downVisible} />
 </PageTransitionFade>
@@ -237,5 +374,22 @@
 			margin-left: var(--font-size-medium);
 			margin-bottom: 10rem;
 		}
+	}
+
+	li {
+		margin-bottom: 0.25rem;
+	}
+
+	.i {
+		vertical-align: middle;
+		color: var(--color-theme-1);
+	}
+
+	.r {
+		vertical-align: -15%;
+	}
+
+	.rotate-90 {
+		transform: rotate(90deg);
 	}
 </style>
