@@ -244,10 +244,10 @@
 
 <PageTransitionFade>
 	<Modal bind:showModal>
-		<h2 slot="header">How to use the timeline</h2>
+		<h2 slot="header"><b>Timeline Quick Start Guide</b></h2>
 		<p>
-			Welcome! There are several ways to navigate the timeline. Below are some
-			instructions to help you get started.
+			Welcome! This guide provides an overview of key features to help you
+			navigate and explore the timeline with ease.
 		</p>
 		<h3>
 			Timeline <span class="material-symbols-rounded r rotate-90">commit</span>
@@ -256,7 +256,7 @@
 			<li>
 				Click on timeline items <span
 					class="material-symbols-rounded i rotate-90">commit</span> in the left
-				column to navigate to it.
+				column to view it.
 			</li>
 			<li>
 				Click the <span class="material-symbols-rounded i">add</span> button or double-click
@@ -269,8 +269,8 @@
 				and position.
 			</li>
 			<li>
-				Click and drag or scroll on the timeline to move up or down once zoomed
-				in.
+				Once zoomed in, click and drag or scroll on the timeline to move up or
+				down.
 			</li>
 		</ul>
 		<h3>Search Bar <span class="material-symbols-rounded r">search</span></h3>
@@ -325,10 +325,17 @@
 				playback.
 			</li>
 		</ul>
-		<p>
-			To see this message again, click on the <span
-				class="material-symbols-rounded i">help</span> button at the bottom right
-			of the page.
+		<hr />
+		<h3>Issues</h3>
+		If you come across any issues or bugs, reach out to our team by visiting our&nbsp;<a
+			href="https://github.com/SWE-2023/COSC-4P02-Project">
+			GitHub repository</a
+		>.
+		<br />
+		<br />
+		<p slot="footer" style="text-align:center;">
+			Click on the <span class="material-symbols-rounded i">help</span> button to
+			view this message again
 		</p>
 	</Modal>
 	<SearchBar
@@ -457,5 +464,12 @@
 	.help button:active {
 		filter: invert(0.3);
 		scale: 0.95;
+	}
+
+	hr {
+		border: none;
+		width: 80%;
+		border-top: 1px solid var(--color-text);
+		opacity: 0.33;
 	}
 </style>

@@ -17,6 +17,7 @@
 		<hr />
 		<div class=content><slot /></div>
 		<hr />
+		<slot name="footer" />
 		<div class=btn><Button autofocus text={"OK"} on:click={() => dialog.close()}/></div>
 	</div>
 </dialog>
@@ -27,7 +28,7 @@
 		max-height:50rem;
 		background: var(--color-bg-2);
 		color: var(--color-text);
-		border-radius: 1rem;
+		border-radius: 2rem;
 		border: none;
 		padding: 0;
 	}
