@@ -58,7 +58,7 @@
 	.menu {
 		user-select: none;
 		display: flex;
-		z-index: 1;
+		z-index: 5;
 		position: fixed;
 		top: 5rem;
 		left: -2px;

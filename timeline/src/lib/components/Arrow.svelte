@@ -13,8 +13,7 @@
 	const goDown = () => dispatch("movedown");
 
 	function handleKeyDown(event) {
-		
-		if(!lock){
+		if (!lock) {
 			if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
 				event.preventDefault();
 				goUp();
@@ -22,7 +21,7 @@
 				event.preventDefault();
 				goDown();
 			}
-		}	
+		}
 	}
 </script>
 
@@ -31,9 +30,13 @@
 		<div class="circle">
 			<span class="icon">
 				{#if down}
-					<span class="down-arrow material-symbols-rounded"> keyboard_arrow_down </span>
+					<span class="down-arrow material-symbols-rounded">
+						keyboard_arrow_down
+					</span>
 				{:else}
-					<span class="up-arrow material-symbols-rounded"> keyboard_arrow_up </span>
+					<span class="up-arrow material-symbols-rounded">
+						keyboard_arrow_up
+					</span>
 				{/if}
 			</span>
 		</div>
@@ -47,11 +50,15 @@
 		--anim: 0.33s cubic-bezier(0.13, 0.94, 0.16, 1.15);
 	}
 
+	* {
+		user-select: none;
+	}
+
 	.arrow-button {
 		position: fixed;
 		left: 11rem;
 		transform: translateX(-50%);
-		z-index: 99;
+		z-index: 4;
 		transition: top var(--anim), bottom var(--anim);
 	}
 
@@ -73,7 +80,7 @@
 
 	.circle {
 		width: calc(2.5 * var(--font-size-base));
-		height:  calc(2.5 * var(--font-size-base));
+		height: calc(2.5 * var(--font-size-base));
 		border-radius: 100%;
 		opacity: 0.5;
 		background-color: var(--color-bg-1);
@@ -94,14 +101,15 @@
 		opacity: 1;
 	}
 
-	.down-arrow,  .up-arrow {
+	.down-arrow,
+	.up-arrow {
 		color: var(--color-theme-1);
 		font-size: calc(2.5 * var(--font-size-base));
 	}
 
 	.down-arrow {
-		position:relative;
-		top:3px;
+		position: relative;
+		top: 3px;
 	}
 
 	.button:disabled,
