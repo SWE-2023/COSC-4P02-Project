@@ -4,8 +4,8 @@
 	export let body;
 	export let title;
 	export let date;
-	
-    let speaking = false;
+
+	let speaking = false;
 	let currentUtterance;
 	let voice;
 
@@ -16,8 +16,6 @@
 				new SpeechSynthesisUtterance(date),
 				new SpeechSynthesisUtterance(body),
 			];
-
-			
 
 			utterances.forEach((utterance) => {
 				utterance.voice = voice;
@@ -49,16 +47,10 @@
 		}
 	}
 
-	// clean up speech synthesis resources when component is removed from DOM
 	function cleanupSpeech() {
 		if (speaking) {
 			speechSynthesis.cancel();
 		}
-	}
-
-	// add event listener to remove event listeners when component is destroyed
-	if (typeof window !== "undefined") {
-		window.addEventListener("unload", cleanupSpeech);
 	}
 
 	onMount(() => {
