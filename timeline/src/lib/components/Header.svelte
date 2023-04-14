@@ -1,7 +1,7 @@
 <script>
 	import { Hamburger } from "svelte-hamburgers";
 	import { countStore } from "$lib/stores/store";
-	import { fly,slide } from "svelte/transition";
+	import { fly, slide } from "svelte/transition";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
 	import { userStore, logout } from "$lib/authStore";
@@ -17,17 +17,35 @@
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
 	let scrollY = 0;
-	let logoOpacity = 1;
+	let shadow = 0;
+	let bg = 1;
 	let isTheme = true;
 
 	function handleThemeLogo(event) {
 		isTheme = event.detail === "darkText";
 	}
 
-	function handleScroll() {
-		scrollY = window.scrollY;
-		logoOpacity = scrollY > 42 ? 0 : 1;
+	function handleHeader() {
+		if (!$page.url.pathname.startsWith("/timeline")) {
+			bg = 1;
+		} else {
+			shadow = 0;
+			bg = 0;
+		}
 	}
+
+	function handleScroll() {
+		if (!$page.url.pathname.startsWith("/timeline")) {
+			scrollY = window.scrollY;
+			shadow = scrollY > 60 ? 1 : 0;
+			bg = 1;
+		} else {
+			shadow = 0;
+			bg = 0;
+		}
+	}
+
+	handleHeader();
 
 	function count() {
 		countStore.update((n) => Number(n) + 1);
@@ -41,10 +59,12 @@
 <svelte:window on:scroll={handleScroll} />
 
 <header>
-	<nav>
+	<nav
+		class={shadow ? "shadow" : ""}
+		style={bg ? "background: var(--color-bg-1);" : ""}>
 		<div class="left">
 			{#if $page.url.pathname.startsWith("/timeline")}
-			<a href="/"
+				<a href="/"
 					><img
 						on:click={count}
 						on:keypress={count}
@@ -53,16 +73,14 @@
 							: "assets/notl-museum-dark.svg"}
 						alt="logo"
 						class="logo"
-						id="notl_logo"
-						style="opacity:{logoOpacity}" /></a>
-				<div style="margin-left:1rem;" in:slide={{axis: 'x'}}>
+						id="notl_logo" /></a>
+				<div style="margin-left:1rem;" in:slide={{ axis: "x" }}>
 					<Hamburger
 						bind:open={isMenuOpen}
 						--color="var(--color-theme-1)"
 						type="arrowalt" />
 				</div>
 				<Menu bind:open={isMenuOpen} />
-				
 			{:else}
 				<a href="/"
 					><img
@@ -73,22 +91,31 @@
 							: "assets/notl-museum-dark.svg"}
 						alt="logo"
 						class="logo"
-						id="notl_logo"
-						style="opacity:{logoOpacity}" /></a>
+						id="notl_logo" /></a>
 				<ul>
-					<li aria-current={$page.url.pathname === "/" ? "page" : undefined} in:slide>
+					<li
+						aria-current={$page.url.pathname === "/" ? "page" : undefined}
+						in:slide>
 						<a href="/">Home</a>
 					</li>
 					<li
-						aria-current={$page.url.pathname === "/about" ? "page" : undefined} in:slide>
-						<a href="/about">About</a>
-					</li>
+					aria-current={$page.url.pathname === "/about" ? "page" : undefined}
+					in:slide>
+					<a href="/about">About</a>
+				</li>
+				<li
+					aria-current={$page.url.pathname === "/timeline" ? "page" : undefined}
+					in:slide>
+					<a href="/timeline">Explore</a>
+				</li>
 					{#if user && user.email}
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
-								: undefined} in:slide>
-							<a title="Signed in as {user.email}"
+								: undefined}
+							in:slide>
+							<a
+								title="Signed in as {user.email}"
 								href="/"
 								on:click={(event) => {
 									event.preventDefault();
@@ -100,7 +127,8 @@
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
-								: undefined} in:slide>
+								: undefined}
+							in:slide>
 							<a class="login" href="/login">Log In</a>
 						</li>
 					{/if}
@@ -136,13 +164,18 @@
 		width: 100%;
 		height: 5rem;
 		z-index: 1;
+		transition: all 1s var(--curve);
+	}
+
+	nav.shadow {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 	}
 
 	ul {
-		display:flex;
+		display: flex;
 		align-items: baseline;
-		gap: 2rem;
-		margin-left:3rem;
+		gap: clamp(0.25rem, 1vw, 2rem);
+		margin-left: 3rem;
 		width: calc(20 * var(--font-size-base));
 		list-style: none;
 		padding: 0;
@@ -171,7 +204,7 @@
 		background: var(--color-theme-1);
 		border-radius: 5px;
 		transform: scaleX(0);
-		transition:all 0.5s var(--curve);
+		transition: all 0.5s var(--curve);
 	}
 
 	li[aria-current="page"]::after {
@@ -186,9 +219,13 @@
 
 	li a {
 		display: block;
-		padding:0.5em 0.5em;
+		padding: 0.5em 0.5em;
 		color: var(--color-text);
 		text-decoration: none;
+	}
+
+	li a:hover {
+		color: var(--color-theme-1);
 	}
 
 	.logo {
@@ -198,7 +235,7 @@
 		height: 3.5rem;
 		border-radius: 0.5rem 0.5rem 0 0;
 		user-select: none;
-		transition: opacity 0.33s ease-in-out, transform 0.05s ease-in-out;
+		transition: opacity 0.5s var(--curve), transform 0.2s var(--curve);
 	}
 
 	.logo:active {
@@ -222,7 +259,7 @@
 		user-select: none;
 		color: var(--color-theme-1);
 		transform: rotate(0);
-		transition: transform 0.33s ease-in-out;
+		transition: transform 0.5s var(--curve);
 	}
 
 	.accessibility:hover {
@@ -231,7 +268,7 @@
 	}
 
 	.accessibility:active {
-		transition: transform 0.05s ease-in-out;
+		transition: transform 0.2s var(--curve);
 		transform: scale(0.95) rotate(180deg);
 	}
 

@@ -142,21 +142,21 @@
 </script>
 
 {#if open}
-	<div class="menu" transition:fly={{ x: 100 }}>
+	<div class="menu" transition:fly={{ x: 500 }}>
 		<div class="am-title">Accessibility Options</div>
 		<TextSizeSelector />
 		<ul>
-			<li transition:fly={{ x: 24, delay: 50 }}>
+			<li transition:fly>
 				<span
 					id="light_dark_theme"
 					on:click={() => currentTheme === 'Light Mode' ? toggleDark() : toggleLight()}
 					on:keydown>{nextTheme}</span>
 			</li>
-			<li transition:fly={{ x: 24, delay: 100 }}>
+			<li transition:fly>
 				<span on:click={toggleContrast} on:keydown={toggleContrast}
 					>High Constrast</span>
 			</li>
-			<li transition:fly={{ x: 24, delay: 100 }}>
+			<li transition:fly>
 				<span
 					class={reduceMotion ? "active" : ""}
 					on:click={toggleReduceMotion}
