@@ -9,12 +9,11 @@
 		"arrow-button " + (down ? "down" : "up") + (visible ? " " : " hidden");
 
 	const dispatch = createEventDispatcher();
-	const goUp = () => dispatch("moveUp");
-	const goDown = () => dispatch("moveDown");
+	const goUp = () => dispatch("moveup");
+	const goDown = () => dispatch("movedown");
 
 	function handleKeyDown(event) {
-		
-		if(!lock){
+		if (!lock) {
 			if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
 				event.preventDefault();
 				goUp();
@@ -22,7 +21,7 @@
 				event.preventDefault();
 				goDown();
 			}
-		}	
+		}
 	}
 </script>
 
@@ -31,9 +30,13 @@
 		<div class="circle">
 			<span class="icon">
 				{#if down}
-					<span class="down-arrow material-symbols-rounded"> keyboard_arrow_down </span>
+					<span class="down-arrow material-symbols-rounded">
+						keyboard_arrow_down
+					</span>
 				{:else}
-					<span class="up-arrow material-symbols-rounded"> keyboard_arrow_up </span>
+					<span class="up-arrow material-symbols-rounded">
+						keyboard_arrow_up
+					</span>
 				{/if}
 			</span>
 		</div>
@@ -47,20 +50,24 @@
 		--anim: 0.33s cubic-bezier(0.13, 0.94, 0.16, 1.15);
 	}
 
+	* {
+		user-select: none;
+	}
+
 	.arrow-button {
 		position: fixed;
-		left: 50%;
+		left: 11rem;
 		transform: translateX(-50%);
-		z-index: 9999;
+		z-index: 4;
 		transition: top var(--anim), bottom var(--anim);
 	}
 
 	.up {
-		top: 3rem;
+		top: 10vh;
 	}
 
 	.down {
-		bottom: 3rem;
+		bottom: 7vh;
 	}
 
 	.up.hidden {
@@ -72,38 +79,37 @@
 	}
 
 	.circle {
-		width: calc(3 * var(--font-size-base));
-		height:  calc(3 * var(--font-size-base));
+		width: calc(2.5 * var(--font-size-base));
+		height: calc(2.5 * var(--font-size-base));
 		border-radius: 100%;
 		opacity: 0.5;
 		background-color: var(--color-bg-1);
 		border: 3px solid var(--light-color-bg-1);
-		box-shadow: 2px 2px 5px 1px #00000022;
-		mix-blend-mode: screen;
-		transition: all 0.15s ease-in-out;
+		transition: all 0.5s var(--curve);
 	}
 
 	.button {
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
-		padding: 1.5rem 6rem;
+		padding: 1rem 1rem;
 	}
 
 	.circle:hover,
 	.button:hover > .circle {
-		border: 3px solid var(--color-theme-2-light);
+		border: 2px solid var(--color-theme-1);
 		opacity: 1;
 	}
 
-	.down-arrow,  .up-arrow {
-		color: var(--color-text);
-		font-size: calc(3 * var(--font-size-base));
+	.down-arrow,
+	.up-arrow {
+		color: var(--color-theme-1);
+		font-size: calc(2.5 * var(--font-size-base));
 	}
 
 	.down-arrow {
-		position:relative;
-		top:3px;
+		position: relative;
+		top: 3px;
 	}
 
 	.button:disabled,

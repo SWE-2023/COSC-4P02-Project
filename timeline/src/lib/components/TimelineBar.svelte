@@ -13,13 +13,14 @@
 	let dragging = false;
 	let startY;
 	let screenHeight = 1080;
+	let screenWidth = 1920;
 	let pos = 100;
 	let visible;
 	let zoom = 1;
 	let zoomOffset = 0;
 	let isFirefox;
 	let isSafari;
-	const timelineHeight = 80; // in vh
+	let timelineHeight = 80; // in vh
 	let lowest;
 	let highest;
 	let decadeGap; // values lower than 10 will cause issues
@@ -33,6 +34,7 @@
 		duration: 300,
 		easing: cubicOut,
 	});
+
 	$: zoomOffsetTweened = tweened(zoomOffset, {
 		duration: 300,
 		easing: cubicOut,
@@ -119,14 +121,28 @@
 		visible = false;
 	}
 
+	function updateHeight() {
+		if (screenWidth < 768) {
+			timelineHeight = 70;
+		} else {
+			timelineHeight = 80;
+		}
+	}
+
 	function updateGap() {
-		if ($zoomTweened < 1.5) decadeGap = 20;
-		else if ($zoomTweened < 2.5) decadeGap = 10;
+		updateHeight();
+		let timelineHeightInPercentage = timelineHeight * 0.01 * screenHeight;
+
+		if ($zoomTweened < 1.5) decadeGap = 100 - timelineHeight;
+		else if ($zoomTweened < 2.5) decadeGap = (100 - timelineHeight) / 2;
 		else decadeGap = 5;
 
 		const scale = Math.max(
 			decadeGap,
-			Math.min(80, Math.round((750 - screenHeight) / 50) * 10)
+			Math.min(
+				timelineHeightInPercentage,
+				Math.round((750 - screenHeight) / 50) * 10
+			)
 		);
 		lowest = Math.floor(getYear(timeData[0].start_date) / scale) * scale - 10;
 		highest =
@@ -146,18 +162,23 @@
 	}
 
 	onMount(() => {
+		updateHeight();
 		isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
 		isSafari =
 			navigator.userAgent.toLowerCase().indexOf("safari") > -1 &&
 			navigator.userAgent.toLowerCase().indexOf("chrome") === -1;
 	});
 	updateGap();
-
 </script>
 
-<svelte:window bind:innerHeight={screenHeight} on:resize={updateGap} on:mouseup={handleDragEnd} />
+<svelte:window
+	bind:innerHeight={screenHeight}
+	bind:innerWidth={screenWidth}
+	on:resize={updateGap}
+	on:mouseup={handleDragEnd} />
 
 <div
+	style="--height:{timelineHeight}vh"
 	in:fade
 	class="timeline-container"
 	on:wheel|preventDefault={handleWheel}
@@ -166,10 +187,10 @@
 	on:mousemove={handleDragMove}
 	on:mouseup={handleDragEnd}
 	on:touchstart|passive={handleDragStart}
-	on:touchmove|passive={handleDragMove}
+	on:touchmove|preventDefault={handleDragMove}
 	on:touchend={handleDragEnd}>
 	<div>
-		<span style="height:{timelineHeight}vh" class="line" />
+		<span class="line" />
 		<div
 			class={disabled ? "line-components disabled" : "line-components"}
 			style={isFirefox || isSafari
@@ -200,24 +221,28 @@
 		</ul>
 	</div>
 </div>
-<button class="reset" on:click={resetZoom}
-	><span class="material-symbols-rounded i">refresh</span>
-</button>
-<button class="zoom-out" on:click={handleZoomOut}
-	><span class="material-symbols-rounded i">remove</span>
-</button>
-<button class="zoom-in" on:click={handleZoomIn}
-	><span class="material-symbols-rounded i">add</span>
-</button>
+<div class="btns">
+	<button class="reset" on:click={resetZoom}
+		><span class="material-symbols-rounded i">refresh</span>
+	</button>
+	<button class="zoom-out" on:click={handleZoomOut}
+		><span class="material-symbols-rounded i">remove</span>
+	</button>
+	<button class="zoom-in" on:click={handleZoomIn}
+		><span class="material-symbols-rounded i">add</span>
+	</button>
+</div>
 
 <style>
 	:root {
 		--foot-height: 2px;
 		--left: 20px;
+		--height: 80vh;
 	}
 
 	.line {
 		border-radius: 25px;
+		height: var(--height);
 		position: fixed;
 		width: 4px;
 		left: var(--left);
@@ -275,7 +300,7 @@
 		list-style: none;
 		margin: 0;
 		display: flex;
-		height: 80vh;
+		height: var(--height);
 		flex-direction: column;
 		justify-content: space-between;
 		position: absolute;
@@ -323,32 +348,11 @@
 		background: var(--color-bg-1);
 		box-shadow: inset 0 0 1rem 0px #00000015;
 		border-radius: 0 1.5rem 1.5rem 0;
-		height: 80%;
+		height: var(--height);
 	}
 
 	.timeline-container:active {
 		cursor: grabbing;
-	}
-
-	button {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		margin: 0.5vw;
-		cursor: pointer;
-		background: none;
-		border: none;
-		color: var(--color-theme-1);
-		font-size: var(--font-size-base);
-		transition: all 0.5s var(--curve);
-	}
-
-	.zoom-out {
-		left: 3rem;
-	}
-
-	.zoom-in {
-		left: 6rem;
 	}
 
 	.i {
@@ -357,18 +361,57 @@
 	}
 
 	.reset .i:hover {
-		color: var(--color-theme-1-light);
 		animation: rotate 1s forwards var(--curve);
-	}
-
-	.zoom-in .i:hover,
-	.zoom-out .i:hover {
-		color: var(--color-theme-1-light);
 	}
 
 	.i:active,
 	.i:focus {
 		transform: scale(0.9);
+	}
+
+	.btns {
+		display: flex;
+		position: fixed;
+		bottom: 1rem;
+		left: 0.5rem;
+		flex-flow: row;
+		gap: 0.25rem;
+		z-index: 99;
+	}
+
+	@media (max-width: 1000px) {
+		.btns {
+			flex-flow: column;
+		}
+	}
+
+	button {
+		cursor: pointer;
+		background: none;
+		user-select: none;
+		color: var(--color-theme-1);
+		line-height: 0;
+		height: calc((var(--font-size-base) * 1) + 1rem);
+		width: calc(var(--font-size-base) * 1 + 1rem);
+		margin: 0;
+		padding: 0;
+		justify-self: center;
+		background: var(--color-bg-2);
+		border-radius: 100rem;
+		border: none !important;
+		border: 1px solid var(--border);
+		font-weight: 900;
+		transition: all 0.5s var(--curve);
+	}
+
+	button:hover {
+		filter: invert(0.1);
+	}
+
+	button:active {
+		filter: invert(0.3);
+		scale: 0.95;
+		transition: none;
 	}
 
 	@keyframes rotate {

@@ -14,7 +14,7 @@
 			style="opacity:{countValue / 100 + 0.2};font-weight:{countValue *
 				100};color:{countValue >= 100
 				? 'var(--color-theme-1)'
-				: 'var(--color-text)'}">{countValue}</span>
+				: 'var(--color-text)'}">{countValue}&nbsp</span>
 		{#if !$page.url.pathname.startsWith("/timeline")}
 			| <a href="https://www.notlmuseum.ca">NOTL Museum</a>
 			| <a href="https://www.notl.com">NOTL</a> |

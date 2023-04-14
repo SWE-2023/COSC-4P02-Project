@@ -106,23 +106,20 @@ a:hover {
 	text-decoration: underline;
 }
 
-
 h1 {
 	font-family: var(--font-serif);
 	font-size: var(--font-size-xxlarge);
 	font-weight: 700;
 	margin: 1rem 0;
-	padding-top:3rem;
+	padding-top: 3rem;
 }
 
 section.page p {
-		font-family: var(--font-sans);
-		font-size: var(--font-size-base);
-		padding: 1em 0 1em 0;
-		margin: 0.5rem 0;
+	font-family: var(--font-sans);
+	font-size: var(--font-size-base);
+	padding: 1em 0 1em 0;
+	margin: 0.5rem 0;
 }
-
-
 
 .text-column {
 	display: flex;
@@ -133,9 +130,9 @@ section.page p {
 	margin: 0 auto;
 }
 
-.v-align {
-	display: flex;
-	align-items: center;
+code {
+	font-family: var(--font-mono);
+	font-size: var(--font-size-small);
 }
 
 input {
@@ -165,4 +162,18 @@ button:focus:not(:focus-visible) {
 .row {
 	display: flex;
 	flex-flow: row wrap;
+}
+
+.v-align {
+	display: flex;
+	align-items: center;
+}
+
+.h-align {
+	display: flex;
+	justify-content: center;
+}
+
+.radius {
+	border-radius: 0.5rem;
 }

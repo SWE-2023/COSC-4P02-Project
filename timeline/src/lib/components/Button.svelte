@@ -7,29 +7,21 @@
 		dispatch("click");
 	}
 	export let text = "Button";
+	export let autofocus = false;
 	export let disabled = false;
 	export let href = "#";
 	export let alt = false;
-	export let scale = 1;
 	export let loading = false;	
 </script>
 
-<!--
-	BUTTON USAGE:  
-	<Button href="<LINK>" text="<TEXT>" disabled="{<BOOLEAN>}" alt="{<BOOLEAN>}" scale="{<NUMBER>}"/>
-	{} = optional
-	scale = scale of button (default = 1)
-	alt = alternative button style (default = false)
-	disabled = disabled button (default = false)
--->
-
+<!-- svelte-ignore a11y-autofocus -->
 {#if alt}
-	<a {href} style="scale:{scale}" >
-		<button use:loadingAction={loading} class="alt-button" on:click={click} {disabled}>{text}</button>
+	<a {href} >
+		<button {autofocus} use:loadingAction={loading} class="alt-button" on:click={click} {disabled}>{text}</button>
 	</a>
 {:else}
-	<a {href} style="scale:{scale}">
-		<button use:loadingAction={loading} class="button" on:click={click} {disabled}>{text}</button>
+	<a {href}>
+		<button {autofocus} use:loadingAction={loading} class="button" on:click={click} {disabled}>{text}</button>
 	</a>
 {/if}
 
@@ -55,7 +47,7 @@
 	.alt-button {
 		user-select: none;
 		border-radius: 0.5rem 0.5rem;
-		padding: 1.2em 2em;
+		padding: 1em 2em;
 		cursor: pointer;
 		transition: background-color 0.33s var(--curve), color 0.33s var(--curve);
 	}

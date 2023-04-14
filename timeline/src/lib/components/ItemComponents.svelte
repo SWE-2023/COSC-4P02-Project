@@ -5,12 +5,15 @@
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
 	import supabase from "$lib/supabaseClient";
+	import { loadingAction } from 'svelte-legos';
 	import { toast } from "@zerodevx/svelte-toast";
 	
 	// timeline view settings
 	export let editing;
 	export let adding;
-	let loading = false;
+	let loading = true;
+
+	let uploading = false;
 
 	export let item = {
 		title: "",
@@ -91,7 +94,7 @@
 	}
 
 	async function upload(e) {
-		loading = true;
+		uploading = true;
 		const file = e.target.files[0];
 		if (file) {
 			if (file.size > 4 * 1024 * 1024) {
@@ -128,7 +131,7 @@
 				}
 			}
 		}
-		loading = false;
+		uploading = false;
 	}
 </script>
 
@@ -139,7 +142,7 @@
 				{#if item.media}
 					<div class="tip v-align">
 						<span class="material-symbols-rounded"> info </span>
-						<p>Click the image to toggle fullscreen.</p>
+						<p>&nbsp;Click the image to toggle fullscreen.</p>
 					</div>
 				{/if}
 			{:else}
@@ -148,14 +151,14 @@
 						{editing ? "Edit" : "Add"}ing item
 					</h2>
 				</div>
-				<p class={loading ? "upload-notice red" : "upload-notice"}>
+				<p class={uploading ? "upload-notice red" : "upload-notice"}>
 					<span
 						style="font-size:var(--font-size-small)"
-						class={loading
+						class={uploading
 							? "material-symbols-rounded i"
 							: "material-symbols-rounded"}
-						>{loading ? "autorenew" : "cloud_upload"}</span
-					>{loading ? "Uploading..." : "Upload image"}
+						>{uploading ? "autorenew" : "cloud_upload"}</span
+					>{uploading ? "Uploading..." : "Upload image"}
 				</p>
 			{/if}
 			<Fullscreen let:onToggle>
@@ -219,15 +222,18 @@
 								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 								allowfullscreen />
 						{:else}
-							<img
-								class={full ? "image fullscreen" : "image"}
-								src={item.media}
-								alt={item.title}
-								on:click={() => {
-									onToggle();
-									full = !full;
-								}}
-								on:keydown={handleKeyDown} />
+							<div class="image-placeholder" use:loadingAction={loading}>
+								<img
+									on:load={() => loading = false}
+									class={full ? "image fullscreen" : "image"}
+									src={item.media}
+									alt={item.title}
+									on:click={() => {
+										onToggle();
+										full = !full;
+									}}
+									on:keydown={handleKeyDown} />
+							</div>
 						{/if}
 					{/if}
 				</div>
@@ -334,6 +340,10 @@
 		margin: 0.5rem 0;
 	}
 
+	.image-placeholder {
+		display:flex;
+	}
+
 	.tts {
 		display: flex;
 		flex-direction: row;
@@ -362,7 +372,7 @@
 		border-radius: 2rem;
 		max-width: 60rem;
 		background: var(--color-text-card);
-		box-shadow: 5px 5px 16px 0 #00000020;
+		box-shadow: 5px 5px 7px 0 #00000020;
 		text-align: justify;
 	}
 
@@ -400,7 +410,7 @@
 		object-position: center center;
 		object-fit: cover;
 		border-radius: 1.5vw;
-		box-shadow: 1rem 0rem 28px 0 #00000030;
+		box-shadow: 5px 5px 7px 0 #00000020;
 		transition: all 0.3s ease-in-out;
 	}
 
@@ -456,7 +466,7 @@
 		object-position: center center;
 		object-fit: cover;
 		border-radius: 1.5vw;
-		box-shadow: 1rem 0rem 28px 0 #00000030;
+		box-shadow: 1rem 0rem 7px 0 #00000030;
 	}
 
 	.image:hover {
@@ -480,7 +490,7 @@
 		font-weight: 400;
 		transform: translateY(-0.75rem);
 		background: var(--color-bg-2);
-		transition: all 0.33s var(--curve);
+		transition: all 0.5s var(--curve);
 	}
 
 	.image_cred a:hover {

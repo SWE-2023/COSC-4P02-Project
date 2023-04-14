@@ -6,10 +6,13 @@
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
+	import Modal from "$lib/components/Modal.svelte";
+	import supabase from "$lib/supabaseClient.js";
+	import { currentItemIndexStore } from "$lib/stores/store.js";
+	import { onMount } from "svelte";
 
 	export let data;
 	let { timeline } = data;
-	$: ({ timeline } = data);
 
 	// map timeline titles and years to searchData
 	let searchData = [];
@@ -22,6 +25,16 @@
 		});
 	}
 
+	let itemIndex = 0;
+	currentItemIndexStore.subscribe((value) => {
+		itemIndex = value;
+	});
+
+	let showModal = false;
+	let screenWidth = 1920;
+	let screenHeight = 1080;
+	let touchStartPos = 0;
+
 	let dropDownSelection = "";
 	let transitionDirection;
 	let selectedItem = timeline[0];
@@ -31,6 +44,8 @@
 	let isEditing = false;
 	let isAdding = false;
 	let lockSelection = false;
+	let upVisible = true;
+	let downVisible = true;
 
 	let edit = {
 		title: selectedItem.title,
@@ -58,7 +73,6 @@
 
 	function pageUp() {
 		if (!atFirst) {
-			transitionDirection = "up";
 			selectedItem = timeline[--currentIndex];
 			update();
 		}
@@ -66,7 +80,6 @@
 	}
 	function pageDown() {
 		if (!atLast) {
-			transitionDirection = "down";
 			selectedItem = timeline[++currentIndex];
 			update();
 		}
@@ -91,22 +104,19 @@
 		atFirst = selectedItem == timeline[0];
 		atLast = selectedItem == timeline[timeline.length - 1];
 		setEditFields();
-		console.log(transitionDirection);
+		currentItemIndexStore.set(currentIndex);
 	}
 
-	let upVisible = false;
-	let downVisible = false;
-	function showArrows(event) {
+	function showArrows() {
 		if (!lockSelection) {
-			if (window.innerWidth < 1000) {
+			if (screenWidth < 1000) {
+				upVisible = false;
+				downVisible = false;
+				return;
+			} else {
 				upVisible = true;
 				downVisible = true;
-				return;
 			}
-			let y = event.clientY;
-			let height = window.innerHeight;
-			upVisible = y < height * 0.2;
-			downVisible = y > height * 0.8;
 		}
 	}
 
@@ -147,6 +157,76 @@
 			update();
 		}
 	}
+
+	function handleDownArrow() {
+		transitionDirection = "down";
+		pageDown();
+	}
+
+	function handleUpArrow() {
+		transitionDirection = "up";
+		pageUp();
+	}
+
+	function handleTouchStart(e) {
+		touchStartPos = e.touches[0].clientX;
+	}
+
+	function handleTouchEnd(e) {
+		const touchEndX = e.changedTouches[0].clientX;
+		const deltaX = touchEndX - touchStartPos;
+
+		if (Math.abs(deltaX) > 100) {
+			if (deltaX > 0) {
+				transitionDirection = "right";
+				pageUp();
+			} else {
+				transitionDirection = "left";
+				pageDown();
+			}
+		}
+	}
+
+	async function fetchTimelineData() {
+		const { data } = await supabase
+			.from("timeline")
+			.select("id, title, image, image_credit, body, start_date")
+			.order("start_date");
+		data && (timeline = data);
+	}
+
+	onMount(async () => {
+		showArrows();
+		const firstVisit = localStorage.getItem("firstVisit");
+
+		if (!firstVisit) {
+			showModal = true;
+			localStorage.setItem("firstVisit", "false");
+		}
+
+		const timelineChannel = supabase
+			.channel("custom-all-channel")
+			.on(
+				"postgres_changes",
+				{ event: "*", schema: "public", table: "timeline" },
+				() => {
+					fetchTimelineData();
+				}
+			)
+			.subscribe();
+
+		// await fetchTimelineData();
+
+		if (timeline.length > 0 && itemIndex !== 0) {
+			currentIndex = itemIndex;
+			selectedItem = timeline[itemIndex];
+			update();
+		}
+
+		return () => {
+			supabase.removeChannel(timelineChannel);
+		};
+	});
 </script>
 
 <svelte:head>
@@ -154,9 +234,110 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<svelte:window on:mousemove={showArrows} />
+<svelte:window
+	bind:innerHeight={screenHeight}
+	bind:innerWidth={screenWidth}
+	on:resize={showArrows}
+	on:touchstart={handleTouchStart}
+	on:touchmove|passive
+	on:touchend|passive={handleTouchEnd} />
 
 <PageTransitionFade>
+	<Modal bind:showModal>
+		<h2 slot="header"><b>Timeline Quick Start Guide</b></h2>
+		<p>
+			Welcome! This guide provides an overview of key features to help you
+			navigate and explore the timeline with ease.
+		</p>
+		<h3>
+			Timeline <span class="material-symbols-rounded r rotate-90">commit</span>
+		</h3>
+		<ul>
+			<li>
+				Click on timeline items <span
+					class="material-symbols-rounded i rotate-90">commit</span> in the left
+				column to view it.
+			</li>
+			<li>
+				Click the <span class="material-symbols-rounded i">add</span> button or double-click
+				to zoom in the timeline.
+			</li>
+			<li>
+				Click the <span class="material-symbols-rounded i">remove</span> button
+				to zoom out the timeline bar, and
+				<span class="material-symbols-rounded i">refresh</span> to reset both zoom
+				and position.
+			</li>
+			<li>
+				Once zoomed in, click and drag or scroll on the timeline to move up or
+				down.
+			</li>
+		</ul>
+		<h3>Search Bar <span class="material-symbols-rounded r">search</span></h3>
+		<ul>
+			<li>
+				Click on the search bar or hit <code>'/'</code> and type in a keyword or
+				year to search for a timeline item.
+			</li>
+			<li>
+				Click on the timeline item in the search results to navigate to it.
+			</li>
+			<li>
+				Click on the <span class="material-symbols-rounded i">close</span> button
+				to clear the search bar.
+			</li>
+		</ul>
+		<h3>Navigation Buttons</h3>
+		<ul>
+			<li>
+				<span class="material-symbols-rounded r">smartphone</span>
+				<b> Mobile &mdash; </b>
+				Swipe <span class="material-symbols-rounded i">swipe</span> left or right
+				to navigate through timeline items.
+			</li>
+			<li>
+				<span class="material-symbols-rounded r">mouse</span>
+				<b> Mouse &mdash; </b>
+				Click on the
+				<span class="material-symbols-rounded i">keyboard_arrow_up</span>/<span
+					class="material-symbols-rounded i">keyboard_arrow_down</span> floating
+				buttons at the top and bottom of the screen to navigate up or down through
+				timeline items.
+			</li>
+			<li>
+				<span class="material-symbols-rounded r">keyboard_alt</span>
+				<b> Keyboard &mdash;</b>
+				Press<span class="material-symbols-rounded i">keyboard_arrow_up</span
+				>/<span class="material-symbols-rounded i">keyboard_arrow_left</span>
+				or
+				<span class="material-symbols-rounded i">keyboard_arrow_down</span
+				>/<span class="material-symbols-rounded i">keyboard_arrow_right</span> to
+				navigate up or down through timeline items.
+			</li>
+		</ul>
+		<h3>Accessibility</h3>
+		<ul>
+			<li>
+				Press the
+				<span class="material-symbols-rounded i">volume_up</span>
+				button to hear a description of the current timeline item. Press the
+				<span class="material-symbols-rounded i">stop</span> button to stop the audio
+				playback.
+			</li>
+		</ul>
+		<hr />
+		<h3>Issues</h3>
+		If you come across any issues or bugs, reach out to our team by visiting our&nbsp;<a
+			href="https://github.com/SWE-2023/COSC-4P02-Project">
+			GitHub repository</a
+		>.
+		<br />
+		<br />
+		<p slot="footer" style="text-align:center;">
+			Click on the <span class="material-symbols-rounded i">help</span> button to
+			view this message again
+		</p>
+	</Modal>
 	<SearchBar
 		lock={lockSelection}
 		bind:selection={dropDownSelection}
@@ -165,7 +346,7 @@
 		on:selection={update} />
 	<Arrow
 		lock={lockSelection}
-		on:moveUp={pageUp}
+		on:moveup={handleUpArrow}
 		disabled={atFirst}
 		visible={upVisible} />
 	<TimelineBar
@@ -184,7 +365,7 @@
 		on:resetAdd={setAddFields}
 		on:saveNew={handleAdd}
 		on:entryDeleted={handleDelete} />
-		{#if timeline.length > 0}
+	{#if timeline.length > 0}
 		{#key `${selectedItem.id}-${transitionDirection}`}
 			<section class="layout">
 				<ItemTransition direction={transitionDirection}>
@@ -217,9 +398,14 @@
 	<Arrow
 		lock={lockSelection}
 		down
-		on:moveDown={pageDown}
+		on:movedown={handleDownArrow}
 		disabled={atLast}
 		visible={downVisible} />
+	<div class="help">
+		<button on:click={() => (showModal = true)}>
+			<span class="material-symbols-rounded i">help</span>
+		</button>
+	</div>
 </PageTransitionFade>
 
 <style>
@@ -237,5 +423,53 @@
 			margin-left: var(--font-size-medium);
 			margin-bottom: 10rem;
 		}
+	}
+
+	li {
+		margin-bottom: 0.25rem;
+	}
+
+	.i {
+		vertical-align: middle;
+		color: var(--color-theme-1);
+	}
+
+	.r {
+		vertical-align: -15%;
+	}
+
+	.rotate-90 {
+		transform: rotate(90deg);
+	}
+
+	.help {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		margin: 1rem;
+	}
+
+	.help button {
+		background: var(--color-bg-2);
+		border-radius: 5rem;
+		padding: 0.5rem;
+		border: none;
+		transition: all 0.5s var(--curve);
+	}
+
+	.help button:hover {
+		filter: invert(0.1);
+	}
+
+	.help button:active {
+		filter: invert(0.3);
+		scale: 0.95;
+	}
+
+	hr {
+		border: none;
+		width: 80%;
+		border-top: 1px solid var(--color-text);
+		opacity: 0.33;
 	}
 </style>

@@ -2,6 +2,7 @@
 	import { fly } from "svelte/transition";
 	import { page } from "$app/stores";
 	import { userStore, logout } from "$lib/authStore";
+	import { quadOut } from "svelte/easing";
 
 	export let open;
 	let user;
@@ -11,16 +12,16 @@
 </script>
 
 {#if open}
-	<div class="menu" transition:fly={{ x: -100 }}>
+	<div class="menu" transition:fly={{ x: -500}}>
 		<ul>
 			<li
 				aria-current={$page.url.pathname === "/" ? "page" : undefined}
-				transition:fly={{ x: -24, delay: 50 }}>
+				transition:fly>
 				<a href="/" on:click={() => (open = false)}>Home</a>
 			</li>
 			<li
 				aria-current={$page.url.pathname === "/about" ? "page" : undefined}
-				transition:fly={{ x: -24, delay: 100 }}>
+				transition:fly>
 				<a href="/about" on:click={() => (open = false)}>About</a>
 			</li>
 			{#if user && user.email}
@@ -28,7 +29,7 @@
 					aria-current={$page.url.pathname.startsWith("/login")
 						? "page"
 						: undefined}
-					transition:fly={{ x: -24, delay: 150 }}>
+					transition:fly>
 					<a
 						href="/"
 						on:click={(event) => {
@@ -44,7 +45,7 @@
 					aria-current={$page.url.pathname.startsWith("/login")
 						? "page"
 						: undefined}
-					transition:fly={{ x: -24, delay: 150 }}>
+					transition:fly>
 					<a class="login" href="/login" on:click={() => (open = false)}
 						>Log In</a>
 				</li>
@@ -57,7 +58,7 @@
 	.menu {
 		user-select: none;
 		display: flex;
-		z-index: 1;
+		z-index: 5;
 		position: fixed;
 		top: 5rem;
 		left: -2px;
