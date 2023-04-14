@@ -9,7 +9,7 @@
 </svelte:head>
 
 <PageTransition>
-	<br /><br /><br /><br />
+	<gap/>
 	<section class="page" in:slide>
 		<div>
 			<h1>About Niagara-on-the-Lake</h1>
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 	</section>
-	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	<big-gap/>
 </PageTransition>
 
 <style>

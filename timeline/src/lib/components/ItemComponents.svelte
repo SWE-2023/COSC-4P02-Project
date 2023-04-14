@@ -308,6 +308,7 @@
 			{/if}
 		</div>
 	</section>
+	<gap/>
 {/key}
 
 <svelte:window on:keypress={handleKeyDown} />

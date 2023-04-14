@@ -12,7 +12,6 @@
 	export let changes;
 	export let newItem;
 
-
 	let user;
 	userStore.subscribe((value) => {
 		user = value && value.email ? value : null;
@@ -83,7 +82,7 @@
 					changeMenu();
 					resetEdit();
 					toast.push("<b>Success</b><br>Changes saved. Refreshing items...");
-							setTimeout(() => {
+					setTimeout(() => {
 						location.reload();
 					}, 0);
 				} catch (error) {
@@ -117,7 +116,7 @@
 					addNew();
 					resetAdd();
 					toast.push("<b>Success</b><br>New entry added. Refreshing items...");
-							setTimeout(() => {
+					setTimeout(() => {
 						location.reload();
 					}, 0);
 				} catch (error) {
@@ -156,90 +155,122 @@
 			toast.push(`<b>Query Error</b><br>${error.message}`);
 		}
 	};
-
 </script>
 
 {#if user && user.email}
-	<div transition:slide class="edit-items">
-		{#if enableEditing}
-			<button transition:slide on:click={cancelChanges}
-				><span class="material-symbols-rounded i">close</span>Cancel</button>
-			<div transition:slide class="line" />
-			<button transition:slide class="options" on:click={saveChanges}
-				><span class="material-symbols-rounded i">save</span>Save</button>
-			<div transition:slide class="line" />
-			<button transition:slide class="options" on:click={deleteEntry}
-				><span class="material-symbols-rounded i">delete</span>Delete</button>
-		{:else if enableAdding}
-			<button transition:slide on:click={cancelAdd}
-				><span class="material-symbols-rounded i">close</span>Cancel</button>
-			<div transition:slide class="line" />
-			<button transition:slide class="options" on:click={saveNew}
-				><span class="material-symbols-rounded i">save</span>Save</button>
-		{:else}
-			<button transition:slide on:click={changeMenu}
-				><span class="material-symbols-rounded i">edit</span>Edit</button>
-			<div transition:slide class="line" />
-			<button transition:slide on:click={addNew}
-				><span class="material-symbols-rounded i">add</span>Add</button>
-		{/if}
-	</div>
+	{#key enableAdding || enableEditing}
+		<div transition:slide={{ axis: "y" }} class="edit-items">
+			{#if enableEditing}
+				<button on:click={cancelChanges}
+					><span class="material-symbols-rounded i">close</span>Cancel</button>
+				<div class="line" />
+				<button class="options" on:click={saveChanges}
+					><span class="material-symbols-rounded i">save</span>Save</button>
+				<div class="line" />
+				<button class="options" on:click={deleteEntry}
+					><span class="material-symbols-rounded i">delete</span>Delete</button>
+			{:else if enableAdding}
+				<button on:click={cancelAdd}
+					><span class="material-symbols-rounded i">close</span>Cancel</button>
+				<div class="line" />
+				<button class="options" on:click={saveNew}
+					><span class="material-symbols-rounded i">save</span>Save</button>
+			{:else}
+				<button on:click={changeMenu}
+					><span class="material-symbols-rounded i">edit</span>Edit</button>
+				<div class="line" />
+				<button on:click={addNew}
+					><span class="material-symbols-rounded i">add</span>Add</button>
+			{/if}
+		</div>
+	{/key}
 {/if}
 
 <style>
 	.edit-items {
 		user-select: none;
-		right: -0.5rem;
-		border-radius: var(--font-size-small) 0 0 var(--font-size-small);
-		width: clamp(5rem, 15vw, 10rem);
+		bottom: 0;
+		border-radius: var(--font-size-small) var(--font-size-small) 0 0;
+		height: calc(3.5 * var(--font-size-base));
+		width: clamp(20rem, 80vw, 50rem);
 		position: fixed;
+		left: calc(50% - clamp(20rem, 80vw, 50rem) / 2);
+		justify-content: space-evenly;
 		display: flex;
-		flex-direction: column;
-		top: 10rem;
+		flex-direction: row;
 		z-index: 2;
 		background: var(--color-text-card);
-		box-shadow: 5px 5px 3em #00000022;
 		margin: 0;
 		padding: 0;
+		box-shadow: 0 0 0 2px #00000050;
+		transition: all 0.5s var(--curve);
 	}
 
 	button {
 		cursor: pointer;
-		display: flex;
-		flex-direction: column;
+		display: inline-flex;
+		flex-direction: row;
+		gap: 1rem;
 		justify-content: center;
 		align-items: center;
-		font-family: var(--font-sans);
-		font-size: var(--font-size-small);
 		font: var(--font-sans);
 		color: var(--color-theme-1);
 		background: none;
+		width: 100%;
+		height: 100%;
 		border: none;
-		padding: 0.75rem clamp(0.25rem, 0.5vw, 1rem);
+		transition: all 0.5s var(--curve);
+	}
+
+	.edit-items > *:first-child {
+		border-radius: var(--font-size-small) 0 0 0;
+	}
+
+	.edit-items > *:last-child {
+		border-radius: 0 var(--font-size-small) 0 0;
 	}
 
 	.line {
 		display: flex;
 		align-self: center;
-		width: 80%;
-		height: 1px;
+		height: 66%;
+		width: 1px;
 		background-color: #00000020;
+		transition: all	0.5s var(--curve);
 	}
 
 	.i {
-		margin: 0.5rem 0;
+		vertical-align: center;
 		font-size: var(--font-size-medium);
 	}
 
-	button:hover,
-	.options:hover {
-		font-weight: 900;
-		transition: background-color 0.15s ease-out;
+	button {
+		font-size: var(--font-size-small);
 	}
 
-	button:active,
-	.options:active {
-		transition: none;
-		transform: scale(0.95);
+	button:hover {
+		backdrop-filter: invert(0.1);
+	}
+
+	.edit-items:hover .line {
+		background-color: transparent;
+	}
+
+	button:active {
+		backdrop-filter: invert(0.2);
+	}
+
+	@media (max-width: 1000px) {
+		.edit-items {
+			margin-left: 2.5rem;
+		}
+
+		button {
+			font-size: var(--font-size-small);
+		}
+
+		.i {
+			font-size: var(--font-size-base);
+		}
 	}
 </style>

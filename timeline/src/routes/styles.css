@@ -153,6 +153,16 @@ button:focus:not(:focus-visible) {
 	outline: none;
 }
 
+gap {
+	display: block;
+	height: 3rem;
+}
+
+big-gap {
+	display: block;
+	height: 12rem;
+}
+
 /*  utils */
 .col {
 	display: flex;

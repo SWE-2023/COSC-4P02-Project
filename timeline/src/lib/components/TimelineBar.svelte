@@ -122,7 +122,7 @@
 	}
 
 	function updateHeight() {
-		if (screenWidth < 768) {
+		if (screenWidth < 1000) {
 			timelineHeight = 70;
 		} else {
 			timelineHeight = 80;
@@ -372,10 +372,11 @@
 	.btns {
 		display: flex;
 		position: fixed;
-		bottom: 1rem;
-		left: 0.5rem;
+		bottom: 0;
+		left: 0;
 		flex-flow: row;
-		gap: 0.25rem;
+		margin: 0.5rem;
+		gap: 5px;
 		z-index: 99;
 	}
 
