@@ -315,6 +315,16 @@
 				navigate up or down through timeline items.
 			</li>
 		</ul>
+		<h3>Fullscreen</h3>
+		<ul>
+			<li>
+				Click on the image to view it in fullscreen mode. Click on the
+				image again to exit fullscreen mode.
+			</li>
+			<li>
+				On mobile, pinch <span class="material-symbols-rounded i">pinch</span> to zoom in and out of the image.
+			</li>
+		</ul>
 		<h3>Accessibility</h3>
 		<ul>
 			<li>
@@ -415,12 +425,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		margin-left:calc(var(--font-size-base) * 2);
 		transition: margin-left 0.5s ease;
 	}
 
 	@media (max-width: 1000px) {
 		.layout {
-			margin-left: var(--font-size-medium);
+			width: 107%;
 			margin-bottom: 10rem;
 		}
 	}

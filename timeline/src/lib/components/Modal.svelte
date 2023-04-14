@@ -50,7 +50,7 @@
 
 	.content {
 		max-height: 30rem;
-		overflow-y: auto;
+		overflow-y: scroll;
 	}
 
 	dialog[open] {

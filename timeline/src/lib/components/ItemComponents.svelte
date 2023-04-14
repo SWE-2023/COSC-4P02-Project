@@ -138,14 +138,7 @@
 {#key editing || adding}
 	<section class="item-components">
 		<div class="media-component">
-			{#if !editing && !adding}
-				{#if item.media}
-					<div class="tip v-align">
-						<span class="material-symbols-rounded"> info </span>
-						<p>&nbsp;Click the image to toggle fullscreen.</p>
-					</div>
-				{/if}
-			{:else}
+			{#if editing || adding}
 				<div class="notice">
 					<h2>
 						{editing ? "Edit" : "Add"}ing item
@@ -359,7 +352,7 @@
 		align-items: center;
 		transition: all 0.2s ease-in-out;
 		margin-bottom: 3rem;
-		z-index: 2;
+		z-index: 1;
 	}
 
 	.item-components > div {
@@ -372,7 +365,7 @@
 		border-radius: 2rem;
 		max-width: 60rem;
 		background: var(--color-text-card);
-		box-shadow: 5px 5px 7px 0 #00000020;
+		filter: drop-shadow(5px 5px 7px 0 #00000020);
 		text-align: justify;
 	}
 
@@ -471,8 +464,6 @@
 
 	.image:hover {
 		cursor: zoom-in;
-		transform: scale(1.01);
-		box-shadow: 0.5rem 0rem 32px 0 #00000030;
 	}
 
 	.image_cred {
@@ -498,43 +489,6 @@
 		transform: translateY(-0.5rem);
 		color: var(--color-theme-1);
 		text-decoration: none;
-	}
-
-	.tip span,
-	.tip p {
-		font-size: var(--font-size-small);
-		color: var(--color-text);
-		opacity: 0.15;
-		transition: opacity 0.33s ease-in-out;
-	}
-
-	.tip p {
-		white-space: nowrap;
-		overflow-x: hidden;
-		text-overflow: clip;
-		line-height: 0;
-		height: 0;
-		width: 0rem;
-		transition: all 0.33s ease-in-out;
-	}
-
-	.tip {
-		padding: 0rem;
-		position: relative;
-		left: 1rem;
-		width: 100%;
-		cursor: default;
-		user-select: none;
-		transition: all 0.33s ease-in-out;
-	}
-
-	.tip:hover p,
-	.tip:hover span {
-		opacity: 0.75;
-	}
-
-	.tip:hover p {
-		width: calc(var(--font-size-small) * 20);
 	}
 
 	/* ---------------------- EDIT ---------------------- */

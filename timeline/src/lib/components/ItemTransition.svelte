@@ -38,7 +38,6 @@
 
 <div class="container">
 	<div
-		style="position: relative; overflow: hidden;"
 		in:transition={$inTransition}
 		out:transition={$outTransition}>
 		<slot />
@@ -48,5 +47,6 @@
 <style>
 	.container {
 		overflow: hidden;
+		z-index: 1;
 	}
 </style>
