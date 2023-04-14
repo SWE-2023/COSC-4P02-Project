@@ -77,7 +77,7 @@
 	}
 
 	.logo {
-		border-radius: 0.7rem;
+		border-radius: 0.7rem 0.7rem 0 0;
 		width: 100%;
 		max-width: 10rem;
 	}
