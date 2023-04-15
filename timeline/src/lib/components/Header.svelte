@@ -20,7 +20,7 @@
 	let shadow = 0;
 
 	$: {
-		shadow = $scrollY > 70 ? 1 : 0;
+		shadow = $scrollY > 25 ? 1 : 0;
 	}
 
 	$: {

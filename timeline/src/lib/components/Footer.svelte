@@ -1,6 +1,5 @@
 <script>
 	import { countStore } from "$lib/stores/store.js";
-	import { page } from "$app/stores";
 
 	let countValue;
 	countStore.subscribe((value) => {
@@ -8,39 +7,107 @@
 	});
 </script>
 
-<footer>
-	<p>
-		<span
-			style="opacity:{countValue / 100 + 0.2};font-weight:{countValue *
-				100};color:{countValue >= 100
-				? 'var(--color-theme-1)'
-				: 'var(--color-text)'}">{countValue}&nbsp</span>
-		{#if !$page.url.pathname.startsWith("/timeline")}
-			| <a href="https://www.notlmuseum.ca">NOTL Museum</a>
-			| <a href="https://www.notl.com">NOTL</a> |
-			<a href="https://www.niagararegion.ca">Niagara Region</a>
-		{/if}
-		| &copy; 2023
-	</p>
+<footer class="footer">
+	<div class="bar" />
+	<div class="footer-container">
+		<div class="footer-column">
+			<h4>Contact</h4>
+			<p>Address: 43 Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0</p>
+			<p>Phone: <a href="tel:9054683912">(905) 468-3912</a></p>
+		</div>
+		<div class="footer-column">
+			<h4>Quick Links</h4>
+			<ul>
+				<li><a href="about">About Us</a></li>
+				<li><a href="contact">Contact Us</a></li>
+				<li><a href="https://github.com/SWE-2023/COSC-4P02-Project">GitHub</a></li>
+			</ul>
+		</div>
+		<div class="footer-column">
+			<h4>Related Links</h4>
+			<ul>
+				<li><a href="https://www.notlmuseum.ca">NOTL Museum</a></li>
+				<li><a href="https://www.notl.com">Niagara-on-the-Lake</a></li>
+				<li><a href="https://www.niagararegion.ca">Niagara Region</a></li>
+				<li><a href="https://brocku.ca">Brock University</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="footer-bottom">
+		<p>&copy; Niagara-on-the-Lake Museum 2023. All Rights Reserved.</p>
+	</div>
 </footer>
 
 <style>
-	footer {
-		position: fixed;
+	.footer {
+		position: relative;
+		width: 100%;
 		bottom: 0;
+		left: 0;
 		right: 0;
-		font-size: var(--font-size-xsmall);
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: flex-end;
-		padding: 0 16px;
+		background-color: var(--color-bg-1);
 	}
 
-	@media (max-width: 1000px) {
-		footer {
-			z-index:-99;
-			opacity:0.1;
+	.footer-container {
+		display: flex;
+		justify-content: space-around;
+		max-width: 80rem;
+		padding: 4rem 1rem;
+		margin: 0 auto;
+	}
+
+	.footer-column {
+		margin:0 1rem;
+	}
+
+	.footer-column h4 {
+		font-size: var(--font-size-small);
+		font-weight: bold;
+		margin-bottom: 1rem;
+	}
+
+	.footer-column p {
+		line-height: 2rem;
+	}
+
+	.footer-column ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	.footer-column li {
+		margin-bottom: 0.5rem;
+	}
+
+	a {
+		color: var(--color-text);
+		text-decoration: none;
+		transition: all 0.5s var(--curve);
+	}
+
+	a:hover {
+		text-decoration: underline;
+		color: var(--color-theme-1);
+	}
+
+	.footer-bottom {
+		padding:0 1rem;
+		background-color: var(--footer);
+		height: 4rem;
+		color: #fcfcfc;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+
+	@media (max-width: 768px) {
+		.footer-container {
+			flex-direction: column;
+		}
+
+		.footer-column {
+			margin-bottom: 2rem;
 		}
 	}
 </style>

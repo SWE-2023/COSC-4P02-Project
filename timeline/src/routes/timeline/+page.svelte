@@ -230,6 +230,12 @@
 			supabase.removeChannel(timelineChannel);
 		};
 	});
+
+	function handleKeyDown(e) {
+		if (e.key === "h") {
+			showModal = true;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -434,7 +440,7 @@
 	@media (max-width: 1000px) {
 		.layout {
 			margin-left: 1.75rem;
-			width: 105%;
+			width: 100%;
 			margin-bottom: 10rem;
 		}
 	}

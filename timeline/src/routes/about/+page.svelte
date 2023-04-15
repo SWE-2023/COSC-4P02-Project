@@ -52,10 +52,10 @@
 					The Niagara-on-the-Lake Timeline is a project created a team of
 					student developers from Brock University created for the
 					Niagara-on-the-Lake Museum. The project is an interactive timeline
-					that documents the history of NOTL from 1720 to the present day. The
+					that documents the history of NOTL from 1726 to the present day. The
 					timeline is developed for the Software Engineering II course taught by
-					Prof. Naser Ezzati-Jivan at Brock University. The timeline is designed
-					to be accessible for all users, both on desktop and mobile devices.
+					Prof. Naser Ezzati-Jivan at Brock University. We designed this timeline
+					to be accessible for all users, on desktop and mobile devices.
 				</p>
 				<img
 					width="100"
