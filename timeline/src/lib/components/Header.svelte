@@ -110,6 +110,13 @@
 						transition:slide={{ axis: "x" }}>
 						<a href="/timeline">Explore</a>
 					</li>
+					<li
+						aria-current={$page.url.pathname === "/contact"
+							? "page"
+							: undefined}
+						transition:slide={{ axis: "x" }}>
+						<a href="/contact">Contact</a>
+					</li>
 					{#if user && user.email}
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
