@@ -1,8 +1,8 @@
 <script>
 	import { fly } from "svelte/transition";
 	import { reduceMotionStore } from "$lib/stores/store";
-	import { createEventDispatcher } from "svelte";
 	import TextSizeSelector from "$lib/components/TextSizeSelector.svelte";
+	import { themeStore } from "$lib/stores/store";
 
 	export let open;
 
@@ -15,127 +15,63 @@
 		reduceMotionStore.set(!reduceMotion);
 	}
 
-	const themes = {
-		"Dark Mode": {
-			"--color-theme-1": "var(--dark-color-theme-1)",
-			"--color-theme-1-light": "var(--dark-color-theme-1-light)",
-			"--color-theme-2": "var(--dark-color-theme-2)",
-			"--color-theme-2-light": "var(--dark-color-theme-2-light)",
-			"--color-bg-1": "var(--dark-color-bg-1)",
-			"--color-bg-2": "var(--dark-color-bg-2)",
-			"--color-text-card": "var(--dark-color-text-card)",
-			"--bg-opacity": "var(--dark-bg-opacity)",
-			"--bg-grayscale": "var(--dark-bg-grayscale)",
-			"--background-gradient": "var(--dark-color-bg-1)",
-			"--color-text": "var(--dark-color-text)",
-			"--menu-border": "1px solid white",
-			"--button-color": "#ffffff",
-			"--button-hover-color": "#000000",
-			"--button-active-background": "#ffffff",
-		},
-		"Light Mode": {
-			"--color-theme-1": "var(--light-color-theme-1)",
-			"--color-theme-1-light": "var(--light-color-theme-1-light)",
-			"--color-theme-2": "var(--light-color-theme-2)",
-			"--color-theme-2-light": "var(--light-color-theme-2-light)",
-			"--color-bg-1": "var(--light-color-bg-1)",
-			"--color-bg-2": "var(--light-color-bg-2)",
-			"--color-text-card": "var(--light-color-text-card)",
-			"--bg-opacity": "var(--light-bg-opacity)",
-			"--bg-grayscale": "var(--light-bg-grayscale)",
-			"--background-gradient":
-				"linear-gradient(90deg, var(--light-color-bg-1) 0%, (-light-color-bg-2) 100%)",
-			"--color-text": "var(--light-color-text)",
-			"--menu-border": "0px solid white",
-		},
-	};
-
-	let nextTheme = "Dark Mode";
-	const dispatcher = createEventDispatcher();
-
-	function toggleLightorDark() {
-		const root = document.documentElement;
-		const theme = themes[nextTheme];
-
-		Object.entries(theme).forEach(([key, value]) => {
-			root.style.setProperty(key, value);
-		});
-
-		if (nextTheme === "Light Mode") {
-			location.reload();
-			dispatcher("themeSelect", "darkText");
-		} else {
-			root.style.setProperty("--color-theme-1", "var(--dark-color-theme-1)");
-			root.style.setProperty(
-				"--color-theme-1-light",
-				"var(--dark-color-theme-1-light)"
-			);
-			root.style.setProperty("--color-theme-2", "var(--dark-color-theme-2)");
-			root.style.setProperty(
-				"--color-theme-2-light",
-				"var(--dark-color-theme-2-light)"
-			);
-			root.style.setProperty("--color-bg-1", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-bg-2", "var(--dark-color-bg-2)");
-			root.style.setProperty("--background-gradient", "var(--dark-color-bg-1)");
-			root.style.setProperty("--color-text", "var(--dark-color-text)");
-			root.style.setProperty("--button-color", "#ffffff");
-			root.style.setProperty("--button-hover-color", "#000000");
-			root.style.setProperty("--button-active-background", "#ffffff");
-			root.style.setProperty("--border", "2px solid white");
-			dispatcher("themeSelect", "lightText");
-		}
-
-		nextTheme = nextTheme === "Light Mode" ? "Dark Mode" : "Light Mode";
-		open = false;
-	}
-	function toggleContrast() {
-		const root = document.documentElement;
-		open = false;
-		const hcProps = [
-			"--color-theme-1",
-			"--color-theme-1-light",
-			"--color-theme-2",
-			"--color-theme-2-light",
-			"--color-bg-1",
-			"--color-bg-2",
-			"--color-text-card",
-			"--bg-opacity",
-			"--bg-grayscale",
-			"--background-gradient",
-			"--color-text",
-		];
-		hcProps.forEach((prop) =>
-			root.style.setProperty(prop, `var(--hc-${prop.slice(2)})`)
-		);
-		root.style.setProperty("--button-color", "#ffffff");
-		root.style.setProperty("--button-hover-color", "#000000");
-		root.style.setProperty("--button-active-background", "#ffffff");
-		root.style.setProperty("--border", "2px solid white");
-		dispatcher("themeSelect", "light");
-	}
 </script>
 
 {#if open}
-	<div class="menu" transition:fly={{ x: 100 }}>
-		<div class="am-title">Accessibility Options</div>
+	<div class="menu" transition:fly={{ x: 500 }}>
+		<h2 class="am-title">Accessibility Options</h2>
 		<TextSizeSelector />
 		<ul>
-			<li transition:fly={{ x: 24, delay: 50 }}>
-				<span
-					id="light_dark_theme"
-					on:click={toggleLightorDark}
-					on:keydown>{nextTheme}</span>
-			</li>
-			<li transition:fly={{ x: 24, delay: 100 }}>
-				<span on:click={toggleContrast} on:keydown={toggleContrast}
-					>High Constrast</span>
-			</li>
-			<li transition:fly={{ x: 24, delay: 100 }}>
-				<span
+			<li class="anim" transition:fly>
+				<span title="Reduce transition motion"
 					class={reduceMotion ? "active" : ""}
 					on:click={toggleReduceMotion}
-					on:keydown>Reduce Motion</span>
+					on:keydown
+					><span class="material-symbols-rounded i">animation</span
+					>&nbsp;&nbsp;Reduce Motion</span>
+			</li>
+			<li transition:fly>
+				<h2 class="am-title">Theme</h2>
+				<div class="btns">
+					<div
+					title="Light Mode"
+						on:keydown
+						on:click={() => ($themeStore = "light-theme")}
+						class={$themeStore === "light-theme"
+							? "active theme-btn"
+							: "theme-btn"}>
+						<span class="material-symbols-rounded i">light_mode</span>
+					</div>
+					<div
+					title="Reading Mode"
+						on:keydown
+						on:click={() => ($themeStore = "reading-theme")}
+						class={$themeStore === "reading-theme"
+							? "active theme-btn"
+							: "theme-btn"}>
+						<span class="material-symbols-rounded i">book</span>
+					</div>
+
+					<div
+					title="Dark Mode"
+						on:keydown
+						on:click={() => ($themeStore = "dark-theme")}
+						class={$themeStore === "dark-theme"
+							? "active theme-btn"
+							: "theme-btn"}>
+						<span class="material-symbols-rounded i">dark_mode</span>
+					</div>
+
+					<div
+					title="High Contrast Mode"
+						on:keydown
+						on:click={() => ($themeStore = "high-contrast-theme")}
+						class={$themeStore === "high-contrast-theme"
+							? "active theme-btn"
+							: "theme-btn"}>
+						<span class="material-symbols-rounded i">contrast</span>
+					</div>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -150,11 +86,12 @@
 		color: var(--color-text);
 		text-decoration: none;
 	}
+
 	.menu {
-		user-select:none;
+		user-select: none;
 		display: flex;
 		flex-direction: column;
-		z-index: 1;
+		z-index: 2;
 		position: fixed;
 		top: 5rem;
 		left: unset;
@@ -175,9 +112,8 @@
 
 	li {
 		color: var(--color-text);
-		cursor: pointer;
-		padding: 1.5em 0;
-		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
+		padding: 1em 0;
+		transition: all 0.5s var(--curve);
 	}
 
 	.active {
@@ -192,9 +128,42 @@
 		text-decoration: none;
 	}
 
-	li:hover {
-		background: rgba(16, 13, 46, 0.082);
-		letter-spacing: 0.12em;
+	.btns {
+		display: flex;
+		justify-content: space-between;
+		padding: 1em 2em;
+	}
+
+	.theme-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3em;
+		height: 3em;
+		border: var(--border);
+		background:var(--color-bg-1);
+		border-radius: 50%;
+		filter: invert(0.1);
+		cursor: pointer;
+		transition: all 0.5s var(--curve);
+	}
+
+	.theme-btn:hover {
+		filter: invert(0.2);
+	}
+
+	.theme-btn:active {
+		filter: invert(0.3);
+	}
+	
+	li.anim:hover {
+		cursor: pointer;
+		backdrop-filter: invert(0.1);
 		color: var(--color-theme-1);
+	}
+
+	.i {
+		font-size: var(--font-size-medium);
+		vertical-align: middle;
 	}
 </style>

@@ -1,8 +1,9 @@
+// @ts-nocheck
 import supabase from "$lib/supabaseClient";
 import { writable } from "svelte/store";
 import { toast } from "@zerodevx/svelte-toast";
 
-export const user = writable({});
+export const userStore = writable({});
 
 // obtain user info from current session
 export async function getSessionUser() {
@@ -11,7 +12,7 @@ export async function getSessionUser() {
 	} = await supabase.auth.getSession();
 
 	if (session && session.user) {
-		user.set(session.user);
+		userStore.set(session.user);
 		return session.user;
 	}
 	return null;

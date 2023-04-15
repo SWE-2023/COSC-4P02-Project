@@ -1,24 +1,53 @@
 <script>
 	import { Hamburger } from "svelte-hamburgers";
-	import { countStore } from "$lib/stores/store";
+	import { countStore, themeStore } from "$lib/stores/store";
+	import { slide } from "svelte/transition";
+	import { page } from "$app/stores";
 	import { onMount } from "svelte";
-	import { set } from "$lib/components/TextSizeSelector.svelte";
+	import { userStore, logout } from "$lib/authStore";
+	import { setFontSize } from "$lib/components/TextSizeSelector.svelte";
+	import { scrollY, windowWidth } from "$lib/stores/window";
+	import { searchbarVisible } from "$lib/stores/store";
 	import AccessibilityMenu from "$lib/components/AccessibilityMenu.svelte";
-	import Menu from "$lib/components/Menu.svelte";
+
+	let user;
+	userStore.subscribe((value) => {
+		user = value;
+	});
 
 	let isAccessibilityOpen = false;
 	let isMenuOpen = false;
-	let scrollY = 0;
-	let logoOpacity = 1;
-	let isTheme = true;
+	let shadow = 0;
 
-	function handleThemeSelect(event) {
-		isTheme = event.detail === "darkText";
+	$: {
+		shadow = $scrollY > 70 ? 1 : 0;
 	}
 
-	function handleScroll() {
-		scrollY = window.scrollY;
-		logoOpacity = scrollY > 42 ? 0 : 1;
+	$: {
+		isMenuOpen = $searchbarVisible;
+	}
+
+	function checkVisibility() {
+		if ($windowWidth < 1000) {
+			isMenuOpen = false;
+			searchbarVisible.set(true);
+		} else {
+			isMenuOpen = true;
+			searchbarVisible.set(true);
+		}
+	}
+
+	function handleHeader() {
+		if (!$page.url.pathname.startsWith("/timeline")) {
+		} else {
+			shadow = 0;
+		}
+	}
+
+	function searchSwitch() {
+		if ($windowWidth < 1000) {
+			searchbarVisible.set(!$searchbarVisible);
+		}
 	}
 
 	function count() {
@@ -26,31 +55,87 @@
 	}
 
 	onMount(() => {
-		set();
+		setFontSize();
+		handleHeader();
+		checkVisibility();
 	});
 </script>
 
-<svelte:window on:scroll={handleScroll} />
+<svelte:window on:resize={checkVisibility} />
 
 <header>
-	<nav>
+	<nav class={shadow ? "shadow" : ""}>
 		<div class="left">
-			<Hamburger
-				bind:open={isMenuOpen}
-				--color="var(--color-theme-1)"
-				type="arrowalt" />
-			<Menu bind:open={isMenuOpen} />
-			<a href="/"
-				><img
-					on:click={count}
-					on:keypress={count}
-					src={isTheme
-						? "assets/notl-museum.svg"
-						: "assets/notl-museum-dark.svg"}
-					alt="logo"
-					class="logo"
-					id="notl_logo"
-					style="opacity:{logoOpacity}" /></a>
+			{#if !($windowWidth < 1000)}
+				<a href="/" style="margin-right:1rem;"
+					><img
+						on:click={count}
+						on:keypress={count}
+						src={$themeStore === "light-theme" ||
+						$themeStore === "reading-theme"
+							? "assets/notl-museum.svg"
+							: "assets/notl-museum-dark.svg"}
+						alt="logo"
+						class="logo"
+						id="notl_logo" /></a>
+			{/if}
+			{#if $page.url.pathname.startsWith("/timeline")}
+				<div transition:slide={{ axis: "x" }}>
+					<Hamburger
+						on:click={searchSwitch}
+						bind:open={isMenuOpen}
+						--color="var(--color-theme-1)"
+						type="arrowalt" />
+				</div>
+			{/if}
+			{#if isMenuOpen || !$page.url.pathname.startsWith("/timeline")}
+				<ul
+					style={!$page.url.pathname.startsWith("/timeline")
+						? "margin-left:1rem;"
+						: "margin-left:0"}>
+					<li
+						aria-current={$page.url.pathname === "/" ? "page" : undefined}
+						transition:slide={{ axis: "x" }}>
+						<a href="/">Home</a>
+					</li>
+					<li
+						aria-current={$page.url.pathname === "/about" ? "page" : undefined}
+						transition:slide={{ axis: "x" }}>
+						<a href="/about">About</a>
+					</li>
+					<li
+						aria-current={$page.url.pathname === "/timeline"
+							? "page"
+							: undefined}
+						transition:slide={{ axis: "x" }}>
+						<a href="/timeline">Explore</a>
+					</li>
+					{#if user && user.email}
+						<li
+							aria-current={$page.url.pathname.startsWith("/login")
+								? "page"
+								: undefined}
+							transition:slide={{ axis: "x" }}>
+							<a
+								title="Signed in as {user.email}"
+								href="/"
+								on:click={(event) => {
+									event.preventDefault();
+									logout();
+								}}>
+								Log Out</a>
+						</li>
+					{:else}
+						<li
+							aria-current={$page.url.pathname.startsWith("/login")
+								? "page"
+								: undefined}
+							transition:slide={{ axis: "x" }}>
+							<a class="login" href="/login">Log In</a>
+						</li>
+					{/if}
+				</ul>
+			{/if}
 		</div>
 
 		<div class="right">
@@ -63,9 +148,7 @@
 						isAccessibilityOpen = !isAccessibilityOpen;
 					}
 				}}>settings</span>
-			<AccessibilityMenu
-				bind:open={isAccessibilityOpen}
-				on:themeSelect={handleThemeSelect} />
+			<AccessibilityMenu bind:open={isAccessibilityOpen} />
 		</div>
 	</nav>
 </header>
@@ -76,11 +159,67 @@
 		align-items: center;
 		justify-content: space-between;
 		position: fixed;
+		background-color: var(--nav-color);
+		backdrop-filter: blur(10px);
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 5rem;
 		z-index: 1;
+		transition: all 0.2s var(--curve);
+	}
+
+	nav.shadow {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+	}
+
+	ul {
+		display: flex;
+		align-items: baseline;
+		gap: clamp(0.25rem, 1vw, 2rem);
+		list-style: none;
+		padding: 0;
+	}
+
+	li {
+		white-space: nowrap;
+	}
+
+	li[aria-current="page"] a {
+		color: var(--color-theme-1);
+	}
+
+	li::after {
+		content: "";
+		display: block;
+		width: 100%;
+		height: 2px;
+		background: var(--color-theme-1);
+		border-radius: 5px;
+		transform: scaleX(0);
+		transition: all 0.5s var(--curve);
+	}
+
+	li[aria-current="page"]::after {
+		content: "";
+		display: block;
+		width: 100%;
+		height: 3px;
+		transform: scaleX(1);
+		background: var(--color-theme-1);
+		border-radius: 5px;
+	}
+
+	li a {
+		font-size:clamp(var(--font-size-xsmall), 3vw, var(--font-size-small));
+		display: block;
+		padding: 0.5em 0.5em;
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	li a:hover {
+		color: var(--color-theme-1);
 	}
 
 	.logo {
@@ -90,7 +229,7 @@
 		height: 3.5rem;
 		border-radius: 0.5rem 0.5rem 0 0;
 		user-select: none;
-		transition: opacity 0.33s ease-in-out, transform 0.05s ease-in-out;
+		transition: opacity 0.5s var(--curve), transform 0.2s var(--curve);
 	}
 
 	.logo:active {
@@ -114,7 +253,7 @@
 		user-select: none;
 		color: var(--color-theme-1);
 		transform: rotate(0);
-		transition: transform 0.33s ease-in-out;
+		transition: transform 0.5s var(--curve);
 	}
 
 	.accessibility:hover {
@@ -123,7 +262,7 @@
 	}
 
 	.accessibility:active {
-		transition: transform 0.05s ease-in-out;
+		transition: transform 0.2s var(--curve);
 		transform: scale(0.95) rotate(180deg);
 	}
 
@@ -133,6 +272,6 @@
 		left: 0;
 		width: 100%;
 		height: 5rem;
-		z-index: 100;
+		z-index: 5;
 	}
 </style>

@@ -1,6 +1,8 @@
 <script>
 	import Button from "$lib/components/Button.svelte";
 	import { slide } from "svelte/transition";
+	import { themeStore } from "$lib/stores/store";
+	import { windowWidth } from "$lib/stores/window";
 	import PageTransitionFly from "$lib/components/PageTransitionFly.svelte";
 
 	let headerText = [
@@ -22,6 +24,17 @@
 
 <PageTransitionFly>
 	<section class="welcome">
+		{#if $windowWidth < 1000}
+			<div>
+				<img
+					class="logo"
+					src={$themeStore === "light-theme" ||
+					$themeStore === "reading-theme"
+						? "assets/notl-museum.svg"
+						: "assets/notl-museum-dark.svg"}
+					alt="Niagara-on-the-Lake" />
+			</div>
+		{/if}
 		<h1 class="title">
 			Welcome to the<br /><span style="color:var(--color-theme-1)"
 				>Niagara-on-the-Lake</span> Timeline
@@ -43,11 +56,15 @@
 <style>
 	.title {
 		font-family: Georgia, "Times New Roman", Times, serif;
-		padding: 2em 0 0 0;
+		padding: 0.75em 0 0 0;
 		text-align: start;
 		font-size: var(--font-size-xxxlarge);
 		font-weight: 700;
 		margin: 0;
+	}
+
+	.welcome {
+		padding-top: 3em;
 	}
 
 	.subtitle {
@@ -57,6 +74,12 @@
 		font-size: var(--font-size-xxlarge);
 		font-weight: 700;
 		margin: 0;
+	}
+
+	.logo {
+		border-radius: 0.7rem 0.7rem 0 0;
+		width: 100%;
+		max-width: 10rem;
 	}
 
 	.subtext {

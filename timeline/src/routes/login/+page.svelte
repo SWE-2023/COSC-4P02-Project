@@ -2,6 +2,13 @@
 	import PageTransition from "$lib/components/PageTransitionFly.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import { login } from "$lib/authStore";
+	import { logout } from "$lib/authStore";
+	import { userStore } from "$lib/authStore";
+
+	let user;
+	userStore.subscribe((value) => {
+		user = value;
+	});
 
 	let loading = false;
 
@@ -14,30 +21,47 @@
 </script>
 
 <svelte:head>
-	<title>Log In</title>
+	<title>Log In | Niagara-on-the-Lake Timeline</title>
 	<meta name="description" content="Log in to your account" />
 </svelte:head>
 
 <PageTransition>
-	<div class="login-container" >
-		<h1 >Log In</h1>
-		<p>Enter your email to receive a log in link</p>
-
-		<div class="form">
-			<label for="email">Email</label>
-			<input 
-				type="email"
-				id="email"
-				bind:value={email}
-				placeholder="username@email.com" />
-
-			<div class="form-buttons">
-				<div><Button text="Back" href="/" /></div>
-				<div >
-					<Button alt on:click={handleLogin} text="Send Log In Link" loading={loading}/>
+	<div class="login-container">
+		{#if user && user.email}
+			<h1>You are already logged in</h1>
+			<p>Click the button below to log out</p>
+			<div class="form">
+				<div class="form-buttons">
+					<div><Button text="Back" href="/" /></div>
+					<div>
+						<Button alt on:click={logout} text="Log Out" {loading} />
+					</div>
 				</div>
 			</div>
-		</div>
+		{:else}
+			<h1>Log In</h1>
+			<p>Enter your email to receive a log in link</p>
+
+			<div class="form">
+				<label for="email">Email</label>
+				<input
+					type="email"
+					id="email"
+					bind:value={email}
+					placeholder="username@email.com" />
+
+				<div class="form-buttons">
+					<div><Button text="Back" href="/" /></div>
+					<div>
+						<Button
+							alt
+							on:click={handleLogin}
+							text="Send Log In Link"
+							{loading} />
+					</div>
+				</div>
+			</div>
+		{/if}
 	</div>
 </PageTransition>
 

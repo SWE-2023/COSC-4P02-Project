@@ -1,56 +1,51 @@
 <script>
 	import { fly } from "svelte/transition";
 	import { page } from "$app/stores";
-	import { user, logout } from "$lib/authStore";
+	import { userStore, logout } from "$lib/authStore";
+	import { quadOut } from "svelte/easing";
 
 	export let open;
-	let sessionUser;
-	user.subscribe((value) => {
-		sessionUser = value;
+	let user;
+	userStore.subscribe((value) => {
+		user = value;
 	});
 </script>
 
 {#if open}
-	<div class="menu" transition:fly={{ x: -100 }}>
+	<div class="menu" transition:fly={{ x: -500}}>
 		<ul>
 			<li
 				aria-current={$page.url.pathname === "/" ? "page" : undefined}
-				transition:fly={{ x: -24, delay: 50 }}>
+				transition:fly>
 				<a href="/" on:click={() => (open = false)}>Home</a>
 			</li>
 			<li
 				aria-current={$page.url.pathname === "/about" ? "page" : undefined}
-				transition:fly={{ x: -24, delay: 100 }}>
+				transition:fly>
 				<a href="/about" on:click={() => (open = false)}>About</a>
 			</li>
-			<li
-				aria-current={$page.url.pathname.startsWith("/contact")
-					? "page"
-					: undefined}
-				transition:fly={{ x: -24, delay: 150 }}>
-				<a href="/contact" on:click={() => (open = false)}>Contact</a>
-			</li>
-			{#if sessionUser && sessionUser.email}
+			{#if user && user.email}
 				<li
 					aria-current={$page.url.pathname.startsWith("/login")
 						? "page"
 						: undefined}
-					transition:fly={{ x: -24, delay: 150 }}>
-					<p>{sessionUser.email}</p>
+					transition:fly>
 					<a
-						href="/login"
+						href="/"
 						on:click={(event) => {
 							event.preventDefault();
 							logout();
 							open = false;
-						}}>Log Out</a>
+						}}>
+						<p>{user.email}</p>
+						Log Out</a>
 				</li>
 			{:else}
 				<li
 					aria-current={$page.url.pathname.startsWith("/login")
 						? "page"
 						: undefined}
-					transition:fly={{ x: -24, delay: 150 }}>
+					transition:fly>
 					<a class="login" href="/login" on:click={() => (open = false)}
 						>Log In</a>
 				</li>
@@ -63,7 +58,7 @@
 	.menu {
 		user-select: none;
 		display: flex;
-		z-index: 1;
+		z-index: 5;
 		position: fixed;
 		top: 5rem;
 		left: -2px;
@@ -85,12 +80,12 @@
 		color: #0d0d0d;
 		cursor: pointer;
 		padding: 0;
-		transition: letter-spacing 0.2s ease-in-out, color 0.2s ease-in-out;
+		transition: all 0.5s var(--curve);
 	}
 
 	li[aria-current="page"] {
 		border-right: var(--color-theme-1) 0.25em solid;
-		transition: border-right 0.2s ease-in-out;
+		transition: border-right 0.5s var(--curve);
 	}
 
 	li a {
@@ -111,14 +106,13 @@
 
 	li p {
 		margin: 0;
-		padding: 1.5rem 3rem 0.5rem 3rem;
+		padding: 1.5rem 3rem 0.5rem 0;
 		font-size: var(--font-size-xsmall);
 		color: var(--color-theme-1);
 	}
 
 	li:hover {
-		background: rgba(16, 13, 46, 0.082);
-		letter-spacing: 0.12em;
+		backdrop-filter: invert(0.1);
 		color: var(--color-theme-1);
 	}
 </style>

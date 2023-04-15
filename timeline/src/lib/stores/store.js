@@ -26,3 +26,26 @@ currentSizeStore.subscribe(
 	(value) =>
 		typeof localStorage !== "undefined" && (localStorage.currentSize = value)
 );
+
+// current theme
+export const theme = typeof localStorage !== "undefined" && localStorage.theme;
+export const themeStore = writable(theme || "light-theme");
+themeStore.subscribe(
+	(value) => typeof localStorage !== "undefined" && (localStorage.theme = value)
+);
+
+// current timeline index
+const initialIndex =
+	typeof localStorage !== "undefined"
+		? parseInt(localStorage.currentItemIndex || "0")
+		: 0;
+export const currentItemIndexStore = writable(initialIndex);
+
+currentItemIndexStore.subscribe((value) => {
+	if (typeof localStorage !== "undefined") {
+		localStorage.currentItemIndex = value;
+	}
+});
+
+// searchbar vis
+export const searchbarVisible = writable(true);
