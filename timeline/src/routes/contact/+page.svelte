@@ -65,8 +65,6 @@
 
         </div>
 
-        
-
         <div class="form-container">
 			<h2 id="inquiry-title">WE'D LOVE TO HEAR FROM YOU:</h2>
 			<div class="row">
@@ -161,7 +159,7 @@
 	}
 
 	.col-sm-6, .col-xs-12 {
-		position: relative;
+		/* position: relative; */
 		min-height: 1px;
 		padding-left: 5px;
 		padding-right: 5px;
