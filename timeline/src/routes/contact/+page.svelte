@@ -69,9 +69,9 @@
         <div class="form-container">
 			<h2 id="inquiry-title">WE'D LOVE TO HEAR FROM YOU:</h2>
 			<div class="row">
-				<form class="notify" action="/contact" method="post" name="notify">
+				<form class="notify" action="/contact" method="POST" name="netlify-form" data-netlify="true">
 					<div class="input col-xs-12 col-sm-6">
-						<input id="name" class="text required" placeholder="Name" type="text">
+						<input id="name" name="form-name" class="text required" placeholder="Name" type="text">
 					</div>
 					<div class="input col-xs-12 col-sm-6">
 						<input id="phone" class="text" placeholder="Phone" type="text">
@@ -160,7 +160,6 @@
 	}
 
 	.col-sm-6, .col-xs-12 {
-		/* position: relative; */
 		min-height: 1px;
 		padding-left: 5px;
 		padding-right: 5px;

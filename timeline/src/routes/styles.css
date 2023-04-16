@@ -237,7 +237,17 @@ code {
 	font-size: var(--font-size-small);
 }
 
-input,
+input{
+	font-size: var(--font-size-base);
+	font-family: inherit;
+	/* margin: 0.5em 0.5em 2em; */
+	padding: 0.8em;
+	border-radius: 0.5em;
+	border: 2px solid white;
+	box-shadow: 0 0 1px 1px #0000004d;
+	transition: border 0.15s ease;
+}
+
 textarea {
 	font-size: var(--font-size-base);
 	font-family: inherit;
