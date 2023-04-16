@@ -45,10 +45,18 @@
 								<td>EMAIL:</td>
 								<td><a href="mailto:contact@nhsm.ca">contact@nhsm.ca</a></td>
 							</tr>
-
+							<tr>
+								<td>SOCIALS:</td>
+								<td class="socials">
+									<a href="https://www.facebook.com/NOTLMuseum/" class="fa fa-facebook"></a>
+									<a href="https://twitter.com/NOTLMuseum" class="fa fa-twitter"></a>
+									<a href="https://www.instagram.com/notlmuseum/" class="fa fa-instagram"></a>
+									<a href="https://www.youtube.com/user/NOTLMuseum" class="fa fa-youtube"></a>
+								
+								</td>
+							</tr>
 
 						</table>
-
 						<!-- <span>PHONE:</span>
 						<a href="tel:9054683912">905 468 3912</a> -->
 				</div>
@@ -105,6 +113,10 @@
         width:100%;
     }
 
+	td{
+		height:2px;
+	}
+
     .container{
         display:flex;
         flex-direction: row;
@@ -122,9 +134,6 @@
 		font-size: 100%;
 	}
 
-	
-
-
 	div.input{
 		margin: 7px 0;
 	}
@@ -135,7 +144,9 @@
 		--font-size-base:1.2rem;
 	}
 
-
+	.socials{
+		font-size: 30px;
+	}
 
 	*{box-sizing: border-box;}
 
@@ -164,19 +175,42 @@
 
 	.hours{
 		flex:1;
-		/* display:flex; */
 	}
 
-	
+	/* SOCIAL MEDIA ICONS */
+	.fa {
+		padding: 5px;
+		font-size: 20px;
+		width: 30px;
+		text-align: center;
+		text-decoration: none;
+		margin: 5px 2px;
+		border-radius: 150%;
+	}
+	.fa-facebook {
+		background: #3B5998;
+		color: white;
+	}
+
+	.fa-twitter {
+		background: #55ACEE;
+		color: white;
+	}
+
+	.fa-youtube {
+		background: #bb0000;
+		color: white;
+	}
+
+	.fa-instagram {
+		background: #125688;
+		color: white;
+	}
+
 	#message{
 		width: 94%;
 		font-size: 1.2rem;
 	}
-
-	/* #submit{
-		border: 1px solid var(--color-button-primary);
-
-	} */
 
 	#submit-btn{
 		/* align-items: center; */
