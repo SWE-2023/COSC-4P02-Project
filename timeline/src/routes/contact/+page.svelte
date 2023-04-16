@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>About | Niagara-on-the-Lake Timeline</title>
+	<title>Contact | Niagara-on-the-Lake Timeline</title>
 	<meta name="description" content="Contact page" />
 </svelte:head>
 
@@ -18,6 +18,42 @@
     <div class="container">
         <div class="embedded-map">
             <iframe loading="lazy" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11623.863995681377!2d-79.0716183!3d43.2521344!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xf975dbf3ff67d6c0!2sNiagara-on-the-Lake%20Museum!5e0!3m2!1sen!2sca!4v1614106500408!5m2!1sen!2sca" style="border:0;" width="600" height="450"></iframe>
+
+
+			<div class="address-hours-container">
+				<div class="contact-flex-item address">
+					<p>
+						43 Castlereagh Street<br>
+						PO Box 208<br>
+						Niagara-on-the-Lake, ON<br>
+						L0S 1J0<br>
+						Canada<br>
+					</p>
+				</div>
+				<div class="contact-flex-item hours">
+
+						<table>
+							<tr>
+								<td>PHONE:</td>
+								<td><a href="tel:9054683912">905 468 3912</a></td>
+							</tr>
+							<tr>
+								<td>FAX:</td>
+								<td><a href="tel:9054681728">905 468 1728</a></td>
+							</tr>
+							<tr>
+								<td>EMAIL:</td>
+								<td><a href="mailto:contact@nhsm.ca">contact@nhsm.ca</a></td>
+							</tr>
+
+
+						</table>
+
+						<!-- <span>PHONE:</span>
+						<a href="tel:9054683912">905 468 3912</a> -->
+				</div>
+			</div>
+
 
         </div>
 
@@ -69,32 +105,6 @@
         width:100%;
     }
 
-	section {
-		width: 100%;
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: center;
-		align-items: center;
-	}
-
-	section p {
-		flex: 1 1 50%;
-		text-align: justify;
-		display: flex;
-		align-items: center;
-		flex-flow: column;
-		margin: 0 auto;
-		max-width: 40rem;
-	}
-
-	img {
-		flex: 1 1 50%;
-		display: flex;
-		margin: 0 auto;
-		width: 100%;
-		max-width: 30rem;
-	}
-
     .container{
         display:flex;
         flex-direction: row;
@@ -104,6 +114,16 @@
     .embedded-map{
         flex:1;
     }
+
+	.contact-flex-item{
+		/* align-items: center; */
+		display: flex;
+		flex-wrap: nowrap;
+		font-size: 100%;
+	}
+
+	
+
 
 	div.input{
 		margin: 7px 0;
@@ -130,6 +150,23 @@
 		padding-right: 5px;
 
 	}
+	
+	.address-hours-container{
+		display:flex;
+		flex-direction: row;
+        padding-left:5%;
+  		text-align: left;
+	}
+
+	.address{
+		flex:1;
+	}
+
+	.hours{
+		flex:1;
+		/* display:flex; */
+	}
+
 	
 	#message{
 		width: 94%;
