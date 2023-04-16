@@ -45,13 +45,13 @@
 								<td>EMAIL:</td>
 								<td><a href="mailto:contact@nhsm.ca">contact@nhsm.ca</a></td>
 							</tr>
-							<tr>
+							<tr class="socials-row">
 								<td>SOCIALS:</td>
 								<td class="socials">
 									<a href="https://www.facebook.com/NOTLMuseum/" class="fa fa-facebook"></a>
 									<a href="https://twitter.com/NOTLMuseum" class="fa fa-twitter"></a>
 									<a href="https://www.instagram.com/notlmuseum/" class="fa fa-instagram"></a>
-									<a href="https://www.youtube.com/user/NOTLMuseum" class="fa fa-youtube"></a>
+									<a href="https://www.youtube.com/user/NOTLMuseum" class="fa fa-youtube-play"></a>
 								
 								</td>
 							</tr>
@@ -129,6 +129,7 @@
 
 	.contact-flex-item{
 		/* align-items: center; */
+		margin-top: 15px;
 		display: flex;
 		flex-wrap: nowrap;
 		font-size: 100%;
@@ -146,6 +147,11 @@
 
 	.socials{
 		font-size: 30px;
+		vertical-align: middle;
+	}
+
+	.socials-row{
+		vertical-align: middle;
 	}
 
 	*{box-sizing: border-box;}
@@ -197,13 +203,13 @@
 		color: white;
 	}
 
-	.fa-youtube {
+	.fa-youtube-play {
 		background: #bb0000;
 		color: white;
 	}
 
 	.fa-instagram {
-		background: #125688;
+		background: #FF00FF;
 		color: white;
 	}
 
