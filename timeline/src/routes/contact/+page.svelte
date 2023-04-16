@@ -22,27 +22,33 @@
 
         
 
-        <div class="inquiry-form">
-            <p>hello there</p>
+        <div class="form-container">
+			<h2 id="inquiry-title">WE'D LOVE TO HEAR FROM YOU:</h2>
+			<form class="notify" action="/contact" method="post" name="notify">
+				<div class="input col-xs-12 col-sm-6">
+					<input id="name" class="text required" placeholder="Name" type="text">
+				</div>
+				<div class="input col-xs-12 col-sm-6">
+					<input id="phone" class="text" placeholder="Phone" type="text">
+				</div>
+				<div class="input col-xs-12 col-sm-6">
+					<input id="email" class="text required" placeholder="Email" type="text">
+				</div>
+				<div class="input col-xs-12 col-sm-6">
+					<input id="phone" class="text" placeholder="Inquiry Type" type="text">
+				</div>
+				<div class="input col-xs-12">
+					<textarea id="message" class="text" cols="45" placeholder="Message" rows="8"></textarea>
+				</div>
+				
+
+			</form>
         </div>
         
     </div>
 
     
     
-
-	<section class="page" in:slide>
-		<!-- <div class="contact-info">
-			<h1>Contact Us</h1>
-                		
-        </div>
-
-        <div id="embedded-map">
-            <iframe loading="lazy" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11623.863995681377!2d-79.0716183!3d43.2521344!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xf975dbf3ff67d6c0!2sNiagara-on-the-Lake%20Museum!5e0!3m2!1sen!2sca!4v1614106500408!5m2!1sen!2sca" style="border:0;" width="600" height="450"></iframe>
-
-        </div> -->
-
-	</section>
 	<big-gap/>
 </PageTransition>
 
@@ -91,11 +97,48 @@
     .embedded-map{
         flex:1;
     }
-    .inquiry-form{
-        flex:1;
-        padding-left:5%;
-    }
 
+	div.input{
+		margin: 7px 0;
+	}
+	.form-container {
+		flex:1;
+        padding-left:5%;
+  		text-align: center;
+		--font-size-base:1.2rem;
+	}
+
+	*{box-sizing: border-box;}
+
+	.col-xs-12{
+		width: 100%;
+	}
+
+	.col-sm-6, .col-xs-12 {
+		position: relative;
+		min-height: 1px;
+		padding-left: 5px;
+		padding-right: 5px;
+
+	}
+	
+	#message{
+		width: 94%;
+		font-size: 1.2rem;
+	}
+
+
+	@media (min-width: 768px) {
+
+		input{
+			padding:18px;
+		}
+		.col-sm-6 {
+			width: 50%;
+			float:left;
+		}
+		
+	}
 
 
 </style>
