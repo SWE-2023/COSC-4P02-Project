@@ -209,7 +209,7 @@
 	}
 
 	.fa-instagram {
-		background: #FF00FF;
+		background: #d62976;
 		color: white;
 	}
 
