@@ -1,5 +1,6 @@
 <script>
 	import { fade } from "svelte/transition";
+	import { writable } from "svelte/store";
 	import { createEventDispatcher } from "svelte";
 	import { tweened } from "svelte/motion";
 	import Cursor from "$lib/components/Cursor.svelte";
@@ -7,6 +8,7 @@
 	import { cubicOut } from "svelte/easing";
 	import { onMount } from "svelte";
 	import { windowWidth, windowHeight } from "$lib/stores/window";
+
 	export let timeData;
 	export let currentItem;
 	export let disabled;
@@ -27,7 +29,14 @@
 
 	const dispatch = createEventDispatcher();
 	const change = () => dispatch("change");
+	export function callHandleIndexChange(newIndex, direction = 1) {
+		dispatch("indexchange", { newIndex, direction });
+	}
 	const setDetails = (item) => (currentItem = item);
+
+	let animationInProgress = false;
+	let sameYearIndex = 0;
+	const currentIndex = writable(-1);
 
 	let zoomTweened = tweened(zoom, {
 		duration: 300,
@@ -37,6 +46,7 @@
 	$: zoomOffsetTweened = tweened(zoomOffset, {
 		duration: 300,
 		easing: cubicOut,
+		interpolate: (a, b) => (t) => a + (b - a) * t,
 	});
 
 	function getYear(date) {
@@ -45,8 +55,9 @@
 	}
 
 	const year = tweened(decades[0], {
-		duration: 500,
+		duration: 200,
 		easing: cubicOut,
+		interpolate: (a, b) => (t) => a + (b - a) * t,
 	});
 
 	$: getSpacing = (date) => {
@@ -155,11 +166,6 @@
 		}
 	}
 
-	function handleMove(e) {
-		visible = true;
-		pos = e.clientY;
-	}
-
 	onMount(() => {
 		updateHeight();
 		isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
@@ -168,11 +174,82 @@
 			navigator.userAgent.toLowerCase().indexOf("chrome") === -1;
 	});
 	updateGap();
+
+	function handleMove(e) {
+		visible = true;
+		if ($windowHeight > 500) {
+			const { closestY, closestIndex } = findClosestLineItemY(e.clientY);
+			pos = closestY;
+			currentIndex.set(closestIndex);
+		} else {
+			pos = e.clientY;
+		}
+	}
+
+	function findClosestLineItemY(currentY) {
+		let closestY;
+		let minDiff = Infinity;
+		let closestIndex;
+
+		timeData.forEach((td, index) => {
+			const itemYPosition =
+				getSpacing(td.start_date) * 0.01 * $windowHeight +
+				0.125 * $windowHeight;
+			const diff = Math.abs(currentY - itemYPosition);
+			if (diff < minDiff) {
+				minDiff = diff;
+				closestY = itemYPosition;
+				closestIndex = index;
+			}
+		});
+
+		return { closestY: Number(closestY), closestIndex };
+	}
+
+	function handleKeyPress(e) {
+		if (animationInProgress) return;
+		if (e.key === "ArrowUp") {
+			handleIndexChange($currentIndex - 1, -1);
+		} else if (e.key === "ArrowDown") {
+			handleIndexChange($currentIndex + 1, 1);
+		}
+	}
+
+	function handleIndexChange(newIndex, direction = 1) {
+		if (newIndex >= 0 && newIndex < timeData.length) {
+			animationInProgress = true;
+			setTimeout(() => {
+				animationInProgress = false;
+			}, 250);
+
+			const newYear = getYear(timeData[newIndex].start_date);
+
+			if (newYear === $year) {
+				const sameYearEvents = timeData
+					.map((td, i) => ({ index: i, year: getYear(td.start_date) }))
+					.filter(({ year }) => year === newYear);
+
+				if (direction > 0) {
+					sameYearIndex = (sameYearIndex + 1) % sameYearEvents.length;
+				} else {
+					sameYearIndex =
+						(sameYearIndex - 1 + sameYearEvents.length) % sameYearEvents.length;
+				}
+				newIndex = sameYearEvents[sameYearIndex].index;
+			} else {
+				sameYearIndex = 0;
+				year.set(newYear);
+			}
+
+			currentIndex.set(newIndex);
+
+			const itemYPosition = getSpacing(timeData[newIndex].start_date);
+			pos = itemYPosition * 0.01 * $windowHeight + 0.125 * $windowHeight;
+		}
+	}
 </script>
 
-<svelte:window
-	on:resize={updateGap}
-	on:mouseup={handleDragEnd} />
+<svelte:window on:resize={updateGap} on:mouseup={handleDragEnd} on:keydown={handleKeyPress}/>
 
 <div
 	style="--height:{timelineHeight}vh"
@@ -193,10 +270,11 @@
 			style={isFirefox || isSafari
 				? "--left-offset:-2px"
 				: "--left-offset:0px"}>
-			{#each timeData as td, i (i)}
+			{#each timeData as td, i}
 				<div
+					on:keyup
+					data-year={getYear(td.start_date)}
 					class="lineItem"
-					on:keydown
 					on:click={handleMove}
 					on:click={() => year.set(getYear(td.start_date))}>
 					<div
@@ -209,7 +287,7 @@
 					</div>
 				</div>
 			{/each}
-			<Cursor {pos} {visible} {year} />
+			<Cursor bind:pos {visible} {year} />
 		</div>
 		<ul class="timescale" style={timescaleStyle}>
 			{#each decades as decade, i}
@@ -221,7 +299,7 @@
 <div class="btns">
 	<button class="reset" on:click={resetZoom} title="Reset Zoom"
 		><span class="material-symbols-rounded i">refresh</span>
-	</button> 
+	</button>
 	<button class="zoom-out" on:click={handleZoomOut} title="Zoom Out"
 		><span class="material-symbols-rounded i">remove</span>
 	</button>
@@ -235,6 +313,11 @@
 		--foot-height: 2px;
 		--left: 20px;
 		--height: 80vh;
+	}
+
+	div:focus {
+		outline: none !important;
+		border: none !important;
 	}
 
 	.line {
@@ -326,7 +409,6 @@
 		display: flex;
 		position: absolute;
 	}
-
 	.lineItem div {
 		padding: none;
 		position: relative;
@@ -422,7 +504,7 @@
 			left: var(--left);
 		}
 		.timescale {
-			left: calc(5*var(--left));
+			left: calc(5 * var(--left));
 		}
 		.line-components {
 			left: calc((var(--left) - 20px) - var(--left-offset));

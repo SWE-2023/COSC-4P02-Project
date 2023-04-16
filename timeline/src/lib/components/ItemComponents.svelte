@@ -1,13 +1,13 @@
 <script>
 	// @ts-nocheck
-	import { fade } from 'svelte/transition';
+	import { fade } from "svelte/transition";
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
 	import supabase from "$lib/supabaseClient";
-	import { loadingAction } from 'svelte-legos';
+	import { loadingAction } from "svelte-legos";
 	import { toast } from "@zerodevx/svelte-toast";
-	
+
 	// timeline view settings
 	export let editing;
 	export let adding;
@@ -32,7 +32,7 @@
 	// makes date readable
 	function formatDate(date) {
 		if (date.slice(5) == "01-01") {
-			return "circa " + date.slice(0, 4);
+			return date.slice(0, 4);
 		}
 		date = new Date(date + "T00:00:00");
 		if (date == "Invalid Date") {
@@ -44,10 +44,9 @@
 	formatted_date = formatDate(item.start_date);
 
 	function handleKeyDown(e) {
-		if (e.key === "Space Bar") {
-			onToggle();
-			full = !full;
-		}
+		// if (e.key === "Escape") {
+		// 	onToggle();
+		// }
 	}
 
 	function autofill(event) {
@@ -135,6 +134,8 @@
 	}
 </script>
 
+<svelte:window on:keydown={handleKeyDown} />
+
 {#key editing || adding}
 	<section class="item-components">
 		<div class="media-component">
@@ -154,7 +155,7 @@
 					>{uploading ? "Uploading..." : "Upload image"}
 				</p>
 			{/if}
-			<Fullscreen let:onToggle>
+			<Fullscreen let:onToggle let:full>
 				<div class="image-cont">
 					{#if editing || adding}
 						<div class="edit-cont">
@@ -217,8 +218,8 @@
 						{:else}
 							<div class="image-placeholder" use:loadingAction={loading}>
 								<img
-									on:load={() => loading = false}
-									class={full ? "image fullscreen" : "image"}
+									on:load={() => (loading = false)}
+									class={full ? "fullscreen" : "image"}
 									src={item.media}
 									alt={item.title}
 									on:click={() => {
@@ -308,10 +309,8 @@
 			{/if}
 		</div>
 	</section>
-	<gap/>
+	<gap />
 {/key}
-
-<svelte:window on:keypress={handleKeyDown} />
 
 <style>
 	:root {
@@ -335,7 +334,7 @@
 	}
 
 	.image-placeholder {
-		display:flex;
+		display: flex;
 	}
 
 	.tts {
@@ -379,7 +378,7 @@
 	.date {
 		text-align: center;
 		padding: 0;
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-medium);
 		font-weight: 400;
 	}
 
@@ -407,27 +406,6 @@
 		border-radius: 1.5vw;
 		box-shadow: 5px 5px 7px 0 #00000020;
 		transition: all 0.3s ease-in-out;
-	}
-
-	.image.fullscreen {
-		position: fixed;
-		display: block;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		margin: auto;
-		max-width: none;
-		max-height: none;
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-		z-index: 2;
-	}
-
-	.image.fullscreen:hover {
-		cursor: zoom-out;
-		transform: scale(1);
 	}
 
 	@media (max-width: 1000px) {
@@ -462,10 +440,6 @@
 		object-fit: cover;
 		border-radius: 1.5vw;
 		box-shadow: 1rem 0rem 7px 0 #00000030;
-	}
-
-	.image:hover {
-		cursor: zoom-in;
 	}
 
 	.image_cred {
@@ -623,5 +597,13 @@
 	.red {
 		font-weight: 700;
 		color: var(--color-theme-1);
+	}
+
+	.fullscreen {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
 	}
 </style>

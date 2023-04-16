@@ -26,24 +26,24 @@
 	bind:scrollX={$scrollX} />
 
 <div class="{$themeStore} app">
-	<Header />
-	<SvelteToast />
-	<main>
-		<slot />
-	</main>
-	<div class="grey">
-		<img
-			loading="lazy"
-			class={$page.url.pathname == "/timeline"
-				? "background grey ontimeline"
-				: "background grey"}
-			alt="Niagara-on-the-Lake Main Street"
-			src="assets/landing-page-bg-4.webp" />
-	</div>
-	<div class="bg" />
-	{#if $page.url.pathname !== "/timeline"}
-		<Footer />
-	{/if}
+		<Header />
+		<SvelteToast />
+		<main>
+			<slot />
+		</main>
+		<div class="grey" style={$page.url.pathname == "/" ? "position: absolute;" : "position: fixed;"}>
+			<img
+				loading="lazy"
+				class={$page.url.pathname == "/timeline"
+					? "background grey ontimeline"
+					: "background grey"}
+				alt="Niagara-on-the-Lake Main Street"
+				src="assets/landing-page-bg-4.webp" />
+		</div>
+		{#if $page.url.pathname !== "/timeline"}
+			<Footer />
+		{/if}
+		<div class="bg" />
 </div>
 
 <style>
@@ -56,18 +56,19 @@
 	}
 	.background {
 		opacity: var(--bg-opacity);
-		width: calc(100vw + 20rem);
+		width: clamp(100rem, 120vw, 200rem);
 		filter: blur(0px);
 		transition: filter 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61),
 			opacity 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
+	
 	.background.ontimeline {
 		filter: blur(7px);
 		opacity: calc(var(--bg-opacity) * 0.5);
 	}
 
 	.bg {
-		position: fixed;
+		position:fixed;
 		z-index: -10;
 		width: 100vw;
 		height: 100vh;
@@ -75,12 +76,11 @@
 	}
 
 	.grey {
-		position: fixed;
 		transform-origin: bottom right;
 		transform: scale(0.9);
 		bottom: 0;
 		right: 0;
-
+		margin-bottom:-1rem;
 		z-index: -9;
 		filter: var(--bg-grayscale);
 	}
@@ -88,8 +88,9 @@
 	.app {
 		display: flex;
 		flex-direction: column;
-		max-width: 99vw;
+		max-width: 100vw;
 		min-height: 100vh;
+		overflow-x: hidden;
 	}
 
 	main {
@@ -98,14 +99,14 @@
 		flex-direction: column;
 		padding: 1rem;
 		width: 100%;
-		max-width: 82%;
+		max-width: 80%;
 		margin: 0 auto;
-		box-sizing: border-box;
+		min-height: 100vh;
 	}
 
 	@media (max-width: 1000px) {
 		.background {
-			opacity: 0.05;
+			opacity: 0.1;
 		}
 	}
 </style>

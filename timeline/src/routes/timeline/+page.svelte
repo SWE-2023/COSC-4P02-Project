@@ -8,6 +8,7 @@
 	import EventEdit from "$lib/components/EventEdit.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import supabase from "$lib/supabaseClient.js";
+	import { createEventDispatcher } from "svelte";
 	import { currentItemIndexStore } from "$lib/stores/store.js";
 	import { windowWidth } from "$lib/stores/window";
 	import { onMount } from "svelte";
@@ -70,16 +71,21 @@
 		start_date: selectedItem.start_date,
 	};
 
-	function pageUp() {
-		if (!atFirst) {
-			selectedItem = timeline[--currentIndex];
+	let timelineBar;
+
+	function pageDown() {
+		if (!atLast) {
+			selectedItem = timeline[++currentIndex];
+			timelineBar.handleIndexChange(currentIndex - 1, 1);
 			update();
 		}
 		setEditFields();
 	}
-	function pageDown() {
-		if (!atLast) {
-			selectedItem = timeline[++currentIndex];
+
+	function pageUp() {
+		if (!atFirst) {
+			selectedItem = timeline[--currentIndex];
+			timelineBar.handleIndexChange(currentIndex + 1, -1);
 			update();
 		}
 		setEditFields();
@@ -214,8 +220,6 @@
 			)
 			.subscribe();
 
-		// await fetchTimelineData();
-
 		if (timeline.length > 0 && itemIndex !== 0) {
 			currentIndex = itemIndex;
 			selectedItem = timeline[itemIndex];
@@ -226,6 +230,12 @@
 			supabase.removeChannel(timelineChannel);
 		};
 	});
+
+	function handleKeyDown(e) {
+		if (e.key === "h") {
+			showModal = true;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -361,6 +371,7 @@
 		disabled={lockSelection}
 		timeData={timeline}
 		bind:currentItem={selectedItem}
+		bind:this={timelineBar}
 		on:change={update} />
 	<EventEdit
 		bind:lockPage={lockSelection}
@@ -429,7 +440,7 @@
 	@media (max-width: 1000px) {
 		.layout {
 			margin-left: 1.75rem;
-			width: 105%;
+			width: 100%;
 			margin-bottom: 10rem;
 		}
 	}
@@ -452,7 +463,6 @@
 	}
 
 	.help {
-		
 		position: fixed;
 		bottom: 0;
 		right: 0;
