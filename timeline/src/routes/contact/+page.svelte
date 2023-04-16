@@ -1,6 +1,7 @@
 <script>
 	import { slide } from "svelte/transition";
 	import PageTransition from "$lib/components/PageTransitionFly.svelte";
+    import Button from "$lib/components/Button.svelte";
 </script>
 
 <svelte:head>
@@ -24,25 +25,31 @@
 
         <div class="form-container">
 			<h2 id="inquiry-title">WE'D LOVE TO HEAR FROM YOU:</h2>
-			<form class="notify" action="/contact" method="post" name="notify">
-				<div class="input col-xs-12 col-sm-6">
-					<input id="name" class="text required" placeholder="Name" type="text">
-				</div>
-				<div class="input col-xs-12 col-sm-6">
-					<input id="phone" class="text" placeholder="Phone" type="text">
-				</div>
-				<div class="input col-xs-12 col-sm-6">
-					<input id="email" class="text required" placeholder="Email" type="text">
-				</div>
-				<div class="input col-xs-12 col-sm-6">
-					<input id="phone" class="text" placeholder="Inquiry Type" type="text">
-				</div>
-				<div class="input col-xs-12">
-					<textarea id="message" class="text" cols="45" placeholder="Message" rows="8"></textarea>
-				</div>
-				
+			<div class="row">
+				<form class="notify" action="/contact" method="post" name="notify">
+					<div class="input col-xs-12 col-sm-6">
+						<input id="name" class="text required" placeholder="Name" type="text">
+					</div>
+					<div class="input col-xs-12 col-sm-6">
+						<input id="phone" class="text" placeholder="Phone" type="text">
+					</div>
+					<div class="input col-xs-12 col-sm-6">
+						<input id="email" class="text required" placeholder="Email" type="text">
+					</div>
+					<div class="input col-xs-12 col-sm-6">
+						<input id="phone" class="text" placeholder="Inquiry Type" type="text">
+					</div>
+					<div class="input col-xs-12">
+						<textarea id="message" class="text" cols="45" placeholder="Message" rows="8"></textarea>
+					</div>
+					<div class="input submit col-xs-12">
+						<div id="submit-btn">
+							<Button alt text="Submit" />
+						</div>
+					</div>
+				</form>
+			</div>
 
-			</form>
         </div>
         
     </div>
@@ -108,6 +115,8 @@
 		--font-size-base:1.2rem;
 	}
 
+
+
 	*{box-sizing: border-box;}
 
 	.col-xs-12{
@@ -127,6 +136,17 @@
 		font-size: 1.2rem;
 	}
 
+	/* #submit{
+		border: 1px solid var(--color-button-primary);
+
+	} */
+
+	#submit-btn{
+		/* align-items: center; */
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
 
 	@media (min-width: 768px) {
 
