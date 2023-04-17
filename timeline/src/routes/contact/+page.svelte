@@ -6,7 +6,7 @@
     import { toast } from "@zerodevx/svelte-toast";
 
 	export let newInquiry = {
-		name:"",
+		submitter_name:"",
 		phone:"",
 		email:"",
 		inquiryType:"",
@@ -17,20 +17,20 @@
 		if( newInquiry.submitterName.length != 0 && (newInquiry.phone.length != 0 || newInquiry.email.length != 0) && newInquiry.inquiryType.length != 0, newInquiry.message.length != 0){
 
 			try{
-				const {error} = await supabase.from("inquiries").insert([{
-					submitterName: newInquiry.submitterName,
+				const {error} = await supabase.from("inquiries").insert({
+					submitter_name: newInquiry.submitterName,
 					phone: newInquiry.phone,
 					email: newInquiry.email,
 					inquiryType: newInquiry.inquiryType,
 					message: newInquiry.message
-				}]);
+				});
 
 				if(error){
 					throw error;
 				}
 				toast.push("<b>Inquiry Submitted</b>");
 			}catch (error){
-				toast.push("<b>Query Error</b><br>${error.message}");
+				toast.push(`<b>Query Error</b><br>${error.message}`);
 				// toast.push("<b>Query Error</b><br>"+${error.message});
 			}
 		}else{
