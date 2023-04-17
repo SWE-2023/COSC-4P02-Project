@@ -12,7 +12,7 @@
 	}
 
 	function handleIncrease() {
-		if (size <= 2.5) {
+		if (size <= 2) {
 			size += 0.1;
 			setFontSize();
 			currentSizeStore.set(size);
@@ -50,6 +50,7 @@
 	:root {
 		--font-size-xsmall: calc(var(--font-size-base) * 0.66); /* 0.8rem */
 		--font-size-small: calc(var(--font-size-base) * 0.83); /* 0.99rem */
+		--font-size-smallish: calc(var(--font-size-base) * 0.9); /* 1.08rem */
 		--font-size-base: 1.2rem;
 		--font-size-medium: calc(var(--font-size-base) * 1.2); /* 1.44rem */
 		--font-size-large: calc(var(--font-size-base) * 1.5); /* 1.8rem */

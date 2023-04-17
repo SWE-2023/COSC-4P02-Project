@@ -18,8 +18,8 @@
 		<div class="footer-column">
 			<h4>Quick Links</h4>
 			<ul>
-				<li><a href="about">About Us</a></li>
-				<li><a href="javascript:void();">Contact Us</a></li> <!-- replace this once its live -->
+				<li><a href="/about">About Us</a></li>
+				<li><a href="/contact">Contact Us</a></li>
 				<li><a href="https://github.com/SWE-2023/COSC-4P02-Project">GitHub</a></li>
 			</ul>
 		</div>

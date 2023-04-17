@@ -1,9 +1,9 @@
 <script>
 	import { createEventDispatcher } from "svelte";
-	export let lock;
+
 	export let down = false;
 	export let disabled = false;
-	export let visible = false;
+	export let visible = true;
 
 	$: classes =
 		"arrow-button " + (down ? "down" : "up") + (visible ? " " : " hidden");
@@ -13,14 +13,12 @@
 	const goDown = () => dispatch("movedown");
 
 	function handleKeyDown(event) {
-		if (!lock) {
-			if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-				event.preventDefault();
-				goUp();
-			} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-				event.preventDefault();
-				goDown();
-			}
+		if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+			event.preventDefault();
+			goUp();
+		} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+			event.preventDefault();
+			goDown();
 		}
 	}
 </script>
@@ -46,36 +44,8 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <style>
-	:root {
-		--anim: 0.33s cubic-bezier(0.13, 0.94, 0.16, 1.15);
-	}
-
 	* {
 		user-select: none;
-	}
-
-	.arrow-button {
-		position: fixed;
-		left: 11rem;
-		transform: translateX(-50%);
-		z-index: 4;
-		transition: top var(--anim), bottom var(--anim);
-	}
-
-	.up {
-		top: 10vh;
-	}
-
-	.down {
-		bottom: 7vh;
-	}
-
-	.up.hidden {
-		top: -7rem;
-	}
-
-	.down.hidden {
-		bottom: -7rem;
 	}
 
 	.circle {
@@ -84,8 +54,8 @@
 		border-radius: 100%;
 		opacity: var(--arrow-opacity);
 		background-color: var(--color-bg-1);
-		border: var(--border);
-		transition: all 0.5s var(--curve);
+		border: var(--arrow-border);
+		transition: all 0.3s var(--curve);
 	}
 
 	.button {
@@ -97,7 +67,7 @@
 
 	.circle:hover,
 	.button:hover > .circle {
-		border: 2px solid var(--color-theme-1);
+		background-color: var(--color-bg-2);
 		opacity: 1;
 	}
 
@@ -121,6 +91,7 @@
 	.circle:active,
 	.button:active > .circle {
 		transform: scale(0.95);
+		border: var(--border);
 		opacity: 1;
 	}
 </style>

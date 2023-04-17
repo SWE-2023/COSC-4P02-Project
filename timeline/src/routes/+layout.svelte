@@ -11,8 +11,11 @@
 		windowHeight,
 		scrollY,
 		scrollX,
+		mobile
 	} from "$lib/stores/window";
 	import "./styles.css";
+
+	$: mobile.set($windowWidth < 1000);
 
 	onMount(async () => {
 		await getSessionUser();

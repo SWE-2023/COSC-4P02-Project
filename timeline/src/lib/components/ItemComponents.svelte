@@ -360,7 +360,7 @@
 	}
 
 	.text-component {
-		flex: 1 1 33%;
+		flex: 1 2 50%;
 		padding: 2rem 2rem;
 		border-radius: 2rem;
 		max-width: 60rem;
