@@ -41,7 +41,16 @@
 					},
 				]);
 					// location.reload();
-					document.getElementById("inquiry-form").reset();
+					// document.getElementById("inquiry-form").value = "";
+
+					// RESET FORM FIELDS
+					document.getElementById("name").value = "";
+					document.getElementById("phone").value = "";
+					document.getElementById("email").value = "";
+					document.getElementById("type").value = "";
+					document.getElementById("message").value = "";
+					
+
 				if (error) {
 					throw error;
 				}
