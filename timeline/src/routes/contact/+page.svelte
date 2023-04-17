@@ -40,7 +40,8 @@
 						message: inquiry.message,
 					},
 				]);
-					location.reload();
+					// location.reload();
+					document.getElementById("inquiry-form").reset();
 				if (error) {
 					throw error;
 				}
@@ -122,7 +123,7 @@
 		<div class="form-container">
 			<h2 id="inquiry-title">We'd love to hear from you:</h2>
 			<div class="row">
-				<form class="notify">
+				<form class="notify" id="inquiry-form">
 					<input
 						id="name"
 						class="text required"
