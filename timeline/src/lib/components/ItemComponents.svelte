@@ -128,7 +128,7 @@
 	}
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window />
 
 {#key editing || adding}
 	<section class="item-components">
@@ -212,6 +212,7 @@
 						{:else}
 							<div class="image-placeholder" use:loadingAction={loading}>
 								<img
+									on:keydown
 									on:load={() => (loading = false)}
 									class={full ? "fullscreen" : "image"}
 									src={item.media}
@@ -219,8 +220,7 @@
 									on:click={() => {
 										onToggle();
 										full = !full;
-									}}
-									on:keydown={handleKeyDown} />
+									}} />
 							</div>
 						{/if}
 					{/if}
