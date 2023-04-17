@@ -18,11 +18,6 @@
 
 			try{
 				const {error} = await supabase.from("inquiries").insert([{
-					// name: newInquiry.name,
-					// phone: newInquiry.phone,
-					// email: newInquiry.email,
-					// inquiryType: newInquiry.inquiryType,
-					// message: newInquiry.message,
 					submitterName: newInquiry.submitterName,
 					phone: newInquiry.phone,
 					email: newInquiry.email,
@@ -35,7 +30,7 @@
 				}
 				toast.push("<b>Inquiry Submitted</b>");
 			}catch (error){
-				toast.push('<b>Query Error</b><br>${error.message}');
+				toast.push("<b>Query Error</b><br>${error.message}");
 				// toast.push("<b>Query Error</b><br>"+${error.message});
 			}
 		}else{
