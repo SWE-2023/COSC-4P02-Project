@@ -1,11 +1,22 @@
 <script>
+	// @ts-nocheck
 	import { fade } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
 	import { tweened } from "svelte/motion";
 	import Cursor from "$lib/components/Cursor.svelte";
+	import { userStore } from "$lib/authStore";
 	import Dot from "$lib/components/Dot.svelte";
 	import { cubicOut } from "svelte/easing";
-	import { year, firstYear, lastYear, atStart, atEnd } from "$lib/stores/store";
+	import { direction } from "$lib/stores/store";
+	import { currentItemIndexStore } from "$lib/stores/store";
+	import {
+		year,
+		firstYear,
+		lastYear,
+		atStart,
+		atEnd,
+		showModal,
+	} from "$lib/stores/store";
 	import { onMount } from "svelte";
 	import { mobile, windowHeight } from "$lib/stores/window";
 	import Arrow from "./Arrow.svelte";
@@ -13,7 +24,6 @@
 	export let timeData;
 	export let currentItem;
 	export let disabled;
-	export let direction;
 
 	let dragging = false;
 	let startY;
@@ -22,10 +32,10 @@
 	let zoomOffset = 0;
 	let isFirefox;
 	let isSafari;
-	let timelineHeight = 80; // in vh
+	let timelineHeight = 80;
 	let lowest;
 	let highest;
-	let decadeGap; // values lower than 10 will cause issues
+	let decadeGap;
 	let decades = [];
 	let arrowVisible = true;
 	let touchStartPos = 0;
@@ -39,7 +49,12 @@
 
 	const callPageUp = () => dispatch("pageup");
 
-	const change = () => dispatch("change");
+	function change() {
+		const index = timeData.findIndex((item) => item.id == currentItem.id);
+		$direction = index > $currentItemIndexStore ? "down" : "up";
+		console.log($direction);
+		dispatch("change");
+	}
 
 	const setDetails = (item) => (currentItem = item);
 
@@ -128,11 +143,15 @@
 
 		if (Math.abs(deltaX) > 100) {
 			if (deltaX > 0) {
-				direction = "right";
-				callPageUp();
+				if (!$atStart) {
+					$direction = "right";
+					callPageUp();
+				}
 			} else {
-				direction = "left";
-				callPageDown();
+				if (!$atEnd) {
+					$direction = "left";
+					callPageDown();
+				}
 			}
 		}
 	}
@@ -174,10 +193,6 @@
 	onMount(() => {
 		handleResize();
 		year.set($firstYear);
-		isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
-		isSafari =
-			navigator.userAgent.toLowerCase().indexOf("safari") > -1 &&
-			navigator.userAgent.toLowerCase().indexOf("chrome") === -1;
 	});
 
 	handleResize();
@@ -188,17 +203,19 @@
 
 	function handleDownArrow() {
 		if (!$atEnd) {
-			direction = "down";
+			$direction = "down";
 			callPageDown();
 		}
 	}
 
 	function handleUpArrow() {
 		if (!$atStart) {
-			direction = "up";
+			$direction = "up";
 			callPageUp();
 		}
 	}
+
+	$: disabled ? (arrowVisible = false) : (arrowVisible = true);
 </script>
 
 <svelte:window
@@ -208,16 +225,31 @@
 	on:touchmove|passive
 	on:touchend|passive={handleTouchEnd} />
 
-<div class="arrow-button up">
-	<Arrow on:moveup={handleUpArrow} disabled={$atStart} />
-</div>
-<div class="arrow-button down">
-	<Arrow on:movedown={handleDownArrow} down disabled={$atEnd} />
+<div
+	class={arrowVisible
+		? $userStore && $userStore.email
+			? "arrow-btns edit"
+			: "arrow-btns"
+		: "arrow-btns hidden"}>
+	<div class="arrow-button" title="Previous item">
+		<Arrow on:moveup={handleUpArrow} disabled={$atStart} />
+	</div>
+	<div class="arrow-button" title="Next item">
+		<Arrow on:movedown={handleDownArrow} down disabled={$atEnd} />
+	</div>
+	<div class="help">
+		<button
+			class="help-btn"
+			title="Show Quick Start guide"
+			on:click={() => showModal.set(true)}>
+			<span class="material-symbols-rounded i">help</span>
+		</button>
+	</div>
 </div>
 <div
 	style="--height:{timelineHeight}vh"
 	in:fade
-	class="timeline-container"
+	class={disabled ? "timeline-container disabled" : "timeline-container"}
 	on:wheel|preventDefault={handleWheel}
 	on:dblclick={handleZoomIn}
 	on:mousedown={handleDragStart}
@@ -228,15 +260,10 @@
 	on:touchend={handleDragEnd}>
 	<div>
 		<span class="line" />
-		<div
-			class={disabled ? "line-components disabled" : "line-components"}
-			style={isFirefox || isSafari
-				? "--left-offset:-2px"
-				: "--left-offset:0px"}>
+		<div class="line-components">
 			{#each timeData as td, i}
 				<div
 					on:keyup
-					data-year={getYear(td.start_date)}
 					class="lineItem"
 					on:click={handleMove}
 					on:click={() => year.set(getYear(td.start_date))}>
@@ -264,13 +291,13 @@
 	</div>
 </div>
 <div class="btns">
-	<button class="reset" on:click={resetZoom} title="Reset Zoom"
+	<button class="reset" on:click={resetZoom} title="Reset zoom"
 		><span class="material-symbols-rounded i">refresh</span>
 	</button>
-	<button class="zoom-out" on:click={handleZoomOut} title="Zoom Out"
+	<button class="zoom-out" on:click={handleZoomOut} title="Zoom out"
 		><span class="material-symbols-rounded i">remove</span>
 	</button>
-	<button class="zoom-in" on:click={handleZoomIn} title="Zoom In"
+	<button class="zoom-in" on:click={handleZoomIn} title="Zoom in"
 		><span class="material-symbols-rounded i">add</span>
 	</button>
 </div>
@@ -322,12 +349,8 @@
 	.line-components {
 		user-select: none;
 		position: relative;
-		left: calc(20px - var(--left-offset));
+		left: 20px;
 		transition: left 0.5s var(--curve);
-	}
-
-	.disabled {
-		pointer-events: none;
 	}
 
 	.dot {
@@ -395,7 +418,7 @@
 		left: calc(var(--left) - 40px);
 		overflow: hidden;
 		background: var(--color-bg-1);
-		box-shadow: inset 0 0 1rem 0px #00000015;
+		border: var(--border);
 		border-radius: 0 1.5rem 1.5rem 0;
 		height: var(--height);
 	}
@@ -405,7 +428,6 @@
 	}
 
 	.i {
-		user-select: none;
 		transition: transform 0.5s var(--curve);
 	}
 
@@ -421,29 +443,28 @@
 	.btns {
 		display: flex;
 		position: fixed;
+		backdrop-filter: invert(0.1);
 		bottom: 0;
 		left: 0;
 		flex-flow: row;
 		margin: 0.5rem;
-		gap: 5px;
 		z-index: 99;
+		border-radius: 10rem;
+		border: var(--border);
 	}
 
 	button {
 		cursor: pointer;
-		background: var(--color-bg-1);
+		background: transparent;
 		user-select: none;
 		color: var(--color-theme-1);
 		line-height: 0;
 		height: calc((var(--font-size-base) * 1) + 1rem);
 		width: calc(var(--font-size-base) * 1 + 1rem);
 		margin: 0;
-		padding: 0;
+		padding: 0.25rem;
 		justify-self: center;
-		filter: invert(0.1);
-		border-radius: 100rem;
-		border: var(--border);
-		font-weight: 900;
+		border: none;
 		transition: all 0.5s var(--curve);
 	}
 
@@ -452,41 +473,57 @@
 	}
 
 	button:active {
-		filter: invert(0.3);
 		scale: 0.95;
 		transition: none;
 	}
 
-	/* arrow buttons */
-	.arrow-button {
+	.help {
+		z-index: 99;
+		align-items: center;
+		margin: 0.5rem;
+		padding: 0;
+	}
+
+	.help button {
+		cursor: pointer;
+		background: none;
+		width: calc(2.5 * var(--font-size-base));
+		height: calc(2.5 * var(--font-size-base));
+		backdrop-filter: invert(0.1);
+		border-radius: 10rem;
+		border: var(--border);
+		transition: all 0.5s var(--curve);
+	}
+
+	.help button span {
+		font-size: calc(1.5 * var(--font-size-base));
+	}
+
+	.arrow-btns {
+		display: flex;
 		position: fixed;
-		height: 0;
-		margin: 0;
-		left: calc(var(--left) + 6em);
+		bottom: 0;
+		right: 0;
+		flex-flow: column;
+		margin: 0rem;
+		gap: 0;
+		z-index: 99;
+		transition: all var(--anim);
+	}
+
+	.arrow-button {
 		z-index: 4;
 		transition: all var(--anim);
 	}
 
+	.arrow-btns.hidden {
+		right: -5rem;
+	}
+
 	@media (max-width: 1000px) {
-		.arrow-button {
-			left: calc(var(--left) + 4rem);
+		.arrow-btns.edit {
+			bottom: calc(3.5 * var(--font-size-base));
 		}
-	}
-
-	.up {
-		top: 5rem;
-	}
-
-	.down {
-		top: 9rem;
-	}
-
-	.up.hidden {
-		top: -7rem;
-	}
-
-	.down.hidden {
-		bottom: -7rem;
 	}
 
 	@keyframes rotate {
@@ -509,16 +546,29 @@
 			left: calc(5 * var(--left));
 		}
 		.line-components {
-			left: calc((var(--left) - 20px) - var(--left-offset));
+			left: calc((var(--left) - 20px));
 		}
 		.timeline-container {
-			width: 6rem;
+			width: 5rem;
 			background: none;
 			box-shadow: none;
 			left: 0;
 		}
-		.btns {
-			flex-flow: column;
-		}
+	}
+
+	.disabled {
+		pointer-events: none;
+	}
+
+	.disabled::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: var(--color-bg-1);
+		opacity: 0.8;
+		z-index: 99;
 	}
 </style>

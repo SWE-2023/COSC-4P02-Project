@@ -413,17 +413,16 @@
 			margin: 0 -1rem 0 -1rem;
 		}
 		.text-component {
-			padding: 2rem 1rem;
-			text-align: justify;
+			padding: 1rem 1.5rem;
 		}
 		.title {
 			font-size: var(--font-size-large);
 		}
 		.date {
-			font-size: var(--font-size-small);
+			font-size: var(--font-size-base);
 		}
 		.desc {
-			font-size: var(--font-size-base);
+			font-size: var(--font-size-small);
 		}
 		.image {
 			min-height: 0vh;

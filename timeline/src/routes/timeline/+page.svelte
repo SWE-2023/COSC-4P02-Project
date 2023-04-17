@@ -1,4 +1,5 @@
 <script>
+	import { direction } from "./../../lib/stores/store.js";
 	import ItemTransition from "$lib/components/ItemTransition.svelte";
 	import TimelineBar from "$lib/components/TimelineBar.svelte";
 	import SearchBar from "$lib/components/searchbar/SearchBar.svelte";
@@ -7,7 +8,14 @@
 	import EventEdit from "$lib/components/EventEdit.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import supabase from "$lib/supabaseClient.js";
-	import { year, firstYear, lastYear, atStart, atEnd } from "$lib/stores/store.js";
+	import {
+		year,
+		firstYear,
+		lastYear,
+		atStart,
+		atEnd,
+		showModal,
+	} from "$lib/stores/store.js";
 	import { currentItemIndexStore } from "$lib/stores/store.js";
 	import { onMount } from "svelte";
 
@@ -30,10 +38,7 @@
 		itemIndex = value;
 	});
 
-	let showModal = false;
-
 	let dropDownSelection = "";
-	let transitionDirection;
 	let selectedItem = timeline[0];
 
 	let currentIndex = 0;
@@ -72,7 +77,6 @@
 
 	function pageDown() {
 		selectedItem = timeline[++currentIndex];
-		
 		update();
 		setEditFields();
 	}
@@ -84,6 +88,7 @@
 	}
 
 	function update() {
+		year.set(parseInt(selectedItem.start_date.slice(0, 4)));
 		currentItem = {
 			title: selectedItem.title,
 			image: selectedItem.image,
@@ -91,14 +96,6 @@
 			body: selectedItem.body,
 			start_date: selectedItem.start_date,
 		};
-
-		year.set(parseInt(selectedItem.start_date.slice(0, 4)));
-
-		if (timeline.indexOf(selectedItem) > currentIndex) {
-			transitionDirection = "down";
-		} else if (timeline.indexOf(selectedItem) < currentIndex) {
-			transitionDirection = "up";
-		}
 
 		currentIndex = timeline.indexOf(selectedItem);
 		currentItemIndexStore.set(currentIndex);
@@ -109,6 +106,11 @@
 		let item = timeline.find((item) => item.title == dropDownSelection);
 		if (item) {
 			selectedItem = item;
+			if (timeline.indexOf(selectedItem) > currentIndex) {
+				$direction = "down";
+			} else if (timeline.indexOf(selectedItem) < currentIndex) {
+				$direction = "up";
+			}
 			update();
 		}
 		setEditFields();
@@ -155,7 +157,7 @@
 		const firstVisit = localStorage.getItem("firstVisit");
 
 		if (!firstVisit) {
-			showModal = true;
+			$showModal = true;
 			localStorage.setItem("firstVisit", "false");
 		}
 
@@ -188,7 +190,7 @@
 </svelte:head>
 
 <PageTransitionFade>
-	<Modal bind:showModal>
+	<Modal>
 		<h2 slot="header"><b>Timeline Quick Start Guide</b></h2>
 		<p>
 			Welcome! This guide provides an overview of key features to help you
@@ -295,13 +297,12 @@
 		</p>
 	</Modal>
 	<SearchBar
-		lock={locked}
+		disabled={locked}
 		bind:selection={dropDownSelection}
 		data={searchData}
 		on:selection={gotoItem}
 		on:selection={update} />
 	<TimelineBar
-		direction={transitionDirection}
 		disabled={locked}
 		timeData={timeline}
 		bind:currentItem={selectedItem}
@@ -321,9 +322,9 @@
 		on:saveNew={handleAdd}
 		on:entryDeleted={handleDelete} />
 	{#if timeline.length > 0}
-		{#key `${selectedItem.id}-${transitionDirection}`}
+		{#key `${selectedItem.id}-${$direction}`}
 			<section class="layout">
-				<ItemTransition direction={transitionDirection}>
+				<ItemTransition>
 					<ItemComponents
 						editing={isEditing}
 						adding={isAdding}
@@ -348,14 +349,7 @@
 				src="https://play-lh.googleusercontent.com/i-0HlK6I-K5ZVI28HFa4iXz0T22Mg2WjQ4gMsEYvqmSNdifp2NE41ZiaUCavmbIimQ" />
 			<h1>No items in timeline. Click 'Add' to create a new event.</h1>
 		</section>
-	{/if}
-
-	<div class="help">
-		<button title="Show Quick Start Guide" on:click={() => (showModal = true)}>
-			<span class="material-symbols-rounded i">help</span>
-		</button>
-	</div>
-</PageTransitionFade>
+	{/if}</PageTransitionFade>
 
 <style>
 	.layout {
@@ -380,7 +374,6 @@
 	}
 
 	.i {
-		vertical-align: middle;
 		color: var(--color-theme-1);
 	}
 
@@ -390,33 +383,6 @@
 
 	.rotate-90 {
 		transform: rotate(90deg);
-	}
-
-	.help {
-		position: fixed;
-		bottom: 0;
-		right: 0;
-		z-index: 99;
-		margin: 1rem;
-	}
-
-	.help button {
-		cursor: pointer;
-		background: none;
-		backdrop-filter: invert(0.1);
-		border-radius: 5rem;
-		padding: 0.5rem;
-		border: var(--border);
-		transition: all 0.5s var(--curve);
-	}
-
-	.help button:hover {
-		backdrop-filter: invert(0.2);
-	}
-
-	.help button:active {
-		backdrop-filter: invert(0.3);
-		scale: 0.95;
 	}
 
 	hr {

@@ -57,11 +57,12 @@
 					alt="logo"
 					class="logo"
 					id="notl_logo" /></a>
-			<ExpandButton bind:open={isMenuOpen} />
+			<div title="Toggle menu visibility"><ExpandButton bind:open={isMenuOpen} /></div>
 			{#if isMenuOpen}
 				<ul transition:slide={{ axis: $mobile ? "y" : "x", easing: quintOut }}>
 					<li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
 						<a
+						title="Home"
 							href="/"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -72,6 +73,7 @@
 							? "page"
 							: undefined}>
 						<a
+						title="Explore the timeline"
 							href="/timeline"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -82,6 +84,7 @@
 							? "page"
 							: undefined}>
 						<a
+						title="Contact us"
 							href="/contact"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -90,6 +93,7 @@
 					<li
 						aria-current={$page.url.pathname === "/about" ? "page" : undefined}>
 						<a
+						title="About the project"
 							href="/about"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -119,6 +123,7 @@
 								? "page"
 								: undefined}>
 							<a
+								title="Log in"
 								class="login"
 								href="/login"
 								on:click={() => {
@@ -134,7 +139,7 @@
 		</div>
 
 		<div class="right">
-			<span
+			<span title="Accessibility options"
 				class="material-symbols-rounded accessibility"
 				style="scale: 1.2;"
 				on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
@@ -247,10 +252,6 @@
 		margin-right: 2em;
 	}
 
-	.i {
-		vertical-align: middle;
-	}
-
 	.accessibility {
 		padding: 1rem;
 		user-select: none;
@@ -288,7 +289,7 @@
 			padding: 1rem 0;
 			background-color: var(--color-bg-1);
 			flex-direction: column;
-			gap: 0.5rem;
+			gap: 0.2rem;
 			justify-content: center;
 			align-items: center;
 			overflow-y: auto;
@@ -302,7 +303,7 @@
 			text-align: center;
 		}
 		li a {
-			padding: 1rem 2rem;
+			padding: 0.8rem 2rem;
 			font-size: var(--font-size-base);
 		}
 	}

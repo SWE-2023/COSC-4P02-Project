@@ -65,5 +65,8 @@ export const year = tweened(0, {
 	interpolate: (a, b) => (t) => a + (b - a) * t,
 });
 
-// searchbar vis
-export const searchbarVisible = writable(true);
+// transition direction
+export const direction = writable("down");
+
+// modal store
+export const showModal = writable(false);

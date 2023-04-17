@@ -306,6 +306,13 @@ big-gap {
 	border-radius: 0.5rem;
 }
 
+.i {
+	user-select: none;
+	vertical-align: middle;
+	font-size: var(--font-size-medium);
+}
+
+
 /* remove blue boxes on mobile */
 @media(max-width: 768px) {
 	* {

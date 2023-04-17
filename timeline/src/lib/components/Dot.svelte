@@ -17,14 +17,14 @@
 		width="32"
 		height="32"
 		viewBox="0 0 32 16">
-		<circle class="dot" cx="12" cy="8" r="7" />
+		<circle class="dot" cx="12" cy="11" r="7" />
 		{#if !$mobile}
 			<line
 				class="line"
 				x1="14"
-				y1="8"
+				y1="11"
 				x2="28"
-				y2="8"
+				y2="11"
 				stroke="var(--color-theme-1)"
 				stroke-width="4"
 				stroke-linecap="square"
@@ -52,7 +52,7 @@
 
 	.dot-svg {
 		position: absolute;
-		left: 10px;
+		left: 9px;
 		z-index: 3;
 	}
 

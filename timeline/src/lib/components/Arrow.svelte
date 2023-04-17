@@ -62,7 +62,7 @@
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
-		padding: 1rem 1rem;
+		padding: 0.5rem;
 	}
 
 	.circle:hover,
@@ -75,6 +75,12 @@
 	.up-arrow {
 		color: var(--color-theme-1);
 		font-size: calc(2.5 * var(--font-size-base));
+	}
+
+	@media (max-width: 1000px) {
+		.circle {
+			border: var(--border);
+		}
 	}
 
 	.down-arrow {

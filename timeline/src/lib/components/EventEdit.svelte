@@ -161,25 +161,25 @@
 	{#key enableAdding || enableEditing}
 		<div transition:slide={{ axis: "y" }} class="edit-items">
 			{#if enableEditing}
-				<button on:click={cancelChanges} title="Cancel Changes"
+				<button on:click={cancelChanges} title="Cancel changes"
 					><span class="material-symbols-rounded i">close</span>Cancel</button>
 				<div class="line" />
-				<button class="options" on:click={saveChanges} title="Save Changes"
+				<button class="options" on:click={saveChanges} title="Save changes"
 					><span class="material-symbols-rounded i">save</span>Save</button>
 				<div class="line" />
-				<button class="options" on:click={deleteEntry} title="Delete Entry"
+				<button class="options" on:click={deleteEntry} title="Delete entry"
 					><span class="material-symbols-rounded i">delete</span>Delete</button>
 			{:else if enableAdding}
-				<button on:click={cancelAdd} title="Cancel Changes"
+				<button on:click={cancelAdd} title="Cancel changes"
 					><span class="material-symbols-rounded i">close</span>Cancel</button>
 				<div class="line" />
-				<button class="options" on:click={saveNew} title="Save Changes"
+				<button class="options" on:click={saveNew} title="Save changes"
 					><span class="material-symbols-rounded i">save</span>Save</button>
 			{:else}
-				<button on:click={changeMenu} title="Edit Items"
+				<button on:click={changeMenu} title="Edit items"
 					><span class="material-symbols-rounded i">edit</span>Edit</button>
 				<div class="line" />
-				<button on:click={addNew} title="Add New Item"
+				<button on:click={addNew} title="Add New item"
 					><span class="material-symbols-rounded i">add</span>Add</button>
 			{/if}
 		</div>
@@ -241,12 +241,7 @@
 		background-color: #00000020;
 		transition: all	0.5s var(--curve);
 	}
-
-	.i {
-		vertical-align: center;
-		font-size: var(--font-size-medium);
-	}
-
+	
 	button {
 		font-size: var(--font-size-small);
 	}

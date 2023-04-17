@@ -34,7 +34,7 @@
 				<h2 class="am-title">Theme</h2>
 				<div class="btns">
 					<div
-					title="Light Mode"
+					title="Light mode"
 						on:keydown
 						on:click={() => ($themeStore = "light-theme")}
 						class={$themeStore === "light-theme"
@@ -43,7 +43,7 @@
 						<span class="material-symbols-rounded i">light_mode</span>
 					</div>
 					<div
-					title="Reading Mode"
+					title="Reading mode"
 						on:keydown
 						on:click={() => ($themeStore = "reading-theme")}
 						class={$themeStore === "reading-theme"
@@ -53,7 +53,7 @@
 					</div>
 
 					<div
-					title="Dark Mode"
+					title="Dark mode"
 						on:keydown
 						on:click={() => ($themeStore = "dark-theme")}
 						class={$themeStore === "dark-theme"
@@ -63,7 +63,7 @@
 					</div>
 
 					<div
-					title="High Contrast Mode"
+					title="High contrast mode"
 						on:keydown
 						on:click={() => ($themeStore = "high-contrast-theme")}
 						class={$themeStore === "high-contrast-theme"
@@ -162,8 +162,4 @@
 		color: var(--color-theme-1);
 	}
 
-	.i {
-		font-size: var(--font-size-medium);
-		vertical-align: middle;
-	}
 </style>

@@ -68,11 +68,11 @@
 
 <div class="tts-container">
 	{#if speaking}
-		<button title="Stop Reading" class="text2Speech" on:click={stop}>
+		<button title="Stop reading" class="text2Speech" on:click={stop}>
 			<span class="material-symbols-rounded">stop</span>
 		</button>
 	{:else}
-		<button title="Read Aloud" class="text2Speech" on:click={text2Speech}>
+		<button title="Read aloud" class="text2Speech" on:click={text2Speech}>
 			<span class="material-symbols-rounded">volume_up</span>
 		</button>
 	{/if}
