@@ -7,7 +7,6 @@
 	import { userStore, logout } from "$lib/authStore";
 	import { setFontSize } from "$lib/components/TextSizeSelector.svelte";
 	import { scrollY, mobile } from "$lib/stores/window";
-	import { searchbarVisible } from "$lib/stores/store";
 	import AccessibilityMenu from "$lib/components/AccessibilityMenu.svelte";
 	import { quintOut } from "svelte/easing";
 
@@ -24,7 +23,7 @@
 		shadow = $scrollY > 25 ? 1 : 0;
 	}
 
-	function checkVisibility() {
+	$: {
 		if ($mobile) {
 			isMenuOpen = false;
 		} else {
@@ -45,7 +44,7 @@
 	});
 </script>
 
-<svelte:window on:resize={checkVisibility} />
+<svelte:window />
 
 <header>
 	<nav class={shadow ? "shadow" : ""}>
