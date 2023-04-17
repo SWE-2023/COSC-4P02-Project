@@ -47,6 +47,13 @@
 </div>
 
 <style>
+	:root {
+		--toastBackground: var(--color-bg-1);
+		--toastColor: var(--color-text);
+		--toastBorderRadius: 0.8rem;
+		--toastPadding: 0.5rem;
+		--toastBarHeight: 0;
+	}
 	.background {
 		opacity: var(--bg-opacity);
 		width: clamp(100rem, 120vw, 200rem);

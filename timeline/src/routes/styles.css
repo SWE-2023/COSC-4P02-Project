@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lustria&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@40,500,0,200");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
 :root {
 	--font-sans: "Montserrat", -apple-system, sans-serif;
@@ -54,7 +55,7 @@
 
 	--nav-color: #fcfcfcbb;
 	--footer: #961c26;
-	
+
 	--button-color: var(--color-theme-1);
 	--button-background: transparent;
 	--button-border: var(--button-color);
@@ -71,9 +72,9 @@
 }
 
 .reading-theme {
-	--color-bg-1: #F1E8DE;
+	--color-bg-1: #f1e8de;
 	--color-bg-2: #d4cabe;
-	--color-text-card: #F1E8DE;
+	--color-text-card: #f1e8de;
 	--bg-opacity: 0.25;
 	--arrow-opacity: 0.5;
 	--bg-grayscale: grayscale(0);
@@ -83,7 +84,7 @@
 	--color-theme-2-light: #8ab7f7;
 	--color-text: rgba(0, 0, 0, 0.7);
 
-	--nav-color: #F1E8DEbb;
+	--nav-color: #f1e8debb;
 	--footer: #961c26;
 
 	--button-color: var(--color-theme-1);
@@ -108,14 +109,14 @@
 	--bg-opacity: 0.1;
 	--arrow-opacity: 0.8;
 	--bg-grayscale: grayscale(1);
-	--color-theme-1: #D32F2F;
+	--color-theme-1: #d32f2f;
 	--color-theme-2: #08244b;
 	--color-theme-1-light: #fd2235;
 	--color-theme-2-light: #4693ff;
 	--color-text: rgba(255, 255, 255, 0.8);
 
 	--nav-color: #121212bb;
-	--footer:#961c26;
+	--footer: #961c26;
 
 	--button-color: var(--color-theme-1);
 	--button-background: transparent;
@@ -236,9 +237,21 @@ code {
 	font-size: var(--font-size-small);
 }
 
-input {
-	font-size: var(--font-size-base);
+input,
+textarea, select {
+	font-size: var(--font-size-small);
 	font-family: inherit;
+	margin: 0;
+	padding: 0.8em 1em;
+	border-radius: 0.5em;
+	border: 2px solid white;
+	box-shadow: 0 0 1px 1px #0000004d;
+	transition: border 0.15s ease;
+}
+
+input:focus, textarea:focus {
+	outline: none;
+	border: 2px solid #000000;
 }
 
 button {
