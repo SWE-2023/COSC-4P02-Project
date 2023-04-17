@@ -10,3 +10,6 @@ export const scrollY = writable(0);
 
 // scrollX position
 export const scrollX = writable(0);
+
+export const mobile = writable(false);
+

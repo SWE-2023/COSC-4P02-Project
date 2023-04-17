@@ -40,12 +40,12 @@
 						message: inquiry.message,
 					},
 				]);
-					// RESET FORM FIELDS
-					inquiry.name = "";
-					inquiry.phone = "";
-					inquiry.email = "";
-					inquiry.type = "";
-					inquiry.message = "";
+				// RESET FORM FIELDS
+				inquiry.name = "";
+				inquiry.phone = "";
+				inquiry.email = "";
+				inquiry.type = "";
+				inquiry.message = "";
 
 				if (error) {
 					throw error;
@@ -60,7 +60,6 @@
 			);
 		}
 	};
-
 </script>
 
 <svelte:head>
@@ -166,8 +165,6 @@
 			</div>
 		</div>
 	</div>
-
-	<big-gap />
 </PageTransition>
 
 <style>
@@ -210,6 +207,14 @@
 	input,
 	select {
 		flex: 1 1 33%;
+		width: 100%;
+	}
+
+	@media (max-width: 768px) {
+		input,
+		select {
+			flex: 1 1 100%;
+		}
 	}
 
 	textarea {
@@ -222,9 +227,9 @@
 
 	.form-container {
 		flex: 1;
-		width: 100%;
 		height: 100%;
 		padding: 1rem;
+		margin:0;
 		text-align: center;
 		background: var(--color-text-card);
 		border-radius: 1rem;

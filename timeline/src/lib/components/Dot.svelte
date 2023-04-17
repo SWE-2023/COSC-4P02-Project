@@ -1,5 +1,5 @@
 <script>
-	import { draw } from "svelte/transition";
+	import { mobile } from "$lib/stores/window";
 	export let eventOne;
 	export let eventTwo;
 	export let year;
@@ -10,16 +10,26 @@
 	}
 </script>
 
-<button
-	class="dot-container"
-	on:click={handleClick}>
+<button class="dot-container" on:click={handleClick}>
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		class="dot-svg"
 		width="32"
 		height="32"
-		viewBox="0 0 16 16">
-		<circle in:draw class="dot" cx="8" cy="8" r="3.5" />
+		viewBox="0 0 32 16">
+		<circle class="dot" cx="12" cy="8" r="7" />
+		{#if !$mobile}
+			<line
+				class="line"
+				x1="14"
+				y1="8"
+				x2="28"
+				y2="8"
+				stroke="var(--color-theme-1)"
+				stroke-width="4"
+				stroke-linecap="square"
+				stroke-linejoin="round" />
+		{/if}
 	</svg>
 	<div class="date">{year}</div>
 </button>
@@ -33,16 +43,17 @@
 		position: absolute;
 		cursor: pointer;
 		background: none;
-		padding:none;
-		border:none;
-		width: calc(2 * var(--font-size-small) + 7rem);
-		height: var(--font-size-large);
+		padding: none;
+		border: none;
+		width: 15px;
+		height: 15px;
 		transition: all 0.5s var(--curve);
 	}
 
 	.dot-svg {
 		position: absolute;
-		z-index:3;
+		left: 10px;
+		z-index: 3;
 	}
 
 	.dot {
@@ -56,48 +67,53 @@
 
 	.date {
 		user-select: none;
-		margin-left: calc(1.75*var(--font-size-base));
+		margin-left: 1.6rem;
 		font-size: var(--font-size-small);
 		line-height: 1;
 		border-radius: 1rem;
 		opacity: 0;
-		background:var(--color-bg-1);
+		background: var(--color-bg-1);
 		padding: 0.25rem 0.5rem 0.25rem 0.5rem;
 		font-size: var(--font-size-base);
-		transform:  scaleY(0.8);
+		transform: scaleY(0.8);
 		transition: all 0.5s var(--curve);
-		z-index:1;
+		z-index: 1;
 	}
 
 	.dot-container:hover .dot {
 		stroke-width: 2.5;
-		fill: var(--color-theme-1-light);
-		transform:scale(1.33);
+		fill: var(--color-theme-1);
+		transform: scale(1) translateX(14px);
+	}
+
+	.line {
+		transform: scaleX(0);
+		transform-origin: center;
+		transition: transform 0.5s var(--curve);
+	}
+
+	.dot-container:hover .line {
+		transform: scaleX(1);
 	}
 
 	.dot-container:active .dot {
 		stroke-width: 3.5;
 	}
 
-	.dot-container:active .dot {
-		transform: scale(1.2);
-	}
-
 	.dot-container:hover .date {
 		cursor: pointer;
 		color: var(--color-theme-1);
 		transform: scale(1.1);
-		margin-left: calc(2*var(--font-size-base));
+		margin-left: 2.4rem;
 		opacity: 1;
-		
 	}
 
 	@media (max-width: 1000px) {
 		.dot-container:hover .date {
-			margin-left: calc(1.5*var(--font-size-base));
+			margin-left: calc(1.5 * var(--font-size-base));
 		}
 		.dot-container:hover .dot {
-			transform:scale(1.2) translateX(2px);
+			transform: scale(1.2) translateX(2px);
 		}
 	}
 </style>

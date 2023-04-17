@@ -2,7 +2,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import { slide } from "svelte/transition";
 	import { themeStore } from "$lib/stores/store";
-	import { windowWidth } from "$lib/stores/window";
+	import { mobile } from "$lib/stores/window";
 	import PageTransitionFly from "$lib/components/PageTransitionFly.svelte";
 
 	let headerText = [
@@ -24,7 +24,7 @@
 
 <PageTransitionFly>
 	<section class="welcome">
-		{#if $windowWidth < 1000}
+		{#if $mobile}
 			<div>
 				<img
 					class="logo"

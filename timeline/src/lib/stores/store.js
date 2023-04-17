@@ -1,4 +1,8 @@
+import { quintOut } from "svelte/easing";
+import { tweened } from "svelte/motion";
 import { writable } from "svelte/store";
+
+// local storage stores
 
 // current motion preference
 export const reduceMotion =
@@ -45,6 +49,20 @@ currentItemIndexStore.subscribe((value) => {
 	if (typeof localStorage !== "undefined") {
 		localStorage.currentItemIndex = value;
 	}
+});
+
+// temp stores
+
+export const firstYear = writable(0);
+export const lastYear = writable(0);
+export const atStart = writable(true);
+export const atEnd = writable(false);
+
+// year tweened
+export const year = tweened(0, {
+	duration: 500,
+	easing: quintOut,
+	interpolate: (a, b) => (t) => a + (b - a) * t,
 });
 
 // searchbar vis

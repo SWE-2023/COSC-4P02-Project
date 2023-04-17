@@ -1,16 +1,14 @@
 <script>
 	import ItemTransition from "$lib/components/ItemTransition.svelte";
 	import TimelineBar from "$lib/components/TimelineBar.svelte";
-	import Arrow from "$lib/components/Arrow.svelte";
 	import SearchBar from "$lib/components/searchbar/SearchBar.svelte";
 	import ItemComponents from "$lib/components/ItemComponents.svelte";
 	import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
 	import EventEdit from "$lib/components/EventEdit.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import supabase from "$lib/supabaseClient.js";
-	import { createEventDispatcher } from "svelte";
+	import { year, firstYear, lastYear, atStart, atEnd } from "$lib/stores/store.js";
 	import { currentItemIndexStore } from "$lib/stores/store.js";
-	import { windowWidth } from "$lib/stores/window";
 	import { onMount } from "svelte";
 
 	export let data;
@@ -33,19 +31,15 @@
 	});
 
 	let showModal = false;
-	let touchStartPos = 0;
 
 	let dropDownSelection = "";
 	let transitionDirection;
 	let selectedItem = timeline[0];
-	let atFirst = true;
-	let atLast = false;
+
 	let currentIndex = 0;
 	let isEditing = false;
 	let isAdding = false;
-	let lockSelection = false;
-	let upVisible = true;
-	let downVisible = true;
+	let locked = false;
 
 	let edit = {
 		title: selectedItem.title,
@@ -73,21 +67,19 @@
 
 	let timelineBar;
 
+	$: atStart.set(currentIndex == 0);
+	$: atEnd.set(currentIndex == timeline.length - 1);
+
 	function pageDown() {
-		if (!atLast) {
-			selectedItem = timeline[++currentIndex];
-			timelineBar.handleIndexChange(currentIndex - 1, 1);
-			update();
-		}
+		selectedItem = timeline[++currentIndex];
+		
+		update();
 		setEditFields();
 	}
 
 	function pageUp() {
-		if (!atFirst) {
-			selectedItem = timeline[--currentIndex];
-			timelineBar.handleIndexChange(currentIndex + 1, -1);
-			update();
-		}
+		selectedItem = timeline[--currentIndex];
+		update();
 		setEditFields();
 	}
 
@@ -100,29 +92,17 @@
 			start_date: selectedItem.start_date,
 		};
 
+		year.set(parseInt(selectedItem.start_date.slice(0, 4)));
+
 		if (timeline.indexOf(selectedItem) > currentIndex) {
 			transitionDirection = "down";
 		} else if (timeline.indexOf(selectedItem) < currentIndex) {
 			transitionDirection = "up";
 		}
-		currentIndex = timeline.indexOf(selectedItem);
-		atFirst = selectedItem == timeline[0];
-		atLast = selectedItem == timeline[timeline.length - 1];
-		setEditFields();
-		currentItemIndexStore.set(currentIndex);
-	}
 
-	function showArrows() {
-		if (!lockSelection) {
-			if ($windowWidth < 1000) {
-				upVisible = false;
-				downVisible = false;
-				return;
-			} else {
-				upVisible = true;
-				downVisible = true;
-			}
-		}
+		currentIndex = timeline.indexOf(selectedItem);
+		currentItemIndexStore.set(currentIndex);
+		setEditFields();
 	}
 
 	function gotoItem() {
@@ -163,35 +143,6 @@
 		}
 	}
 
-	function handleDownArrow() {
-		transitionDirection = "down";
-		pageDown();
-	}
-
-	function handleUpArrow() {
-		transitionDirection = "up";
-		pageUp();
-	}
-
-	function handleTouchStart(e) {
-		touchStartPos = e.touches[0].clientX;
-	}
-
-	function handleTouchEnd(e) {
-		const touchEndX = e.changedTouches[0].clientX;
-		const deltaX = touchEndX - touchStartPos;
-
-		if (Math.abs(deltaX) > 100) {
-			if (deltaX > 0) {
-				transitionDirection = "right";
-				pageUp();
-			} else {
-				transitionDirection = "left";
-				pageDown();
-			}
-		}
-	}
-
 	async function fetchTimelineData() {
 		const { data } = await supabase
 			.from("timeline")
@@ -201,7 +152,6 @@
 	}
 
 	onMount(async () => {
-		showArrows();
 		const firstVisit = localStorage.getItem("firstVisit");
 
 		if (!firstVisit) {
@@ -230,24 +180,12 @@
 			supabase.removeChannel(timelineChannel);
 		};
 	});
-
-	function handleKeyDown(e) {
-		if (e.key === "h") {
-			showModal = true;
-		}
-	}
 </script>
 
 <svelte:head>
 	<title>Timeline | Niagara-on-the-Lake Timeline</title>
 	<meta name="description" content="Timeline page" />
 </svelte:head>
-
-<svelte:window
-	on:resize={showArrows}
-	on:touchstart={handleTouchStart}
-	on:touchmove|passive
-	on:touchend|passive={handleTouchEnd} />
 
 <PageTransitionFade>
 	<Modal bind:showModal>
@@ -357,24 +295,22 @@
 		</p>
 	</Modal>
 	<SearchBar
-		lock={lockSelection}
+		lock={locked}
 		bind:selection={dropDownSelection}
 		data={searchData}
 		on:selection={gotoItem}
 		on:selection={update} />
-	<Arrow
-		lock={lockSelection}
-		on:moveup={handleUpArrow}
-		disabled={atFirst}
-		visible={upVisible} />
 	<TimelineBar
-		disabled={lockSelection}
+		direction={transitionDirection}
+		disabled={locked}
 		timeData={timeline}
 		bind:currentItem={selectedItem}
 		bind:this={timelineBar}
-		on:change={update} />
+		on:change={update}
+		on:pagedown={pageDown}
+		on:pageup={pageUp} />
 	<EventEdit
-		bind:lockPage={lockSelection}
+		bind:lockPage={locked}
 		bind:enableEditing={isEditing}
 		bind:enableAdding={isAdding}
 		changes={edit}
@@ -414,12 +350,6 @@
 		</section>
 	{/if}
 
-	<Arrow
-		lock={lockSelection}
-		down
-		on:movedown={handleDownArrow}
-		disabled={atLast}
-		visible={downVisible} />
 	<div class="help">
 		<button title="Show Quick Start Guide" on:click={() => (showModal = true)}>
 			<span class="material-symbols-rounded i">help</span>
