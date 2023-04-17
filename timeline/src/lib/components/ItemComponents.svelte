@@ -43,12 +43,6 @@
 
 	formatted_date = formatDate(item.start_date);
 
-	function handleKeyDown(e) {
-		// if (e.key === "Escape") {
-		// 	onToggle();
-		// }
-	}
-
 	function autofill(event) {
 		const input = event.target.value.replace(/\D/g, "");
 		const year = input.slice(0, 4);
