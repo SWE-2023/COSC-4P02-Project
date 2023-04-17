@@ -1,14 +1,15 @@
 <script>
-	import { Hamburger } from "svelte-hamburgers";
-	import { countStore, themeStore } from "$lib/stores/store";
+	import ExpandButton from "$lib/components/ExpandButton.svelte";
+	import { themeStore } from "$lib/stores/store";
 	import { slide } from "svelte/transition";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
 	import { userStore, logout } from "$lib/authStore";
 	import { setFontSize } from "$lib/components/TextSizeSelector.svelte";
-	import { scrollY, windowWidth } from "$lib/stores/window";
+	import { scrollY, mobile } from "$lib/stores/window";
 	import { searchbarVisible } from "$lib/stores/store";
 	import AccessibilityMenu from "$lib/components/AccessibilityMenu.svelte";
+	import { quintOut } from "svelte/easing";
 
 	let user;
 	userStore.subscribe((value) => {
@@ -23,17 +24,11 @@
 		shadow = $scrollY > 25 ? 1 : 0;
 	}
 
-	$: {
-		isMenuOpen = $searchbarVisible;
-	}
-
 	function checkVisibility() {
-		if ($windowWidth < 1000) {
+		if ($mobile) {
 			isMenuOpen = false;
-			searchbarVisible.set(true);
 		} else {
 			isMenuOpen = true;
-			searchbarVisible.set(true);
 		}
 	}
 
@@ -44,20 +39,9 @@
 		}
 	}
 
-	function searchSwitch() {
-		if ($windowWidth < 1000) {
-			searchbarVisible.set(!$searchbarVisible);
-		}
-	}
-
-	function count() {
-		countStore.update((n) => Number(n) + 1);
-	}
-
 	onMount(() => {
 		setFontSize();
 		handleHeader();
-		checkVisibility();
 	});
 </script>
 
@@ -66,79 +50,84 @@
 <header>
 	<nav class={shadow ? "shadow" : ""}>
 		<div class="left">
-			{#if !($windowWidth < 1000)}
-				<a href="/" style="margin-right:1rem;"
-					><img
-						on:click={count}
-						on:keypress={count}
-						src={$themeStore === "light-theme" ||
-						$themeStore === "reading-theme"
-							? "assets/notl-museum.svg"
-							: "assets/notl-museum-dark.svg"}
-						alt="logo"
-						class="logo"
-						id="notl_logo" /></a>
-			{/if}
-			{#if $page.url.pathname.startsWith("/timeline")}
-				<div transition:slide={{ axis: "x" }}>
-					<Hamburger
-						on:click={searchSwitch}
-						bind:open={isMenuOpen}
-						--color="var(--color-theme-1)"
-						type="arrowalt" />
-				</div>
-			{/if}
-			{#if isMenuOpen || !$page.url.pathname.startsWith("/timeline")}
-				<ul
-					style={!$page.url.pathname.startsWith("/timeline")
-						? "margin-left:1rem;"
-						: "margin-left:0"}>
-					<li
-						aria-current={$page.url.pathname === "/" ? "page" : undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/">Home</a>
-					</li>
-					<li
-						aria-current={$page.url.pathname === "/about" ? "page" : undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/about">About</a>
+			<a href="/"
+				><img
+					src={$themeStore === "light-theme" || $themeStore === "reading-theme"
+						? "assets/notl-museum.svg"
+						: "assets/notl-museum-dark.svg"}
+					alt="logo"
+					class="logo"
+					id="notl_logo" /></a>
+			<ExpandButton bind:open={isMenuOpen} />
+			{#if isMenuOpen}
+				<ul transition:slide={{ axis: $mobile ? "y" : "x", easing: quintOut }}>
+					<li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
+						<a
+							href="/"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>Home</a>
 					</li>
 					<li
 						aria-current={$page.url.pathname === "/timeline"
 							? "page"
-							: undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/timeline">Explore</a>
+							: undefined}>
+						<a
+							href="/timeline"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>Explore</a>
 					</li>
 					<li
 						aria-current={$page.url.pathname === "/contact"
 							? "page"
-							: undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/contact">Contact</a>
+							: undefined}>
+						<a
+							href="/contact"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>Contact</a>
+					</li>
+					<li
+						aria-current={$page.url.pathname === "/about" ? "page" : undefined}>
+						<a
+							href="/about"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>About</a>
 					</li>
 					{#if user && user.email}
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
-								: undefined}
-							transition:slide={{ axis: "x" }}>
+								: undefined}>
 							<a
-								title="Signed in as {user.email}"
+								on:click={() => {
+									if ($mobile) isMenuOpen = false;
+								}}
+								title="Logged in as {user.email}"
 								href="/"
 								on:click={(event) => {
 									event.preventDefault();
 									logout();
-								}}>
-								Log Out</a>
+								}}
+								>Log Out&nbsp;
+								<span class="material-symbols-rounded i">logout</span></a>
 						</li>
 					{:else}
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
-								: undefined}
-							transition:slide={{ axis: "x" }}>
-							<a class="login" href="/login">Log In</a>
+								: undefined}>
+							<a
+								class="login"
+								href="/login"
+								on:click={() => {
+									if ($mobile) isMenuOpen = false;
+								}}
+								>Log In&nbsp;<span class="material-symbols-rounded i"
+									>login</span
+								></a>
 						</li>
 					{/if}
 				</ul>
@@ -183,9 +172,11 @@
 	ul {
 		display: flex;
 		align-items: baseline;
-		gap: clamp(0.25rem, 1vw, 2rem);
+		flex-direction: row;
+		gap: clamp(0rem, 1vw, 2rem);
 		list-style: none;
 		padding: 0;
+		user-select: none !important;
 	}
 
 	li {
@@ -200,29 +191,31 @@
 		content: "";
 		display: block;
 		width: 100%;
-		height: 2px;
+		height: 3px;
 		background: var(--color-theme-1);
 		border-radius: 5px;
-		transform: scaleX(0);
+		transform: scale(0);
 		transition: all 0.5s var(--curve);
 	}
 
 	li[aria-current="page"]::after {
-		content: "";
-		display: block;
-		width: 100%;
-		height: 3px;
-		transform: scaleX(1);
-		background: var(--color-theme-1);
-		border-radius: 5px;
+		transform: scale(1);
+	}
+
+	li a,
+	.i {
+		font-size: var(--font-size-smallish);
 	}
 
 	li a {
-		font-size:clamp(var(--font-size-xsmall), 3vw, var(--font-size-small));
 		display: block;
-		padding: 0.5em 0.5em;
+		padding: 0.5em 0.2em;
 		color: var(--color-text);
 		text-decoration: none;
+	}
+
+	li:active {
+		transform: scale(0.95);
 	}
 
 	li a:hover {
@@ -231,7 +224,7 @@
 
 	.logo {
 		position: relative;
-		margin: 0 0 0 1em;
+		margin: 0;
 		width: auto;
 		height: 3.5rem;
 		border-radius: 0.5rem 0.5rem 0 0;
@@ -253,6 +246,10 @@
 		display: flex;
 		justify-content: flex-end;
 		margin-right: 2em;
+	}
+
+	.i {
+		vertical-align: middle;
 	}
 
 	.accessibility {
@@ -280,5 +277,34 @@
 		width: 100%;
 		height: 5rem;
 		z-index: 5;
+	}
+
+	@media (max-width: 900px) {
+		ul {
+			position: fixed;
+			top: 5rem;
+			left: 0;
+			margin: 0;
+			width: 100%;
+			padding: 1rem 0;
+			background-color: var(--color-bg-1);
+			flex-direction: column;
+			gap: 0.5rem;
+			justify-content: center;
+			align-items: center;
+			overflow-y: auto;
+			overflow-x: hidden;
+			z-index: 9;
+			box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
+			border-bottom: var(--border);
+		}
+
+		li {
+			text-align: center;
+		}
+		li a {
+			padding: 1rem 2rem;
+			font-size: var(--font-size-base);
+		}
 	}
 </style>

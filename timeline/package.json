@@ -37,7 +37,6 @@
 		"date-fns": "^2.29.3",
 		"esbuild": "^0.17.11",
 		"svelte-fullscreen": "^2.0.0",
-		"svelte-hamburgers": "^4.0.1",
 		"svelte-legos": "^0.0.6"
 	}
 }
