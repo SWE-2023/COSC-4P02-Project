@@ -2,6 +2,51 @@
 	import { slide } from "svelte/transition";
 	import PageTransition from "$lib/components/PageTransitionFly.svelte";
     import Button from "$lib/components/Button.svelte";
+    import supabase from "$lib/supabaseClient";
+    import { toast } from "@zerodevx/svelte-toast";
+
+	export let newInquiry;
+
+	const submitInquiry =async () => {
+		if( newInquiry.submitterName.length != 0 && (newInquiry.phone.length != 0 || newInquiry.email.length != 0) && newInquiry.inquiryType.length != 0, newInquiry.message.length != 0){
+
+			try{
+				const {error} = await supabase.from("inquiries").insert([{
+					// name: newInquiry.name,
+					// phone: newInquiry.phone,
+					// email: newInquiry.email,
+					// inquiryType: newInquiry.inquiryType,
+					// message: newInquiry.message,
+					submitterName: newInquiry.submitterName,
+					phone: newInquiry.phone,
+					email: newInquiry.email,
+					inquiryType: newInquiry.inquiryType,
+					message: newInquiry.message
+				}]);
+
+				if(error){
+					throw error;
+				}
+				toast.push("<b>Inquiry Submitted</b>");
+			}catch (error){
+				toast.push('<b>Query Error</b><br>${error.message}');
+				// toast.push("<b>Query Error</b><br>"+${error.message});
+			}
+		}else{
+			toast.push("<b>Error</b><br>Please fill out all fields before submitting.");
+		}
+	}
+
+
+	let add = {
+		name:"",
+		phone:"",
+		email:"",
+		inquiryType:"",
+		message:""
+	};
+
+
 </script>
 
 <svelte:head>
@@ -69,25 +114,25 @@
         <div class="form-container">
 			<h2 id="inquiry-title">WE'D LOVE TO HEAR FROM YOU:</h2>
 			<div class="row">
-				<form class="notify" action="/contact" method="POST" name="netlify-form" data-netlify="true">
+				<form class="notify" action="/contact" name="netlify-form">
 					<div class="input col-xs-12 col-sm-6">
-						<input id="name" name="form-name" class="text required" placeholder="Name" type="text">
+						<input id="submitterName" name="submitter-name" class="text required" placeholder="Name" type="text" bind:value={newInquiry.name}>
 					</div>
 					<div class="input col-xs-12 col-sm-6">
-						<input id="phone" class="text" placeholder="Phone" type="text">
+						<input id="phone" class="text" placeholder="Phone" type="text" bind:value={newInquiry.phone}>
 					</div>
 					<div class="input col-xs-12 col-sm-6">
-						<input id="email" class="text required" placeholder="Email" type="text">
+						<input id="email" class="text required" placeholder="Email" type="text" bind:value={newInquiry.email}>
 					</div>
 					<div class="input col-xs-12 col-sm-6">
-						<input id="phone" class="text" placeholder="Inquiry Type" type="text">
+						<input id="inquiryType" class="text" placeholder="Inquiry Type" type="text" bind:value={newInquiry.inquiryType}>
 					</div>
 					<div class="input col-xs-12">
-						<textarea id="message" class="text" cols="45" placeholder="Message" rows="8"></textarea>
+						<textarea id="message" class="text" cols="45" placeholder="Message" rows="8" bind:value={newInquiry.message}></textarea>
 					</div>
 					<div class="input submit col-xs-12">
 						<div id="submit-btn">
-							<Button alt text="Submit" />
+							<Button alt on:click={submitInquiry} text="Submit" />
 						</div>
 					</div>
 				</form>
