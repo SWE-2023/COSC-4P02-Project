@@ -40,7 +40,7 @@
 						message: inquiry.message,
 					},
 				]);
-
+					location.reload();
 				if (error) {
 					throw error;
 				}
