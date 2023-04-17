@@ -5,7 +5,13 @@
     import supabase from "$lib/supabaseClient";
     import { toast } from "@zerodevx/svelte-toast";
 
-	export let newInquiry;
+	export let newInquiry = {
+		name:"",
+		phone:"",
+		email:"",
+		inquiryType:"",
+		message:""
+	};
 
 	const submitInquiry =async () => {
 		if( newInquiry.submitterName.length != 0 && (newInquiry.phone.length != 0 || newInquiry.email.length != 0) && newInquiry.inquiryType.length != 0, newInquiry.message.length != 0){
@@ -38,13 +44,13 @@
 	}
 
 
-	let add = {
-		name:"",
-		phone:"",
-		email:"",
-		inquiryType:"",
-		message:""
-	};
+	// let newInquiry = {
+	// 	name:"",
+	// 	phone:"",
+	// 	email:"",
+	// 	inquiryType:"",
+	// 	message:""
+	// };
 
 
 </script>
@@ -114,9 +120,9 @@
         <div class="form-container">
 			<h2 id="inquiry-title">WE'D LOVE TO HEAR FROM YOU:</h2>
 			<div class="row">
-				<form class="notify" action="/contact" name="netlify-form">
+				<form class="notify" action="/contact">
 					<div class="input col-xs-12 col-sm-6">
-						<input id="submitterName" name="submitter-name" class="text required" placeholder="Name" type="text" bind:value={newInquiry.name}>
+						<input id="submitterName" class="text required" placeholder="Name" type="text" bind:value={newInquiry.submitterName}>
 					</div>
 					<div class="input col-xs-12 col-sm-6">
 						<input id="phone" class="text" placeholder="Phone" type="text" bind:value={newInquiry.phone}>
