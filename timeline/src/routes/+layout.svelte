@@ -34,6 +34,9 @@
 		<main>
 			<slot />
 		</main>
+		{#if $page.url.pathname !== "/timeline"}
+			<Footer />
+		{/if}
 		<div class="grey" style={$page.url.pathname == "/" ? "position: absolute;" : "position: fixed;"}>
 			<img
 				loading="lazy"
@@ -43,10 +46,8 @@
 				alt="Niagara-on-the-Lake Main Street"
 				src="assets/landing-page-bg-4.webp" />
 		</div>
-		{#if $page.url.pathname !== "/timeline"}
-			<Footer />
-		{/if}
-		<div class="bg" />
+		
+		<!-- <div class="bg" /> -->
 </div>
 
 <style>
@@ -104,7 +105,7 @@
 		width: 100%;
 		max-width: 80%;
 		margin: 0 auto;
-		min-height: 100vh;
+		min-height: 88vh;
 	}
 
 	@media (max-width: 1000px) {

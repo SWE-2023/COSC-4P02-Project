@@ -7,6 +7,7 @@
 	import supabase from "$lib/supabaseClient";
 	import { toast } from "@zerodevx/svelte-toast";
 	import { validatePhone, validateEmail } from "$lib/utils";
+  import Socials from "$lib/components/Socials.svelte";
 
 	export let inquiry = {
 		name: "",
@@ -109,15 +110,8 @@
 						</tr>
 						<tr class="socials-row">
 							<td>SOCIALS:</td>
-							<td class="socials">
-								<a href="https://www.facebook.com/NOTLMuseum/"
-									><span class="fa fa-facebook" /></a>
-								<a href="https://twitter.com/NOTLMuseum"
-									><span class="fa fa-twitter" /></a>
-								<a href="https://www.instagram.com/notlmuseum/"
-									><span class="fa fa-instagram" /></a>
-								<a href="https://www.youtube.com/user/NOTLMuseum"
-									><span class="fa fa-youtube-play" /></a>
+							<td>
+								<Socials />
 							</td>
 						</tr>
 					</table>
@@ -244,11 +238,6 @@
 		gap: 1rem;
 	}
 
-	.socials {
-		font-size: var(--font-size-base);
-		vertical-align: middle;
-	}
-
 	.socials-row {
 		vertical-align: middle;
 	}
@@ -256,44 +245,8 @@
 	.address-container {
 		padding: 1rem;
 		display: flex;
+		font-size: var(--font-size-small);
 		flex-flow: row wrap;
 		align-items: baseline;
-	}
-
-	/* SOCIAL MEDIA ICONS */
-	.fa {
-		padding: 5px;
-		font-size: 20px;
-		width: 30px;
-		text-align: center;
-		text-decoration: none;
-		margin: 5px 2px;
-		border-radius: 150%;
-	}
-	.fa-facebook {
-		background: #3b5998;
-		color: white;
-	}
-
-	.fa-twitter {
-		background: #55acee;
-		color: white;
-	}
-
-	.fa-youtube-play {
-		background: #bb0000;
-		color: white;
-	}
-
-	.fa-instagram {
-		background: #d62976;
-		color: white;
-	}
-
-	#submit-btn {
-		display: flex;
-		flex: 1 1 100%;
-		justify-content: center;
-		width: 100%;
 	}
 </style>

@@ -1,5 +1,6 @@
 <script>
 	import { countStore } from "$lib/stores/store.js";
+  import Socials from "./Socials.svelte";
 
 	let countValue;
 	countStore.subscribe((value) => {
@@ -14,13 +15,17 @@
 			<h4>Contact</h4>
 			<p>Address: 43 Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0</p>
 			<p>Phone: <a href="tel:9054683912">(905) 468-3912</a></p>
+			<Socials grey/>
 		</div>
 		<div class="footer-column">
-			<h4>Quick Links</h4>
+			<h4>Site Links</h4>
 			<ul>
-				<li><a href="/about">About Us</a></li>
+				<li><a href="/">Home</a></li>
+				<li><a href="/timeline">Explore</a></li>
 				<li><a href="/contact">Contact Us</a></li>
-				<li><a href="https://github.com/SWE-2023/COSC-4P02-Project">GitHub</a></li>
+				<li><a href="/about">About Us</a></li>
+				<li><a href="/privacy">Privacy Policy</a></li>
+				
 			</ul>
 		</div>
 		<div class="footer-column">
@@ -29,6 +34,7 @@
 				<li><a href="https://www.notlmuseum.ca">NOTL Museum</a></li>
 				<li><a href="https://www.notl.com">Niagara-on-the-Lake</a></li>
 				<li><a href="https://www.niagararegion.ca">Niagara Region</a></li>
+				<li><a href="https://github.com/SWE-2023/COSC-4P02-Project">GitHub Repository</a></li>
 				<li><a href="https://brocku.ca">Brock University</a></li>
 			</ul>
 		</div>
@@ -45,6 +51,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
+		border-top:var(--border);
 		background-color: var(--color-bg-1);
 	}
 
@@ -68,6 +75,7 @@
 
 	.footer-column p {
 		line-height: 2rem;
+		font-size:var(--font-size-small);
 	}
 
 	.footer-column ul {
@@ -77,6 +85,7 @@
 
 	.footer-column li {
 		margin-bottom: 0.5rem;
+		font-size:var(--font-size-small);
 	}
 
 	a {
