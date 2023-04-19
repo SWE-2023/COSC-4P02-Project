@@ -1,0 +1,6 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "app.vercel.museumtimeline.twa",
+                     "sha256_cert_fingerprints": ["EE:BD:6E:3B:0A:1A:43:96:16:62:5D:33:9B:0F:6A:67:DB:CA:C1:56:7B:C6:25:F3:A4:8F:7E:9A:98:8A:15:13"] }
+      }
+]
