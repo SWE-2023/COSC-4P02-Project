@@ -11,7 +11,7 @@
 		windowHeight,
 		scrollY,
 		scrollX,
-		mobile
+		mobile,
 	} from "$lib/stores/window";
 	import "./styles.css";
 
@@ -29,25 +29,29 @@
 	bind:scrollX={$scrollX} />
 
 <div class="{$themeStore} app">
-		<Header />
-		<SvelteToast />
-		<main>
-			<slot />
-		</main>
-		{#if $page.url.pathname !== "/timeline"}
-			<Footer />
-		{/if}
-		<div class="grey" style={$page.url.pathname == "/" ? "position: absolute;" : "position: fixed;"}>
-			<img
-				loading="lazy"
-				class={$page.url.pathname == "/timeline"
-					? "background grey ontimeline"
-					: "background grey"}
-				alt="Niagara-on-the-Lake Main Street"
-				src="assets/landing-page-bg-4.webp" />
-		</div>
-		
-		<!-- <div class="bg" /> -->
+	<Header />
+	<SvelteToast />
+	<main>
+		<slot />
+	</main>
+	<div
+		class="grey"
+		style={$page.url.pathname == "/"
+			? "position: absolute;"
+			: "position: fixed;"}>
+		<img
+			loading="lazy"
+			class={$page.url.pathname == "/timeline"
+				? "background grey ontimeline"
+				: "background grey"}
+			alt="Niagara-on-the-Lake Main Street"
+			src="assets/landing-page-bg-4.webp" />
+	</div>
+
+	<div class="bg" />
+	{#if $page.url.pathname !== "/timeline"}
+		<Footer />
+	{/if}
 </div>
 
 <style>
@@ -65,14 +69,14 @@
 		transition: filter 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61),
 			opacity 0.6s cubic-bezier(0.31, 0.21, 0.72, 0.61);
 	}
-	
+
 	.background.ontimeline {
 		filter: blur(7px);
 		opacity: calc(var(--bg-opacity) * 0.5);
 	}
 
 	.bg {
-		position:fixed;
+		position: fixed;
 		z-index: -10;
 		width: 100vw;
 		height: 100vh;
@@ -84,7 +88,7 @@
 		transform: scale(0.9);
 		bottom: 0;
 		right: 0;
-		margin-bottom:-1rem;
+		margin-bottom: -1rem;
 		z-index: -9;
 		filter: var(--bg-grayscale);
 	}
