@@ -1,11 +1,11 @@
 <script>
-  import PageTransitionFade from "$lib/components/PageTransitionFade.svelte";
+  import PageTransitionFly from "$lib/components/PageTransitionFly.svelte";
 
 </script>
 
 
-<PageTransitionFade>
-	<section>
+<PageTransitionFly>
+	<section class=page>
 		<h1>Privacy Policy</h1>
 	
 		<p>Last updated: April 19th, 2023</p>
@@ -68,7 +68,7 @@
 			email at <a href="mailto:dev@alecames.com">dev@alecames.com</a>, or through the Contact Us page on the Application.
 		</p>
 	</section>
-</PageTransitionFade>
+</PageTransitionFly>
 
 
 <style>
@@ -86,4 +86,10 @@
 			margin: 0 -3rem;
 		}
 	}
+
+	p {
+		font-size: var(--font-size-small);
+	}
+
+	
 </style>
