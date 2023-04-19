@@ -1,6 +1,6 @@
 [{
         "relation": ["delegate_permission/common.handle_all_urls"],
         "target" : { "namespace": "android_app", "package_name": "app.notltimeline.twa",
-                     "sha256_cert_fingerprints": ["C3:81:77:1A:FD:48:03:6D:11:3D:26:BE:50:3C:92:EF:4D:AC:62:B8:58:76:2C:3A:AC:DA:E6:03:24:72:8E:3A"] }
+                     "sha256_cert_fingerprints": ["58:2B:6D:00:96:C0:3D:55:A6:7C:C1:AF:CD:CC:A6:47:8A:2E:58:CB:A6:BE:3D:FA:C9:88:C2:FA:20:9B:B1:7B"] }
       }
 ]
