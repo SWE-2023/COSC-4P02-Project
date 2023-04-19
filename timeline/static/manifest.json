@@ -5,7 +5,6 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
-  "scope": "/",
   "categories": ["education", "entertainment"],
   "share_target": {
     "action": "/share",
