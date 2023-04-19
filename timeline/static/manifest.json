@@ -1,49 +1,57 @@
 {
-  "name": "NOTL Timeline",
-  "short_name": "NOTL Timeline",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "categories": ["education", "entertainment"],
-  "share_target": {
-    "action": "/share",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "name",
-      "text": "description",
-      "url": "link"
-    }
-  },
-  "screenshots": [
-	{"src": "screenshots/screenshot1 (400x621).png", "sizes": "800x600", "type": "image/png"},
-	{"src": "timeline/static/screenshots/screenshot2 (443x717).png", "sizes": "800x600", "type": "image/png"}
-  ],
-  "shortcuts": [
-    {
-      "name": "View Timeline",
-      "short_name": "Timeline",
-      "description": "View the timeline",
-      "url": "/timeline?utm_source=homescreen",
-      "icons": [
-        {
-          "src": "favicon (96x96).png",
-          "sizes": "96x96"
-        }
-      ]
-    }
-  ],
-  "icons": [
-    {
-      "src": "favicon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
-    }
-  ],
-  "description": "An interactive timeline for the town of Niagara-on-the-Lake, Ontario, Canada.",
-  "dir": "ltr",
-  "lang": "en",
-  "orientation": "portrait"
+	"name": "NOTL Timeline",
+	"short_name": "NOTL Timeline",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#000000",
+	"categories": ["education", "entertainment"],
+	"share_target": {
+		"action": "/share",
+		"method": "POST",
+		"enctype": "multipart/form-data",
+		"params": {
+			"title": "name",
+			"text": "description",
+			"url": "link"
+		}
+	},
+	"screenshots": [
+		{
+			"src": "screenshots/screenshot1 (400x621).png",
+			"sizes": "800x600",
+			"type": "image/png"
+		},
+		{
+			"src": "timeline/static/screenshots/screenshot2 (443x717).png",
+			"sizes": "800x600",
+			"type": "image/png"
+		}
+	],
+	"shortcuts": [
+		{
+			"name": "View Timeline",
+			"short_name": "Timeline",
+			"description": "View the timeline",
+			"url": "/timeline?utm_source=homescreen",
+			"icons": [
+				{
+					"src": "favicon (96x96).png",
+					"sizes": "96x96"
+				}
+			]
+		}
+	],
+	"icons": [
+		{
+			"src": "favicon.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable any"
+		}
+	],
+	"description": "An interactive timeline for the town of Niagara-on-the-Lake, Ontario, Canada.",
+	"dir": "ltr",
+	"lang": "en",
+	"orientation": "portrait"
 }

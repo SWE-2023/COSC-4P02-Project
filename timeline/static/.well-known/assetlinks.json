@@ -1,6 +1,6 @@
 [{
         "relation": ["delegate_permission/common.handle_all_urls"],
-        "target" : { "namespace": "android_app", "package_name": "app.vercel.museumtimeline.twa",
-                     "sha256_cert_fingerprints": ["92:6D:40:76:88:DA:4E:85:DE:90:6E:A1:A7:12:BB:51:A6:0E:D7:47:0F:A8:D7:75:CE:23:78:25:D8:03:A2:19"] }
+        "target" : { "namespace": "android_app", "package_name": "app.notltimeline.twa",
+                     "sha256_cert_fingerprints": ["C3:81:77:1A:FD:48:03:6D:11:3D:26:BE:50:3C:92:EF:4D:AC:62:B8:58:76:2C:3A:AC:DA:E6:03:24:72:8E:3A"] }
       }
 ]
