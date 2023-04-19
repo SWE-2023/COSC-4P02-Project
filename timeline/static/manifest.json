@@ -1,5 +1,5 @@
 {
-  "name": "Niagara-on-the-Lake Interactive Timeline",
+  "name": "NOTL Timeline",
   "short_name": "NOTL Timeline",
   "start_url": "/",
   "display": "fullscreen",
@@ -19,7 +19,6 @@
       "url": "link"
     }
   },
-  "display_override": ["minimal-ui", "browser"],
   "screenshots": [
 	{"src": "screenshots/screenshot1 (400x621).png", "sizes": "800x600", "type": "image/png"},
 	{"src": "timeline/static/screenshots/screenshot2 (443x717).png", "sizes": "800x600", "type": "image/png"}
