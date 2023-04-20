@@ -38,13 +38,24 @@
 		}
 	}
 
+	function handleClickOutside(event) {
+		if ($mobile) {
+			if (
+				isMenuOpen &&
+				(!event.target.closest(".menubutton") && !event.target.closest(".menu"))
+			) {
+				isMenuOpen = false;
+			}
+		}
+	}
+
 	onMount(() => {
 		setFontSize();
 		handleHeader();
 	});
 </script>
 
-<svelte:window />
+<svelte:window on:click={handleClickOutside} />
 
 <header>
 	<nav class={shadow ? "shadow" : ""}>
@@ -57,12 +68,16 @@
 					alt="logo"
 					class="logo"
 					id="notl_logo" /></a>
-			<div title="Toggle menu visibility"><ExpandButton bind:open={isMenuOpen} /></div>
+			<div title="Toggle menu visibility" class="menubutton">
+				<ExpandButton bind:open={isMenuOpen} />
+			</div>
 			{#if isMenuOpen}
-				<ul transition:slide={{ axis: $mobile ? "y" : "x", easing: quintOut }}>
+				<ul
+					transition:slide={{ axis: $mobile ? "y" : "x", easing: quintOut }}
+					class="menu">
 					<li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
 						<a
-						title="Home"
+							title="Home"
 							href="/"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -73,7 +88,7 @@
 							? "page"
 							: undefined}>
 						<a
-						title="Explore the timeline"
+							title="Explore the timeline"
 							href="/timeline"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -84,7 +99,7 @@
 							? "page"
 							: undefined}>
 						<a
-						title="Contact us"
+							title="Contact us"
 							href="/contact"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -93,7 +108,7 @@
 					<li
 						aria-current={$page.url.pathname === "/about" ? "page" : undefined}>
 						<a
-						title="About the project"
+							title="About the project"
 							href="/about"
 							on:click={() => {
 								if ($mobile) isMenuOpen = false;
@@ -139,7 +154,8 @@
 		</div>
 
 		<div class="right">
-			<span title="Accessibility options"
+			<span
+				title="Accessibility options"
 				class="material-symbols-rounded accessibility"
 				style="scale: 1.2;"
 				on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
@@ -180,6 +196,7 @@
 		gap: clamp(0rem, 1vw, 2rem);
 		list-style: none;
 		padding: 0;
+		border:none;
 		user-select: none !important;
 	}
 

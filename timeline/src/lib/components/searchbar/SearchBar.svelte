@@ -3,14 +3,17 @@
 	import { fly, fade } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
+  import { mode } from "$lib/stores/store";
 
 	export let selection;
 	export let data;
-	export let disabled = false;
 
+	let disabled;
 	let filtered = [];
 	let search = "";
 	let clicked = false;
+
+	$: disabled = $mode !== "default";
 
 	const dispatch = createEventDispatcher();
 	const notify = () => dispatch("selection");
@@ -42,61 +45,61 @@
 
 <svelte:window on:click={handleClickOutside} on:keydown={handleShortcut} />
 
-	<div
-		class="search-container"
-		style={disabled ? `top:-4rem !important;` : ``}
-		transition:fade>
-		<div class="bar" >
-			<input
-				type="text"
-				disabled={disabled}
-				placeholder="Search"
-				class={clicked && filtered.length == 0 && !search
-					? "search-box"
-					: "search-box has-results"}
-				bind:value={search}
-				on:click={() => (clicked = false)}
-				on:input={() => {
-					findTitles();
-					clicked = false;
-				}} />
-			{#if search}
-				<span
-					class="material-symbols-rounded i"
-					on:keydown
-					on:click={() => (search = "")}>
-					close
-				</span>
-			{:else}
-				<span class="material-symbols-rounded i"> search </span>
-			{/if}
-		</div>
-		{#if search && !clicked && filtered.length > 0}
-			<div class="results">
-				{#each filtered as data}
-					<DropDownItem
-						bind:selectedTitle={selection}
-						item={data}
-						on:selection={notify}
-						on:selection={() => (clicked = true)} />
-				{/each}
-			</div>
-		{:else if search == ""}
-			<div class="results" style="pointer-events:none;">
-				<DropDownItem
-					color="grey"
-					bind:selectedTitle={selection}
-					item="Type something..." />
-			</div>
+<div
+	class="search-container"
+	style={disabled ? `top:-4rem !important;` : ``}
+	transition:fly={{y:-25}}>
+	<div class="bar">
+		<input
+			type="text"
+			{disabled}
+			placeholder="Search"
+			class={clicked && filtered.length == 0 && !search
+				? "search-box"
+				: "search-box has-results"}
+			bind:value={search}
+			on:click={() => (clicked = false)}
+			on:input={() => {
+				findTitles();
+				clicked = false;
+			}} />
+		{#if search}
+			<span
+				class="material-symbols-rounded i"
+				on:keydown
+				on:click={() => (search = "")}>
+				close
+			</span>
 		{:else}
-			<div class="results" style="pointer-events:none;">
-				<DropDownItem
-					color="grey"
-					bind:selectedTitle={selection}
-					item="No results..." />
-			</div>
+			<span class="material-symbols-rounded i"> search </span>
 		{/if}
 	</div>
+	{#if search && !clicked && filtered.length > 0}
+		<div class="results">
+			{#each filtered as data}
+				<DropDownItem
+					bind:selectedTitle={selection}
+					item={data}
+					on:selection={notify}
+					on:selection={() => (clicked = true)} />
+			{/each}
+		</div>
+	{:else if search == ""}
+		<div class="results" style="pointer-events:none;">
+			<DropDownItem
+				color="grey"
+				bind:selectedTitle={selection}
+				item="Type something..." />
+		</div>
+	{:else}
+		<div class="results" style="pointer-events:none;">
+			<DropDownItem
+				color="grey"
+				bind:selectedTitle={selection}
+				item="No results..." />
+		</div>
+	{/if}
+</div>
 
 <style>
 	:root {

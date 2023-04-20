@@ -81,24 +81,21 @@
 <style>
 	.tts-container {
 		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		margin: calc(-1 * var(--font-size-xxlarge)) 0 0 0;
+		margin: 0;
 	}
 
 	.text2Speech {
 		color: var(--color-text);
-		opacity: 0.8;
+		opacity: 0.5;
 		cursor: pointer;
-		display: inline-flex;
 		border: none;
 		background: transparent;
-		transition: all 0.2s ease-in-out;
+		transition: all 0.5s var(--curve);
 	}
 
 	.text2Speech span {
 		font-size: var(--font-size-large);
-		transition: transform 0.2s ease-in-out;
+		transition: transform 0.5s var(--curve);
 	}
 
 	.text2Speech:hover span {

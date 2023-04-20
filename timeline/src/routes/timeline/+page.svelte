@@ -8,14 +8,7 @@
 	import EventEdit from "$lib/components/EventEdit.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import supabase from "$lib/supabaseClient.js";
-	import {
-		year,
-		firstYear,
-		lastYear,
-		atStart,
-		atEnd,
-		showModal,
-	} from "$lib/stores/store.js";
+	import { year, atStart, atEnd, showModal } from "$lib/stores/store.js";
 	import { currentItemIndexStore } from "$lib/stores/store.js";
 	import { onMount } from "svelte";
 
@@ -43,9 +36,6 @@
 
 	let currentIndex = 0;
 	let isEditing = false;
-	let isAdding = false;
-	let locked = false;
-
 	let edit = {
 		title: selectedItem.title,
 		media: selectedItem.image,
@@ -189,167 +179,155 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<PageTransitionFade>
-	<Modal>
-		<h2 slot="header"><b>Timeline Quick Start Guide</b></h2>
-		<p>
-			Welcome! This guide provides an overview of key features to help you
-			navigate and explore the timeline with ease.
-		</p>
-		<h3>
-			Timeline <span class="material-symbols-rounded r rotate-90">commit</span>
-		</h3>
-		<ul>
-			<li>
-				Click on timeline items <span
-					class="material-symbols-rounded i rotate-90">commit</span> in the left
-				column to view it.
-			</li>
-			<li>
-				Click the <span class="material-symbols-rounded i">add</span> button or double-click
-				to zoom in the timeline.
-			</li>
-			<li>
-				Click the <span class="material-symbols-rounded i">remove</span> button
-				to zoom out the timeline bar, and
-				<span class="material-symbols-rounded i">refresh</span> to reset both zoom
-				and position.
-			</li>
-			<li>
-				Once zoomed in, click and drag or scroll on the timeline to move up or
-				down.
-			</li>
-		</ul>
-		<h3>Search Bar <span class="material-symbols-rounded r">search</span></h3>
-		<ul>
-			<li>
-				Click on the search bar or hit <code>'/'</code> and type in a keyword or
-				year to search for a timeline item.
-			</li>
-			<li>
-				Click on the timeline item in the search results to navigate to it.
-			</li>
-			<li>
-				Click on the <span class="material-symbols-rounded i">close</span> button
-				to clear the search bar.
-			</li>
-		</ul>
-		<h3>Navigation Buttons</h3>
-		<ul>
-			<li>
-				<span class="material-symbols-rounded r">smartphone</span>
-				<b> Mobile &mdash; </b>
-				Swipe <span class="material-symbols-rounded i">swipe</span> left or right
-				to navigate through timeline items.
-			</li>
-			<li>
-				<span class="material-symbols-rounded r">mouse</span>
-				<b> Mouse &mdash; </b>
-				Click on the
-				<span class="material-symbols-rounded i">keyboard_arrow_up</span>/<span
-					class="material-symbols-rounded i">keyboard_arrow_down</span> floating
-				buttons at the top and bottom of the screen to navigate up or down through
-				timeline items.
-			</li>
-			<li>
-				<span class="material-symbols-rounded r">keyboard_alt</span>
-				<b> Keyboard &mdash;</b>
-				Press<span class="material-symbols-rounded i">keyboard_arrow_up</span
-				>/<span class="material-symbols-rounded i">keyboard_arrow_left</span>
-				or
-				<span class="material-symbols-rounded i">keyboard_arrow_down</span
-				>/<span class="material-symbols-rounded i">keyboard_arrow_right</span> to
-				navigate up or down through timeline items.
-			</li>
-		</ul>
-		<h3>Fullscreen</h3>
-		<ul>
-			<li>
-				Click on the image to view it in fullscreen mode. Click on the image
-				again to exit fullscreen mode.
-			</li>
-			<li>
-				On mobile, pinch <span class="material-symbols-rounded i">pinch</span> to
-				zoom in and out of the image.
-			</li>
-		</ul>
-		<h3>Accessibility</h3>
-		<ul>
-			<li>
-				Press the
-				<span class="material-symbols-rounded i">volume_up</span>
-				button to hear a description of the current timeline item. Press the
-				<span class="material-symbols-rounded i">stop</span> button to stop the audio
-				playback.
-			</li>
-		</ul>
-		<hr />
-		<h3>Issues</h3>
-		If you come across any issues or bugs, reach out to our team by visiting our&nbsp;<a
-			href="https://github.com/SWE-2023/COSC-4P02-Project">
-			GitHub repository</a
-		>.
-		<br />
-		<br />
-		<p slot="footer" style="text-align:center;">
-			Click on the <span class="material-symbols-rounded i">help</span> button to
-			view this message again
-		</p>
-	</Modal>
-	<SearchBar
-		disabled={locked}
-		bind:selection={dropDownSelection}
-		data={searchData}
-		on:selection={gotoItem}
-		on:selection={update} />
-	<TimelineBar
-		disabled={locked}
-		timeData={timeline}
-		bind:currentItem={selectedItem}
-		bind:this={timelineBar}
-		on:change={update}
-		on:pagedown={pageDown}
-		on:pageup={pageUp} />
-	<EventEdit
-		bind:lockPage={locked}
-		bind:enableEditing={isEditing}
-		bind:enableAdding={isAdding}
-		changes={edit}
-		newItem={add}
-		currentEntry={selectedItem.id}
-		on:resetEdit={setEditFields}
-		on:resetAdd={setAddFields}
-		on:saveNew={handleAdd}
-		on:entryDeleted={handleDelete} />
-	{#if timeline.length > 0}
+<!-- <PageTransitionFade> -->
+<Modal>
+	<h2 slot="header"><b>Timeline Quick Start Guide</b></h2>
+	<p>
+		Welcome! This guide provides an overview of key features to help you
+		navigate and explore the timeline with ease.
+	</p>
+	<h3>
+		Timeline <span class="material-symbols-rounded r rotate-90">commit</span>
+	</h3>
+	<ul>
+		<li>
+			Click on timeline items <span class="material-symbols-rounded i rotate-90"
+				>commit</span> in the left column to view it.
+		</li>
+		<li>
+			Click the <span class="material-symbols-rounded i">add</span> button or double-click
+			to zoom in the timeline.
+		</li>
+		<li>
+			Click the <span class="material-symbols-rounded i">remove</span> button to
+			zoom out the timeline bar, and
+			<span class="material-symbols-rounded i">refresh</span> to reset both zoom
+			and position.
+		</li>
+		<li>
+			Once zoomed in, click and drag or scroll on the timeline to move up or
+			down.
+		</li>
+	</ul>
+	<h3>Search Bar <span class="material-symbols-rounded r">search</span></h3>
+	<ul>
+		<li>
+			Click on the search bar or hit <code>'/'</code> and type in a keyword or year
+			to search for a timeline item.
+		</li>
+		<li>Click on the timeline item in the search results to navigate to it.</li>
+		<li>
+			Click on the <span class="material-symbols-rounded i">close</span> button to
+			clear the search bar.
+		</li>
+	</ul>
+	<h3>Navigation Buttons</h3>
+	<ul>
+		<li>
+			<span class="material-symbols-rounded r">smartphone</span>
+			<b> Mobile &mdash; </b>
+			Swipe <span class="material-symbols-rounded i">swipe</span> left or right to
+			navigate through timeline items.
+		</li>
+		<li>
+			<span class="material-symbols-rounded r">mouse</span>
+			<b> Mouse &mdash; </b>
+			Click on the
+			<span class="material-symbols-rounded i">keyboard_arrow_up</span>/<span
+				class="material-symbols-rounded i">keyboard_arrow_down</span> floating buttons
+			at the top and bottom of the screen to navigate up or down through timeline
+			items.
+		</li>
+		<li>
+			<span class="material-symbols-rounded r">keyboard_alt</span>
+			<b> Keyboard &mdash;</b>
+			Press<span class="material-symbols-rounded i">keyboard_arrow_up</span
+			>/<span class="material-symbols-rounded i">keyboard_arrow_left</span>
+			or
+			<span class="material-symbols-rounded i">keyboard_arrow_down</span>/<span
+				class="material-symbols-rounded i">keyboard_arrow_right</span> to navigate
+			up or down through timeline items.
+		</li>
+	</ul>
+	<h3>Fullscreen</h3>
+	<ul>
+		<li>
+			Click on the image to view it in fullscreen mode. Click on the image again
+			to exit fullscreen mode.
+		</li>
+		<li>
+			On mobile, pinch <span class="material-symbols-rounded i">pinch</span> to zoom
+			in and out of the image.
+		</li>
+	</ul>
+	<h3>Accessibility</h3>
+	<ul>
+		<li>
+			Press the
+			<span class="material-symbols-rounded i">volume_up</span>
+			button to hear a description of the current timeline item. Press the
+			<span class="material-symbols-rounded i">stop</span> button to stop the audio
+			playback.
+		</li>
+	</ul>
+	<hr />
+	<h3>Issues</h3>
+	If you come across any issues or bugs, reach out to our team by visiting our&nbsp;<a
+		href="https://github.com/SWE-2023/COSC-4P02-Project">
+		GitHub repository</a
+	>.
+	<br />
+	<br />
+	<p slot="footer" style="text-align:center;">
+		Click on the <span class="material-symbols-rounded i">help</span> button to view
+		this message again
+	</p>
+</Modal>
+<SearchBar
+	bind:selection={dropDownSelection}
+	data={searchData}
+	on:selection={gotoItem}
+	on:selection={update} />
+<TimelineBar
+	timeData={timeline}
+	bind:currentItem={selectedItem}
+	bind:this={timelineBar}
+	on:change={update}
+	on:pagedown={pageDown}
+	on:pageup={pageUp} />
+<EventEdit
+	changes={edit}
+	newItem={add}
+	currentEntry={selectedItem.id}
+	on:resetEdit={setEditFields}
+	on:resetAdd={setAddFields}
+	on:saveNew={handleAdd}
+	on:entryDeleted={handleDelete} />
+{#if timeline.length > 0}
+	<PageTransitionFade>
 		{#key `${selectedItem.id}-${$direction}`}
 			<section class="layout">
 				<ItemTransition>
 					<ItemComponents
-						editing={isEditing}
-						adding={isAdding}
 						bind:editList={edit}
 						bind:addList={add}
-						item={{
-							title: selectedItem.title,
-							media: selectedItem.image,
-							image_credit: selectedItem.image_credit,
-							body: selectedItem.body,
-							start_date: selectedItem.start_date,
-						}} />
+						item={selectedItem} />
 				</ItemTransition>
 			</section>
 		{/key}
-	{:else}
-		<section class="layout col">
-			<img
-				alt="google dino"
-				width="64"
-				style="mix-blend-mode:darken"
-				src="https://play-lh.googleusercontent.com/i-0HlK6I-K5ZVI28HFa4iXz0T22Mg2WjQ4gMsEYvqmSNdifp2NE41ZiaUCavmbIimQ" />
-			<h1>No items in timeline. Click 'Add' to create a new event.</h1>
-		</section>
-	{/if}</PageTransitionFade>
+	</PageTransitionFade>
+{:else}
+	<section class="layout col">
+		<img
+			alt="google dino"
+			width="64"
+			style="mix-blend-mode:darken"
+			src="https://play-lh.googleusercontent.com/i-0HlK6I-K5ZVI28HFa4iXz0T22Mg2WjQ4gMsEYvqmSNdifp2NE41ZiaUCavmbIimQ" />
+		<h1>No items in timeline. Click 'Add' to create a new event.</h1>
+	</section>
+{/if}
+
+<!-- </PageTransitionFade> -->
 
 <style>
 	.layout {
@@ -357,14 +335,14 @@
 		width: 100%;
 		display: flex;
 		justify-content: center;
+		margin-left: calc(var(--timeline-width) / 2);
 		align-items: center;
 		transition: margin-left 0.5s ease;
 	}
 
 	@media (max-width: 1000px) {
 		.layout {
-			margin-left: 1.75rem;
-			width: 100%;
+			/* width: 100%; */
 			margin-bottom: 10rem;
 		}
 	}

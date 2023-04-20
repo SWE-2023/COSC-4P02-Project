@@ -1,12 +1,13 @@
 <script>
 	// @ts-nocheck
-	import { fade } from "svelte/transition";
+	import { mode } from "$lib/stores/store.js";
+	import { fly } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
 	import { tweened } from "svelte/motion";
 	import Cursor from "$lib/components/Cursor.svelte";
 	import { userStore } from "$lib/authStore";
 	import Dot from "$lib/components/Dot.svelte";
-	import { cubicOut } from "svelte/easing";
+	import { cubicOut, quintOut } from "svelte/easing";
 	import { direction } from "$lib/stores/store";
 	import { currentItemIndexStore } from "$lib/stores/store";
 	import {
@@ -23,15 +24,13 @@
 
 	export let timeData;
 	export let currentItem;
-	export let disabled;
 
+	let disabled;
 	let dragging = false;
 	let startY;
 	let tweening;
 	let zoom = 1;
 	let zoomOffset = 0;
-	let isFirefox;
-	let isSafari;
 	let timelineHeight = 80;
 	let lowest;
 	let highest;
@@ -39,6 +38,9 @@
 	let decades = [];
 	let arrowVisible = true;
 	let touchStartPos = 0;
+	let touchCount = 0;
+
+	$: disabled = $mode !== "default";
 
 	firstYear.set(getYear(timeData[0].start_date));
 	lastYear.set(getYear(timeData[timeData.length - 1].start_date));
@@ -52,7 +54,6 @@
 	function change() {
 		const index = timeData.findIndex((item) => item.id == currentItem.id);
 		$direction = index > $currentItemIndexStore ? "down" : "up";
-		console.log($direction);
 		dispatch("change");
 	}
 
@@ -134,10 +135,16 @@
 	}
 
 	function handleTouchStart(e) {
+		touchCount = e.touches.length;
+		if (touchCount > 1) return;
 		touchStartPos = e.touches[0].clientX;
 	}
 
 	function handleTouchEnd(e) {
+		if (touchCount > 1) {
+			touchCount = 0;
+			return;
+		}
 		const touchEndX = e.changedTouches[0].clientX;
 		const deltaX = touchEndX - touchStartPos;
 
@@ -154,6 +161,7 @@
 				}
 			}
 		}
+		touchCount = 0;
 	}
 
 	function handleWheel(e) {
@@ -248,7 +256,7 @@
 </div>
 <div
 	style="--height:{timelineHeight}vh"
-	in:fade
+	transition:fly={{ x: -100, easing: quintOut, duration: 500 }}
 	class={disabled ? "timeline-container disabled" : "timeline-container"}
 	on:wheel|preventDefault={handleWheel}
 	on:dblclick={handleZoomIn}
@@ -290,15 +298,15 @@
 		</ul>
 	</div>
 </div>
-<div class="btns">
-	<button class="reset" on:click={resetZoom} title="Reset zoom"
-		><span class="material-symbols-rounded i">refresh</span>
-	</button>
+<div class={disabled ? "btns disabled" : "btns"} transition:fly={{ y: 100 }}>
 	<button class="zoom-out" on:click={handleZoomOut} title="Zoom out"
 		><span class="material-symbols-rounded i">remove</span>
 	</button>
 	<button class="zoom-in" on:click={handleZoomIn} title="Zoom in"
 		><span class="material-symbols-rounded i">add</span>
+	</button>
+	<button class="reset" on:click={resetZoom} title="Reset zoom"
+		><span class="material-symbols-rounded i">refresh</span>
 	</button>
 </div>
 
@@ -307,6 +315,7 @@
 		--foot-height: 2px;
 		--left: 20px;
 		--anim: 0.33s cubic-bezier(0.13, 0.94, 0.16, 1.15);
+		--timeline-width: 7rem;
 	}
 
 	div:focus {
@@ -349,7 +358,7 @@
 	.line-components {
 		user-select: none;
 		position: relative;
-		left: 20px;
+		left: 0;
 		transition: left 0.5s var(--curve);
 	}
 
@@ -371,7 +380,7 @@
 		margin: 0;
 		height: var(--height);
 		position: absolute;
-		left: 4.5rem;
+		left: 3rem;
 		padding: 0;
 		transition: left 0.5s var(--curve);
 	}
@@ -402,6 +411,7 @@
 		display: flex;
 		position: absolute;
 	}
+
 	.lineItem div {
 		padding: none;
 		position: relative;
@@ -412,14 +422,16 @@
 		user-select: none;
 		-webkit-user-select: none;
 		position: fixed;
-		width: 9rem;
+		width: var(--timeline-width);
 		opacity: 1;
 		z-index: 1;
-		left: calc(var(--left) - 40px);
+		left: 0;
 		overflow: hidden;
+		-webkit-overflow: hidden;
 		background: var(--color-bg-1);
 		border: var(--border);
-		border-radius: 0 1.5rem 1.5rem 0;
+		border-left: 0;
+		border-radius: 0 1rem 1rem 0;
 		height: var(--height);
 	}
 
@@ -445,31 +457,35 @@
 		position: fixed;
 		backdrop-filter: invert(0.1);
 		bottom: 0;
+		top: calc();
 		left: 0;
-		flex-flow: row;
-		margin: 0.5rem;
+		flex-flow: row wrap;
+		width: var(--timeline-width);
+		justify-content: space-evenly;
+		margin: 0;
 		z-index: 99;
-		border-radius: 10rem;
+		border-radius: 0 1rem 0 0;
 		border: var(--border);
+		border-left: none;
+		gap:2px;
 	}
 
 	button {
 		cursor: pointer;
 		background: transparent;
+		backdrop-filter: invert(0.1);
 		user-select: none;
 		color: var(--color-theme-1);
-		line-height: 0;
-		height: calc((var(--font-size-base) * 1) + 1rem);
-		width: calc(var(--font-size-base) * 1 + 1rem);
-		margin: 0;
-		padding: 0.25rem;
+		height: calc(var(--font-size-base) + 1rem);
+		width: calc(var(--font-size-base) + 1rem);
+		padding: 0rem;
 		justify-self: center;
 		border: none;
 		transition: all 0.5s var(--curve);
 	}
 
 	button:hover {
-		filter: invert(0.2);
+		backdrop-filter: invert(0.2);
 	}
 
 	button:active {
@@ -538,6 +554,7 @@
 	@media (max-width: 1000px) {
 		:root {
 			--left: 4px;
+			--timeline-width: 4.75rem;
 		}
 		.line {
 			left: var(--left);
@@ -549,10 +566,11 @@
 			left: calc((var(--left) - 20px));
 		}
 		.timeline-container {
-			width: 5rem;
 			background: none;
-			box-shadow: none;
 			left: 0;
+		}
+		.btns {
+			gap:1vh;
 		}
 	}
 
@@ -567,6 +585,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		mix-blend-mode: screen;
 		background: var(--color-bg-1);
 		opacity: 0.8;
 		z-index: 99;

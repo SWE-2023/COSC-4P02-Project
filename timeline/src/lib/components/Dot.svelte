@@ -52,7 +52,7 @@
 
 	.dot-svg {
 		position: absolute;
-		left: 9px;
+		left: 10px;
 		z-index: 3;
 	}
 

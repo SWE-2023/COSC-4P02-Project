@@ -1,4 +1,3 @@
-import { quintOut } from "svelte/easing";
 import { tweened } from "svelte/motion";
 import { writable } from "svelte/store";
 
@@ -59,9 +58,13 @@ export const atStart = writable(true);
 export const atEnd = writable(false);
 
 // year tweened
+function expoOut(t) {
+	return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  }
+
 export const year = tweened(0, {
-	duration: 500,
-	easing: quintOut,
+	duration: 750,
+	easing: expoOut,
 	interpolate: (a, b) => (t) => a + (b - a) * t,
 });
 
@@ -70,3 +73,5 @@ export const direction = writable("down");
 
 // modal store
 export const showModal = writable(false);
+
+export const mode = writable("default");
