@@ -34,7 +34,7 @@ Our project uses the following technologies:
 | [Francis Monwe](https://github.com/monwe-jr)| 6724355 |
 | [Tommy Pham](https://github.com/tommyphamca)| 6733646 |
 | [Abhijeet Prajapati](https://github.com/TheDasher1)| 5987722 |
-| [Justin Stickel](https://github.com/Stickelation) - *Scrum Master*| 6718404 |
+| [Justin Stickel](https://github.com/Stickelation) - *Scrum Master*| 6718704 |
 | [Haaris Yahya](https://github.com/haarisyahya)| 7054984 |
 
 ## Contact
