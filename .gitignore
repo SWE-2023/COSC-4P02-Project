@@ -9,3 +9,6 @@ __pycache__
 .DS_Store
 salt
 test-results
+/test-results/
+/playwright-report/
+/playwright/.cache/
