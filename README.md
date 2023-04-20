@@ -1,28 +1,35 @@
 <div align="center"><img width="96px" src="https://user-images.githubusercontent.com/18179415/222605007-66a06286-3f5a-4903-a837-d4c1e8c5147f.png"/></div>
 
-<div align="center"><h1>COSC 4P02 Team Project</h1></div>
-
 <div align=center><img src="https://img.shields.io/github/contributors/SWE-2023/COSC-4P02-Project?style=flat-square"/></div>
 
-<div align=center><h1>Interactive Timeline Web Application</h1></div>
+<div align=center><h1>Niagara-on-the-Lake Timeline</h1></div>
+
+## COSC 4P02 Team Project
 
 This is a course project for COSC 4P02 Software Engineering II taught by Professor Naser Ezzati-Jivan at Brock University. 
 
 View our project documents in the [documents](documents) folder.
+
+## How to Access
+
+- Visit the site live on the Vercel deployment at [museumtimeline.vercel.app](https://museumtimeline.vercel.app)
+- Download the application from the [Google Play](https://play.google.com/store/apps/details?id=app.notltimeline.twa) store
+
+<a href='https://play.google.com/store/apps/details?id=app.notltimeline.twa&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width=200 alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 ## Project Description 📝
 The goal of this project is to create an interactive timeline web application that will allow visitors to explore the history of Niagara-on-the-Lake. 
 
 ## Technology Stack
 
-<img src="https://skillicons.dev/icons?i=supabase,svelte,nodejs"/>
+<img src="https://skillicons.dev/icons?i=svelte,supabase,netlify,vercel"/>
 
 Our project uses the following technologies:
 
 - [SvelteKit](https://kit.svelte.dev): Web application framework built on top of Svelte
 - [Svelte](https://svelte.dev): Reactive front-end framework
 - [Supabase](https://supabase.com): Backend service with Postgres database and authentication
-- [Node.js](https://nodejs.org/en/): Server-side runtime environment 
+- [Netlify](https://www.netlify.com) / [Vercel](https://vercel.com/): Hosting and deployment services
 
 ## Team Members 👥
 
