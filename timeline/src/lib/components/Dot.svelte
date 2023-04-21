@@ -80,12 +80,6 @@
 		z-index: 1;
 	}
 
-	.dot-container:hover .dot {
-		stroke-width: 2.5;
-		fill: var(--color-theme-1);
-		transform: scale(1) translateX(14px);
-	}
-
 	.line {
 		transform: scaleX(0);
 		transform-origin: center;
@@ -100,20 +94,34 @@
 		stroke-width: 3.5;
 	}
 
-	.dot-container:hover .date {
-		cursor: pointer;
-		color: var(--color-theme-1);
-		transform: scale(1.1);
-		margin-left: 2.4rem;
-		opacity: 1;
+	@media (min-width: 1000px) {
+		.dot-container:hover .date {
+			cursor: pointer;
+			color: var(--color-theme-1);
+			transform: scale(1.1);
+			margin-left: 2.4rem;
+			opacity: 1;
+		}
+
+		.dot-container:hover .dot {
+			stroke-width: 2.5;
+			fill: var(--color-theme-1);
+			transform: scale(1) translateX(14px);
+		}
 	}
 
 	@media (max-width: 1000px) {
-		.dot-container:hover .date {
+		.dot-container:active .date {
+			cursor: pointer;
+			color: var(--color-theme-1);
+			transform: scale(1.1);
 			margin-left: calc(1.5 * var(--font-size-base));
+			opacity: 1;
 		}
-		.dot-container:hover .dot {
+		.dot-container:active .dot {
 			transform: scale(1.2) translateX(2px);
+			stroke-width: 2.5;
+			fill: var(--color-theme-1);
 		}
 	}
 </style>

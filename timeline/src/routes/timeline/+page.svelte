@@ -1,5 +1,6 @@
 <script>
-	import { direction } from "./../../lib/stores/store.js";
+	import { windowWidth } from "$lib/stores/window.js";
+	import { direction, mode } from "$lib/stores/store.js";
 	import ItemTransition from "$lib/components/ItemTransition.svelte";
 	import TimelineBar from "$lib/components/TimelineBar.svelte";
 	import SearchBar from "$lib/components/searchbar/SearchBar.svelte";
@@ -8,9 +9,12 @@
 	import EventEdit from "$lib/components/EventEdit.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import supabase from "$lib/supabaseClient.js";
+	import { tweened } from "svelte/motion";
 	import { year, atStart, atEnd, showModal } from "$lib/stores/store.js";
 	import { currentItemIndexStore } from "$lib/stores/store.js";
 	import { onMount } from "svelte";
+	import { quintOut } from "svelte/easing";
+	import { writable } from "svelte/store";
 
 	export let data;
 	let { timeline } = data;
@@ -35,7 +39,6 @@
 	let selectedItem = timeline[0];
 
 	let currentIndex = 0;
-	let isEditing = false;
 	let edit = {
 		title: selectedItem.title,
 		media: selectedItem.image,
@@ -43,6 +46,16 @@
 		start_date: selectedItem.start_date,
 		body: selectedItem.body,
 	};
+
+	$: if (selectedItem) {
+		edit = {
+			title: selectedItem.title,
+			media: selectedItem.image,
+			image_credit: selectedItem.image_credit,
+			start_date: selectedItem.start_date,
+			body: selectedItem.body,
+		};
+	}
 
 	let add = {
 		title: "",
@@ -62,22 +75,31 @@
 
 	let timelineBar;
 
+	let touchStartX = 0;
+	let touchEndX = 0;
+	let touchDeltaX = 0;
+
+	const itemTranslateX = tweened(0, {
+		duration: 300,
+		easing: quintOut,
+	});
+
+	const opacity = writable(1);
+
 	$: atStart.set(currentIndex == 0);
 	$: atEnd.set(currentIndex == timeline.length - 1);
 
 	function pageDown() {
 		selectedItem = timeline[++currentIndex];
 		update();
-		setEditFields();
 	}
 
 	function pageUp() {
 		selectedItem = timeline[--currentIndex];
 		update();
-		setEditFields();
 	}
 
-	function update() {
+	async function update() {
 		year.set(parseInt(selectedItem.start_date.slice(0, 4)));
 		currentItem = {
 			title: selectedItem.title,
@@ -89,7 +111,6 @@
 
 		currentIndex = timeline.indexOf(selectedItem);
 		currentItemIndexStore.set(currentIndex);
-		setEditFields();
 	}
 
 	function gotoItem() {
@@ -103,15 +124,6 @@
 			}
 			update();
 		}
-		setEditFields();
-	}
-
-	function setEditFields() {
-		edit.title = selectedItem.title;
-		edit.media = selectedItem.image;
-		edit.image_credit = selectedItem.image_credit;
-		edit.start_date = selectedItem.start_date;
-		edit.body = selectedItem.body;
 	}
 
 	function setAddFields() {
@@ -130,8 +142,8 @@
 	function handleDelete() {
 		if (timeline.length >= 1) {
 			selectedItem = timeline[0];
-			isEditing = !isEditing;
 			update();
+			$mode = "default";
 		}
 	}
 
@@ -140,7 +152,68 @@
 			.from("timeline")
 			.select("id, title, image, image_credit, body, start_date")
 			.order("start_date");
-		data && (timeline = data);
+		if (data) {
+			timeline = data;
+			update();
+		}
+	}
+
+	function handleTouchStart(event) {
+		if (
+			event.touches[0].clientX < 128 ||
+			event.touches[0].clientY < 128 ||
+			$mode !== "default"
+		)
+			return;
+		touchStartX = event.touches[0].clientX;
+	}
+
+	function handleTouchMove(event) {
+		if (
+			event.touches[0].clientX < 128 ||
+			event.touches[0].clientY < 128 ||
+			$mode !== "default"
+		)
+			return;
+		touchEndX = event.touches[0].clientX;
+		// if delta greater than 30 then continue
+		if (Math.abs(touchEndX - touchStartX) < 60) return;
+		touchDeltaX = touchEndX - touchStartX;
+		itemTranslateX.set(touchDeltaX);
+		opacity.set(1 - Math.abs(touchDeltaX) / 750);
+	}
+
+	async function handleTouchEnd() {
+		if (Math.abs(touchDeltaX) > 60) {
+			if (touchDeltaX > 100) {
+				if (!$atStart) {
+					$direction = "none";
+					await pageUp();
+					$opacity = 0;
+					$itemTranslateX = -250;
+				}
+			} else if (touchDeltaX < -100) {
+				if (!$atEnd) {
+					$direction = "none";
+					await pageDown();
+					$opacity = 0;
+					$itemTranslateX = 250;
+				}
+			}
+			sleep(250).then(() => {
+				resetSwipe();
+			});
+		}
+	}
+
+	const sleep = (milliseconds) => {
+		return new Promise((resolve) => setTimeout(resolve, milliseconds));
+	};
+
+	function resetSwipe() {
+		touchDeltaX = 0;
+		$opacity = 1;
+		$itemTranslateX = 0;
 	}
 
 	onMount(async () => {
@@ -179,7 +252,10 @@
 	<meta name="description" content="Timeline page" />
 </svelte:head>
 
-<!-- <PageTransitionFade> -->
+<svelte:window
+	on:touchend={handleTouchEnd}
+	on:touchmove|passive={handleTouchMove} />
+
 <Modal>
 	<h2 slot="header"><b>Timeline Quick Start Guide</b></h2>
 	<p>
@@ -299,14 +375,17 @@
 	changes={edit}
 	newItem={add}
 	currentEntry={selectedItem.id}
-	on:resetEdit={setEditFields}
 	on:resetAdd={setAddFields}
 	on:saveNew={handleAdd}
 	on:entryDeleted={handleDelete} />
 {#if timeline.length > 0}
 	<PageTransitionFade>
 		{#key `${selectedItem.id}-${$direction}`}
-			<section class="layout">
+			<section
+				class="layout"
+				style="transform-origin:bottom center;transform: translateX({$itemTranslateX}px) rotate({$itemTranslateX /
+					($windowWidth / 5)}deg);opacity:{$opacity};"
+				on:touchstart|passive={handleTouchStart}>
 				<ItemTransition>
 					<ItemComponents
 						bind:editList={edit}
@@ -327,8 +406,6 @@
 	</section>
 {/if}
 
-<!-- </PageTransitionFade> -->
-
 <style>
 	.layout {
 		min-height: 80vh;
@@ -342,7 +419,6 @@
 
 	@media (max-width: 1000px) {
 		.layout {
-			/* width: 100%; */
 			margin-bottom: 10rem;
 		}
 	}

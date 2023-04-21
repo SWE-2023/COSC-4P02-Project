@@ -1,9 +1,10 @@
 <script>
+	import { direction, mode } from "$lib/stores/store";
 	import { createEventDispatcher } from "svelte";
 
 	export let down = false;
-	export let disabled = false;
 	export let visible = true;
+	export let disabled = false;
 
 	$: classes =
 		"arrow-button " + (down ? "down" : "up") + (visible ? " " : " hidden");
@@ -13,18 +14,44 @@
 	const goDown = () => dispatch("movedown");
 
 	function handleKeyDown(event) {
-		if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-			event.preventDefault();
-			goUp();
-		} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-			event.preventDefault();
+		if ($mode !== "default") return;
+		switch (event.key) {
+			case "ArrowUp":
+				event.preventDefault();
+				direction.set("up");
+				goUp();
+				break;
+			case "ArrowDown":
+				event.preventDefault();
+				direction.set("down");
+				goDown();
+				break;
+			case "ArrowLeft":
+				event.preventDefault();
+				direction.set("right");
+				goUp();
+				break;
+			case "ArrowRight":
+				event.preventDefault();
+				direction.set("left");
+				goDown();
+				break;
+		}
+	}
+
+	function handleClick() {
+		if (down) {
+			direction.set("down");
 			goDown();
+		} else {
+			direction.set("up");
+			goUp();
 		}
 	}
 </script>
 
 <div class={classes}>
-	<button {disabled} class="button" on:click={down ? goDown : goUp}>
+	<button {disabled} class="button" on:click={handleClick}>
 		<div class="circle">
 			<span class="icon">
 				{#if down}

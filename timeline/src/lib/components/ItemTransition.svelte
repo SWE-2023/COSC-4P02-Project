@@ -31,9 +31,15 @@
 </script>
 
 <div class="container">
-	<div in:transition={$inTransition} out:transition={$outTransition}>
-		<slot />
-	</div>
+	{#if $direction === "none"}
+		<div>
+			<slot />
+		</div>
+	{:else}
+		<div in:transition={$inTransition} out:transition={$outTransition}>
+			<slot />
+		</div>
+	{/if}
 </div>
 
 <style>

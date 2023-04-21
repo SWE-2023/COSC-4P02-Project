@@ -1,4 +1,5 @@
 <script>
+	import { slide } from 'svelte/transition';
 	import { onDestroy, onMount } from "svelte";
 
 	export let body;
@@ -71,6 +72,7 @@
 		<button title="Stop reading" class="text2Speech" on:click={stop}>
 			<span class="material-symbols-rounded">stop</span>
 		</button>
+		<img class="playing" src="/assets/icons8-audio-wave.gif" alt="Audio wave" in:slide={{axis:'x'}}/>
 	{:else}
 		<button title="Read aloud" class="text2Speech" on:click={text2Speech}>
 			<span class="material-symbols-rounded">volume_up</span>
@@ -81,7 +83,14 @@
 <style>
 	.tts-container {
 		display: flex;
+		align-items: center;
+		justify-content: center;
 		margin: 0;
+	}
+
+	.playing {
+		mix-blend-mode: darken;
+		opacity:0.5;
 	}
 
 	.text2Speech {
@@ -102,7 +111,7 @@
 		transform: scale(1.1);
 	}
 
-	.text2Speech:hover {
+	.text2Speech:hover, .text2Speech:active {
 		opacity: 1;
 		color: var(--color-theme-1);
 	}

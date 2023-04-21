@@ -37,8 +37,6 @@
 	let decadeGap;
 	let decades = [];
 	let arrowVisible = true;
-	let touchStartPos = 0;
-	let touchCount = 0;
 
 	$: disabled = $mode !== "default";
 
@@ -73,7 +71,7 @@
 		return spacing;
 	};
 
-	$: $mobile ? (timelineHeight = 70) : (timelineHeight = 80);
+	$: $mobile ? (timelineHeight = 65) : (timelineHeight = 80);
 
 	function getYear(date) {
 		const y = date.substring(0, 4);
@@ -134,36 +132,6 @@
 		tweening = false;
 	}
 
-	function handleTouchStart(e) {
-		touchCount = e.touches.length;
-		if (touchCount > 1) return;
-		touchStartPos = e.touches[0].clientX;
-	}
-
-	function handleTouchEnd(e) {
-		if (touchCount > 1) {
-			touchCount = 0;
-			return;
-		}
-		const touchEndX = e.changedTouches[0].clientX;
-		const deltaX = touchEndX - touchStartPos;
-
-		if (Math.abs(deltaX) > 100) {
-			if (deltaX > 0) {
-				if (!$atStart) {
-					$direction = "right";
-					callPageUp();
-				}
-			} else {
-				if (!$atEnd) {
-					$direction = "left";
-					callPageDown();
-				}
-			}
-		}
-		touchCount = 0;
-	}
-
 	function handleWheel(e) {
 		const newZoomOffset = $zoomOffsetTweened + e.deltaY / (500 * $zoomTweened);
 		if (newZoomOffset < 0 || newZoomOffset > 1 - 1 / $zoomTweened) return;
@@ -211,14 +179,12 @@
 
 	function handleDownArrow() {
 		if (!$atEnd) {
-			$direction = "down";
 			callPageDown();
 		}
 	}
 
 	function handleUpArrow() {
 		if (!$atStart) {
-			$direction = "up";
 			callPageUp();
 		}
 	}
@@ -226,12 +192,7 @@
 	$: disabled ? (arrowVisible = false) : (arrowVisible = true);
 </script>
 
-<svelte:window
-	on:resize={handleResize}
-	on:mouseup={handleDragEnd}
-	on:touchstart={handleTouchStart}
-	on:touchmove|passive
-	on:touchend|passive={handleTouchEnd} />
+<svelte:window on:resize={handleResize} on:mouseup={handleDragEnd} />
 
 <div
 	class={arrowVisible
@@ -467,7 +428,7 @@
 		border-radius: 0 1rem 0 0;
 		border: var(--border);
 		border-left: none;
-		gap:2px;
+		gap: 2px;
 	}
 
 	button {
@@ -566,11 +527,10 @@
 			left: calc((var(--left) - 20px));
 		}
 		.timeline-container {
-			background: none;
 			left: 0;
 		}
 		.btns {
-			gap:1vh;
+			gap:0.5vh;
 		}
 	}
 
