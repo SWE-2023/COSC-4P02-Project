@@ -126,17 +126,18 @@
 		}
 	}
 
-	function setAddFields() {
-		add.title = "";
-		add.media = "";
-		add.image_credit = "";
-		add.start_date = "";
-		add.body = "";
-	}
+	$: add = {
+		title: "",
+		media: "",
+		image_credit: "",
+		start_date: "",
+		body: "",
+	};
 
 	function handleAdd() {
 		selectedItem = timeline[0];
 		update();
+		$mode = "add";
 	}
 
 	function handleDelete() {
@@ -176,7 +177,6 @@
 		)
 			return;
 		touchEndX = event.touches[0].clientX;
-		// if delta greater than 30 then continue
 		if (Math.abs(touchEndX - touchStartX) < 60) return;
 		touchDeltaX = touchEndX - touchStartX;
 		itemTranslateX.set(touchDeltaX);
@@ -375,7 +375,6 @@
 	changes={edit}
 	newItem={add}
 	currentEntry={selectedItem.id}
-	on:resetAdd={setAddFields}
 	on:saveNew={handleAdd}
 	on:entryDeleted={handleDelete} />
 {#if timeline.length > 0}

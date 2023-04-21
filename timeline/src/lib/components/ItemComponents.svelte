@@ -132,7 +132,6 @@
 		{#if item.image || $mode !== "default"}
 			<div class="media-component">
 				{#if $mode !== "default"}
-					
 					<p class={uploading ? "upload-notice red" : "upload-notice"}>
 						<span
 							style="font-size:var(--font-size-small)"
@@ -154,8 +153,20 @@
 									on:change={upload} />
 								<img
 									class="image-edit"
-									src={$mode === "add" ? addList.media : editList.media}
-									alt={$mode === "add" ? addList.title : editList.title} />
+									src={$mode === "add"
+										? $mode === "add"
+											? addList.media
+											: ""
+										: $mode === "edit"
+										? editList.media
+										: ""}
+									alt={$mode === "add"
+										? $mode === "add"
+											? addList.title
+											: ""
+										: $mode === "edit"
+										? editList.title
+										: ""} />
 								<div style="width:100%;text-align:center;">
 									<p
 										style="font-size:var(--font-size-small);align-content:center">
@@ -441,8 +452,6 @@
 	}
 
 	/* ---------------------- EDIT ---------------------- */
-
-	
 
 	.edit-cont {
 		display: flex;
