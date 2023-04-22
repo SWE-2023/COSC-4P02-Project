@@ -1,9 +1,10 @@
 <script>
+	import { direction, mode } from "$lib/stores/store";
 	import { createEventDispatcher } from "svelte";
-	export let lock;
+
 	export let down = false;
+	export let visible = true;
 	export let disabled = false;
-	export let visible = false;
 
 	$: classes =
 		"arrow-button " + (down ? "down" : "up") + (visible ? " " : " hidden");
@@ -13,20 +14,44 @@
 	const goDown = () => dispatch("movedown");
 
 	function handleKeyDown(event) {
-		if (!lock) {
-			if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+		if ($mode !== "default") return;
+		switch (event.key) {
+			case "ArrowUp":
 				event.preventDefault();
+				direction.set("up");
 				goUp();
-			} else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+				break;
+			case "ArrowDown":
 				event.preventDefault();
+				direction.set("down");
 				goDown();
-			}
+				break;
+			case "ArrowLeft":
+				event.preventDefault();
+				direction.set("right");
+				goUp();
+				break;
+			case "ArrowRight":
+				event.preventDefault();
+				direction.set("left");
+				goDown();
+				break;
+		}
+	}
+
+	function handleClick() {
+		if (down) {
+			direction.set("down");
+			goDown();
+		} else {
+			direction.set("up");
+			goUp();
 		}
 	}
 </script>
 
 <div class={classes}>
-	<button {disabled} class="button" on:click={down ? goDown : goUp}>
+	<button {disabled} class="button" on:click={handleClick}>
 		<div class="circle">
 			<span class="icon">
 				{#if down}
@@ -46,36 +71,8 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <style>
-	:root {
-		--anim: 0.33s cubic-bezier(0.13, 0.94, 0.16, 1.15);
-	}
-
 	* {
 		user-select: none;
-	}
-
-	.arrow-button {
-		position: fixed;
-		left: 11rem;
-		transform: translateX(-50%);
-		z-index: 4;
-		transition: top var(--anim), bottom var(--anim);
-	}
-
-	.up {
-		top: 10vh;
-	}
-
-	.down {
-		bottom: 7vh;
-	}
-
-	.up.hidden {
-		top: -7rem;
-	}
-
-	.down.hidden {
-		bottom: -7rem;
 	}
 
 	.circle {
@@ -84,20 +81,20 @@
 		border-radius: 100%;
 		opacity: var(--arrow-opacity);
 		background-color: var(--color-bg-1);
-		border: var(--border);
-		transition: all 0.5s var(--curve);
+		border: var(--arrow-border);
+		transition: all 0.3s var(--curve);
 	}
 
 	.button {
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
-		padding: 1rem 1rem;
+		padding: 0.5rem;
 	}
 
 	.circle:hover,
 	.button:hover > .circle {
-		border: 2px solid var(--color-theme-1);
+		background-color: var(--color-bg-2);
 		opacity: 1;
 	}
 
@@ -105,6 +102,12 @@
 	.up-arrow {
 		color: var(--color-theme-1);
 		font-size: calc(2.5 * var(--font-size-base));
+	}
+
+	@media (max-width: 1000px) {
+		.circle {
+			border: var(--border);
+		}
 	}
 
 	.down-arrow {
@@ -121,6 +124,7 @@
 	.circle:active,
 	.button:active > .circle {
 		transform: scale(0.95);
+		border: var(--border);
 		opacity: 1;
 	}
 </style>

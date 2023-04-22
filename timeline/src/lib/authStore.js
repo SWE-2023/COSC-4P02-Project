@@ -25,8 +25,13 @@ export const login = async (email) => {
 		if (error) throw error;
 		toast.push("<b>Success</b><br>Check your email for a login link");
 	} catch (error) {
-		// toast.push("<b>Error!</b><br>" + error.message);
-		toast.push("<b>Error</b><br>" + "Please login with a verified admin account");
+		if (error.status === 403) {
+			toast.push(
+				"<b>Error</b><br>" + "Please login with a verified admin account"
+			);
+		} else {
+			toast.push("<b>Error!</b><br>" + error.message);
+		}
 	}
 	return;
 };

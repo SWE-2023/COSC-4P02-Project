@@ -12,7 +12,7 @@
 	}
 
 	function handleIncrease() {
-		if (size <= 2.5) {
+		if (size <= 2) {
 			size += 0.1;
 			setFontSize();
 			currentSizeStore.set(size);
@@ -38,11 +38,11 @@
 	<button class="btn" disabled>
 		<span class="material-symbols-rounded"> format_size </span><b>&nbsp;{(Number($currentSizeStore)/1.2).toFixed(1)}x</b>
 	</button>
-	<button title="Decrease Font Size" class="btn" on:click={handleDecrease}
+	<button title="Decrease font size" class="btn" on:click={handleDecrease}
 		><span class="material-symbols-rounded"> remove </span></button>
-	<button title="Reset Font Size" class="btn" on:click={handleReset}
+	<button title="Reset font size" class="btn" on:click={handleReset}
 		><span class="material-symbols-rounded"> refresh </span></button>
-	<button title="Increase Font Size" class="btn" on:click={handleIncrease}
+	<button title="Increase font size" class="btn" on:click={handleIncrease}
 		><span class="material-symbols-rounded"> add </span></button>
 </div>
 
@@ -50,6 +50,7 @@
 	:root {
 		--font-size-xsmall: calc(var(--font-size-base) * 0.66); /* 0.8rem */
 		--font-size-small: calc(var(--font-size-base) * 0.83); /* 0.99rem */
+		--font-size-smallish: calc(var(--font-size-base) * 0.9); /* 1.08rem */
 		--font-size-base: 1.2rem;
 		--font-size-medium: calc(var(--font-size-base) * 1.2); /* 1.44rem */
 		--font-size-large: calc(var(--font-size-base) * 1.5); /* 1.8rem */

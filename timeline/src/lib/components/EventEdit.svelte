@@ -1,13 +1,11 @@
 <script>
 	// @ts-nocheck
 	import supabase from "$lib/supabaseClient";
-	import { slide } from "svelte/transition";
+	import { slide, fly } from "svelte/transition";
 	import { userStore } from "$lib/authStore";
 	import { createEventDispatcher } from "svelte";
 	import { toast } from "@zerodevx/svelte-toast";
-	export let lockPage;
-	export let enableEditing;
-	export let enableAdding;
+	import { mode } from "$lib/stores/store";
 	export let currentEntry;
 	export let changes;
 	export let newItem;
@@ -21,23 +19,21 @@
 	const resetEdit = () => dispatch("resetEdit");
 	const resetAdd = () => dispatch("resetAdd");
 
-	function changeMenu() {
-		lockPage = !lockPage;
-		enableEditing = !enableEditing;
+	function handleEdit() {
+		mode.update((n) => (n === "default" ? "edit" : "default"));
 	}
 
-	function addNew() {
-		lockPage = !lockPage;
-		enableAdding = !enableAdding;
+	function handleAdd() {
+		mode.update((n) => (n === "default" ? "add" : "default"));
 	}
 
-	const cancelChanges = () => {
-		changeMenu();
+	const cancelEdit = () => {
+		handleEdit();
 		resetEdit();
 	};
 
 	const cancelAdd = () => {
-		addNew();
+		handleAdd();
 		resetAdd();
 	};
 
@@ -79,7 +75,7 @@
 						throw error;
 					}
 
-					changeMenu();
+					handleEdit();
 					resetEdit();
 					toast.push("<b>Success</b><br>Changes saved. Refreshing items...");
 					setTimeout(() => {
@@ -113,7 +109,7 @@
 					}
 
 					dispatch("saveNew");
-					addNew();
+					handleAdd();
 					resetAdd();
 					toast.push("<b>Success</b><br>New entry added. Refreshing items...");
 					setTimeout(() => {
@@ -158,60 +154,101 @@
 </script>
 
 {#if user && user.email}
-	{#key enableAdding || enableEditing}
-		<div transition:slide={{ axis: "y" }} class="edit-items">
-			{#if enableEditing}
-				<button on:click={cancelChanges} title="Cancel Changes"
-					><span class="material-symbols-rounded i">close</span>Cancel</button>
-				<div class="line" />
-				<button class="options" on:click={saveChanges} title="Save Changes"
-					><span class="material-symbols-rounded i">save</span>Save</button>
-				<div class="line" />
-				<button class="options" on:click={deleteEntry} title="Delete Entry"
-					><span class="material-symbols-rounded i">delete</span>Delete</button>
-			{:else if enableAdding}
-				<button on:click={cancelAdd} title="Cancel Changes"
-					><span class="material-symbols-rounded i">close</span>Cancel</button>
-				<div class="line" />
-				<button class="options" on:click={saveNew} title="Save Changes"
-					><span class="material-symbols-rounded i">save</span>Save</button>
-			{:else}
-				<button on:click={changeMenu} title="Edit Items"
-					><span class="material-symbols-rounded i">edit</span>Edit</button>
-				<div class="line" />
-				<button on:click={addNew} title="Add New Item"
-					><span class="material-symbols-rounded i">add</span>Add</button>
+	{#key $mode}
+		<div class="container" transition:fly={{ y: 100 }}>
+			{#if $mode !== "default"}
+				<div class="notice">
+					<h2>
+						{$mode === "edit" ? "Edit" : "Add"}ing item
+					</h2>
+				</div>
 			{/if}
+			<div class="edit-items">
+				{#if $mode === "edit"}
+					<button on:click={cancelEdit} title="Cancel changes"
+						><span class="material-symbols-rounded i">close</span
+						>Cancel</button>
+					<div class="line" />
+					<button class="options" on:click={saveChanges} title="Save changes"
+						><span class="material-symbols-rounded i">save</span>Save</button>
+					<div class="line" />
+					<button class="options" on:click={deleteEntry} title="Delete entry"
+						><span class="material-symbols-rounded i">delete</span
+						>Delete</button>
+				{:else if $mode === "add"}
+					<button on:click={cancelAdd} title="Cancel changes"
+						><span class="material-symbols-rounded i">close</span
+						>Cancel</button>
+					<div class="line" />
+					<button class="options" on:click={saveNew} title="Save changes"
+						><span class="material-symbols-rounded i">save</span>Save</button>
+				{:else}
+					<button on:click={handleEdit} title="Edit items"
+						><span class="material-symbols-rounded i">edit</span>Edit</button>
+					<div class="line" />
+					<button on:click={handleAdd} title="Add New item"
+						><span class="material-symbols-rounded i">add</span>Add</button>
+				{/if}
+			</div>
 		</div>
 	{/key}
 {/if}
 
 <style>
+	.container {
+		position: fixed;
+		display: flex;
+		left: 0;
+		bottom: 0;
+		flex-flow: column;
+		align-items: center;
+		width: 100%;
+		margin-left: calc(var(--timeline-width) / 2);
+		z-index: 2;
+	}
+
 	.edit-items {
 		user-select: none;
-		bottom: 0;
-		border-radius: var(--font-size-small) var(--font-size-small) 0 0;
-		height: calc(3.5 * var(--font-size-base));
-		width: clamp(20rem, 80vw, 50rem);
-		position: fixed;
-		left: calc(50% - (clamp(20rem, 80vw, 50rem) / 2));
-		justify-content: space-evenly;
+
+		border-radius: var(--font-size-small);
+		height: calc(3 * var(--font-size-base));
+		width: clamp(10rem, 80vw, 30rem);
+		margin-bottom: 1rem;
+
 		display: flex;
 		flex-direction: row;
-		z-index: 2;
-		background: var(--color-text-card);
-		margin: 0;
-		padding: 0;
-		border-top: var(--border);
-		border-right: var(--border);
-		border-left: var(--border);
 
+		background: var(--color-bg-1);
+		border: var(--border);
 		transition: all 0.5s var(--curve);
+		box-shadow: 5px 5px 7px #00000020;
+	}
+
+	.notice {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0.25rem;
+	}
+
+	.notice h2 {
+		color: var(--color-theme-1);
+		font-family: var(--font-sans);
+		font-size: var(--font-size-small);
+		border: 1px dashed var(--color-theme-1);
+		border-radius: var(--font-size-xsmall);
+		background: var(--color-bg-1);
+		opacity: 0.8;
+		padding: 0.5rem 3rem;
+		align-items: center;
+		justify-content: center;
+		margin: 0;
 	}
 
 	button {
 		cursor: pointer;
 		display: inline-flex;
+		white-space: nowrap;
 		flex-direction: row;
 		gap: 1rem;
 		justify-content: center;
@@ -226,11 +263,11 @@
 	}
 
 	.edit-items > *:first-child {
-		border-radius: var(--font-size-small) 0 0 0;
+		border-radius: var(--font-size-small) 0 0 var(--font-size-small);
 	}
 
 	.edit-items > *:last-child {
-		border-radius: 0 var(--font-size-small) 0 0;
+		border-radius: 0 var(--font-size-small) var(--font-size-small) 0;
 	}
 
 	.line {
@@ -239,12 +276,7 @@
 		height: 66%;
 		width: 1px;
 		background-color: #00000020;
-		transition: all	0.5s var(--curve);
-	}
-
-	.i {
-		vertical-align: center;
-		font-size: var(--font-size-medium);
+		transition: all 0.5s var(--curve);
 	}
 
 	button {
@@ -264,10 +296,6 @@
 	}
 
 	@media (max-width: 1000px) {
-		.edit-items {
-			margin-left: 2.5rem;
-		}
-
 		button {
 			font-size: var(--font-size-small);
 		}

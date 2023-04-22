@@ -1,23 +1,21 @@
 <script>
 	// @ts-nocheck
-	import { fade } from "svelte/transition";
+	import { fade, slide } from "svelte/transition";
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
 	import supabase from "$lib/supabaseClient";
 	import { loadingAction } from "svelte-legos";
 	import { toast } from "@zerodevx/svelte-toast";
+	import { mode } from "$lib/stores/store";
 
-	// timeline view settings
-	export let editing;
-	export let adding;
 	let loading = true;
-
 	let uploading = false;
 
 	export let item = {
+		id: 0,
 		title: "",
-		media: "",
+		image: "",
 		image_credit: "",
 		body: "",
 		start_date: "",
@@ -27,7 +25,6 @@
 	export let addList;
 
 	let formatted_date;
-	let full = false;
 
 	// makes date readable
 	function formatDate(date) {
@@ -42,12 +39,6 @@
 	}
 
 	formatted_date = formatDate(item.start_date);
-
-	function handleKeyDown(e) {
-		// if (e.key === "Escape") {
-		// 	onToggle();
-		// }
-	}
 
 	function autofill(event) {
 		const input = event.target.value.replace(/\D/g, "");
@@ -66,7 +57,7 @@
 			}
 		}
 
-		editing
+		$mode === "edit"
 			? (editList.start_date = formattedDate)
 			: (addList.start_date = formattedDate);
 	}
@@ -134,125 +125,126 @@
 	}
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window />
 
-{#key editing || adding}
+{#key $mode}
 	<section class="item-components">
-		<div class="media-component">
-			{#if editing || adding}
-				<div class="notice">
-					<h2>
-						{editing ? "Edit" : "Add"}ing item
-					</h2>
-				</div>
-				<p class={uploading ? "upload-notice red" : "upload-notice"}>
-					<span
-						style="font-size:var(--font-size-small)"
-						class={uploading
-							? "material-symbols-rounded i"
-							: "material-symbols-rounded"}
-						>{uploading ? "autorenew" : "cloud_upload"}</span
-					>{uploading ? "Uploading..." : "Upload image"}
-				</p>
-			{/if}
-			<Fullscreen let:onToggle let:full>
-				<div class="image-cont">
-					{#if editing || adding}
-						<div class="edit-cont">
-							<input
-								type="file"
-								class="image-edit upload"
-								id="file_upload"
-								on:change={upload} />
-							<img
-								class="image-edit"
-								src={adding ? addList.media : editList.media}
-								alt={adding ? addList.title : editList.title} />
-							<div style="width:100%;text-align:center;">
-								<p
-									style="font-size:var(--font-size-small);align-content:center">
-									<i
-										>Paste image URL or drag and drop onto image section (4MB
-										limit).</i>
-								</p>
-							</div>
-
-							<div class="input-cont">
-								<label for="media">Image URL</label>
-								{#if editing}
-									<input
-										type="text"
-										placeholder="https://example.com/image.jpg"
-										bind:value={editList.media} />
-								{:else if adding}
-									<input
-										type="text"
-										placeholder="https://example.com/image.jpg"
-										bind:value={addList.media} />
-								{/if}
-							</div>
-							<div class="input-cont">
-								<label for="image_credit">Image source</label>
-								{#if editing}
-									<input
-										type="text"
-										placeholder="https://example.com"
-										bind:value={editList.image_credit} />
-								{:else if adding}
-									<input
-										type="text"
-										placeholder="https://example.com"
-										bind:value={addList.image_credit} />
-								{/if}
-							</div>
-						</div>
-					{:else if item.media}
-						{#if item.media.includes("youtube.com")}
-							<iframe
-								class="video"
-								title="youtube video"
-								src={item.media.replace("watch?v=", "embed/")}
-								frameborder="0"
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-								allowfullscreen />
-						{:else}
-							<div class="image-placeholder" use:loadingAction={loading}>
-								<img
-									on:load={() => (loading = false)}
-									class={full ? "fullscreen" : "image"}
-									src={item.media}
-									alt={item.title}
-									on:click={() => {
-										onToggle();
-										full = !full;
-									}}
-									on:keydown={handleKeyDown} />
-							</div>
-						{/if}
-					{/if}
-				</div>
-			</Fullscreen>
-			{#if item.image_credit != "null" && item.media}
-				{#if !editing && !adding}
-					<div class="image_cred">
-						<a href={item.image_credit} target="_blank" rel="noreferrer"
-							>Source</a>
-					</div>
+		{#if item.image || $mode !== "default"}
+			<div class="media-component">
+				{#if $mode !== "default"}
+					<p class={uploading ? "upload-notice red" : "upload-notice"}>
+						<span
+							style="font-size:var(--font-size-small)"
+							class={uploading
+								? "material-symbols-rounded i"
+								: "material-symbols-rounded"}
+							>{uploading ? "autorenew" : "cloud_upload"}</span
+						>{uploading ? "Uploading..." : "Upload image"}
+					</p>
 				{/if}
-			{/if}
-		</div>
+				<Fullscreen let:onToggle let:full>
+					<div class="image-cont">
+						{#if $mode !== "default"}
+							<div class="edit-cont">
+								<input
+									type="file"
+									class="image-edit upload"
+									id="file_upload"
+									on:change={upload} />
+								<img
+									class="image-edit"
+									src={$mode === "add"
+										? $mode === "add"
+											? addList.media
+											: ""
+										: $mode === "edit"
+										? editList.media
+										: ""}
+									alt={$mode === "add"
+										? $mode === "add"
+											? addList.title
+											: ""
+										: $mode === "edit"
+										? editList.title
+										: ""} />
+								<div style="width:100%;text-align:center;">
+									<p
+										style="font-size:var(--font-size-small);align-content:center">
+										<i
+											>Paste image URL or drag and drop onto image section (4MB
+											limit).</i>
+									</p>
+								</div>
+
+								<div class="input-cont">
+									<label for="media">Image URL</label>
+									{#if $mode === "edit"}
+										<input
+											type="text"
+											placeholder="https://example.com/image.jpg"
+											bind:value={editList.media} />
+									{:else if $mode === "add"}
+										<input
+											type="text"
+											placeholder="https://example.com/image.jpg"
+											bind:value={addList.media} />
+									{/if}
+								</div>
+								<div class="input-cont">
+									<label for="image_credit">Image source</label>
+									{#if $mode === "edit"}
+										<input
+											type="text"
+											placeholder="https://example.com"
+											bind:value={editList.image_credit} />
+									{:else if $mode === "add"}
+										<input
+											type="text"
+											placeholder="https://example.com"
+											bind:value={addList.image_credit} />
+									{/if}
+								</div>
+							</div>
+						{:else if item.image}
+							{#if item.image.includes("youtube.com")}
+								<iframe
+									class="video"
+									title="youtube video"
+									src={item.image.replace("watch?v=", "embed/")}
+									frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen />
+							{:else}
+								<div class="image-placeholder" use:loadingAction={loading}>
+									<img
+										on:keydown
+										on:load={() => (loading = false)}
+										class={full ? "fullscreen" : "image"}
+										src={item.image}
+										alt={item.title}
+										on:click={() => {
+											onToggle();
+											full = !full;
+										}} />
+								</div>
+							{/if}
+						{/if}
+					</div>
+				</Fullscreen>
+			</div>
+		{/if}
 		<div class="text-component">
-			{#if editing || adding}
+			{#if $mode !== "default"}
 				<form>
 					<div class="input-cont">
 						<label for="title"
 							>Title <span style="color:var(--color-theme-1)">*</span></label>
-						{#if editing}
+						{#if $mode === "edit"}
 							<input
 								type="text"
 								placeholder="Title"
 								bind:value={editList.title} />
-						{:else if adding}
+						{:else if $mode === "add"}
 							<input
 								type="text"
 								placeholder="Title"
@@ -262,7 +254,7 @@
 					<div class="input-cont">
 						<label for="start_date"
 							>Date <span style="color:var(--color-theme-1)">*</span></label>
-						{#if editing}
+						{#if $mode === "edit"}
 							<input
 								type="text"
 								placeholder="YYYY-MM-DD"
@@ -272,7 +264,7 @@
 								on:click={setCursorPositionToEnd}
 								on:focus={setCursorPositionToEnd}
 								on:keydown={handleKeydown} />
-						{:else if adding}
+						{:else if $mode === "add"}
 							<input
 								type="text"
 								placeholder="YYYY-MM-DD"
@@ -286,9 +278,9 @@
 					</div>
 					<div class="input-cont">
 						<label for="body">Description</label>
-						{#if editing}
+						{#if $mode === "edit"}
 							<textarea placeholder="Description" bind:value={editList.body} />
-						{:else if adding}
+						{:else if $mode === "add"}
 							<textarea placeholder="Description" bind:value={addList.body} />
 						{/if}
 					</div>
@@ -297,15 +289,21 @@
 				<h1 class="title">{item.title}</h1>
 				<p class="date"><i>{formatted_date}</i></p>
 				<hr />
-				<div class="tts">
-					<Text2Speech
-						title={item.title}
-						date={formatted_date}
-						body={item.body} />
-				</div>
 				{#if item.body}
 					<p class="desc">{item.body}</p>
 				{/if}
+				<div class="cont-tts">
+					<div class="tts">
+						<Text2Speech
+							title={item.title}
+							date={formatted_date}
+							body={item.body} />
+					</div>
+					<div class="image_cred">
+						<a href={item.image_credit} target="_blank" rel="noreferrer"
+							>Image source</a>
+					</div>
+				</div>
 			{/if}
 		</div>
 	</section>
@@ -319,7 +317,7 @@
 
 	hr {
 		margin-top: 2rem;
-		width: 50%;
+		width: 66%;
 		height: 1px;
 		border: none;
 		opacity: 0.33;
@@ -337,11 +335,29 @@
 		display: flex;
 	}
 
-	.tts {
+	.cont-tts {
 		display: flex;
 		flex-direction: row;
+		justify-content: space-between;
 		width: 100%;
-		justify-content: right;
+	}
+
+	.image_cred {
+		display: flex;
+		align-items: center;
+		font-size: var(--font-size-xsmall);
+	}
+
+	.image_cred a {
+		color: var(--color-text);
+		opacity: 0.5;
+		transition: all 0.3s var(--curve);
+	}
+
+	.image_cred a:hover {
+		opacity: 1;
+		color: var(--color-theme-1);
+		text-decoration: none;
 	}
 
 	.item-components {
@@ -350,19 +366,14 @@
 		flex-wrap: wrap;
 		justify-content: center;
 		align-items: center;
-		transition: all 0.2s ease-in-out;
 		margin-bottom: 3rem;
-		z-index: 1;
-	}
-
-	.item-components > div {
-		margin: 0 1rem;
+		gap: 1.5rem;
 	}
 
 	.text-component {
-		flex: 1 1 33%;
-		padding: 2rem 2rem;
-		border-radius: 2rem;
+		flex: 1 2 50%;
+		padding: 1rem 2rem;
+		border-radius: 1.5rem;
 		max-width: 60rem;
 		border: var(--border);
 		background: var(--color-text-card);
@@ -392,6 +403,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		border: var(--border);
+		border-radius: 1.5rem;
 		max-width: 100%;
 	}
 
@@ -403,27 +416,23 @@
 		max-width: 100%;
 		object-position: center center;
 		object-fit: cover;
-		border-radius: 1.5vw;
+		border-radius: 1.5rem;
 		box-shadow: 5px 5px 7px 0 #00000020;
 		transition: all 0.3s ease-in-out;
 	}
 
 	@media (max-width: 1000px) {
-		.item-components {
-			margin: 0 -1rem 0 -1rem;
-		}
 		.text-component {
-			padding: 2rem 1rem;
-			text-align: justify;
+			padding: 1rem 1.5rem;
 		}
 		.title {
 			font-size: var(--font-size-large);
 		}
 		.date {
-			font-size: var(--font-size-small);
+			font-size: var(--font-size-base);
 		}
 		.desc {
-			font-size: var(--font-size-base);
+			font-size: var(--font-size-small);
 		}
 		.image {
 			min-height: 0vh;
@@ -438,54 +447,11 @@
 		height: calc(60vw * var(--vid-ratio));
 		object-position: center center;
 		object-fit: cover;
-		border-radius: 1.5vw;
+		border-radius: 1.5rem;
 		box-shadow: 1rem 0rem 7px 0 #00000030;
 	}
 
-	.image_cred {
-		display: flex;
-		justify-content: center;
-	}
-
-	.image_cred a {
-		font-size: var(--font-size-xsmall);
-		color: var(--color-text);
-		padding: 1rem 2rem 0.5rem 2rem;
-		border-radius: 0 0 0.5rem 0.5rem;
-		margin: 0 0 0.5rem 0;
-		opacity: 0.75;
-		font-weight: 400;
-		transform: translateY(-0.75rem);
-		background: var(--color-bg-2);
-		transition: all 0.5s var(--curve);
-	}
-
-	.image_cred a:hover {
-		opacity: 1;
-		transform: translateY(-0.5rem);
-		color: var(--color-theme-1);
-		text-decoration: none;
-	}
-
 	/* ---------------------- EDIT ---------------------- */
-
-	.notice {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.notice h2 {
-		color: var(--color-theme-1);
-		font-family: var(--font-sans);
-		font-size: var(--font-size-small);
-		border: 1px dashed var(--color-theme-1);
-		border-radius: var(--font-size-xsmall);
-		padding: 0.5rem 3rem;
-		align-items: center;
-		justify-content: center;
-		margin: 0;
-	}
 
 	.edit-cont {
 		display: flex;

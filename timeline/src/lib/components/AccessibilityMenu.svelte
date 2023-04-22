@@ -15,7 +15,15 @@
 		reduceMotionStore.set(!reduceMotion);
 	}
 
+	function handleClickOutside(event) {
+		if (event.target.closest(".menu") || event.target.closest(".accessibility")) {
+			return;
+		}
+		open = false;
+	}
 </script>
+
+<svelte:window on:click={handleClickOutside} />
 
 {#if open}
 	<div class="menu" transition:fly={{ x: 500 }}>
@@ -23,7 +31,8 @@
 		<TextSizeSelector />
 		<ul>
 			<li class="anim" transition:fly>
-				<span title="Reduce transition motion"
+				<span
+					title="Reduce transition motion"
 					class={reduceMotion ? "active" : ""}
 					on:click={toggleReduceMotion}
 					on:keydown
@@ -34,7 +43,7 @@
 				<h2 class="am-title">Theme</h2>
 				<div class="btns">
 					<div
-					title="Light Mode"
+						title="Light mode"
 						on:keydown
 						on:click={() => ($themeStore = "light-theme")}
 						class={$themeStore === "light-theme"
@@ -43,7 +52,7 @@
 						<span class="material-symbols-rounded i">light_mode</span>
 					</div>
 					<div
-					title="Reading Mode"
+						title="Reading mode"
 						on:keydown
 						on:click={() => ($themeStore = "reading-theme")}
 						class={$themeStore === "reading-theme"
@@ -53,7 +62,7 @@
 					</div>
 
 					<div
-					title="Dark Mode"
+						title="Dark mode"
 						on:keydown
 						on:click={() => ($themeStore = "dark-theme")}
 						class={$themeStore === "dark-theme"
@@ -63,7 +72,7 @@
 					</div>
 
 					<div
-					title="High Contrast Mode"
+						title="High contrast mode"
 						on:keydown
 						on:click={() => ($themeStore = "high-contrast-theme")}
 						class={$themeStore === "high-contrast-theme"
@@ -141,7 +150,7 @@
 		width: 3em;
 		height: 3em;
 		border: var(--border);
-		background:var(--color-bg-1);
+		background: var(--color-bg-1);
 		border-radius: 50%;
 		filter: invert(0.1);
 		cursor: pointer;
@@ -155,15 +164,10 @@
 	.theme-btn:active {
 		filter: invert(0.3);
 	}
-	
+
 	li.anim:hover {
 		cursor: pointer;
 		backdrop-filter: invert(0.1);
 		color: var(--color-theme-1);
-	}
-
-	.i {
-		font-size: var(--font-size-medium);
-		vertical-align: middle;
 	}
 </style>

@@ -1,14 +1,14 @@
 <script>
-	import { Hamburger } from "svelte-hamburgers";
-	import { countStore, themeStore } from "$lib/stores/store";
+	import ExpandButton from "$lib/components/ExpandButton.svelte";
+	import { themeStore } from "$lib/stores/store";
 	import { slide } from "svelte/transition";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
 	import { userStore, logout } from "$lib/authStore";
 	import { setFontSize } from "$lib/components/TextSizeSelector.svelte";
-	import { scrollY, windowWidth } from "$lib/stores/window";
-	import { searchbarVisible } from "$lib/stores/store";
+	import { scrollY, mobile } from "$lib/stores/window";
 	import AccessibilityMenu from "$lib/components/AccessibilityMenu.svelte";
+	import { quintOut } from "svelte/easing";
 
 	let user;
 	userStore.subscribe((value) => {
@@ -24,16 +24,10 @@
 	}
 
 	$: {
-		isMenuOpen = $searchbarVisible;
-	}
-
-	function checkVisibility() {
-		if ($windowWidth < 1000) {
+		if ($mobile) {
 			isMenuOpen = false;
-			searchbarVisible.set(true);
 		} else {
 			isMenuOpen = true;
-			searchbarVisible.set(true);
 		}
 	}
 
@@ -44,101 +38,115 @@
 		}
 	}
 
-	function searchSwitch() {
-		if ($windowWidth < 1000) {
-			searchbarVisible.set(!$searchbarVisible);
+	function handleClickOutside(event) {
+		if ($mobile) {
+			if (
+				isMenuOpen &&
+				(!event.target.closest(".menubutton") && !event.target.closest(".menu"))
+			) {
+				isMenuOpen = false;
+			}
 		}
-	}
-
-	function count() {
-		countStore.update((n) => Number(n) + 1);
 	}
 
 	onMount(() => {
 		setFontSize();
 		handleHeader();
-		checkVisibility();
 	});
 </script>
 
-<svelte:window on:resize={checkVisibility} />
+<svelte:window on:click={handleClickOutside} />
 
 <header>
 	<nav class={shadow ? "shadow" : ""}>
 		<div class="left">
-			{#if !($windowWidth < 1000)}
-				<a href="/" style="margin-right:1rem;"
-					><img
-						on:click={count}
-						on:keypress={count}
-						src={$themeStore === "light-theme" ||
-						$themeStore === "reading-theme"
-							? "assets/notl-museum.svg"
-							: "assets/notl-museum-dark.svg"}
-						alt="logo"
-						class="logo"
-						id="notl_logo" /></a>
-			{/if}
-			{#if $page.url.pathname.startsWith("/timeline")}
-				<div transition:slide={{ axis: "x" }}>
-					<Hamburger
-						on:click={searchSwitch}
-						bind:open={isMenuOpen}
-						--color="var(--color-theme-1)"
-						type="arrowalt" />
-				</div>
-			{/if}
-			{#if isMenuOpen || !$page.url.pathname.startsWith("/timeline")}
+			<a href="/"
+				><img
+					src={$themeStore === "light-theme" || $themeStore === "reading-theme"
+						? "assets/notl-museum.svg"
+						: "assets/notl-museum-dark.svg"}
+					alt="logo"
+					class="logo"
+					id="notl_logo" /></a>
+			<div title="Toggle menu visibility" class="menubutton">
+				<ExpandButton bind:open={isMenuOpen} />
+			</div>
+			{#if isMenuOpen}
 				<ul
-					style={!$page.url.pathname.startsWith("/timeline")
-						? "margin-left:1rem;"
-						: "margin-left:0"}>
-					<li
-						aria-current={$page.url.pathname === "/" ? "page" : undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/">Home</a>
-					</li>
-					<li
-						aria-current={$page.url.pathname === "/about" ? "page" : undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/about">About</a>
+					transition:slide={{ axis: $mobile ? "y" : "x", easing: quintOut }}
+					class="menu">
+					<li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
+						<a
+							title="Home"
+							href="/"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>Home</a>
 					</li>
 					<li
 						aria-current={$page.url.pathname === "/timeline"
 							? "page"
-							: undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/timeline">Explore</a>
+							: undefined}>
+						<a
+							title="Explore the timeline"
+							href="/timeline"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>Explore</a>
 					</li>
 					<li
 						aria-current={$page.url.pathname === "/contact"
 							? "page"
-							: undefined}
-						transition:slide={{ axis: "x" }}>
-						<a href="/contact">Contact</a>
+							: undefined}>
+						<a
+							title="Contact us"
+							href="/contact"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>Contact</a>
+					</li>
+					<li
+						aria-current={$page.url.pathname === "/about" ? "page" : undefined}>
+						<a
+							title="About the project"
+							href="/about"
+							on:click={() => {
+								if ($mobile) isMenuOpen = false;
+							}}>About</a>
 					</li>
 					{#if user && user.email}
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
-								: undefined}
-							transition:slide={{ axis: "x" }}>
+								: undefined}>
 							<a
-								title="Signed in as {user.email}"
+								on:click={() => {
+									if ($mobile) isMenuOpen = false;
+								}}
+								title="Logged in as {user.email}"
 								href="/"
 								on:click={(event) => {
 									event.preventDefault();
 									logout();
-								}}>
-								Log Out</a>
+								}}
+								>Log Out&nbsp;
+								<span class="material-symbols-rounded i">logout</span></a>
 						</li>
 					{:else}
 						<li
 							aria-current={$page.url.pathname.startsWith("/login")
 								? "page"
-								: undefined}
-							transition:slide={{ axis: "x" }}>
-							<a class="login" href="/login">Log In</a>
+								: undefined}>
+							<a
+								title="Log in"
+								class="login"
+								href="/login"
+								on:click={() => {
+									if ($mobile) isMenuOpen = false;
+								}}
+								>Log In&nbsp;<span class="material-symbols-rounded i"
+									>login</span
+								></a>
 						</li>
 					{/if}
 				</ul>
@@ -147,6 +155,7 @@
 
 		<div class="right">
 			<span
+				title="Accessibility options"
 				class="material-symbols-rounded accessibility"
 				style="scale: 1.2;"
 				on:click={() => (isAccessibilityOpen = !isAccessibilityOpen)}
@@ -183,9 +192,12 @@
 	ul {
 		display: flex;
 		align-items: baseline;
-		gap: clamp(0.25rem, 1vw, 2rem);
+		flex-direction: row;
+		gap: clamp(0rem, 1vw, 2rem);
 		list-style: none;
 		padding: 0;
+		border:none;
+		user-select: none !important;
 	}
 
 	li {
@@ -200,29 +212,31 @@
 		content: "";
 		display: block;
 		width: 100%;
-		height: 2px;
+		height: 3px;
 		background: var(--color-theme-1);
 		border-radius: 5px;
-		transform: scaleX(0);
+		transform: scale(0);
 		transition: all 0.5s var(--curve);
 	}
 
 	li[aria-current="page"]::after {
-		content: "";
-		display: block;
-		width: 100%;
-		height: 3px;
-		transform: scaleX(1);
-		background: var(--color-theme-1);
-		border-radius: 5px;
+		transform: scale(1);
+	}
+
+	li a,
+	.i {
+		font-size: var(--font-size-smallish);
 	}
 
 	li a {
-		font-size:clamp(var(--font-size-xsmall), 3vw, var(--font-size-small));
 		display: block;
-		padding: 0.5em 0.5em;
+		padding: 0.5em 0.2em;
 		color: var(--color-text);
 		text-decoration: none;
+	}
+
+	li:active {
+		transform: scale(0.95);
 	}
 
 	li a:hover {
@@ -231,7 +245,7 @@
 
 	.logo {
 		position: relative;
-		margin: 0 0 0 1em;
+		margin: 0;
 		width: auto;
 		height: 3.5rem;
 		border-radius: 0.5rem 0.5rem 0 0;
@@ -280,5 +294,34 @@
 		width: 100%;
 		height: 5rem;
 		z-index: 5;
+	}
+
+	@media (max-width: 900px) {
+		ul {
+			position: fixed;
+			top: 5rem;
+			left: 0;
+			margin: 0;
+			width: 100%;
+			padding: 1rem 0;
+			background-color: var(--color-bg-1);
+			flex-direction: column;
+			gap: 0.2rem;
+			justify-content: center;
+			align-items: center;
+			overflow-y: auto;
+			overflow-x: hidden;
+			z-index: 9;
+			box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
+			border-bottom: var(--border);
+		}
+
+		li {
+			text-align: center;
+		}
+		li a {
+			padding: 0.8rem 2rem;
+			font-size: var(--font-size-base);
+		}
 	}
 </style>

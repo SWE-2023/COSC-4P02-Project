@@ -1,17 +1,19 @@
 <script>
 	// @ts-nocheck
-	import { fly } from "svelte/transition";
+	import { fly, fade } from "svelte/transition";
 	import { createEventDispatcher } from "svelte";
 	import DropDownItem from "$lib/components/searchbar/DropDownItem.svelte";
-	import { searchbarVisible } from "$lib/stores/store";
+  import { mode } from "$lib/stores/store";
 
 	export let selection;
 	export let data;
-	export let lock;
 
+	let disabled;
 	let filtered = [];
 	let search = "";
 	let clicked = false;
+
+	$: disabled = $mode !== "default";
 
 	const dispatch = createEventDispatcher();
 	const notify = () => dispatch("selection");
@@ -43,63 +45,61 @@
 
 <svelte:window on:click={handleClickOutside} on:keydown={handleShortcut} />
 
-{#if $searchbarVisible}
-	<div
-		class="search-container"
-		style={lock ? `top:-10rem !important;` : ``}
-		transition:fly={{x:50}}>
-		<div class="bar">
-			<input
-				type="text"
-				disabled={lock}
-				placeholder="Search"
-				class={clicked && filtered.length == 0 && !search
-					? "search-box"
-					: "search-box has-results"}
-				bind:value={search}
-				on:click={() => (clicked = false)}
-				on:input={() => {
-					findTitles();
-					clicked = false;
-				}} />
-			{#if search}
-				<span
-					class="material-symbols-rounded i"
-					on:keydown
-					on:click={() => (search = "")}>
-					close
-				</span>
-			{:else}
-				<span class="material-symbols-rounded i"> search </span>
-			{/if}
-		</div>
-		{#if search && !clicked && filtered.length > 0}
-			<div class="results">
-				{#each filtered as data}
-					<DropDownItem
-						bind:selectedTitle={selection}
-						item={data}
-						on:selection={notify}
-						on:selection={() => (clicked = true)} />
-				{/each}
-			</div>
-		{:else if search == ""}
-			<div class="results" style="pointer-events:none;">
-				<DropDownItem
-					color="grey"
-					bind:selectedTitle={selection}
-					item="Type something..." />
-			</div>
+<div
+	class="search-container"
+	style={disabled ? `top:-4rem !important;` : ``}
+	transition:fly={{y:-25}}>
+	<div class="bar">
+		<input
+			type="text"
+			{disabled}
+			placeholder="Search"
+			class={clicked && filtered.length == 0 && !search
+				? "search-box"
+				: "search-box has-results"}
+			bind:value={search}
+			on:click={() => (clicked = false)}
+			on:input={() => {
+				findTitles();
+				clicked = false;
+			}} />
+		{#if search}
+			<span
+				class="material-symbols-rounded i"
+				on:keydown
+				on:click={() => (search = "")}>
+				close
+			</span>
 		{:else}
-			<div class="results" style="pointer-events:none;">
-				<DropDownItem
-					color="grey"
-					bind:selectedTitle={selection}
-					item="No results..." />
-			</div>
+			<span class="material-symbols-rounded i"> search </span>
 		{/if}
 	</div>
-{/if}
+	{#if search && !clicked && filtered.length > 0}
+		<div class="results">
+			{#each filtered as data}
+				<DropDownItem
+					bind:selectedTitle={selection}
+					item={data}
+					on:selection={notify}
+					on:selection={() => (clicked = true)} />
+			{/each}
+		</div>
+	{:else if search == ""}
+		<div class="results" style="pointer-events:none;">
+			<DropDownItem
+				color="grey"
+				bind:selectedTitle={selection}
+				item="Type something..." />
+		</div>
+	{:else}
+		<div class="results" style="pointer-events:none;">
+			<DropDownItem
+				color="grey"
+				bind:selectedTitle={selection}
+				item="No results..." />
+		</div>
+	{/if}
+</div>
 
 <style>
 	:root {
@@ -117,11 +117,11 @@
 		box-sizing: border-box;
 		border: 2px solid transparent;
 		border-radius: var(--font-size-xsmall);
-		width: clamp(1rem, 40vw, 30rem);
+		width: clamp(8rem, 30vw, 30rem);
 		z-index: 999;
 		box-shadow: 3px 3px 16px 0 #00000000;
 		transition: opacity 0.1s var(--curve), width 0.5s var(--curve),
-			right 0.5s var(--curve), border 0.1s var(--curve),
+			right 0.5s var(--curve), border 0.1s var(--curve), top 0.5s var(--curve),
 			box-shadow 0.5s var(--curve);
 	}
 
@@ -129,13 +129,6 @@
 		border: 2px solid var(--color-theme-1);
 		box-shadow: 3px 3px 16px 0 #00000040;
 		width: calc(50vw - 2rem);
-	}
-
-	@media (max-width: 1000px) {
-		.search-container:focus-within {
-			width: calc(100vw - 2rem);
-			right: 1rem;
-		}
 	}
 
 	.bar {
@@ -167,6 +160,10 @@
 		border-radius: var(--font-size-xsmall) var(--font-size-xsmall) 0 0;
 	}
 
+	.search-container:focus-within .search-box {
+		padding: 0.5rem 0 0.5rem 1.5rem;
+	}
+
 	.search-container:focus-within > .results {
 		opacity: 1;
 		height: auto;
@@ -183,10 +180,22 @@
 	}
 
 	.i {
-		user-select: none;
 		position: absolute;
 		right: calc(0.75 * var(--font-size-base));
 		font-size: var(--font-size-base);
 		color: var(--color-text);
+	}
+
+	@media (max-width: 1000px) {
+		.search-container {
+			width: 9rem;
+		}
+		.search-container:focus-within {
+			width: calc(100vw - 2rem);
+			right: 1rem;
+		}
+		.search-container:focus-within .search-box {
+			padding: 1rem 0 1rem 1.5rem;
+		}
 	}
 </style>

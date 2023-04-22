@@ -1,4 +1,7 @@
+import { tweened } from "svelte/motion";
 import { writable } from "svelte/store";
+
+// local storage stores
 
 // current motion preference
 export const reduceMotion =
@@ -47,5 +50,28 @@ currentItemIndexStore.subscribe((value) => {
 	}
 });
 
-// searchbar vis
-export const searchbarVisible = writable(true);
+// temp stores
+
+export const firstYear = writable(0);
+export const lastYear = writable(0);
+export const atStart = writable(true);
+export const atEnd = writable(false);
+
+// year tweened
+function expoOut(t) {
+	return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  }
+
+export const year = tweened(0, {
+	duration: 750,
+	easing: expoOut,
+	interpolate: (a, b) => (t) => a + (b - a) * t,
+});
+
+// transition direction
+export const direction = writable("down");
+
+// modal store
+export const showModal = writable(false);
+
+export const mode = writable("default");
