@@ -1,6 +1,59 @@
 <script>
 	import { slide } from "svelte/transition";
 	import PageTransition from "$lib/components/PageTransitionFly.svelte";
+
+
+	let members = [
+    {
+        name: "Alec Ames",
+        pic: "https://media.licdn.com/dms/image/D5603AQGBaGdxymdLTA/profile-displayphoto-shrink_800_800/0/1679545357267?e=1687392000&v=beta&t=tdCHXPorM-cBHk8URmvTgFk83c2wrhPRO0cd0wFu-OA",
+		github: "https://github.com/alecames"
+	},
+    {
+        name: "Matthew Benson",
+        pic: "https://media.licdn.com/dms/image/C4E03AQFk04BV0Phu4g/profile-displayphoto-shrink_800_800/0/1627429475282?e=1687392000&v=beta&t=8S9vHSFl1v565Hdm9EwftvrDOmUBH-1My5Neua5m5j8",
+		github: "https://github.com/MattMBenson"
+	
+	},
+    {
+        name: "Ibrahim Hashmi",
+        pic: "https://media.licdn.com/dms/image/C4E03AQEr70AZWiDNWA/profile-displayphoto-shrink_800_800/0/1613092600500?e=1687392000&v=beta&t=eV5-BPVA_HLEox8wmFLj4MJSPUe2gToHJKCAQ-d8b_o",
+		github: "https://github.com/ibhashmi"
+	},
+    {
+        name: "Francis Monwe",
+        pic: "https://media.licdn.com/dms/image/C4E03AQFheKji8LLI2g/profile-displayphoto-shrink_800_800/0/1652670840391?e=1687392000&v=beta&t=rykL51jyTdCAXCFHrkmR1bJaELjel8D91hUmYMJk7K8",
+		github: "https://github.com/monwe-jr"
+	},
+    {
+        name: "Tommy Pham",
+        pic: "https://media.licdn.com/dms/image/C4D03AQFyO7qwiqBjXQ/profile-displayphoto-shrink_800_800/0/1566411354394?e=1687392000&v=beta&t=GEGLxQY6epG9fB6DymGQlPMlPUeObS-zA948WMsP_P0",
+		github: "https://github.com/tommyphamca"
+	},
+    {
+        name: "Abhijeet Prajapati",
+        pic: "https://avatars.githubusercontent.com/u/68875359?v=4",
+		github: "https://github.com/TheDasher1"
+	},
+    {
+        name: "Justin Stickel",
+        pic: "https://media.licdn.com/dms/image/C5603AQHhT11yEwhjnw/profile-displayphoto-shrink_800_800/0/1608219438361?e=1687392000&v=beta&t=6zMLZCUaRMBFYvP4CSk_snY1a9PXHFpNOtcwlcD_0cw",
+		github: "https://github.com/Stickelation"
+	},
+    {
+        name: "Haaris Yahya",
+        pic: "https://avatars.githubusercontent.com/u/80646420?v=4",
+		github: "https://github.com/haarisyahya"
+    }
+];
+
+
+
+// function addTeamMember(){
+// 	document.getElementById("container").innerHTML += '';
+// }
+
+
 </script>
 
 <svelte:head>
@@ -46,6 +99,55 @@
 			</div>
 		</div>
 		<div>
+			<h1>Our Team</h1>
+			<div class="row v-align">
+				<!-- Team container  -->
+				<div class="container">
+
+					<div class="our-team">
+						<div class="avatar">
+							<img src="https://media.licdn.com/dms/image/D5603AQGBaGdxymdLTA/profile-displayphoto-shrink_800_800/0/1679545357267?e=1687392000&v=beta&t=tdCHXPorM-cBHk8URmvTgFk83c2wrhPRO0cd0wFu-OA" alt="">
+						</div>
+						<div class="team-content">
+							<h3 class="title">Alec Ames</h3>
+							<span class="post">Product Owner, Developer</span>
+						</div>
+						<ul class="social">
+							<li><a href="#" class="fa fa-github"></a></li>
+							<li><a href="#" class="fa fa-github"></a></li>
+						</ul>
+					</div>
+					<div class="our-team">
+						<div class="avatar">
+							<img src="https://media.licdn.com/dms/image/C4E03AQEr70AZWiDNWA/profile-displayphoto-shrink_800_800/0/1613092600500?e=1687392000&v=beta&t=eV5-BPVA_HLEox8wmFLj4MJSPUe2gToHJKCAQ-d8b_o" alt="">
+						</div>
+						<div class="team-content">
+							<h3 class="title">Ibrahim Hashmi</h3>
+							<span class="post">Developer</span>
+						</div>
+						<ul class="social">
+							<li><a href="#" class="fa fa-github"></a></li>
+							<li><a href="#" class="fa fa-github"></a></li>
+						</ul>
+					</div>
+					<div class="our-team">
+						<div class="avatar">
+							<img src="https://media.licdn.com/dms/image/C4E03AQFheKji8LLI2g/profile-displayphoto-shrink_800_800/0/1652670840391?e=1687392000&v=beta&t=rykL51jyTdCAXCFHrkmR1bJaELjel8D91hUmYMJk7K8" alt="">
+						</div>
+						<div class="team-content">
+							<h3 class="title">Francis Monwe</h3>
+							<span class="post">Developer</span>
+						</div>
+						<ul class="social">
+							<li><a href="#" class="fa fa-github"></a></li>
+							<li><a href="#" class="fa fa-github"></a></li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div>
 			<h1>About the Timeline</h1>
 			<div class="row v-align">
 				<p>
@@ -69,6 +171,144 @@
 </PageTransition>
 
 <style>
+
+	body{
+		margin: 0;
+		padding: 100px, 0px;
+		height: 100%;
+		box-sizing: border-box;
+		font-family: sans-serif;
+	}
+
+	.container{
+		display:flex;
+		align-items:center;
+		justify-content: center;
+		width: 80%;
+		margin:auto;
+
+		/* margin: 0; */
+		padding: 100px, 0px;
+		height: 100%;
+		box-sizing: border-box;
+		font-family: sans-serif;
+	}
+
+	.our-team{
+		background:#f7f5ec;
+		text-align: center;
+		overflow: hidden;
+		position: relative;
+		margin: 0px 25px;
+		padding: 30px 70px;
+	}
+
+	.our-team .avatar{
+		display:inline-block;
+		width: 130px;
+		height: 130px;
+		margin-bottom: 0px;
+		z-index: 1;
+		position: relative;
+	}
+
+	.our-team .avatar::before{
+		content: "";
+		width: 100%;
+		height: 0;
+		border-radius: 50%;
+		background: #1785eb;
+		position: absolute;
+		bottom: 135%;
+		right: 0;
+		left: 0;
+		opacity: 0.2;
+		transform: scale(3);
+		transition: all 0.3s linear 0s;
+	}
+
+	.our-team:hover .avatar::before{
+		height:100%;
+	}
+
+	.our-team .avatar::after{
+		content:"";
+		width:100%;
+		height: 100%;
+		border-radius: 50%;
+		background: #1785eb;
+		position: absolute;
+		top:0;
+		left:0;
+		z-index:-1;
+	}
+
+	.our-team .avatar img{
+		width: 100%;
+		height: auto;
+		border-radius: 50%;
+		transform: scale(1);
+		transition: all 0.9s ease 0s;
+	}
+
+	.our-team:hover .avatar img{
+		box-shadow: 0 0 0 14px #f7f5ec;
+		transform: scale(0.7);
+
+	}
+
+	.our-team .team-content{
+
+		margin-bottom: 30px;
+
+	}
+
+	.our-team .title{
+		font-size: 22px;
+		font-weight: 700;
+		color: #4e5052;
+		letter-spacing: 1px;
+		margin-bottom: 5px;
+	}
+
+	.our-team .post{
+		display: block;
+		font-size: 15px;
+		color: #4e5052;
+
+	}
+
+	.our-team .social{
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		background: #1785eb;
+		position: absolute;
+		bottom: -100px;
+		left: 0;
+		transition: all 0.5s ease 0s;
+	}
+
+	.our-team:hover .social{
+		bottom: 0;
+	}
+
+	.our-team .social li{
+		display: inline-block;
+
+	}
+
+	.our-team .social li a{
+		text-decoration: none;
+		display:block;
+		padding: 10px;
+		font-size: 17px;
+		color: #fff;
+		transition: all 0.3s ease 0s;
+	
+	}
+
+
 	h1 {
 		text-align: center;
 	}
