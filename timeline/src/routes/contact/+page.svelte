@@ -119,6 +119,8 @@
 									><span class="fa fa-instagram" /></a>
 								<a href="https://www.youtube.com/user/NOTLMuseum"
 									><span class="fa fa-youtube-play" /></a>
+								<a href="https://github.com/SWE-2023/COSC-4P02-Project"
+									><span class="fa fa-github-square" /></a>
 							</td>
 						</tr>
 					</table>
@@ -282,6 +284,11 @@
 
 	.fa-instagram {
 		background: #d62976;
+		color: white;
+	}
+
+	.fa-github-square{
+		background: #000000;
 		color: white;
 	}
 
