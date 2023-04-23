@@ -202,7 +202,7 @@
 		position: relative;
 		margin: 0px 25px;
 		padding: 30px 70px;
-		border-radius: 20%;
+		border-radius: 1.5rem;
 	}
 
 	.our-team .avatar{
