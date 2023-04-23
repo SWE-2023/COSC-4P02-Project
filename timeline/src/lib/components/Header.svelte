@@ -42,7 +42,8 @@
 		if ($mobile) {
 			if (
 				isMenuOpen &&
-				(!event.target.closest(".menubutton") && !event.target.closest(".menu"))
+				!event.target.closest(".menubutton") &&
+				!event.target.closest(".menu")
 			) {
 				isMenuOpen = false;
 			}
@@ -177,6 +178,7 @@
 		position: fixed;
 		background-color: var(--nav-color);
 		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
 		top: 0;
 		left: 0;
 		width: 100%;
@@ -196,7 +198,7 @@
 		gap: clamp(0rem, 1vw, 2rem);
 		list-style: none;
 		padding: 0;
-		border:none;
+		border: none;
 		user-select: none !important;
 	}
 

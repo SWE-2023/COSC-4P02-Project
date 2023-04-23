@@ -29,7 +29,7 @@
 		background: var(--color-bg-2);
 		color: var(--color-text);
 		border-radius: 2rem;
-		border: none;
+		border: var(--border);
 		padding: 0;
 	}
 

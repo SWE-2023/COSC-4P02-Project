@@ -80,9 +80,15 @@
 					width="600"
 					height="450" />
 
+
+					<hr >
+
 				<!-- ADDRESS -->
 				<div class="address-container">
 					<div class="contact-flex-item">
+						<span
+							><span class="material-symbols-rounded i">location_on</span
+							>&nbsp;&nbsp;Address</span>
 						<p>
 							43 Castlereagh Street<br />
 							PO Box 208<br />
@@ -96,19 +102,27 @@
 					<div class="contact-flex-item">
 						<table>
 							<tr>
-								<td>PHONE:</td>
+								<td
+									><span class="material-symbols-rounded i">phone</span
+									>&nbsp;&nbsp;Phone</td>
 								<td><a href="tel:9054683912">(905) 468-3912</a></td>
 							</tr>
 							<tr>
-								<td>FAX:</td>
+								<td
+									><span class="material-symbols-rounded i">fax</span
+									>&nbsp;&nbsp;Fax</td>
 								<td><a href="tel:9054681728">(905) 468-1728</a></td>
 							</tr>
 							<tr>
-								<td>EMAIL:</td>
+								<td
+									><span class="material-symbols-rounded i">email</span
+									>&nbsp;&nbsp;Email</td>
 								<td><a href="mailto:contact@nhsm.ca">contact@nhsm.ca</a></td>
 							</tr>
 							<tr class="socials-row">
-								<td>SOCIALS:</td>
+								<td
+									><span class="material-symbols-rounded i">thumb_up</span
+									>&nbsp;&nbsp;Socials</td>
 								<td>
 									<Socials />
 								</td>
@@ -165,6 +179,12 @@
 <style>
 	* {
 		box-sizing: border-box;
+	}
+
+	hr {
+		margin: 1rem 0;
+		border: none;
+		border-bottom: var(--border);
 	}
 
 	.title {

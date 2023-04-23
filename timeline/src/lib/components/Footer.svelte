@@ -1,6 +1,6 @@
 <script>
 	import { countStore } from "$lib/stores/store.js";
-  import Socials from "./Socials.svelte";
+	import Socials from "./Socials.svelte";
 
 	let countValue;
 	countStore.subscribe((value) => {
@@ -13,9 +13,15 @@
 	<div class="footer-container">
 		<div class="footer-column">
 			<h4>Contact</h4>
-			<p><span class="material-symbols-rounded i">location_on</span>&nbsp;43 Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0</p>
-			<p><span class="material-symbols-rounded i">phone</span><a href="tel:9054683912">&nbsp;(905) 468-3912</a></p>
-			<Socials grey/>
+			<p>
+				<span class="material-symbols-rounded i">location_on</span>&nbsp;43
+				Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0
+			</p>
+			<p>
+				<span class="material-symbols-rounded i">phone</span><a
+					href="tel:9054683912">&nbsp;(905) 468-3912</a>
+			</p>
+			<Socials grey />
 		</div>
 		<div class="footer-column">
 			<h4>Site Links</h4>
@@ -25,7 +31,6 @@
 				<li><a href="/contact">Contact Us</a></li>
 				<li><a href="/about">About Us</a></li>
 				<li><a href="/privacy">Privacy Policy</a></li>
-				
 			</ul>
 		</div>
 		<div class="footer-column">
@@ -33,8 +38,21 @@
 			<ul>
 				<li><a href="https://www.notlmuseum.ca">NOTL Museum</a></li>
 				<li><a href="https://www.notl.com">Niagara-on-the-Lake</a></li>
-				<li><a href="https://www.niagararegion.ca">Niagara Region</a></li>
-				<li><a href="https://github.com/SWE-2023/COSC-4P02-Project">GitHub Repository</a></li>
+				<li>
+					<a
+						href="https://artsandculture.google.com/partner/niagara-historical-society-museum"
+						>Google Arts & Culture</a>
+				</li>
+				<li>
+					<a href="https://github.com/SWE-2023/COSC-4P02-Project"
+						>GitHub Repository</a>
+				</li>
+				<li>
+					<a
+						href="hhttps://play.google.com/store/apps/details?id=app.notltimeline.twa"
+						>Google Play</a>
+				</li>
+
 				<li><a href="https://brocku.ca">Brock University</a></li>
 			</ul>
 		</div>
@@ -51,7 +69,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		border-top:var(--border);
+		border-top: var(--border);
 		background-color: var(--color-bg-1);
 	}
 
@@ -64,7 +82,7 @@
 	}
 
 	.footer-column {
-		margin:0 1rem;
+		margin: 0 1rem;
 	}
 
 	.footer-column h4 {
@@ -75,7 +93,7 @@
 
 	.footer-column p {
 		line-height: 2rem;
-		font-size:var(--font-size-small);
+		font-size: var(--font-size-small);
 	}
 
 	.footer-column ul {
@@ -85,7 +103,7 @@
 
 	.footer-column li {
 		margin-bottom: 0.5rem;
-		font-size:var(--font-size-small);
+		font-size: var(--font-size-small);
 	}
 
 	a {
@@ -100,7 +118,7 @@
 	}
 
 	.footer-bottom {
-		padding:0 1rem;
+		padding: 0 1rem;
 		background-color: var(--footer);
 		height: 4rem;
 		color: #fcfcfc;

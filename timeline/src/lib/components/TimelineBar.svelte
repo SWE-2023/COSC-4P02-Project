@@ -124,7 +124,7 @@
 	function handleDragMove(e) {
 		if (!dragging) return;
 		const currentY = e.touches ? e.touches[0].clientY : e.clientY;
-		const deltaY = (startY - currentY) / (50 * $zoomTweened);
+		const deltaY = (startY - currentY) / (80 * $zoomTweened);
 		const newZoomOffset = $zoomOffsetTweened + deltaY;
 		if (newZoomOffset < 0 || newZoomOffset > 1 - 1 / $zoomTweened) return;
 		zoomOffsetTweened.set(newZoomOffset);
