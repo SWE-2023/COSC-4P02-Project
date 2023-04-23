@@ -55,28 +55,8 @@
 			github: "https://github.com/haarisyahya",
 			linkedin: "https://www.linkedin.com/in/haaris-yahya-398ba9195/"
 		}
-	]
+	];
 	
-
-	const displayTeam = async () =>{
-		const container = document.getElementById("container");
-		let html = '<div class="our-team">'+
-							'<div class="avatar">'+
-								'<img src="https://media.licdn.com/dms/image/D5603AQGBaGdxymdLTA/profile-displayphoto-shrink_800_800/0/1679545357267?e=1687392000&v=beta&t=tdCHXPorM-cBHk8URmvTgFk83c2wrhPRO0cd0wFu-OA" alt="">'+
-							'</div>'+
-							'<div class="team-content">'+
-							'<h3 class="title">Alec Ames</h3>'+
-								'<span class="post">Product Owner, Developer</span>'+
-							'</div>'+
-							'<ul class="social">'
-								'<li><a href="#" class="fa fa-github"></a></li>'+
-								'<li><a href="#" class="fa fa-github"></a></li>'+
-							'</ul>'+
-						'</div>';
-		container?.insertAdjacentHTML("beforeend", html);
-	};
-
-	displayTeam();
 
 </script>
 
@@ -199,6 +179,7 @@
 
 	.container{
 		display:flex;
+		flex-flow:row wrap;
 		align-items:center;
 		justify-content: center;
 		width: 80%;
@@ -212,6 +193,7 @@
 	}
 
 	.our-team{
+		flex:1;
 		background:#f7f5ec;
 		text-align: center;
 		align-items: center;
@@ -219,11 +201,12 @@
 		position: relative;
 		margin: 0px 25px;
 		padding: 30px 70px;
+		border-radius: 20%;
 	}
 
 	.our-team .avatar{
-		display:inline-flex;
-		/* align-self: center; */
+		display:inline-block;
+		align-self: center;
 		width: 130px;
 		height: 130px;
 		margin-bottom: 0px;
