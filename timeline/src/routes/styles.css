@@ -113,7 +113,7 @@
 	--arrow-border: 1px solid transparent;
 	--bg-grayscale: grayscale(1);
 	--color-theme-1: #d32f2f;
-	--color-theme-2: #08244b;
+	--color-theme-2: #244d86;
 	--color-theme-1-light: #fd2235;
 	--color-theme-2-light: #4693ff;
 	--color-text: rgba(255, 255, 255, 0.8);
@@ -150,7 +150,7 @@
 	--arrow-border: var(--border);
 	--bg-grayscale: grayscale(1);
 	--color-theme-1: #d11827;
-	--color-theme-2: #08244b;
+	--color-theme-2: #397fe0;
 	--color-theme-1-light: #fd2235;
 	--color-theme-2-light: #4693ff;
 	--color-text: rgba(255, 255, 255, 1);
