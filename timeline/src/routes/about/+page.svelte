@@ -114,8 +114,7 @@
 					that documents the history of NOTL from 1726 to the present day. The
 					timeline is developed as a term-long project for COSC 4P02 &mdash; the
 					Software Engineering course taught by Prof. Naser Ezzati-Jivan at
-					Brock University. We designed this timeline to be accessible for all
-					users, on desktop and mobile devices.
+					Brock University.
 				</p>
 				<img
 					width="100"
@@ -123,6 +122,16 @@
 					src="assets/brock.png"
 					alt="Brock University Logo" />
 			</div>
+			<gap />
+			<p>
+				Want to download the app? Click the button below!
+				<a
+					href="https://play.google.com/store/apps/details?id=app.notltimeline.twa&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+					><img
+						width="250"
+						alt="Get it on Google Play"
+						src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" /></a>
+			</p>
 		</div>
 		<div>
 			<h1>Our Team</h1>
@@ -289,7 +298,7 @@
 		max-width: 40rem;
 	}
 
-	img {
+	.row > img {
 		flex: 1 1 50%;
 		display: flex;
 		margin: 0 auto;
