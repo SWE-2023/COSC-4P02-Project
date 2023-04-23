@@ -169,13 +169,6 @@
 
 <style>
 
-	body{
-		margin: 0;
-		padding: 100px, 0px;
-		height: 100%;
-		box-sizing: border-box;
-		font-family: sans-serif;
-	}
 
 	.container{
 		display:flex;
@@ -189,6 +182,7 @@
 		padding: 100px, 0px;
 		height: 100%;
 		box-sizing: border-box;
+		color:var(--color-text);
 		font-family: sans-serif;
 	}
 
@@ -203,6 +197,8 @@
 		margin: 0px 25px;
 		padding: 30px 70px;
 		border-radius: 1.5rem;
+		border:var(--border);
+		color: var(--color-text);
 	}
 
 	.our-team .avatar{
@@ -262,15 +258,13 @@
 	}
 
 	.our-team .team-content{
-
 		margin-bottom: 30px;
-
 	}
 
 	.our-team .title{
 		font-size: 22px;
 		font-weight: 700;
-		color: #4e5052;
+		/* color: #4e5052; */
 		letter-spacing: 1px;
 		margin-bottom: 5px;
 	}
@@ -278,7 +272,7 @@
 	.our-team .post{
 		display: block;
 		font-size: 15px;
-		color: #4e5052;
+		/* color: #4e5052; */
 
 	}
 
