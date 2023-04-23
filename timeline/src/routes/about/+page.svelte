@@ -226,7 +226,8 @@
 		left: 0;
 		opacity: 0.2;
 		transform: scale(3);
-		transition: all 0.3s linear 0s;
+		/* transition: all 0.3s linear 0s; */
+		transition: all 0.5s var(--curve);
 	}
 
 	.our-team:hover .avatar::before{
@@ -250,12 +251,12 @@
 		height: auto;
 		border-radius: 50%;
 		transform: scale(1);
-		transition: all 0.9s ease 0s;
+		transition: all 0.5s var(--curve);
 	}
 
 	.our-team:hover .avatar img{
 		box-shadow: 0 0 0 14px #f7f5ec;
-		transform: scale(0.7);
+		transform: scale(0.9);
 
 	}
 
@@ -288,7 +289,7 @@
 		position: absolute;
 		bottom: -100px;
 		left: 0;
-		transition: all 0.5s ease 0s;
+		transition: all 0.5s var(--curve);
 	}
 
 	.our-team:hover .social{
@@ -306,7 +307,7 @@
 		padding: 10px;
 		font-size: 17px;
 		color: #fff;
-		transition: all 0.3s ease 0s;
+		transition: all 0.5s var(--curve);
 	
 	}
 
