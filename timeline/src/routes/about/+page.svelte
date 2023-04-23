@@ -6,24 +6,28 @@
 		{
 			name: "Alec Ames",
 			pic: "https://media.licdn.com/dms/image/D5603AQGBaGdxymdLTA/profile-displayphoto-shrink_800_800/0/1679545357267?e=1687392000&v=beta&t=tdCHXPorM-cBHk8URmvTgFk83c2wrhPRO0cd0wFu-OA",
+			role: "Team Lead",
 			github: "https://github.com/alecames",
 			linkedin: "https://www.linkedin.com/in/alecames/"
 		},
 		{
 			name: "Ibrahim Hashmi",
 			pic: "https://media.licdn.com/dms/image/C4E03AQEr70AZWiDNWA/profile-displayphoto-shrink_800_800/0/1613092600500?e=1687392000&v=beta&t=eV5-BPVA_HLEox8wmFLj4MJSPUe2gToHJKCAQ-d8b_o",
+			role: "Developer",
 			github: "https://github.com/ibhashmi",
 			linkedin: "https://www.linkedin.com/in/ibrahimh26/"
 		},
 		{
 			name: "Francis Monwe",
 			pic: "https://media.licdn.com/dms/image/C4E03AQFheKji8LLI2g/profile-displayphoto-shrink_800_800/0/1652670840391?e=1687392000&v=beta&t=rykL51jyTdCAXCFHrkmR1bJaELjel8D91hUmYMJk7K8",
+			role: "Developer",
 			github: "https://github.com/monwe-jr",
 			linkedin: "https://www.linkedin.com/in/francis-monwe-674501198/"
 		},
 		{
 			name: "Matthew Benson",
 			pic: "https://media.licdn.com/dms/image/C4E03AQFk04BV0Phu4g/profile-displayphoto-shrink_800_800/0/1627429475282?e=1687392000&v=beta&t=8S9vHSFl1v565Hdm9EwftvrDOmUBH-1My5Neua5m5j8",
+			role: "Developer",
 			github: "https://github.com/MattMBenson",
 			linkedin: "https://www.linkedin.com/in/matthew-benson-59b1a31b7/"
 		
@@ -34,24 +38,28 @@
 		{
 			name: "Tommy Pham",
 			pic: "https://media.licdn.com/dms/image/C4D03AQFyO7qwiqBjXQ/profile-displayphoto-shrink_800_800/0/1566411354394?e=1687392000&v=beta&t=GEGLxQY6epG9fB6DymGQlPMlPUeObS-zA948WMsP_P0",
+			role: "Developer",
 			github: "https://github.com/tommyphamca",
 			linkedin: "https://www.linkedin.com/in/tommyphamca/"
 		},
 		{
 			name: "Abhijeet Prajapati",
 			pic: "https://avatars.githubusercontent.com/u/68875359?v=4",
+			role: "Developer",
 			github: "https://github.com/TheDasher1",
 			linkedin: "https://www.linkedin.com/in/abhijeet-prajapati-4a20a7164/"
 		},
 		{
 			name: "Justin Stickel",
 			pic: "https://media.licdn.com/dms/image/C5603AQHhT11yEwhjnw/profile-displayphoto-shrink_800_800/0/1608219438361?e=1687392000&v=beta&t=6zMLZCUaRMBFYvP4CSk_snY1a9PXHFpNOtcwlcD_0cw",
+			role: "Scrum Master",
 			github: "https://github.com/Stickelation",
 			linkedin: "https://www.linkedin.com/in/justin-stickel/"
 		},
 		{
 			name: "Haaris Yahya",
 			pic: "https://avatars.githubusercontent.com/u/80646420?v=4",
+			role: "Developer",
 			github: "https://github.com/haarisyahya",
 			linkedin: "https://www.linkedin.com/in/haaris-yahya-398ba9195/"
 		}
@@ -116,7 +124,7 @@
 							</div>
 							<div class="team-content">
 								<h3 class="title"> {member.name}</h3>
-								<span class="post">Developer</span>
+								<span class="post">{member.role}</span>
 							</div>
 							<ul class="social">
 								<li><a href={member.linkedin} class="fa fa-linkedin-square"></a></li>
@@ -133,7 +141,7 @@
 							</div>
 							<div class="team-content">
 								<h3 class="title"> {member.name}</h3>
-								<span class="post">Developer</span>
+								<span class="post">{member.role}</span>
 							</div>
 							<ul class="social">
 								<li><a href={member.linkedin} class="fa fa-linkedin-square"></a></li>
@@ -183,7 +191,8 @@
 		height: 100%;
 		box-sizing: border-box;
 		color:var(--color-text);
-		font-family: sans-serif;
+		/* font-family: sans-serif; */
+		font-family: var(--font-sans);
 	}
 
 	.our-team{
@@ -209,6 +218,7 @@
 		margin-bottom: 0px;
 		z-index: 1;
 		position: relative;
+		/* position: center; */
 	}
 
 	.our-team .avatar::before{
@@ -306,7 +316,6 @@
 	
 	}
 
-
 	h1 {
 		text-align: center;
 	}
@@ -340,4 +349,13 @@
 	.row {
 		gap: 3rem;
 	}
+
+	@media only screen and (max-width: 768px) {
+		/* For mobile phones: */
+		.our-team{
+			justify-content: left;
+		}
+	}
+
+
 </style>
