@@ -194,7 +194,8 @@
 
 	.our-team{
 		flex:1;
-		background:#f7f5ec;
+		/* background:#f7f5ec; */
+		background: var(--color-bg-2);
 		text-align: center;
 		align-items: center;
 		overflow: hidden;
