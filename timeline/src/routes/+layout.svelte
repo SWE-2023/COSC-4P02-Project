@@ -113,8 +113,14 @@
 	}
 
 	@media (max-width: 1000px) {
-		.background {
+		.background.background.ontimeline {
 			opacity: 0.1;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.background.background.ontimeline {
+			opacity: 0;
 		}
 	}
 </style>

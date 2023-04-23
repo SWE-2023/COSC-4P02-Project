@@ -49,7 +49,7 @@
 				</li>
 				<li>
 					<a
-						href="hhttps://play.google.com/store/apps/details?id=app.notltimeline.twa"
+						href="https://play.google.com/store/apps/details?id=app.notltimeline.twa"
 						>Google Play</a>
 				</li>
 
