@@ -201,7 +201,7 @@
 		background: var(--color-bg-2);
 		text-align: center;
 		align-items: center;
-		overflow: hidden;
+		overflow: hidden;	
 		position: relative;
 		margin: 0px 25px;
 		padding: 30px 70px;
@@ -241,10 +241,10 @@
 		height:100%;
 	}
 
-	.our-team .avatar::after{
+	.our-team .avatar:after{
 		content:"";
 		width:100%;
-		height: 100%;
+		height: 0;
 		border-radius: 50%;
 		background: #1785eb;
 		position: absolute;
@@ -282,7 +282,7 @@
 	.our-team .post{
 		display: block;
 		font-size: 15px;
-		/* color: #4e5052; */
+		
 
 	}
 
@@ -352,9 +352,13 @@
 
 	@media only screen and (max-width: 768px) {
 		/* For mobile phones: */
-		.our-team{
-			justify-content: left;
-		}
+		
+
+	/* .our-team:hover .avatar img{
+		overflow: visible;
+
+	} */
+		
 	}
 
 
