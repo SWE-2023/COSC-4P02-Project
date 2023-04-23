@@ -1,6 +1,8 @@
 <script>
 	// @ts-nocheck
+	import { mobile } from "$lib/stores/window.js";
 	import { fade, slide } from "svelte/transition";
+	import { writable } from "svelte/store";
 	import Text2Speech from "$lib/components/TextToSpeech.svelte";
 	import Fullscreen from "svelte-fullscreen";
 	import { format } from "date-fns";
@@ -20,6 +22,8 @@
 		body: "",
 		start_date: "",
 	};
+
+	const full = writable(false);
 
 	export let editList;
 	export let addList;
@@ -123,9 +127,19 @@
 		}
 		uploading = false;
 	}
+
+	let imgstyle;
+	$: imgstyle = $full ? "fullscreen" : "image";
+
+	function escapeFullscreen(e) {
+		if (e.key === "Escape") {
+			Fullscreen.onExit();
+			full.set(false);
+		}
+	}
 </script>
 
-<svelte:window />
+<svelte:window on:keydown={escapeFullscreen} />
 
 {#key $mode}
 	<section class="item-components">
@@ -142,95 +156,103 @@
 						>{uploading ? "Uploading..." : "Upload image"}
 					</p>
 				{/if}
-				<Fullscreen let:onToggle let:full>
-					<div class="image-cont">
-						{#if $mode !== "default"}
-							<div class="edit-cont">
-								<input
-									type="file"
-									class="image-edit upload"
-									id="file_upload"
-									on:change={upload} />
-								<img
-									class="image-edit"
-									src={$mode === "add"
-										? $mode === "add"
-											? addList.media
-											: ""
-										: $mode === "edit"
-										? editList.media
-										: ""}
-									alt={$mode === "add"
-										? $mode === "add"
-											? addList.title
-											: ""
-										: $mode === "edit"
-										? editList.title
-										: ""} />
-								<div style="width:100%;text-align:center;">
-									<p
-										style="font-size:var(--font-size-small);align-content:center">
-										<i
-											>Paste image URL or drag and drop onto image section (4MB
-											limit).</i>
-									</p>
-								</div>
-
-								<div class="input-cont">
-									<label for="media">Image URL</label>
-									{#if $mode === "edit"}
-										<input
-											type="text"
-											placeholder="https://example.com/image.jpg"
-											bind:value={editList.media} />
-									{:else if $mode === "add"}
-										<input
-											type="text"
-											placeholder="https://example.com/image.jpg"
-											bind:value={addList.media} />
-									{/if}
-								</div>
-								<div class="input-cont">
-									<label for="image_credit">Image source</label>
-									{#if $mode === "edit"}
-										<input
-											type="text"
-											placeholder="https://example.com"
-											bind:value={editList.image_credit} />
-									{:else if $mode === "add"}
-										<input
-											type="text"
-											placeholder="https://example.com"
-											bind:value={addList.image_credit} />
-									{/if}
-								</div>
+				<div class="image-cont">
+					{#if $mode !== "default"}
+						<div class="edit-cont">
+							<input
+								type="file"
+								class="image-edit upload"
+								id="file_upload"
+								on:change={upload} />
+							<img
+								class="image-edit"
+								src={$mode === "add"
+									? $mode === "add"
+										? addList.media
+										: ""
+									: $mode === "edit"
+									? editList.media
+									: ""}
+								alt={$mode === "add"
+									? $mode === "add"
+										? addList.title
+										: ""
+									: $mode === "edit"
+									? editList.title
+									: ""} />
+							<div style="width:100%;text-align:center;">
+								<p
+									style="font-size:var(--font-size-small);align-content:center">
+									<i
+										>Paste image URL or drag and drop onto image section (4MB
+										limit).</i>
+								</p>
 							</div>
-						{:else if item.image}
-							{#if item.image.includes("youtube.com")}
-								<iframe
-									class="video"
-									title="youtube video"
-									src={item.image.replace("watch?v=", "embed/")}
-									frameborder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowfullscreen />
-							{:else}
-								<div class="image-placeholder" use:loadingAction={loading}>
+
+							<div class="input-cont">
+								<label for="media">Image URL</label>
+								{#if $mode === "edit"}
+									<input
+										type="text"
+										placeholder="https://example.com/image.jpg"
+										bind:value={editList.media} />
+								{:else if $mode === "add"}
+									<input
+										type="text"
+										placeholder="https://example.com/image.jpg"
+										bind:value={addList.media} />
+								{/if}
+							</div>
+							<div class="input-cont">
+								<label for="image_credit">Image source</label>
+								{#if $mode === "edit"}
+									<input
+										type="text"
+										placeholder="https://example.com"
+										bind:value={editList.image_credit} />
+								{:else if $mode === "add"}
+									<input
+										type="text"
+										placeholder="https://example.com"
+										bind:value={addList.image_credit} />
+								{/if}
+							</div>
+						</div>
+					{:else if item.image}
+						{#if item.image.includes("youtube.com")}
+							<iframe
+								class="video"
+								title="youtube video"
+								src={item.image.replace("watch?v=", "embed/")}
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+								allowfullscreen />
+						{:else}
+							<div class="image-placeholder" use:loadingAction={loading}>
+								<Fullscreen let:onToggle let:onExit>
 									<img
-										on:keydown
+										in:slide
 										on:load={() => (loading = false)}
-										class={full ? "fullscreen" : "image"}
+										class="image"
 										src={item.image}
 										alt={item.title}
+										on:keydown={(e) => {
+											if (e.key === "Escape") {
+												onExit();
+												$full = false;
+											}
+										}}
 										on:click={() => {
-											onToggle();
-											full = !full;
+											if (!$mobile) {
+												onToggle();
+												$full = !$full;
+											}
 										}} />
-								</div>
-							{/if}
+								</Fullscreen>
+							</div>
 						{/if}
-					</div>
-				</Fullscreen>
+					{/if}
+				</div>
 			</div>
 		{/if}
 		<div class="text-component">
@@ -331,10 +353,6 @@
 		margin: 0.5rem 0;
 	}
 
-	.image-placeholder {
-		display: flex;
-	}
-
 	.cont-tts {
 		display: flex;
 		flex-direction: row;
@@ -408,6 +426,10 @@
 		max-width: 100%;
 	}
 
+	.image-placeholder {
+		display: flex;
+	}
+
 	.image {
 		z-index: 2;
 		cursor: pointer;
@@ -415,10 +437,9 @@
 		max-height: 50vh;
 		max-width: 100%;
 		object-position: center center;
-		object-fit: cover;
+		object-fit: contain;
 		border-radius: 1.5rem;
 		box-shadow: 5px 5px 7px 0 #00000020;
-		transition: all 0.3s ease-in-out;
 	}
 
 	@media (max-width: 1000px) {
@@ -563,13 +584,5 @@
 	.red {
 		font-weight: 700;
 		color: var(--color-theme-1);
-	}
-
-	.fullscreen {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
 	}
 </style>
