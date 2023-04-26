@@ -1,6 +1,6 @@
-<div align="center"><img width="96px" src="https://user-images.githubusercontent.com/18179415/222605007-66a06286-3f5a-4903-a837-d4c1e8c5147f.png"/></div>
+<div align="center"><a href="https://museumtimeline.vercel.app"><img width="96px" src="https://user-images.githubusercontent.com/18179415/222605007-66a06286-3f5a-4903-a837-d4c1e8c5147f.png"/></div>
 
-<div align=center><img src="https://img.shields.io/github/contributors/SWE-2023/COSC-4P02-Project?style=flat-square"/></div>
+<div align=center><img src="https://img.shields.io/github/contributors/SWE-2023/COSC-4P02-Project?style=flat-square"/><img src="https://img.shields.io/github/issues/SWE-2023/COSC-4P02-Project?style=flat-square"/></div>
 
 <div align=center><h1>Niagara-on-the-Lake Timeline</h1></div>
 
@@ -29,7 +29,7 @@ Our project uses the following technologies:
 - [SvelteKit](https://kit.svelte.dev): Web application framework built on top of Svelte
 - [Svelte](https://svelte.dev): Reactive front-end framework
 - [Supabase](https://supabase.com): Backend service with Postgres database and authentication
-- [Netlify](https://www.netlify.com) / [Vercel](https://vercel.com/): Hosting and deployment services
+- [Vercel](https://vercel.com/): Hosting and deployment service
 
 ## Team Members 👥
 
