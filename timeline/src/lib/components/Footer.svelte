@@ -8,12 +8,17 @@
 		<div class="footer-column">
 			<h4>Contact</h4>
 			<p>
-				<span class="material-symbols-rounded i">location_on</span>&nbsp;43
-				Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0
+				<a
+					href="https://goo.gl/maps/Cpm4nsawtRitVMHx6"
+					target="_blank"
+					rel="noopener noreferrer"
+					><span class="material-symbols-rounded i">location_on</span>&nbsp;43
+					Castlereagh St, Niagara-on-the-Lake, ON L0S 1J0</a>
 			</p>
 			<p>
-				<span class="material-symbols-rounded i">phone</span><a
-					href="tel:9054683912">&nbsp;(905) 468-3912</a>
+				<a href="tel:9054683912"
+					><span class="material-symbols-rounded i">phone</span>&nbsp;(905)
+					468-3912</a>
 			</p>
 			<Socials grey />
 		</div>

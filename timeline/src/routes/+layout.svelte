@@ -62,7 +62,9 @@
 		--toastPadding: 0.5rem;
 		--toastBarHeight: 0;
 	}
+	
 	.background {
+		user-select: none;
 		opacity: var(--bg-opacity);
 		width: clamp(100rem, 120vw, 200rem);
 		filter: blur(0px);
@@ -76,6 +78,7 @@
 	}
 
 	.bg {
+		user-select: none;
 		position: fixed;
 		z-index: -10;
 		width: 100vw;
@@ -84,6 +87,7 @@
 	}
 
 	.grey {
+		user-select: none;
 		transform-origin: bottom right;
 		transform: scale(0.9);
 		bottom: 0;

@@ -35,4 +35,8 @@
 	.grey a {
 		color: var(--color-text);
 	}
+
+	.grey a:hover {
+		color: var(--color-theme-1);
+	}
 </style>
