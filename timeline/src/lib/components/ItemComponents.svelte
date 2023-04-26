@@ -127,16 +127,7 @@
 		}
 		uploading = false;
 	}
-
-	function escapeFullscreen(e) {
-		if (e.key === "Escape") {
-			Fullscreen.onExit();
-			full.set(false);
-		}
-	}
 </script>
-
-<svelte:window on:keydown={escapeFullscreen} />
 
 {#key $mode}
 	<section class="item-components">

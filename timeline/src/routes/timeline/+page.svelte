@@ -47,14 +47,16 @@
 		body: selectedItem.body,
 	};
 
-	$: if (selectedItem) {
-		edit = {
-			title: selectedItem.title,
-			media: selectedItem.image,
-			image_credit: selectedItem.image_credit,
-			start_date: selectedItem.start_date,
-			body: selectedItem.body,
-		};
+	$: if ($mode === "default") {
+		if (selectedItem) {
+			edit = {
+				title: selectedItem.title,
+				media: selectedItem.image,
+				image_credit: selectedItem.image_credit,
+				start_date: selectedItem.start_date,
+				body: selectedItem.body,
+			};
+		}
 	}
 
 	let add = {
