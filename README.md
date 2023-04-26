@@ -22,7 +22,7 @@ The goal of this project is to create an interactive timeline web application th
 
 ## Technology Stack
 
-<img src="https://skillicons.dev/icons?i=svelte,supabase,netlify,vercel"/>
+<img src="https://skillicons.dev/icons?i=svelte,supabase,vercel"/>
 
 Our project uses the following technologies:
 
