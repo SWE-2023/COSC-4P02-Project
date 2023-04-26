@@ -499,7 +499,7 @@
 
 	@media (max-width: 1000px) {
 		.arrow-btns.edit {
-			bottom: calc(3.5 * var(--font-size-base));
+			bottom: calc(4 * var(--font-size-base));
 		}
 	}
 

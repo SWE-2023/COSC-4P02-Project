@@ -128,9 +128,6 @@
 		uploading = false;
 	}
 
-	let imgstyle;
-	$: imgstyle = $full ? "fullscreen" : "image";
-
 	function escapeFullscreen(e) {
 		if (e.key === "Escape") {
 			Fullscreen.onExit();
