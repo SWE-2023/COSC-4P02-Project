@@ -360,6 +360,7 @@
 		Click on the <span class="material-symbols-rounded i">help</span> button to view
 		this message again
 	</p>
+	
 </Modal>
 <SearchBar
 	bind:selection={dropDownSelection}
@@ -403,7 +404,7 @@
 			width="64"
 			style="mix-blend-mode:darken"
 			src="https://play-lh.googleusercontent.com/i-0HlK6I-K5ZVI28HFa4iXz0T22Mg2WjQ4gMsEYvqmSNdifp2NE41ZiaUCavmbIimQ" />
-		<h1>No items in timeline. Click 'Add' to create a new event.</h1>
+		<h2>No items in timeline. Click 'Add' to create a new event.</h2>
 	</section>
 {/if}
 

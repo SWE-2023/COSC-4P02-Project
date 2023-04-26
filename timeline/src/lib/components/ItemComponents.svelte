@@ -219,7 +219,6 @@
 							<div class="image-placeholder" use:loadingAction={loading}>
 								<Fullscreen let:onToggle let:onExit>
 									<img
-										in:slide
 										on:load={() => (loading = false)}
 										class="image"
 										src={item.image}

@@ -1,11 +1,5 @@
 <script>
-	import { countStore } from "$lib/stores/store.js";
 	import Socials from "./Socials.svelte";
-
-	let countValue;
-	countStore.subscribe((value) => {
-		countValue = value;
-	});
 </script>
 
 <footer class="footer">

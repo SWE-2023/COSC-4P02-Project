@@ -1,4 +1,5 @@
 <script>
+	// based on https://svelte.dev/examples/modal from Svelte docs
 	import Button from "$lib/components/Button.svelte";
 	import { showModal } from "$lib/stores/store";
 

@@ -3,7 +3,7 @@
 </script>
 
 <div
-	in:fade={{ duration: 250, delay: 251 }}
-	out:fade={{  duration: 250 }}>
+	in:fade={{ duration: 500, delay: 501 }}
+	out:fade={{  duration: 500 }}>
 	<slot />
  </div>

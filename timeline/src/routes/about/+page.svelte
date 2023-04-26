@@ -156,10 +156,10 @@
 							<ul class="social">
 								<li>
 									<a href={member.linkedin}
-										><span class="fa fa-linkedin-square" /></a>
+										><span class="fab fa-linkedin" /></a>
 								</li>
 								<li>
-									<a href={member.github}><span class="fa fa-github" /></a>
+									<a href={member.github}><span class="fab fa-github" /></a>
 								</li>
 							</ul>
 						</div>

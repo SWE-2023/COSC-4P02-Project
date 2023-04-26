@@ -165,6 +165,22 @@
 			decades.push(i);
 		}
 	}
+	
+	function handleMove() {
+		tweening = true;
+	}
+	
+	function handleDownArrow() {
+		if (!$atEnd) {
+			callPageDown();
+		}
+	}
+	
+	function handleUpArrow() {
+		if (!$atStart) {
+			callPageUp();
+		}
+	}
 
 	onMount(() => {
 		handleResize();
@@ -172,22 +188,6 @@
 	});
 
 	handleResize();
-
-	function handleMove() {
-		tweening = true;
-	}
-
-	function handleDownArrow() {
-		if (!$atEnd) {
-			callPageDown();
-		}
-	}
-
-	function handleUpArrow() {
-		if (!$atStart) {
-			callPageUp();
-		}
-	}
 
 	$: disabled ? (arrowVisible = false) : (arrowVisible = true);
 </script>
