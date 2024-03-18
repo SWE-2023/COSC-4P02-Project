@@ -1,6 +1,26 @@
-[{
-        "relation": ["delegate_permission/common.handle_all_urls"],
-        "target" : { "namespace": "android_app", "package_name": "app.notltimeline.twa",
-                     "sha256_cert_fingerprints": ["58:2B:6D:00:96:C0:3D:55:A6:7C:C1:AF:CD:CC:A6:47:8A:2E:58:CB:A6:BE:3D:FA:C9:88:C2:FA:20:9B:B1:7B"] }
+[
+      {
+        "relation": [
+          "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+          "namespace": "android_app",
+          "package_name": "app.notltimeline.twa",
+          "sha256_cert_fingerprints": [
+            "58:2B:6D:00:96:C0:3D:55:A6:7C:C1:AF:CD:CC:A6:47:8A:2E:58:CB:A6:BE:3D:FA:C9:88:C2:FA:20:9B:B1:7B"
+          ]
+        }
+      },
+      {
+        "relation": [
+          "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+          "namespace": "android_app",
+          "package_name": "app.vercel.museumtimeline.twa",
+          "sha256_cert_fingerprints": [
+            "92:6D:40:76:88:DA:4E:85:DE:90:6E:A1:A7:12:BB:51:A6:0E:D7:47:0F:A8:D7:75:CE:23:78:25:D8:03:A2:19"
+          ]
+        }
       }
-]
+    ]
