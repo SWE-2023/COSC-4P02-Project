@@ -28,6 +28,11 @@
 	bind:scrollY={$scrollY}
 	bind:scrollX={$scrollX} />
 
+<svelte:head>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8532958798119578"
+     crossorigin="anonymous"></script>
+</svelte:head>
+
 <div class="{$themeStore} app">
 	<Header />
 	<SvelteToast />
